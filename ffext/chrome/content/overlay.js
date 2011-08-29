@@ -56,7 +56,10 @@ var a11ypi = {
 		    }
 		};
 		xhr.open("POST","http://x.a11y.in/alipi/menu",true);
+<<<<<<< HEAD
 	//	xhr.open("POST","http://192.168.1.5/menu",true);
+=======
+>>>>>>> 7e3fb173bc60a771351a0d12954dff0b7240d5e8
 		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 		xhr.send(String(content.window.location.href));
 	    }
@@ -64,6 +67,7 @@ var a11ypi = {
     },
     testContext : function()
     {
+<<<<<<< HEAD
 //    span = document.createElement("span");
     divs = content.document.getElementsByTagName("*");
     for(i=0; i<divs.length; i++) {
@@ -161,6 +165,24 @@ var a11ypi = {
 	    a = content.document.getElementById('MyFrame');
 	    a.scrollIntoView();
 	}*/
+=======
+    divs = content.document.getElementsByTagName("*");
+    for(i=0; i<divs.length; i++) {
+	if(divs[i].tagName != "HTML" && divs[i].tagName != "LINK" && divs[i].tagName != "SCRIPT" && divs[i].tagName != "META" && divs[i].tagName != "BODY" && divs[i].tagName != "IMG" && divs[i].m4pageeditcontrol != "true" && divs[i].tagName != "BUTTON") {
+	 divs[i].setAttribute("m4pageedittype","text");
+     }
+     else if(divs[i].tagName == "IMG") {
+				divs[i].setAttribute("m4pageedittype","image")
+				}
+    }
+    var v = content.document.getElementsByTagName("body");
+    var a = content.document.createElement("script");
+    for (j=0; j<v.length; j++) {  
+				c = v[0].appendChild(a);
+				c.setAttribute("src","http://x.a11y.in/alipi/wsgi/page_edit.js");
+				c.setAttribute("type","text/javascript");
+			    }
+>>>>>>> 7e3fb173bc60a771351a0d12954dff0b7240d5e8
     },
 //yass code added
    getIndex : function (currentNode)
@@ -250,7 +272,11 @@ var a11ypi = {
 	{
 	    if(xhr.readyState == 4)
 	    {
+<<<<<<< HEAD
 		if(xhr.responseText == "None")
+=======
+		if(xhr.responseText == "empty")
+>>>>>>> 7e3fb173bc60a771351a0d12954dff0b7240d5e8
 		{
 		    a11ypi.clearMenu();
 		}
@@ -260,6 +286,7 @@ var a11ypi = {
 		}
 	    }
 	}
+<<<<<<< HEAD
 	xhr.open("POST","http://192.168.100.100/menu",true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send(String(url));
@@ -287,6 +314,12 @@ var a11ypi = {
             }
     },
 //yass code added
+=======
+	xhr.open("POST","http://x.a11y.in/alipi/menu",true);
+	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xhr.send(String(url));
+    },
+>>>>>>> 7e3fb173bc60a771351a0d12954dff0b7240d5e8
     getURL: function(e) {
 	//var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
 	//var recentWindow = wm.getMostRecentWindow("navigator:browser");
@@ -326,13 +359,18 @@ var a11ypi = {
 	var lang=e.getAttribute("value");
 	var data="url="+encodeURIComponent(url)+"&lang="+encodeURIComponent(lang);
 	
+<<<<<<< HEAD
 	xhr.open("POST","http://192.168.100.100/replace",true);
+=======
+	xhr.open("POST","http://x.a11y.in/alipi/replace",true);
+>>>>>>> 7e3fb173bc60a771351a0d12954dff0b7240d5e8
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send(data);//
 	
 	///content.window.location = "http://localhost/replace?url="+url+"&lang="+e.getAttribute("value");
 	//content.window.reload();
      },
+<<<<<<< HEAD
 
     getNarration: function() {
 	var doc = content.document;
@@ -394,5 +432,48 @@ var a11ypi = {
 	content.window.location = "http://192.168.100.100/replace?url="+url+"&lang="+e.getAttribute("value");
 	content.window.reload();
     },*/
+=======
+    evaluate: function(path,newContent){
+
+        //evaluate the path
+
+        var nodes = content.document.evaluate(path, content.document, null, XPathResult.ANY_TYPE,null);
+
+        try{
+
+            var result = nodes.iterateNext();
+
+            while (result)
+
+                {
+
+                    if (result.nameTag == "img" || result.nameTag =='IMG'){
+
+                        result.setAttribute('src',newContent);
+
+                    }
+
+                    else{
+
+                        result.textContent = newContent;
+
+                    }
+
+                    result=nodes.iterateNext();
+
+                }
+
+        }
+
+        catch (e)
+
+            {
+
+                dump( 'error: Document tree modified during iteration ' + e );
+
+            }
+
+    }, 
+>>>>>>> 7e3fb173bc60a771351a0d12954dff0b7240d5e8
 };
 window.addEventListener("load", function () { a11ypi.onLoad(); }, false);gBrowser.addEventListener("DOMContentLoaded", a11ypi.test, false);
