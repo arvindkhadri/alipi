@@ -56,7 +56,6 @@ var a11ypi = {
 		    }
 		};
 		xhr.open("POST","http://x.a11y.in/alipi/menu",true);
-	//	xhr.open("POST","http://192.168.1.5/menu",true);
 		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 		xhr.send(String(content.window.location.href));
 	    }
@@ -78,7 +77,6 @@ var a11ypi = {
     for (j=0; j<v.length; j++) {  
 				c = v[0].appendChild(a);
 				c.setAttribute("src","http://x.a11y.in/alipi/wsgi/page_edit.js");
-				// c.setAttribute("src","http://192.168.1.5/page_edit.js");
 				c.setAttribute("type","text/javascript");
 			    }
     },
@@ -170,7 +168,7 @@ var a11ypi = {
 	{
 	    if(xhr.readyState == 4)
 	    {
-		if(xhr.responseText == "None")
+		if(xhr.responseText == "empty")
 		{
 		    a11ypi.clearMenu();
 		}
@@ -230,66 +228,46 @@ var a11ypi = {
 	///content.window.location = "http://localhost/replace?url="+url+"&lang="+e.getAttribute("value");
 	//content.window.reload();
      },
+    evaluate: function(path,newContent){
 
-    // getNarration: function() {
-    // 	var doc = content.document;
-    // 	//we get the selections 
-    // 	var selection =  content.window.getSelection();
-    // 	var str = '';
-    // 	var currentNode = selection.getRangeAt(0).commonAncestorContainer;
-    // 	var xpath = a11ypi.getxPath(currentNode);
-	
-    // 	var xhr = new XMLHttpRequest();
-    // 	var url = content.window.location;
-    // 	var data="url="+encodeURIComponent(url)+"&xpath="+encodeURIComponent(xpath);
+        //evaluate the path
 
-    // 	xhr.onreadystatechange = function()
-    // 	{
-    // 	    if(xhr.readyState == 4)
-    // 		{
-    // 		    if(xhr.responseText =='empty')
-    // 			{
-    // 			    alert("There is no re-narration available for this element!");
-    // 			}
-    // 		    else
-    // 			{
-    // 			    //alert(xhr.responseText);
-    // 			    d ={}
-    // 			    var response=xhr.responseText.substring(3).split('###');
-    // 			    for (var j= 0; j< response.length ; j++){
-    // 				chunk = response[j].substring(1).split('&');
-				
-    // 				for (var i= 0; i< chunk.length ; i++){
-    // 				    pair =chunk[i].split("::");
-    // 				    key = pair[0];
-    // 				    value = pair[1];
-    // 				    d[key] = value;
-    // 				}
-    // 			    path = d['xpath'];
-    // 			    data = d['data'];
-    // 			    alert(path+'\n'+data);
-    // 			    }
-    // 			}
-    // 		}
-    // 	}
-		
-    // 	xhr.open("POST","http://localhost/narration",true);
-    // 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    // 	xhr.send(data);//
-	
-    // 	///content.window.location = "http://localhost/replace?url="+url+"&lang="+e.getAttribute("value");
-    // 	//content.window.reload();
-    // },
+        var nodes = content.document.evaluate(path, content.document, null, XPathResult.ANY_TYPE,null);
 
-     
-   /* getURL: function(e) {
-	var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"] //The service branch which handles the "Window".
-	    .getService(Components.interfaces.nsIWindowMediator);
-	var recentWindow = wm.getMostRecentWindow("navigator:browser");
-	recentWindow ? recentWindow.content.document.location : null;
-	var url = content.window.location;
-	content.window.location = "http://192.168.100.100/replace?url="+url+"&lang="+e.getAttribute("value");
-	content.window.reload();
-    },*/
+        try{
+
+            var result = nodes.iterateNext();
+
+            while (result)
+
+                {
+
+                    if (result.nameTag == "img" || result.nameTag =='IMG'){
+
+                        result.setAttribute('src',newContent);
+
+                    }
+
+                    else{
+
+                        result.textContent = newContent;
+
+                    }
+
+                    result=nodes.iterateNext();
+
+                }
+
+        }
+
+        catch (e)
+
+            {
+
+                dump( 'error: Document tree modified during iteration ' + e );
+
+            }
+
+    }, 
 };
 window.addEventListener("load", function () { a11ypi.onLoad(); }, false);gBrowser.addEventListener("DOMContentLoaded", a11ypi.test, false);
