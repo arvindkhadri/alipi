@@ -133,7 +133,7 @@ var a11ypi = {
     	    { 
     		path = a11ypi.makePath(currentNode.parentNode);
     	    }
-	//alert("getxPath:\n"+path);
+	alert("getxPath:\n"+path);
 	return path;
     },    
 
@@ -199,7 +199,7 @@ var a11ypi = {
 		    else
 			{
 			    
-			    d ={}
+			    d ={};
 			    var response=xhr.responseText.substring(3).split('###');
 			    for (var j= 0; j< response.length ; j++){
 				chunk = response[j].substring(1).split('&');
@@ -242,9 +242,12 @@ var a11ypi = {
 
                 {
 
-                    if (result.nameTag == "img" || result.nameTag =='IMG'){
-
-                        result.setAttribute('src',newContent);
+                    if (result.tagName == "img" || result.tagName =='IMG'){
+                        result.setAttribute('src',newContent.split(',')[1]);  //A hack to display images properly, the size has been saved in the database.
+			width = newContent.split(',')[0].split('x')[0];
+			height = newContent.split(',')[0].split('x')[1];
+			result.setAttribute('width',width);
+			result.setAttribute('height', height);
 
                     }
 
