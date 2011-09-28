@@ -63,40 +63,23 @@ var a11ypi = {
     },
     testContext : function()
     {
-	divs = content.document.getElementsByTagName("*");
-	for(i=0; i<divs.length; i++) {
-	    if(divs[i].tagName == "BODY"){
-		divs[i].setAttribute("m4pageedittype","edit");
-		script = content.document.createElement("script");
-		src = divs[i].appendChild(script);
-		src.setAttribute("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js");
-		script1 = content.document.createElement("script");
-		sc = divs[i].appendChild(script1);
-		// sc.textContent="$(document).ready(function(){$('body *').contents().filter(function() {return (this.nodeType == 3) && this.nodeValue.match(/\S/);}).wrap('<span m4pageedittype=text/>')});";
-		sc.textContent="$(document).ready(function(){$('body *').contents().filter(function() {return (this.nodeType == 3) && this.nodeValue.match(/\S/);}).wrap('<span m4pageedittype=text/>')});";
-	    }
-	    else if(divs[i].tagName != "HTML" && divs[i].tagName != "LINK" && divs[i].tagName != "SCRIPT" && divs[i].tagName != "META" && divs[i].tagName != "IMG" && divs[i].m4pageeditcontrol != "true" && divs[i].tagName != "BUTTON") {
-	if(divs[i].tagName == "SPAN") {}
-	else {
-		divs[i].setAttribute("m4pageedittype","edit");
-//		alert('we\'re\' good');
-}
-	    }
-	    else if(divs[i].tagName == "IMG") {
-		divs[i].setAttribute("m4pageedittype","image")
-		    }
-	}
-	
-	var v = content.document.getElementsByTagName("body");
-	var a = content.document.createElement("script");
-	for (j=0; j<v.length; j++) {  
-	    c = v[0].appendChild(a);
-	    c.setAttribute("src","http://x.a11y.in/alipi/wsgi/page_edit.js");
-	    // c.setAttribute("src","http://192.168.1.5/page_edit.js");
-	    c.setAttribute("type","text/javascript");
-	}
+    divs = content.document.getElementsByTagName("*");
+    for(i=0; i<divs.length; i++) {
+	if(divs[i].tagName != "HTML" && divs[i].tagName != "LINK" && divs[i].tagName != "SCRIPT" && divs[i].tagName != "META" && divs[i].tagName != "BODY" && divs[i].tagName != "IMG" && divs[i].m4pageeditcontrol != "true" && divs[i].tagName != "BUTTON") {
+	 divs[i].setAttribute("m4pageedittype","text");
+     }
+     else if(divs[i].tagName == "IMG") {
+				divs[i].setAttribute("m4pageedittype","image")
+				}
+    }
+    var v = content.document.getElementsByTagName("body");
+    var a = content.document.createElement("script");
+    for (j=0; j<v.length; j++) {  
+				c = v[0].appendChild(a);
+				c.setAttribute("src","http://x.a11y.in/alipi/wsgi/page_edit.js");
+				c.setAttribute("type","text/javascript");
+			    }
     },
-
 //yass code added
    getIndex : function (currentNode)
     {
