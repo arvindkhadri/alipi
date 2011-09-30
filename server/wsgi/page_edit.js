@@ -1754,9 +1754,7 @@ var AJAX = AJAX || {};
         //   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
         // }
       }  else {
-	messageOverlay.style.display = 'none';
-	backgroundDiv.style.display = 'none';
-//        self.hide();
+        self.hide();
       }
     };
   };
