@@ -12,8 +12,8 @@ var a11ypi = {
 	{
 	    vimg[i].setAttribute('m4pageedittype','image');
 	}
-	var v = content.document.getElementsByTagName("body");
-	var a = content.document.createElement("script");
+	var v = document.getElementsByTagName("body");
+	var a = document.createElement("script");
 	c = v[0].appendChild(a);
 	c.setAttribute("src","http://192.168.100.104/wsgi/page_edit.js");
 	c.setAttribute("type","text/javascript");
@@ -76,7 +76,7 @@ var a11ypi = {
 	window.reload();
     },
     close_msg: function() {
-	// var v = content.document.getElementsByTagName("body");
+	// var v = document.getElementsByTagName("body");
 	// v[0].removeChild(document.getElementById('ren_overlay'));
 	document.getElementById('ren_overlay').style.display = 'none';
     },
