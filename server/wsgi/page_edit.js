@@ -1115,7 +1115,7 @@ else
 
 
       DOM.evaluate = function evaluate(path,newcontent){
-	  var nodes = document.evaluate(path, document, null, XPathResult.ANY_TYPE,null);
+	  var nodes = content.document.evaluate(path, content.document, null, XPathResult.ANY_TYPE,null);
 	  try{
 	      var result = nodes.iterateNext();
 	      while (result)
@@ -1147,9 +1147,9 @@ else
       
     DOM.getXPATH = function getXPath(element)
     {
-    	var doc = document;
+    	var doc = content.document;
     	//we get the selections
-    	var selection =  window.getSelection();
+    	var selection =  content.window.getSelection();
     	var str = '';
     	//var currentNode = selection.getRangeAt(i).commonAncestorContainer;
     	var currentNode = element;
@@ -1671,32 +1671,35 @@ var AJAX = AJAX || {};
 
        messageOverlay.appendChild(messageTitle);
 
-    messageDescription = DOM.BUILDER.P(normalFontAttributes.addStyle('color:#FFF; font-weight: normal; font-size: 14px; line-height: 22px; width:450px; margin-left: auto; margin-right: auto; text-align: center;').values(), 'Click on any part of the page, and you will activate buttons that allow you to delete or modify text, images, links and other areas of the page. Just click Undo or "u" if you make a mistake. Don\'t forget to hit "Done" when you\'re finished editing so we can save your newly-crafted page.');
+    messageDescription = DOM.BUILDER.P(normalFontAttributes.addStyle('color:#FFF; font-weight: normal; font-size: 14px; line-height: 22px; width:450px; margin-left: auto; margin-right: auto; text-align: center;').values(), 'Click on any part of the page, and you will activate buttons that allow you to modify text, replace images and add audio. Just refresh your page to exit from editing without saving your changes. Don\'t forget to hit "Save & Publish" when you\'re finished editing so we can save your newly-crafted page.');
    messageOverlay.appendChild(messageDescription);
 
    var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'https://bo.lt/app/asset/page-edit/pencil_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'}).addStyle('position: relative; margin-right: 10px; vertical-align: middle;').values());
-   var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'Edit');
+   var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'OK');
 
 // Ajay - Changed lot of colors - Not using, not sure
     editButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('color:#FFF; margin-left: auto; margin-right: auto; width: 100px; height: 36px; display: block; float: none; margin-top: 30px; margin-bottom: 30px; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
     editButton.onclick = function loadingEditButtonOnClick() {
-      self.hide();
-      return false;
+	messageOverlay.style.display = 'none';
+	backgroundDiv.style.display = 'none';
+      // self.hide();
+      // return false;
     };
 
-    editButton.appendChild(image);
+//    editButton.appendChild(image);
     editButton.appendChild(text);
     messageOverlay.appendChild(editButton);
 
 
-    hideOverlayCheckbox = DOM.BUILDER.INPUT(editAttributes.put({ name : 'Loading Checkbox', type : 'checkbox', checked : 'yes' }).addStyle('position:relative; margin-left: 34px; background: transparent; float:left; margin-top: 0px; padding-top: 0px; display: inline-block;').values());
+    hideOverlayCheckbox = DOM.BUILDER.INPUT(editAttributes.put({ name : 'Loading Checkbox', type : 'checkbox'}).addStyle('position:relative; margin-left: 34px; background: transparent; float:left; margin-top: 0px; padding-top: 0px; display: inline-block;').values());
 
     var checkboxLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:relative; font-size: 10px; font-weight: bold; float:left;  margin-left: 5px; margin-right: 5px; background: transparent; color: #FFF;display: inline-block;').values());
     checkboxLabel.innerHTML = 'Don\'t show this again.';
 
-    var redHelpLink = DOM.BUILDER.A(normalFontAttributes.put({ href : 'http://bo.lt/editor'}).addStyle('z-index: 2147483647; float: right;  margin-right: 34px; display: inline-block;text-decoration: none; color: #FFF; font-size: 10px; font-weight: bold; ').values(), 'Need Help?')
+//    var redHelpLink = DOM.BUILDER.A(normalFontAttributes.put({ href : 'http://bo.lt/editor'}).addStyle('z-index: 2147483647; float: right;  margin-right: 34px; display: inline-block;text-decoration: none; color: #FFF; font-size: 10px; font-weight: bold; ').values(), 'Need Help?')
 
-    messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(),hideOverlayCheckbox, checkboxLabel, redHelpLink));
+    messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(),hideOverlayCheckbox, checkboxLabel// , redHelpLink
+					      ));
 
     document.body.appendChild(backgroundDiv);
     document.body.appendChild(messageOverlay);
@@ -1733,8 +1736,8 @@ var AJAX = AJAX || {};
         document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
       }
 
-      messageOverlay.style.display = 'none';
-      backgroundDiv.style.display = 'none';
+      messageOverlay.style.display = 'block';
+      backgroundDiv.style.display = 'block';
     };
 
     this.activate = function activate() {
@@ -1751,7 +1754,9 @@ var AJAX = AJAX || {};
         //   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
         // }
       }  else {
-        self.hide();
+	messageOverlay.style.display = 'none';
+	backgroundDiv.style.display = 'none';
+//        self.hide();
       }
     };
   };
@@ -1889,13 +1894,13 @@ var AJAX = AJAX || {};
 	  
 
 	  var xmlhttp = new XMLHttpRequest();
-	  var url = window.location;
-	  var data="url="+encodeURIComponent(window.location.search.split('=')[1])+"&xpath="+encodeURIComponent(xpath);
+	  var url = content.window.location;
+	  var data="url="+encodeURIComponent(url)+"&xpath="+encodeURIComponent(xpath);
 	  xmlhttp.onreadystatechange = function()
 	  {
 	      if(xmlhttp.readyState == 4 && xmlhttp.status== 200)
 		  {
-		      if(xmlhttp.responseText=='')
+		      if(xmlhttp.responseText=='empty')
 			  {
 			      renDiv.style.display = 'none';
 			      alert("Renarrations not available");
@@ -1935,6 +1940,9 @@ var AJAX = AJAX || {};
 			      lang_ = varray[i]['lang'];
 			      location_ = varray[i]['location']; 
 			      style_ = varray[i]['style'];  //toto
+			     
+			      
+			     
 			      x=DOM.BUILDER.OPTION(lang_+', '+location_+', '+style_);
 			      renInput.add(x,null);
 			  }
@@ -2073,81 +2081,6 @@ var AJAX = AJAX || {};
 
 /////
 //******************************** Ajay - Changed AudioupdatePopupAction from ImageUpdatePopupAction *****************
-    function AudioUpdateByUrl(pageEditor, actionControl) {
-      var self = this, popupDiv, audioUrlInput, randomInput, audioUrlForm, selectedElement, targetName,audioElement;
-
-      var addUrlLabel = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('width: 100%; display: block; float: left; font-size: 10px;position:relative; margin-top: 5px;margin-left: 0px; margin-right: 5px; margin-bottom: 5px; background: transparent; color: #747474; text-shadow: 0 1px 0 #FFFFFF; text-align: left;').values());
-      addUrlLabel.innerHTML = 'Add URL';
-/*	audioUrlInput = document.createElement('audio');
-	audioUrlInput.setAttribute('src','http://01audiovideo.free.fr/ogg/half_asleep_sea_shells.ogg');
-	audioUrlInput.play();*///testing the audio tag creation
-
-      audioUrlInput = DOM.BUILDER.INPUT(editTextInputAttributes.addStyle('display:block; background: #FFFFFF;').values());
-      randomInput = DOM.BUILDER.INPUT(editAttributes.put({ name : 'random', type : 'hidden', value : '1' }).values());
-    	audioUrlForm = DOM.BUILDER.FORM(elementAttributes.values(),
-        audioUrlInput,
-        DOM.BUILDER.INPUT(editSubmitAttributes.values()));
-
-     /* audioUrlForm = DOM.BUILDER.FORM(elementAttributes.put({ target : targetName, enctype : 'multipart/form-data', method : 'post', action : '/app/page-edit/upload' }).values(),
-        audioUrlInput,
-     //   DOM.BUILDER.INPUT(editAttributes.put({ name : 'pageSlug', type : 'hidden', value : pageSlug }).values()),
-       // randomInput,
-        DOM.BUILDER.INPUT(editSubmitAttributes.values()));*/
-
-      audioUrlForm.onsubmit = function updateFormOnSubmit() {
-        var url = audioUrlInput.value;
-		updateAudio(url);
-        return false;
-      };
-
-      audioDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('width: 100%; float:left; position: relative; margin: 0px auto auto 10px; display: block;').values(), addUrlLabel, audioUrlForm);
-
-      audioActionControl = new PopupActionControl(actionControl);
-
-      this.getActionDiv = function getActionDiv() {
-        return audioDiv;
-      };
-
-      this.open = function open(element) {
-	audioActionControl.open(audioDiv);
-        audioUrlInput.value = '';
-        selectedElement = element;
-        audioDiv.style.display = 'block';
-      };
-
-      this.close = function close() {
-        selectedElement = null;
-        audioDiv.style.display = 'none';
-      };
-
-    updateAudio = function updateAudio(src) {
-      var command;
-      if (audioElement) {
-        command = {
-          command : 'AUDIO_UPDATE',
-          element : audioElement,
-          elementId : audioElement.getAttribute('m4pageeditid'),
-          data : src,
-          previousData : originalHref
-        };
-      } else {
-        command = {
-          command : 'AUDIO_CREATE',
-          element : selectedElement,
-	  elementType : 'audio/ogg',
-	  xpath : DOM.getXPATH(selectedElement), //Yassine
-	  url : window.location.href,
-          elementId : selectedElement.getAttribute('m4pageeditid'),
-          data : src,
-          previousData : ''
-        };
-      }
-      pageEditor.commandApply(command);
-     // self.actionComplete();
-    };
-
-    }
-
 
 //*******************************************************************
 
@@ -2193,13 +2126,12 @@ var AJAX = AJAX || {};
         fittedSize = image.getFittedSize();
       }
       command = {
-          command : 'IMAGE_SRC_UPDATE',
-          element : selectedElement,
+        command : 'IMAGE_SRC_UPDATE',
+        element : selectedElement,
 	  elementType : 'image',
-	  xpath : DOM.getXPATH(selectedElement), //Yassine
-	  url : window.location.href,
-	  data : new UTIL.StringBuffer().append(fittedSize.width).append('x').append(fittedSize.height).append(',').append(url).toString(),
-	  imgTag : "<img src='"+url+"' width="+fittedSize.width +" height="+ fittedSize.height+"></img>",
+	xpath : DOM.getXPATH(selectedElement), //Yassine
+	url : window.location.href,
+        data : new UTIL.StringBuffer().append(fittedSize.width).append('x').append(fittedSize.height).append(',').append(url).toString(),
         previousData : {
           'src' : selectedElement.src,
           'size' : { width: selectedElement.width, height: selectedElement.height },
@@ -2687,18 +2619,6 @@ var AJAX = AJAX || {};
       self.popdown(true);
     };
 
-    audioUpdateAction = new AudioUpdateByUrl(pageEditor, actionSlot);
-    audioUpdateAction.onComplete = function audioUpdateActionOnComplete() {
-      self.popdown();
-    };
-
-    var audioImage = './images/replace_image.png';
-    audioButton = createActionButton(audioImage,'Audio','border-right:none;');
-    audioButton.onclick = function audioButtonOnClick() {
-      popupControl.showAction(audioUpdateAction);
-      return false;
-    };
-
 //shalini
 /*    var deleteImage = 'http://x.a11y.in/alipi/wsgi/images/delete_trashcan.png';
     deleteButton = createActionButton(deleteImage, 'Delete', 'border-right: none;');
@@ -2745,7 +2665,6 @@ var AJAX = AJAX || {};
 //    buttonPanel.appendChild(deleteButton);
 //shalini
     buttonPanel.appendChild(renButton);
-    buttonPanel.appendChild(audioButton);
     
 //    buttonPanel.appendChild(backgroundButton);
 //shalini
@@ -3343,13 +3262,13 @@ var AJAX = AJAX || {};
           //   return false;
 
           // case 85:
-            // "u"
-            // if (pageEditor.hasFocus()) {
-            //   event.preventDefault();
-            //   event.stopPropagation();
-            //   pageEditor.commandUndo();
-            // }
-            // return false;
+          //   // "u"
+          //   if (pageEditor.hasFocus()) {
+          //     event.preventDefault();
+          //     event.stopPropagation();
+          //     pageEditor.commandUndo();
+          //   }
+            return false;
         }
       }, true);
     }
@@ -3376,11 +3295,11 @@ var AJAX = AJAX || {};
             DOM.textContent(command.element, command.data);
             pageEditor.showMessage('Text changed');
           break;
-       /* case 'AUDIO_SRC_UPDATE':
+        case 'AUDIO_SRC_UPDATE':
            // DOM.textContent(command.element, command.data);
 		textElementPopup.hasAudio = true;	
             pageEditor.showMessage('Audio updated');
-          break;*/
+          break;
 
         case 'DELETE':
           // show "poof" animation to indicate deletion
@@ -3441,21 +3360,6 @@ var AJAX = AJAX || {};
           anchorElement.appendChild(command.element);
           command.previousData = anchorElement;
           pageEditor.showMessage('Link added');
-          break;
- 
-       case 'AUDIO_UPDATE':
-          command.element.setAttribute('src', command.data);
-          pageEditor.showMessage('Audio changed');
-          break;
-
-        case 'AUDIO_CREATE':
-          audioElement = document.createElement('audio');
-	  audioElement.setAttribute('src',command.data);
-	  audioElement.setAttribute('controls','controls');
-          command.element.appendChild(audioElement);
-	  audioElement.play();
-         // command.previousData = audioElement;
-          pageEditor.showMessage('Audio added');
           break;
 
         default:
@@ -3524,16 +3428,6 @@ var AJAX = AJAX || {};
           command.previousData.parentNode.replaceChild(command.element, command.previousData);
           pageEditor.showMessage('Link removed');
           break;
-        
-	case 'AUDIO_UPDATE':
-          command.element.setAttribute('src', command.previousData);
-          pageEditor.showMessage('audio change undone');
-          break;
-
-        case 'AUDIO_CREATE':
-          command.previousData.parentNode.replaceChild(command.element, command.previousData);
-          pageEditor.showMessage('audio removed');
-          break;
 
         default:
           console.error('Unknown command:', command);
@@ -3543,37 +3437,30 @@ var AJAX = AJAX || {};
       }
     };
 
-0// Ajay - publish
-      this.publish = function publish() {
-	  var result;
-	  // var xhr = new XMLHttpRequest();
-	  // xhr.onreadystatechange = function() {
-	  //     if(xhr.readyState == 4 && xhr.status == 200) {
-	  // 	  try
-	  // 	  {
-	  // 	      if (xhr.response != '' || xhr.responseText != '') {
-	  // 		      window.open("http://x.a11y.in/alipi/app/printme?token="+xhr.responseText.split('=')[1]);
-	  // 	      }
-	  // 	  }
-	  // 	  catch(err)
-	  // 	  {
-	  // 	       window.open("http://x.a11y.in/alipi/app/printme?token="+xhr.response.split('=')[1]);
-	  // 	  }
-	  //     }
-	  // }
-	  
-	  // xhr.open('POST', 'http://x.a11y.in/alipi/app/auth', true);
-	  // xhr.setRequestHeader('Content-Type', 'text/plain');
-	  
-	  // str = buildDataString();
-	  // xhr.send(str);
-	  
-	  AJAX.post('http://x.a11y.in/alipi/test',
-		    buildDataString(), function(result) {
-			//   alert(buildDataString());
-			ajaxResultProcessor.processPublishedResponse(result);
-		    });
-      };
+// Ajay - publish
+    this.publish = function publish() {
+	var result;
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+	    if(xhr.readyState == 4 && xhr.status == 200) {
+		if (xhr.response != '') {
+		    window.open("http://x.a11y.in/alipi/app/printme?token="+xhr.response.split('=')[1]);
+		}
+	    }
+	}
+	
+	xhr.open('POST', 'http://x.a11y.in/alipi/app/auth', true);
+	xhr.setRequestHeader('Content-Type', 'text/plain');
+	
+	str = buildDataString();
+	xhr.send(str);
+
+	AJAX.post('http://x.a11y.in/alipi/test',
+        buildDataString(), function(result) {
+		 //   alert(buildDataString());
+          ajaxResultProcessor.processPublishedResponse(result);
+        });
+    };
 
     this.switchMode = function switchMode(saveChanges) {
       var result, requestParameters;
@@ -3615,10 +3502,7 @@ var AJAX = AJAX || {};
 	  buffer.append('&xpath=');//xpath
 	  buffer.append(encodeURIComponent(command.xpath));
 	  buffer.append('&data=');  //data
-	  if(command.elementType == 'image')
-	      buffer.append(encodeURIComponent(command.imgTag));
-	  else
-	      buffer.append(encodeURIComponent(command.data));
+	  buffer.append(encodeURIComponent(command.data));
 	  buffer.append('&author='); //author
 	  buffer.append(encodeURIComponent(authorValue));
 	  });
@@ -4280,8 +4164,8 @@ var AJAX = AJAX || {};
     };
 
   }
-   //splashWindow = new SplashWindow(pageEditor);
-    //splashWindow.show();
+   splashWindow = new SplashWindow(pageEditor);
+    splashWindow.show();
   if (editMode != 'HTML') {
     pageEditor = new VisualPageEditor();
     pageEditor.show();
@@ -4303,7 +4187,7 @@ var AJAX = AJAX || {};
       splashWindow.activate();
     }
   }
-  loadingTimerId = setTimeout(activateEditor, 15000);
+  loadingTimerId = setTimeout(activateEditor, 000);
   UTIL.addEvent(window, 'load', function() {
     clearTimeout(loadingTimerId);
     activateEditor();

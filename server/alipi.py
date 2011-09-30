@@ -4,37 +4,29 @@ import lxml.html
 import cgi
 import pymongo
 from bson import Code
-import urllib2
-import StringIO
 app = Flask(__name__)
 @app.route('/')
 def start_page() :
     d = {}
     d['foruri'] = request.args['foruri']
-    myhandler = urllib2.ProxyHandler({'http':'http://proxy.iiit.ac.in:8080/'})
-    opener = urllib2.build_opener(myhandler)
-    urllib2.install_opener(opener)
-    a = urllib2.urlopen(d['foruri'])
-    page = a.read()
-    a.close()
-    root = lxml.html.parse(StringIO.StringIO(page)).getroot()
+    root = lxml.html.parse(d['foruri']).getroot()
     if request.args.has_key('lang') == False:
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
         script_test = root.makeelement('script')
         root[0].append(script_test)
-        script_test.set("src", "http://x.a11y.in/alipi/ajay/alipi/test.js")
+        script_test.set("src", "http://192.168.100.104/ui.js")
         script_test.set("type", "text/javascript")
         
         script_jq_mini = root.makeelement('script')
         root[0].append(script_jq_mini)
-        script_jq_mini.set("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
+        script_jq_mini.set("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js")
         script_jq_mini.set("type", "text/javascript")
         
         style = root.makeelement('link')
         root[0].append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://x.a11y.in/alipi/ajay/alipi/stylesheet.css")
+        style.set("href", "http://192.168.100.104/stylesheet.css")
 
         connection = pymongo.Connection('localhost',27017)
         db = connection['alipi']
@@ -47,9 +39,9 @@ def start_page() :
 
             close = root.makeelement('input')
             ren_overlay.append(close)
-            close.set("id", "close-button")
+            close.set("id", "close-msg")
             close.set("type", "submit")
-            close.set("onClick", "a11ypi.close();")
+            close.set("onClick", "a11ypi.close_msg();")
             close.set("value", "Close")
 
             overlay1 = root.makeelement('div')
@@ -75,42 +67,38 @@ def start_page() :
         btn.set("type", "submit")
         btn.set("onClick", "a11ypi.testContext();")
         btn.set("value", "EDIT")
+
         return lxml.html.tostring(root)
 
     else:
         d['lang'] = request.args['lang']
-        script_test = root.makeelement('script')
-        root[0].append(script_test)
-        script_test.set("src", "http://x.a11y.in/alipi/ajay/alipi/test.js")
-        script_test.set("type", "text/javascript")
-        root.body.set("onload","a11ypi.ren()");
-        # connection = pymongo.Connection('localhost',27017)
-        # db = connection['alipi']
-        # collection = db['post']
-        # query = collection.group(
-        #     key = Code('function(doc){return {"xpath" : doc.xpath, "url": doc.url}}'),
-        #     condition={"url" : request.args['foruri'], "lang" : request.args['lang']},
-        #     initial={'narration': []},
-        #     reduce=Code('function(doc,out){out.narration.push(doc);}')
-        #     )
-        # if len(query)==0:
-        #     return 'empty'
-        # else:
-        #     for key in query:
-        #         post = key['narration'][len(key['narration'])-1] #for now, we only take the first re-narations, after we'll pick regarding filters.
+        connection = pymongo.Connection('localhost',27017)
+        db = connection['alipi']
+        collection = db['post']
+        query = collection.group(
+            key = Code('function(doc){return {"xpath" : doc.xpath, "url": doc.url}}'),
+            condition={"url" : request.args['foruri'], "lang" : request.args['lang']},
+            initial={'narration': []},
+            reduce=Code('function(doc,out){out.narration.push(doc);}')
+            )
+        if len(query)==0:
+            return 'empty'
+        else:
+            for key in query:
+                post = key['narration'][len(key['narration'])-1] #for now, we only take the first re-narations, after we'll pick regarding filters.
            
-        #         el = root.xpath('.//*[' + post['xpath'].split('/',2)[2].split('[',1)[1].lower())
-        #         el[0].text = post['data']
+                el = root.xpath('//*[' + post['xpath'].split('/',2)[2].split('[',1)[1])
+                el[0].text = post['data']
 
-        root.make_links_absolute(d['foruri'], resolve_base_href = True)
-        return lxml.html.tostring(root)
+            root.make_links_absolute(d['foruri'], resolve_base_href = True)
+            return lxml.html.tostring(root)
 
 import logging
 from logging import FileHandler
 
-fil = FileHandler('/var/www/ajay/alipi/logme',mode='a')
+fil = FileHandler('/var/www/alipi/logme',mode='a')
 fil.setLevel(logging.ERROR)
 app.logger.addHandler(fil)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True)
