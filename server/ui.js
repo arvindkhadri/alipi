@@ -12,33 +12,14 @@ var a11ypi = {
 	{
 	    vimg[i].setAttribute('m4pageedittype','image');
 	}
-<<<<<<< Updated upstream
-	var v = document.getElementsByTagName("body");
-	var a = document.createElement("script");
-	c = v[0].appendChild(a);
-	c.setAttribute("src","http://192.168.100.104/wsgi/page_edit.js");
-	c.setAttribute("type","text/javascript");
-
-	v[0].removeChild(document.getElementById('ren_overlay'));
-	v[0].removeChild(document.getElementById('overlay1'));
-	v[0].removeChild(document.getElementById('overlay2'));
-
-	msg_overlay = document.createElement("div");
-	v[0].appendChild(msg_overlay);
-	msg_overlay.setAttribute("id", "msg-overlay");
-	msg_overlay.textContent = "Now your page is ready to edit... Enjoy editing !!";
-
-	setTimeout("document.getElementById('msg-overlay').style.display='none'", 30000);	
-=======
 	var v = content.document.getElementsByTagName("body");
 	var a = content.document.createElement("script");
 	for (j=0; j<v.length; j++) {  
 	    c = v[0].appendChild(a);
-	    c.setAttribute("src","http://192.168.100.100/server/wsgi/page_edit.js");
+	    c.setAttribute("src","http://x.a11y.in/alipi/ajay/alipi/wsgi/page_edit.js");
 
 	    c.setAttribute("type","text/javascript");
 	}
->>>>>>> Stashed changes
     },
     createMenu: function(menu_list) {
 	var xyz = document.getElementById("menu-button");
@@ -77,20 +58,14 @@ var a11ypi = {
 		    }
 		}
 	    }
-<<<<<<< Updated upstream
-	    xhr.open("POST","http://localhost/alipi/menu",true);
-=======
-	    xhr.open("POST","http://192.168.100.100/wsgi/menu",true);
->>>>>>> Stashed changes
+	    xhr.open("POST","http://x.a11y.in/alipi/menu",true);
 	    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	    xhr.send(String(content.window.location.search.split('=')[1]));
+	    xhr.send(String(window.location.search.split('=')[1]));
 	}
     },
     getURL: function(e) {
-	content.window.location = content.window.location.href + "&lang=" + e.value;
+	window.location = window.location.href + "&lang=" + e.value;
 	window.reload();
-<<<<<<< Updated upstream
-=======
      },
     ren: function()
     {
@@ -129,7 +104,7 @@ var a11ypi = {
 	var lang= window.location.search.split('&')[1].split('=')[1];
 	var data="url="+encodeURIComponent(url)+"&lang="+encodeURIComponent(lang);
 	
-	xhr.open("POST","http://192.168.100.100/wsgi/replace",true);
+	xhr.open("POST","http://x.a11y.in/alipi/replace",true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send(data);//
     },
@@ -174,12 +149,20 @@ var a11ypi = {
 
         }
 
->>>>>>> Stashed changes
     },
-    close_msg: function() {
-	// var v = document.getElementsByTagName("body");
-	// v[0].removeChild(document.getElementById('ren_overlay'));
+    close: function() {
 	document.getElementById('ren_overlay').style.display = 'none';
     },
 
-};
+ };
+
+ $(document).ready(function ($) {
+   $("a").click(function () {
+      var a = $(this),
+          href = a.attr('href'),
+          content  = a.parent().next();
+      // content.load(href + " #content");
+      return false;
+   });
+});
+

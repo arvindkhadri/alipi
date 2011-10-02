@@ -12,7 +12,7 @@ def application(environ, start_response):
     
     try:
         #read the request
-        data = open(os.path.join(os.path.dirname(__file__),"state.json"), "r");
+        data = open(os.path.join(os.path.dirname(__file__),"data.json"), "r");
         rValue = data.read();
         data.close();
     except KeyError:

@@ -1115,7 +1115,7 @@ else
 
 
       DOM.evaluate = function evaluate(path,newcontent){
-	  var nodes = content.document.evaluate(path, content.document, null, XPathResult.ANY_TYPE,null);
+	  var nodes = document.evaluate(path, document, null, XPathResult.ANY_TYPE,null);
 	  try{
 	      var result = nodes.iterateNext();
 	      while (result)
@@ -1147,9 +1147,9 @@ else
       
     DOM.getXPATH = function getXPath(element)
     {
-    	var doc = content.document;
+    	var doc = document;
     	//we get the selections
-    	var selection =  content.window.getSelection();
+    	var selection =  window.getSelection();
     	var str = '';
     	//var currentNode = selection.getRangeAt(i).commonAncestorContainer;
     	var currentNode = element;
@@ -1671,35 +1671,32 @@ var AJAX = AJAX || {};
 
        messageOverlay.appendChild(messageTitle);
 
-    messageDescription = DOM.BUILDER.P(normalFontAttributes.addStyle('color:#FFF; font-weight: normal; font-size: 14px; line-height: 22px; width:450px; margin-left: auto; margin-right: auto; text-align: center;').values(), 'Click on any part of the page, and you will activate buttons that allow you to modify text, replace images and add audio. Just refresh your page to exit from editing without saving your changes. Don\'t forget to hit "Save & Publish" when you\'re finished editing so we can save your newly-crafted page.');
+    messageDescription = DOM.BUILDER.P(normalFontAttributes.addStyle('color:#FFF; font-weight: normal; font-size: 14px; line-height: 22px; width:450px; margin-left: auto; margin-right: auto; text-align: center;').values(), 'Click on any part of the page, and you will activate buttons that allow you to delete or modify text, images, links and other areas of the page. Just click Undo or "u" if you make a mistake. Don\'t forget to hit "Done" when you\'re finished editing so we can save your newly-crafted page.');
    messageOverlay.appendChild(messageDescription);
 
    var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'https://bo.lt/app/asset/page-edit/pencil_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'}).addStyle('position: relative; margin-right: 10px; vertical-align: middle;').values());
-   var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'OK');
+   var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'Edit');
 
 // Ajay - Changed lot of colors - Not using, not sure
     editButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('color:#FFF; margin-left: auto; margin-right: auto; width: 100px; height: 36px; display: block; float: none; margin-top: 30px; margin-bottom: 30px; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
     editButton.onclick = function loadingEditButtonOnClick() {
-	messageOverlay.style.display = 'none';
-	backgroundDiv.style.display = 'none';
-      // self.hide();
-      // return false;
+      self.hide();
+      return false;
     };
 
-//    editButton.appendChild(image);
+    editButton.appendChild(image);
     editButton.appendChild(text);
     messageOverlay.appendChild(editButton);
 
 
-    hideOverlayCheckbox = DOM.BUILDER.INPUT(editAttributes.put({ name : 'Loading Checkbox', type : 'checkbox'}).addStyle('position:relative; margin-left: 34px; background: transparent; float:left; margin-top: 0px; padding-top: 0px; display: inline-block;').values());
+    hideOverlayCheckbox = DOM.BUILDER.INPUT(editAttributes.put({ name : 'Loading Checkbox', type : 'checkbox', checked : 'yes' }).addStyle('position:relative; margin-left: 34px; background: transparent; float:left; margin-top: 0px; padding-top: 0px; display: inline-block;').values());
 
     var checkboxLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:relative; font-size: 10px; font-weight: bold; float:left;  margin-left: 5px; margin-right: 5px; background: transparent; color: #FFF;display: inline-block;').values());
     checkboxLabel.innerHTML = 'Don\'t show this again.';
 
-//    var redHelpLink = DOM.BUILDER.A(normalFontAttributes.put({ href : 'http://bo.lt/editor'}).addStyle('z-index: 2147483647; float: right;  margin-right: 34px; display: inline-block;text-decoration: none; color: #FFF; font-size: 10px; font-weight: bold; ').values(), 'Need Help?')
+    var redHelpLink = DOM.BUILDER.A(normalFontAttributes.put({ href : 'http://bo.lt/editor'}).addStyle('z-index: 2147483647; float: right;  margin-right: 34px; display: inline-block;text-decoration: none; color: #FFF; font-size: 10px; font-weight: bold; ').values(), 'Need Help?')
 
-    messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(),hideOverlayCheckbox, checkboxLabel// , redHelpLink
-					      ));
+    messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(),hideOverlayCheckbox, checkboxLabel, redHelpLink));
 
     document.body.appendChild(backgroundDiv);
     document.body.appendChild(messageOverlay);
@@ -1736,8 +1733,8 @@ var AJAX = AJAX || {};
         document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
       }
 
-      messageOverlay.style.display = 'block';
-      backgroundDiv.style.display = 'block';
+      messageOverlay.style.display = 'none';
+      backgroundDiv.style.display = 'none';
     };
 
     this.activate = function activate() {
@@ -1892,13 +1889,13 @@ var AJAX = AJAX || {};
 	  
 
 	  var xmlhttp = new XMLHttpRequest();
-	  var url = content.window.location;
-	  var data="url="+encodeURIComponent(url)+"&xpath="+encodeURIComponent(xpath);
+	  var url = window.location;
+	  var data="url="+encodeURIComponent(window.location.search.split('=')[1])+"&xpath="+encodeURIComponent(xpath);
 	  xmlhttp.onreadystatechange = function()
 	  {
 	      if(xmlhttp.readyState == 4 && xmlhttp.status== 200)
 		  {
-		      if(xmlhttp.responseText=='empty')
+		      if(xmlhttp.responseText=='')
 			  {
 			      renDiv.style.display = 'none';
 			      alert("Renarrations not available");
@@ -1938,9 +1935,6 @@ var AJAX = AJAX || {};
 			      lang_ = varray[i]['lang'];
 			      location_ = varray[i]['location']; 
 			      style_ = varray[i]['style'];  //toto
-			     
-			      
-			     
 			      x=DOM.BUILDER.OPTION(lang_+', '+location_+', '+style_);
 			      renInput.add(x,null);
 			  }
@@ -1963,7 +1957,7 @@ var AJAX = AJAX || {};
 		      }
 		  }
 	  }
-	  xmlhttp.open("POST","http://192.168.100.100/wsgi/narration",true);
+	  xmlhttp.open("POST","http://x.a11y.in/alipi/narration",true);
 	  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	  xmlhttp.send(data);
 	  
@@ -2079,6 +2073,81 @@ var AJAX = AJAX || {};
 
 /////
 //******************************** Ajay - Changed AudioupdatePopupAction from ImageUpdatePopupAction *****************
+    function AudioUpdateByUrl(pageEditor, actionControl) {
+      var self = this, popupDiv, audioUrlInput, randomInput, audioUrlForm, selectedElement, targetName,audioElement;
+
+      var addUrlLabel = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('width: 100%; display: block; float: left; font-size: 10px;position:relative; margin-top: 5px;margin-left: 0px; margin-right: 5px; margin-bottom: 5px; background: transparent; color: #747474; text-shadow: 0 1px 0 #FFFFFF; text-align: left;').values());
+      addUrlLabel.innerHTML = 'Add URL';
+/*	audioUrlInput = document.createElement('audio');
+	audioUrlInput.setAttribute('src','http://01audiovideo.free.fr/ogg/half_asleep_sea_shells.ogg');
+	audioUrlInput.play();*///testing the audio tag creation
+
+      audioUrlInput = DOM.BUILDER.INPUT(editTextInputAttributes.addStyle('display:block; background: #FFFFFF;').values());
+      randomInput = DOM.BUILDER.INPUT(editAttributes.put({ name : 'random', type : 'hidden', value : '1' }).values());
+    	audioUrlForm = DOM.BUILDER.FORM(elementAttributes.values(),
+        audioUrlInput,
+        DOM.BUILDER.INPUT(editSubmitAttributes.values()));
+
+     /* audioUrlForm = DOM.BUILDER.FORM(elementAttributes.put({ target : targetName, enctype : 'multipart/form-data', method : 'post', action : '/app/page-edit/upload' }).values(),
+        audioUrlInput,
+     //   DOM.BUILDER.INPUT(editAttributes.put({ name : 'pageSlug', type : 'hidden', value : pageSlug }).values()),
+       // randomInput,
+        DOM.BUILDER.INPUT(editSubmitAttributes.values()));*/
+
+      audioUrlForm.onsubmit = function updateFormOnSubmit() {
+        var url = audioUrlInput.value;
+		updateAudio(url);
+        return false;
+      };
+
+      audioDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('width: 100%; float:left; position: relative; margin: 0px auto auto 10px; display: block;').values(), addUrlLabel, audioUrlForm);
+
+      audioActionControl = new PopupActionControl(actionControl);
+
+      this.getActionDiv = function getActionDiv() {
+        return audioDiv;
+      };
+
+      this.open = function open(element) {
+	audioActionControl.open(audioDiv);
+        audioUrlInput.value = '';
+        selectedElement = element;
+        audioDiv.style.display = 'block';
+      };
+
+      this.close = function close() {
+        selectedElement = null;
+        audioDiv.style.display = 'none';
+      };
+
+    updateAudio = function updateAudio(src) {
+      var command;
+      if (audioElement) {
+        command = {
+          command : 'AUDIO_UPDATE',
+          element : audioElement,
+          elementId : audioElement.getAttribute('m4pageeditid'),
+          data : src,
+          previousData : originalHref
+        };
+      } else {
+        command = {
+          command : 'AUDIO_CREATE',
+          element : selectedElement,
+	  elementType : 'audio/ogg',
+	  xpath : DOM.getXPATH(selectedElement), //Yassine
+	  url : window.location.href,
+          elementId : selectedElement.getAttribute('m4pageeditid'),
+          data : src,
+          previousData : ''
+        };
+      }
+      pageEditor.commandApply(command);
+     // self.actionComplete();
+    };
+
+    }
+
 
 //*******************************************************************
 
@@ -2124,12 +2193,13 @@ var AJAX = AJAX || {};
         fittedSize = image.getFittedSize();
       }
       command = {
-        command : 'IMAGE_SRC_UPDATE',
-        element : selectedElement,
+          command : 'IMAGE_SRC_UPDATE',
+          element : selectedElement,
 	  elementType : 'image',
-	xpath : DOM.getXPATH(selectedElement), //Yassine
-	url : window.location.href,
-        data : new UTIL.StringBuffer().append(fittedSize.width).append('x').append(fittedSize.height).append(',').append(url).toString(),
+	  xpath : DOM.getXPATH(selectedElement), //Yassine
+	  url : window.location.href,
+	  data : new UTIL.StringBuffer().append(fittedSize.width).append('x').append(fittedSize.height).append(',').append(url).toString(),
+	  imgTag : "<img src='"+url+"' width="+fittedSize.width +" height="+ fittedSize.height+"></img>",
         previousData : {
           'src' : selectedElement.src,
           'size' : { width: selectedElement.width, height: selectedElement.height },
@@ -2436,7 +2506,7 @@ var AJAX = AJAX || {};
       self.popdown();
     };
 
-    var backgroundImage = 'http://192.168.100.100/server/images/replace_image.png';
+    var backgroundImage = 'http://x.a11y.in/alipi/wsgi/images/replace_image.png';
     backgroundButton = createActionButton(backgroundImage, backgroundButtonText, 'border-right: none;' + leftBorderStyle);
     backgroundButton.onclick = function backgroundButtonOnClick() {
       popupControl.showAction(imageUpdateAction);
@@ -2462,7 +2532,7 @@ var AJAX = AJAX || {};
       self.popdown(true);
     };
 
-    var renImage = 'http://192.168.100.100/server/images/renarration.png';
+    var renImage = 'http://x.a11y.in/alipi/wsgi/images/renarration.png';
     renButton = createActionButton(renImage, 'Renarration', 'border-right: none;');
     renButton.onclick = function renButtonOnClick() {
       popupControl.showAction(renUpdateAction);
@@ -2596,7 +2666,7 @@ var AJAX = AJAX || {};
       return false;
     };
 
-    var doneImage = 'http://192.168.100.100/server/images/done.png';
+    var doneImage = 'http://x.a11y.in/alipi/wsgi/images/done.png';
     doneButton = createActionButton(doneImage, 'Done', 'border-right: none;' + leftBorderStyle);
     doneButton.onclick = function doneButtonOnClick() {
       self.popdown(true);
@@ -2604,7 +2674,7 @@ var AJAX = AJAX || {};
     };
     
 
-    var renImage = 'http://192.168.100.100/server/images/renarration.png';
+    var renImage = 'http://x.a11y.in/alipi/wsgi/images/renarration.png';
     renButton = createActionButton(renImage, 'Renarration', 'border-right: none;');
     renButton.onclick = function renButtonOnClick() {
       popupControl.showAction(renUpdateAction);
@@ -2615,6 +2685,18 @@ var AJAX = AJAX || {};
     renUpdateAction = new renAction(pageEditor, actionSlot);
     renUpdateAction.onComplete = function renUpdateActionOnComplete() {
       self.popdown(true);
+    };
+
+    audioUpdateAction = new AudioUpdateByUrl(pageEditor, actionSlot);
+    audioUpdateAction.onComplete = function audioUpdateActionOnComplete() {
+      self.popdown();
+    };
+
+    var audioImage = './images/replace_image.png';
+    audioButton = createActionButton(audioImage,'Audio','border-right:none;');
+    audioButton.onclick = function audioButtonOnClick() {
+      popupControl.showAction(audioUpdateAction);
+      return false;
     };
 
 //shalini
@@ -2631,7 +2713,7 @@ var AJAX = AJAX || {};
       self.popdown(true);
     };
 
-    var backgroundImage = 'http://192.168.100.100/server/images/replace_images.png';
+    var backgroundImage = 'http://x.a11y.in/alipi/wsgi/images/replace_images.png';
     backgroundButton = createActionButton(backgroundImage, 'BG&nbsp;Image', 'border-right: none;');
     backgroundButton.onclick = function backgroundButtonOnClick() {
       popupControl.showAction(imageUpdateAction);
@@ -2663,6 +2745,7 @@ var AJAX = AJAX || {};
 //    buttonPanel.appendChild(deleteButton);
 //shalini
     buttonPanel.appendChild(renButton);
+    buttonPanel.appendChild(audioButton);
     
 //    buttonPanel.appendChild(backgroundButton);
 //shalini
@@ -2787,7 +2870,6 @@ var AJAX = AJAX || {};
 
     //shalini-Yass
     locSelect = DOM.BUILDER.SELECT(locSelectAttributes);
-    langSelect = DOM.BUILDER.SELECT(langSelectAttributes);
     ////////////////////////////////////////////////////////////////////////////attributes
     var xhrloc = new XMLHttpRequest();
     xhrloc.onreadystatechange = function()
@@ -2800,12 +2882,32 @@ var AJAX = AJAX || {};
 			    /* parsing json response*/ 
 		           var loc=[];
 			    loc.push('--Locations--');
-			    //loc.push('*');
-    			    locations = json["state"];
-			    for(var i=0;i<locations.length;i++)
-			    {
-				loc.push(locations[i]["name"]);
-			    }
+			    loc.push('*');
+    			    locations = json["Locations"];
+    			    for(var i=0;i<locations.length;i++)
+    				{
+				    loc.push('*'+locations[i]["name"]);
+				    //locSelect.appendChild(c);
+				    states = locations[i]["states"];
+    				    for(var j=0;j<states.length;j++)
+    					{
+					    
+					    //var c=DOM.BUILDER.OPTION('-'+states[j]["name"]);
+					    loc.push('-'+states[j]["name"]);
+					   // locSelect.appendChild(c);
+					    towns = states[j]["towns"];
+    					    for(var k=0;k<towns.length;k++)
+    						{
+    						    //var c=DOM.BUILDER.OPTION(towns[k]["name"]);
+    						    //locSelect.appendChild(c);
+    						    loc.push(towns[k]["name"]);
+    						}
+    					}
+					
+					locSelect.onchange=function(){
+					
+						}
+    				}
       				for(i=0;i<loc.length;i++)	{
 	      				x=DOM.BUILDER.OPTION(loc[i]);
 	      				locSelect.add(x,null);
@@ -2814,21 +2916,6 @@ var AJAX = AJAX || {};
 				locSelect.onchange=function(){
                                 var locindex=locSelect.selectedIndex;
 			 	locName=loc[locindex];
-            			if(locations[locindex]){
-                			var op = document.createElement('option');
-					//opt=op.cloneNode(false);
-					if(langSelect.firstChild == null){
-                			op.value = locations[locindex-1]["lang"];
-                			op.text = locations[locindex-1]["lang"];
-					}
-					else{
-					langSelect.removeChild(langSelect.firstChild);
-                			op.value = locations[locindex-1]["lang"];
-                			op.text = locations[locindex-1]["lang"];
-					}
-                			langSelect.add(op,null);
-					
-				}
 				
 				}
     			}
@@ -2841,111 +2928,112 @@ var AJAX = AJAX || {};
     		}
     	}
     
-    xhrloc.open("GET","http://192.168.100.100/getData",true);
+    xhrloc.open("GET","http://x.a11y.in/alipi/getData",true);
     xhrloc.send();//
     //////////////////////////////////////////////////////////////////////////////langs
-//    var xhrlang = new XMLHttpRequest();
-//    xhrlang.onreadystatechange = function()
-//    	{
-//    	    if(xhrlang.readyState == 4)
-//    		{
-//		    
-//    		    if (xhrlang.status == 200)
-//    			{
-//    			    json= JSON.parse(xhrlang.responseText);
-//			    
-//    			    /* parsing json response*/ 
-//    			    var lang=[];
-//			    lang.push('--Languages--');
-//			    lang.push('*');
-//    			    languages = json["Languages"];
-//    			    for(var i=0;i<languages.length;i++)
-//    				{
-//    				   lang.push(languages[i]["name"]);
-//    				   // var c=DOM.BUILDER.OPTION(languages[i]["name"]);
-//    				   // langSelect.appendChild(c);
-//				    
-//    				    dialects = languages[i]["dialects"];
-//    				    for(var j=0;j<dialects.length;j++)
-//    					{
-//    					    lang.push(dialects[j]["name"]);
-//				    
-// 					}
-// 				}
-//      				for(i=0;i<lang.length;i++)	{
-//	      				x=DOM.BUILDER.OPTION(lang[i]);
-//	      				langSelect.add(x,null);
-//	  			}
-//				langSelect.onchange=function(){
-//                                var langindex=langSelect.selectedIndex;
-//			 	langName=lang[langindex];
-//				
-//				}
-// 			}
-//		    
-// 		    /* end parsing json response*/ 
-//		    
-// 		    else {
-//     			alert("couldn't get data file: error number "+xhrlang.status);
-//     		    }
-//     		}
-//     	}
-//    
-//     xhrlang.open("GET","http://192.168.100.100/getData",true);
-//     xhrlang.send();//// this is ignored on the server side; for now it just dumps data.json
+    langSelect = DOM.BUILDER.SELECT(langSelectAttributes);
+    var xhrlang = new XMLHttpRequest();
+    xhrlang.onreadystatechange = function()
+    	{
+    	    if(xhrlang.readyState == 4)
+    		{
+		    
+    		    if (xhrlang.status == 200)
+    			{
+    			    json= JSON.parse(xhrlang.responseText);
+			    
+    			    /* parsing json response*/ 
+    			    var lang=[];
+			    lang.push('--Languages--');
+			    lang.push('*');
+    			    languages = json["Languages"];
+    			    for(var i=0;i<languages.length;i++)
+    				{
+    				   lang.push(languages[i]["name"]);
+    				   // var c=DOM.BUILDER.OPTION(languages[i]["name"]);
+    				   // langSelect.appendChild(c);
+				    
+    				    dialects = languages[i]["dialects"];
+    				    for(var j=0;j<dialects.length;j++)
+    					{
+    					    lang.push(dialects[j]["name"]);
+				    
+ 					}
+ 				}
+      				for(i=0;i<lang.length;i++)	{
+	      				x=DOM.BUILDER.OPTION(lang[i]);
+	      				langSelect.add(x,null);
+	  			}
+				langSelect.onchange=function(){
+                                var langindex=langSelect.selectedIndex;
+			 	langName=lang[langindex];
+				
+				}
+ 			}
+		    
+ 		    /* end parsing json response*/ 
+		    
+ 		    else {
+     			alert("couldn't get data file: error number "+xhrlang.status);
+     		    }
+     		}
+     	}
+    
+     xhrlang.open("GET","http://x.a11y.in/alipi/getData",true);
+     xhrlang.send();//// this is ignored on the server side; for now it just dumps data.json
     
     ///////////////////////////////////////////////////////////////////////////////////////// Style //////////////////////////////////
-//    styleSelect = DOM.BUILDER.SELECT(styleSelectAttributes);
-//  var xhr = new XMLHttpRequest();
-//     xhr.onreadystatechange = function()
-//     	{
-//     	    if(xhr.readyState == 4)
-//     		{
-//	    
-//    		    if (xhr.status == 200)
-//    			{
-//    			    json= JSON.parse(xhr.responseText);
-//			    
-//    			    /* parsing json response*/ 
-//    			   
-//    			    var styles = []; 
-//			    styles.push('--Style--');//toto
-//			    styles.push('*');//toto
-//    			    style= json["Style"];
-//    			    for(var i=0;i<style.length;i++)
-//    				{
-// 				    styles.push(style[i]["name"]);
-// 				}
-//      			    for(i=0;i<styles.length;i++)	{
-//	      				x=DOM.BUILDER.OPTION(styles[i]);
-//	      				styleSelect.add(x,null);
-//	  			}
-//				
-//			    styleSelect.onchange=function(){
-//                                var styleindex=styleSelect.selectedIndex;
-//			 	styleName=styles[styleindex];
-//			    }	
-//
-//    			}
-//		    
-//    		    /* end parsing json response*/ 
-//		    
-//    		    else {
-//    			alert("couldn't get data file: error number "+xhr.status);
-//    		    }
-//    		}
-//    	}
-//   
-//    xhr.open("GET","http://192.168.100.100/getData",true);
-//    xhr.send();
+    styleSelect = DOM.BUILDER.SELECT(styleSelectAttributes);
+  var xhr = new XMLHttpRequest();
+     xhr.onreadystatechange = function()
+     	{
+     	    if(xhr.readyState == 4)
+     		{
+	    
+    		    if (xhr.status == 200)
+    			{
+    			    json= JSON.parse(xhr.responseText);
+			    
+    			    /* parsing json response*/ 
+    			   
+    			    var styles = []; 
+			    styles.push('--Style--');//toto
+			    styles.push('*');//toto
+    			    style= json["Style"];
+    			    for(var i=0;i<style.length;i++)
+    				{
+ 				    styles.push(style[i]["name"]);
+ 				}
+      			    for(i=0;i<styles.length;i++)	{
+	      				x=DOM.BUILDER.OPTION(styles[i]);
+	      				styleSelect.add(x,null);
+	  			}
+				
+			    styleSelect.onchange=function(){
+                                var styleindex=styleSelect.selectedIndex;
+			 	styleName=styles[styleindex];
+			    }	
+
+    			}
+		    
+    		    /* end parsing json response*/ 
+		    
+    		    else {
+    			alert("couldn't get data file: error number "+xhr.status);
+    		    }
+    		}
+    	}
+   
+    xhr.open("GET","http://x.a11y.in/alipi/getData",true);
+    xhr.send();
 /////////author//////////////////////////////// 
-/*    authorInput = DOM.BUILDER.INPUT(authorInputAttributes);
+    authorInput = DOM.BUILDER.INPUT(authorInputAttributes);
       authorInput.placeholder = "Author / Tag";
    // alert(authorForm.elements[index]);
    authorInput.onchange = function(){
     authorValue=authorInput.value;
     //alert(authorValue);
-};*/
+};
    // authorInput.setAttribute('value', authorValue); 
     //authorValue=authorInput.value;
     
@@ -3024,8 +3112,7 @@ var AJAX = AJAX || {};
 
     editModeChangeButtonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), editModeChangeSaveButton, editModeChangeDiscardButton);
 //shalini- added cancelButton
-//    buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), publishButton, undoButton,locSelect,langSelect,styleSelect,authorInput);
-    buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), publishButton, undoButton,locSelect,langSelect);
+    buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), publishButton, undoButton,locSelect,langSelect,styleSelect,authorInput);
 
     firstRowDiv = DOM.BUILDER.DIV(firstRowStyleAttributes,
       DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; top: 0; left: 110px; float: left;').values(), messageDiv), buttonDiv);
@@ -3139,7 +3226,7 @@ var AJAX = AJAX || {};
       keepOriginalCheckbox.onclick = function() {
         keepOriginal = keepOriginalCheckbox.checked;
       };
-	var backgroundImage = 'url(http://192.168.100.100/server/images/container_save_new_page.png) no-repeat scroll 0 0 transparent';
+	var backgroundImage = 'url(http://x.a11y.in/alipi/wsgi/images/container_save_new_page.png) no-repeat scroll 0 0 transparent';
       var position = 'fixed';
       // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
       //   position = 'absolute';
@@ -3256,13 +3343,13 @@ var AJAX = AJAX || {};
           //   return false;
 
           // case 85:
-          //   // "u"
-          //   if (pageEditor.hasFocus()) {
-          //     event.preventDefault();
-          //     event.stopPropagation();
-          //     pageEditor.commandUndo();
-          //   }
-            return false;
+            // "u"
+            // if (pageEditor.hasFocus()) {
+            //   event.preventDefault();
+            //   event.stopPropagation();
+            //   pageEditor.commandUndo();
+            // }
+            // return false;
         }
       }, true);
     }
@@ -3289,17 +3376,17 @@ var AJAX = AJAX || {};
             DOM.textContent(command.element, command.data);
             pageEditor.showMessage('Text changed');
           break;
-        case 'AUDIO_SRC_UPDATE':
+       /* case 'AUDIO_SRC_UPDATE':
            // DOM.textContent(command.element, command.data);
 		textElementPopup.hasAudio = true;	
             pageEditor.showMessage('Audio updated');
-          break;
+          break;*/
 
         case 'DELETE':
           // show "poof" animation to indicate deletion
           poofPosition = DOM.findPosition(command.element);
 
-          poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://192.168.100.100/server/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
+          poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://x.a11y.in/alipi/wsgi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
           document.body.appendChild(poofDiv);
 
           UTIL.animate(function(index, last) {
@@ -3354,6 +3441,21 @@ var AJAX = AJAX || {};
           anchorElement.appendChild(command.element);
           command.previousData = anchorElement;
           pageEditor.showMessage('Link added');
+          break;
+ 
+       case 'AUDIO_UPDATE':
+          command.element.setAttribute('src', command.data);
+          pageEditor.showMessage('Audio changed');
+          break;
+
+        case 'AUDIO_CREATE':
+          audioElement = document.createElement('audio');
+	  audioElement.setAttribute('src',command.data);
+	  audioElement.setAttribute('controls','controls');
+          command.element.appendChild(audioElement);
+	  audioElement.play();
+         // command.previousData = audioElement;
+          pageEditor.showMessage('Audio added');
           break;
 
         default:
@@ -3422,6 +3524,16 @@ var AJAX = AJAX || {};
           command.previousData.parentNode.replaceChild(command.element, command.previousData);
           pageEditor.showMessage('Link removed');
           break;
+        
+	case 'AUDIO_UPDATE':
+          command.element.setAttribute('src', command.previousData);
+          pageEditor.showMessage('audio change undone');
+          break;
+
+        case 'AUDIO_CREATE':
+          command.previousData.parentNode.replaceChild(command.element, command.previousData);
+          pageEditor.showMessage('audio removed');
+          break;
 
         default:
           console.error('Unknown command:', command);
@@ -3431,32 +3543,6 @@ var AJAX = AJAX || {};
       }
     };
 
-<<<<<<< Updated upstream
-// Ajay - publish
-    this.publish = function publish() {
-	var result;
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function() {
-	    if(xhr.readyState == 4 && xhr.status == 200) {
-		if (xhr.response != '') {
-		    window.open("http://x.a11y.in/alipi/app/printme?token="+xhr.response.split('=')[1]);
-		}
-	    }
-	}
-	
-	xhr.open('POST', 'http://x.a11y.in/alipi/app/auth', true);
-	xhr.setRequestHeader('Content-Type', 'text/plain');
-	
-	str = buildDataString();
-	xhr.send(str);
-
-	AJAX.post('http://x.a11y.in/alipi/test',
-        buildDataString(), function(result) {
-		 //   alert(buildDataString());
-          ajaxResultProcessor.processPublishedResponse(result);
-        });
-    };
-=======
 0// Ajay - publish
       this.publish = function publish() {
 	  var result;
@@ -3482,13 +3568,12 @@ var AJAX = AJAX || {};
 	  // str = buildDataString();
 	  // xhr.send(str);
 	  
-	  AJAX.post('http://192.168.100.100/wsgi/test',
+	  AJAX.post('http://x.a11y.in/alipi/test',
 		    buildDataString(), function(result) {
 			//   alert(buildDataString());
 			ajaxResultProcessor.processPublishedResponse(result);
 		    });
       };
->>>>>>> Stashed changes
 
     this.switchMode = function switchMode(saveChanges) {
       var result, requestParameters;
@@ -3530,7 +3615,10 @@ var AJAX = AJAX || {};
 	  buffer.append('&xpath=');//xpath
 	  buffer.append(encodeURIComponent(command.xpath));
 	  buffer.append('&data=');  //data
-	  buffer.append(encodeURIComponent(command.data));
+	  if(command.elementType == 'image')
+	      buffer.append(encodeURIComponent(command.imgTag));
+	  else
+	      buffer.append(encodeURIComponent(command.data));
 	  buffer.append('&author='); //author
 	  buffer.append(encodeURIComponent(authorValue));
 	  });
@@ -4192,8 +4280,8 @@ var AJAX = AJAX || {};
     };
 
   }
-   splashWindow = new SplashWindow(pageEditor);
-    splashWindow.show();
+   //splashWindow = new SplashWindow(pageEditor);
+    //splashWindow.show();
   if (editMode != 'HTML') {
     pageEditor = new VisualPageEditor();
     pageEditor.show();
@@ -4215,7 +4303,7 @@ var AJAX = AJAX || {};
       splashWindow.activate();
     }
   }
-  loadingTimerId = setTimeout(activateEditor, 000);
+  loadingTimerId = setTimeout(activateEditor, 15000);
   UTIL.addEvent(window, 'load', function() {
     clearTimeout(loadingTimerId);
     activateEditor();
