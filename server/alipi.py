@@ -11,9 +11,9 @@ app = Flask(__name__)
 def start_page() :
     d = {}
     d['foruri'] = request.args['foruri']
-    myhandler = urllib2.ProxyHandler({'http':'http://proxy.iiit.ac.in:8080/'})
-    opener = urllib2.build_opener(myhandler)
-    urllib2.install_opener(opener)
+    # myhandler = urllib2.ProxyHandler({'http':'http://proxy.iiit.ac.in:8080/'})
+    # opener = urllib2.build_opener(myhandler)
+    # urllib2.install_opener(opener)
     a = urllib2.urlopen(d['foruri'])
     page = a.read()
     a.close()
@@ -22,7 +22,7 @@ def start_page() :
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
         script_test = root.makeelement('script')
         root[0].append(script_test)
-        script_test.set("src", "http://x.a11y.in/alipi/ajay/alipi/test.js")
+        script_test.set("src", "http://localhost/alipi-1/server/ui.js")
         script_test.set("type", "text/javascript")
         
         script_jq_mini = root.makeelement('script')
@@ -34,7 +34,7 @@ def start_page() :
         root[0].append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://x.a11y.in/alipi/ajay/alipi/stylesheet.css")
+        style.set("href", "http://localhost/alipi-1/server/stylesheet.css")
 
         connection = pymongo.Connection('localhost',27017)
         db = connection['alipi']
@@ -47,9 +47,9 @@ def start_page() :
 
             close = root.makeelement('input')
             ren_overlay.append(close)
-            close.set("id", "close-button")
+            close.set("id", "close-msg")
             close.set("type", "submit")
-            close.set("onClick", "a11ypi.close();")
+            close.set("onClick", "a11ypi.close_msg();")
             close.set("value", "Close")
 
             overlay1 = root.makeelement('div')
@@ -75,13 +75,14 @@ def start_page() :
         btn.set("type", "submit")
         btn.set("onClick", "a11ypi.testContext();")
         btn.set("value", "EDIT")
+
         return lxml.html.tostring(root)
 
     else:
         d['lang'] = request.args['lang']
         script_test = root.makeelement('script')
         root[0].append(script_test)
-        script_test.set("src", "http://x.a11y.in/alipi/ajay/alipi/test.js")
+        script_test.set("src", "http://localhost/alipi-1/server/ui.js")
         script_test.set("type", "text/javascript")
         root.body.set("onload","a11ypi.ren()");
         # connection = pymongo.Connection('localhost',27017)
@@ -108,7 +109,7 @@ def start_page() :
 import logging
 from logging import FileHandler
 
-fil = FileHandler('/var/www/ajay/alipi/logme',mode='a')
+fil = FileHandler('/var/www/alipi-1/server/logme',mode='a')
 fil.setLevel(logging.ERROR)
 app.logger.addHandler(fil)
 

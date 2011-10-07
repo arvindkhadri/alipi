@@ -12,15 +12,25 @@ var a11ypi = {
 	{
 	    vimg[i].setAttribute('m4pageedittype','image');
 	}
-	var v = content.document.getElementsByTagName("body");
-	var a = content.document.createElement("script");
-	for (j=0; j<v.length; j++) {  
-	    c = v[0].appendChild(a);
-	    c.setAttribute("src","http://x.a11y.in/alipi/ajay/alipi/wsgi/page_edit.js");
+	var v = document.getElementsByTagName("body");
+	var a = document.createElement("script");
+	c = v[0].appendChild(a);
+	c.setAttribute("src","http://localhost/alipi-1/server/wsgi/page_edit.js");
+	c.setAttribute("type","text/javascript");
 
-	    c.setAttribute("type","text/javascript");
-	}
+	v[0].removeChild(document.getElementById('ren_overlay'));
+	v[0].removeChild(document.getElementById('overlay1'));
+	v[0].removeChild(document.getElementById('overlay2'));
+
+	msg_overlay = document.createElement("div");
+	v[0].appendChild(msg_overlay);
+	msg_overlay.setAttribute("id", "msg-overlay");
+	msg_overlay.textContent = "Now your page is ready to edit... Enjoy editing !!";
+
+	setTimeout("document.getElementById('msg-overlay').style.display='none'", 3000);	
     },
+
+
     createMenu: function(menu_list) {
 	var xyz = document.getElementById("menu-button");
 	for(var i in menu_list)
@@ -66,7 +76,7 @@ var a11ypi = {
     getURL: function(e) {
 	window.location = window.location.href + "&lang=" + e.value;
 	window.reload();
-     },
+    },
     ren: function()
     {
 	var xhr = new XMLHttpRequest();
@@ -79,9 +89,9 @@ var a11ypi = {
 		    a11ypi.clearMenu();
 		    alert("An internal server error occured, please try later.");
 		}
-		    else
+		else
 		{
-		        
+		    
 		    d ={};
 		    var response=xhr.responseText.substring(3).split('###');
 		    for (var j= 0; j< response.length ; j++){
@@ -111,58 +121,43 @@ var a11ypi = {
     evaluate: function()
     {
 	var nodes = content.document.evaluate(path, content.document, null, XPathResult.ANY_TYPE,null);
-
         try{
-
             var result = nodes.iterateNext();
-
             while (result)
-
             {
-
                 if (result.tagName == "img" || result.tagName =='IMG'){
                     result.setAttribute('src',newContent.split(',')[1]);  //A hack to display images properly, the size has been saved in the database.
 		    width = newContent.split(',')[0].split('x')[0];
 		    height = newContent.split(',')[0].split('x')[1];
 		    result.setAttribute('width',width);
 		    result.setAttribute('height', height);
-
                 }
-
                 else{
-
                     result.textContent = newContent;
-
                 }
-
                 result=nodes.iterateNext();
-
             }
-
         }
-
         catch (e)
-
         {
-
             dump( 'error: Document tree modified during iteration ' + e );
-
         }
-
     },
-    close: function() {
+    close_msg: function() {
+	// var v = content.document.getElementsByTagName("body");
+	// v[0].removeChild(document.getElementById('ren_overlay'));
 	document.getElementById('ren_overlay').style.display = 'none';
     },
 
- };
+};
 
- $(document).ready(function ($) {
-   $("a").click(function () {
-      var a = $(this),
-          href = a.attr('href'),
-          content  = a.parent().next();
-      // content.load(href + " #content");
-      return false;
-   });
+$(document).ready(function ($) {
+    $("a").click(function () {
+	var a = $(this),
+        href = a.attr('href'),
+        content  = a.parent().next();
+	// content.load(href + " #content");
+	return false;
+    });
 });
 
