@@ -1665,7 +1665,7 @@
 	loadingDiv = DOM.BUILDER.DIV(normalFontAttributes.addStyle('position: relative; width: auto; height: auto; display: block; text-align: left;').values(), loadingImage, loadingText);
 	backgroundDiv.appendChild(loadingDiv);
 
-	messageOverlay = DOM.BUILDER.DIV(elementAttributes.addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow:  0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius-topright:10px;-moz-border-radius-bottomright:10px;-moz-border-radius-topleft:10px; -moz-border-radius-bottomleft:10px;-webkit-border-top-right-radius:10px; -webkit-border-bottom-right-radius:10px;-webkit-border-top-left-radius:10px; -webkit-border-bottom-left-radius:10px; position:fixed; left:0px; top:0px; width:640px; height:325px; background:#000xs; display: none;background: -webkit-gradient(linear, 0% 100%, 0% 0%, from(#000), to(#202020)); background: -moz-linear-gradient(bottom, #000, #202020);').values());
+	messageOverlay = DOM.BUILDER.DIV(elementAttributes.addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow:  0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius-topright:10px;-moz-border-radius-bottomright:10px;-moz-border-radius-topleft:10px; -moz-border-radius-bottomleft:10px;-webkit-border-top-right-radius:10px; -webkit-border-bottom-right-radius:10px;-webkit-border-top-left-radius:10px; -webkit-border-bottom-left-radius:10px; text-align:center; position:fixed; left:0px; top:0px; width:700px; height:375px; background:#000xs; display: none;background: -webkit-gradient(linear, 0% 100%, 0% 0%, from(#000), to(#202020)); background: -moz-linear-gradient(bottom, #000, #202020);').values());
 
 	messageTitle = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; margin-top:50px; margin-bottom: 20px; font-size: 30px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), 'Page Editor');
 
@@ -1691,25 +1691,20 @@
 	messageOverlay.appendChild(editButton);
 
 
-	hideOverlayCheckbox = DOM.BUILDER.INPUT(editAttributes.put({ name : 'Loading Checkbox', type : 'checkbox'}).addStyle('position:relative; margin-left: 34px; background: transparent; float:left; margin-top: 0px; padding-top: 0px; display: inline-block;').values());
+	hideOverlayCheckbox = DOM.BUILDER.INPUT(editAttributes.put({ name : 'Loading Checkbox', type : 'checkbox'}).addStyle('position:relative; top:5%; left:-23%; background: transparent; display: inline-block;').values());
 
-	var checkboxLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:relative; font-size: 10px; font-weight: bold; float:left;  margin-left: 5px; margin-right: 5px; background: transparent; color: #FFF;display: inline-block;').values());
+	var checkboxLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:relative; left:-22%; font-size: 10px; font-weight: bold;  transparent; color: #FFF;display: inline-block;').values());
 	checkboxLabel.innerHTML = 'Don\'t show this again.';
 
 	//    var redHelpLink = DOM.BUILDER.A(normalFontAttributes.put({ href : 'http://bo.lt/editor'}).addStyle('z-index: 2147483647; float: right;  margin-right: 34px; display: inline-block;text-decoration: none; color: #FFF; font-size: 10px; font-weight: bold; ').values(), 'Need Help?')
 
-	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(),hideOverlayCheckbox, checkboxLabel// , redHelpLink
+	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values()//,hideOverlayCheckbox, checkboxLabel// , redHelpLink
 						  ));
 	editButton.appendChild(text);
 	messageOverlay.appendChild(editButton);
 
 	document.body.appendChild(backgroundDiv);
-	if(editMode!='HTML'){
 	    document.body.appendChild(messageOverlay);
-	}
-	else if(EditCommandHistory(pageEditor).history.length > 0){
-	    alert("hello");
-	}
 
 
 	this.show = function show( textToDisplay) {
@@ -1745,7 +1740,7 @@
 
 	    messageOverlay.style.display = 'block';
 	    backgroundDiv.style.display = 'block';
-	};
+	}
 
 	this.activate = function activate() {
 	    /*
@@ -1754,13 +1749,16 @@
 	     *  created for this purpose.
 	     */
 	    var allCookies = document.cookie;
-	    if (editMode != 'HTML' && allCookies && allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
+	    if (editMode != 'HTML' && allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
 		messageOverlay.style.display = 'block';
+		backgroundDiv.style.display = 'block';
 		// if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
 		//   messageDescription.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(messageDescription).width )/2 + 'px';
 		//   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
 		// }
 	    }  else {
+//		messageOverlay.style.display = 'none';
+//		backgroundDiv.style.display = 'none';
 		self.hide();
 	    }
 	};
@@ -1794,20 +1792,21 @@
 	messageOverlay.appendChild(step2);
 	messageOverlay.appendChild(step3);
 
-	messageDescription = DOM.BUILDER.P(normalFontAttributes.addStyle('color:#FFF; font-weight: normal; font-size: 14px; line-height: 22px; width:450px; margin-left: auto; margin-right: auto; text-align: center;').values(), '');
-	messageOverlay.appendChild(messageDescription);
+//	messageDescription = DOM.BUILDER.P(normalFontAttributes.addStyle('color:#FFF; font-weight: normal; font-size: 14px; line-height: 22px; width:450px; margin-left: auto; margin-right: auto; text-align: center;').values(), 'HELLO');
+//	messageOverlay.appendChild(messageDescription);
 
 	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'https://bo.lt/app/asset/page-edit/pencil_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'}).addStyle('position: relative; margin-right: 10px; vertical-align: middle;').values());
 	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'OK');
 
 	//---------------------------- state & language target --------------------------
 	locSelectAttributes = panelButtonAttributes.addStyle('position:absolute; top:25%; left:05%; width:23%; color:#FFF; text-align:center; font-weight:bold; font-size:18px; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
-	locSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:24%; left:05%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
+//	step2 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; float:left; margin:30px 0 0 200px; font-size: 30px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), 'STEP - 2');
+	locSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:24%; left:05%; width:auto; font-size: 14px; font-weight: bold; background: transparent; color: #FFF; display:inline-block;').values());
 	locSelectLabel.innerHTML = 'Select any state';
 
 	langSelectAttributes = panelButtonAttributes.addStyle('position:absolute; top:50%; left:05%; width:23%; color:#FFF; text-align:center; font-weight:bold; font-size:18px; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
 	langSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:49%; left:05%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
-	langSelectLabel.innerHTML = 'Languages of selected state';
+	langSelectLabel.innerHTML = 'Languages of selected/all state(s)';
 
 	enterBlogAttributes = panelButtonAttributes.put({placeholder : 'http://abc.blogspot.com/', type : 'text'}).addStyle('position:absolute; top:25%; left:36%; width:23%; color:#FFF; text-align:center; font-weight:bold; font-size:18px; background: #aaa; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
 	enterBlogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:23%; left:36%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
@@ -1896,24 +1895,34 @@
 			    
 			}//end if
 			else{
+			    var texts = [];
 			    while(langSelect.firstChild!=null){
 				langSelect.removeChild(langSelect.firstChild);
 			    }//end while
 			    for(var i=0;i<locations.length;i++)
-			    {
-				for(var j=0;j<locations[i].lang.length;j++){
-                		    var op = document.createElement('option');
-				    //	var count = locations[i].lang[j];
-				    //	counts[item] = counts[item] >= 1 ? counts[item] + 1 : 1;
-				    op.text=locations[i].lang[j];
-				    langSelect.appendChild(op);
+			    {	for (var j=0; j<locations[i].lang.length; j++)
+				{ 
+				    texts.push(locations[i].lang[j]);
+				    texts.sort();
+				    for(var k=1;k<texts.length;k++){
+					if (texts[k] === texts[k-1]){ 
+					    texts.splice(k, 1);
+					    k--;
+					}	
+				    }
+				    
 				}//end inner for
 			    }//end main for
+			    for(var z=0; z<texts.length; z++)
+			    { 
+				var op = document.createElement('option');
+				op.text=texts[z];
+				langSelect.appendChild(op);
+			    }
 			}//end else
 			
 		    }//end onchange
-    		}
-		
+    		}  			
     		/* end parsing json response*/ 
 		
     		else {
@@ -2990,7 +2999,7 @@
 	      DOM.BUILDER.IMG(editAttributes.put({ src : 'https://bo.lt/app/asset/page-edit/bo_square.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079' }).addStyle('border: 0 none; margin-left: 16px; display:inline; box-shadow: 0 3px 1px rgba(0, 0, 0, 0.24); -webkit-box-shadow: 0 3px 1px rgba(0, 0, 0, 0.24); -moz-box-shadow:0 3px 1px rgba(0, 0, 0, 0.24);').values())); */ //Ajay
 
 	// Ajay - Below message display bar
-	messageDiv = DOM.BUILDER.DIV(editAttributes.addStyle('font-weight:italic; font-size:20px; font-family: Helvetica Neue,Helvetica,Arial,Sans-serif; position:absolute; margin: 0px auto; width:100%; display:inline-block; text-align:center; color:#fff;').values());
+	messageDiv = DOM.BUILDER.DIV(editAttributes.addStyle('font-weight:italic; font-size:20px; font-family: Helvetica Neue,Helvetica,Arial,Sans-serif; position:absolute; left:30%; width:100%; display:inline-block;  color:#fff;').values());
 
 	// Ajay - background-color & rgba changed
 	redButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; top:-13px; right:04%; width:20%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
@@ -3024,17 +3033,17 @@
 	//pageEditor.saveAndClose();
 	publishButton.onclick = function publishButtonOnClick() {
 
-	    if (pageEditor.hasChangesPending() && (pageEditor.formUncomplete() ==false)) {
+	    if (pageEditor.hasChangesPending() /* && (pageEditor.formUncomplete() ==false) */ ) {
 		pageEditor.commandPublish();
 		this.disabled=true;
-		pageEditor.showMessage("...Please Wait, your blog is being posted");
+		pageEditor.showMessage("... Please wait, your blog is being posted");
 	    }
-	    else if ((pageEditor.hasChangesPending() ==false)&& (pageEditor.formUncomplete() == false)){
-		pageEditor.showMessage("you need to re-narrate before you can save & publish !");
-	    }
-	    else if (pageEditor.hasChangesPending()&& (pageEditor.formUncomplete() ==true)){
-		pageEditor.showMessage("you need to choose at least a language, a location or a style before you can save & publish !");
-            }
+//	    else if ((pageEditor.hasChangesPending() ==false)&& (pageEditor.formUncomplete() == false)){
+//		pageEditor.showMessage(" Nothing to publish !");
+//	    }
+//	    else if (pageEditor.hasChangesPending()&& (pageEditor.formUncomplete() ==true)){
+//		pageEditor.showMessage("you need to choose at least a language, a location or a style before you can save & publish !");
+//            }
 	    else{
 		pageEditor.showMessage("Nothing to publish");
 	    }
