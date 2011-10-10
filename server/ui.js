@@ -8,18 +8,22 @@ var a11ypi = {
     {
 	$(document).ready(function(){$('body *').contents().filter(function() {return (this.nodeType == 3) && this.nodeValue.match(/\S/);}).wrap('<span m4pageedittype=text/>')});
 	vimg = document.getElementsByTagName('img');
-	for(i=0;i<vimg.length;i++)
+	for(i=0; i<vimg.length; i++)
 	{
 	    vimg[i].setAttribute('m4pageedittype','image');
 	}
 	var v = document.getElementsByTagName("body");
 	var a = document.createElement("script");
-	c = v[0].appendChild(a);
-	c.setAttribute("src","http://localhost/alipi-1/server/wsgi/page_edit.js");
-	c.setAttribute("type","text/javascript");
-
-	v[0].removeChild(document.getElementById('ren_overlay'));
-	v[0].removeChild(document.getElementById('overlay1'));
+	a.setAttribute("src","http://localhost/alipi-1/server/wsgi/page_edit.js");
+	a.setAttribute("type","text/javascript");
+	v[0].appendChild(a);
+	var alltags = document.getElementsByTagName('*');
+	for (x=0; x<alltags.length; x++) {
+	    if (alltags[x].id == 'ren_overlay' || alltags[x].id == 'overlay1' ) {
+		v[0].removeChild(document.getElementById('ren_overlay'));
+		v[0].removeChild(document.getElementById('overlay1'));
+	    }
+	}
 	v[0].removeChild(document.getElementById('overlay2'));
 
 	msg_overlay = document.createElement("div");
