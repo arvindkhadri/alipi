@@ -1889,8 +1889,13 @@ var AJAX = AJAX || {};
 	  
 
 	  var xmlhttp = new XMLHttpRequest();
-	  var url = window.location;
-	  var data="url="+encodeURIComponent(window.location.search.split('=')[1])+"&xpath="+encodeURIComponent(xpath);
+	  d = window.location.search.split('?')[1];
+	  var a =[];
+	  for (var i = 0;i<d.split('&').length;i++){ 
+	      a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
+	    }
+	  var url = a['foruri'];
+	  var data="url="+encodeURIComponent(url)+"&xpath="+encodeURIComponent(xpath);
 	  xmlhttp.onreadystatechange = function()
 	  {
 	      if(xmlhttp.readyState == 4 && xmlhttp.status== 200)
@@ -1957,7 +1962,7 @@ var AJAX = AJAX || {};
 		      }
 		  }
 	  }
-	  xmlhttp.open("POST","http://x.a11y.in/alipi/narration",true);
+	  xmlhttp.open("POST","http://dev.a11y.in/narration",true);
 	  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	  xmlhttp.send(data);
 	  
@@ -2506,7 +2511,7 @@ var AJAX = AJAX || {};
       self.popdown();
     };
 
-    var backgroundImage = 'http://x.a11y.in/alipi/wsgi/images/replace_image.png';
+    var backgroundImage = 'http://dev.a11y.in/wsgi/images/replace_image.png';
     backgroundButton = createActionButton(backgroundImage, backgroundButtonText, 'border-right: none;' + leftBorderStyle);
     backgroundButton.onclick = function backgroundButtonOnClick() {
       popupControl.showAction(imageUpdateAction);
@@ -2519,7 +2524,7 @@ var AJAX = AJAX || {};
       self.popdown();
     };
 
-    var linkImage = 'http://x.a11y.in/alipi/wsgi/images/link.png';
+    var linkImage = 'http://192.168.100.56:82/wsgi/images/link.png';
     linkButton = createActionButton(linkImage, 'Link', rightBorderStyle);
     linkButton.onclick = function linkButtonOnClick() {
       popupControl.showAction(linkUpdateAction);
@@ -2532,7 +2537,7 @@ var AJAX = AJAX || {};
       self.popdown(true);
     };
 
-    var renImage = 'http://x.a11y.in/alipi/wsgi/images/renarration.png';
+    var renImage = 'http://192.168.100.56:82/wsgi/images/renarration.png';
     renButton = createActionButton(renImage, 'Renarration', 'border-right: none;');
     renButton.onclick = function renButtonOnClick() {
       popupControl.showAction(renUpdateAction);
@@ -2540,7 +2545,7 @@ var AJAX = AJAX || {};
       return false;
     };
 //shalini
-/*    var deleteImage = 'http://x.a11y.in/alipi/wsgi/images/delete_trashcan.png';
+/*    var deleteImage = 'http://192.168.100.56:82/wsgi/images/delete_trashcan.png';
     deleteButton = createActionButton(deleteImage, 'Delete', 'border-right: none;');
     deleteButton.onclick = function deleteButtonOnClick() {
       deleteElement();
@@ -2666,7 +2671,7 @@ var AJAX = AJAX || {};
       return false;
     };
 
-    var doneImage = 'http://x.a11y.in/alipi/wsgi/images/done.png';
+    var doneImage = 'http://192.168.100.56:82/wsgi/images/done.png';
     doneButton = createActionButton(doneImage, 'Done', 'border-right: none;' + leftBorderStyle);
     doneButton.onclick = function doneButtonOnClick() {
       self.popdown(true);
@@ -2674,7 +2679,7 @@ var AJAX = AJAX || {};
     };
     
 
-    var renImage = 'http://x.a11y.in/alipi/wsgi/images/renarration.png';
+    var renImage = 'http://192.168.100.56:82/wsgi/images/renarration.png';
     renButton = createActionButton(renImage, 'Renarration', 'border-right: none;');
     renButton.onclick = function renButtonOnClick() {
       popupControl.showAction(renUpdateAction);
@@ -2700,7 +2705,7 @@ var AJAX = AJAX || {};
     };
 
 //shalini
-/*    var deleteImage = 'http://x.a11y.in/alipi/wsgi/images/delete_trashcan.png';
+/*    var deleteImage = 'http://192.168.100.56:82/wsgi/images/delete_trashcan.png';
     deleteButton = createActionButton(deleteImage, 'Delete', 'border-right: none;');
     deleteButton.onclick = function deleteButtonOnClick() {
       deleteElement();
@@ -2713,7 +2718,7 @@ var AJAX = AJAX || {};
       self.popdown(true);
     };
 
-    var backgroundImage = 'http://x.a11y.in/alipi/wsgi/images/replace_images.png';
+    var backgroundImage = 'http://192.168.100.56:82/wsgi/images/replace_images.png';
     backgroundButton = createActionButton(backgroundImage, 'BG&nbsp;Image', 'border-right: none;');
     backgroundButton.onclick = function backgroundButtonOnClick() {
       popupControl.showAction(imageUpdateAction);
@@ -2729,7 +2734,7 @@ var AJAX = AJAX || {};
     };
 
 
-    var linkImage = 'http://x.a11y.in/alipi/wsgi/images/link.png';
+    var linkImage = 'http://192.168.100.56:82/wsgi/images/link.png';
     linkButton = createActionButton(linkImage, 'Link', rightBorderStyle);
     linkButton.onclick = function linkButtonOnClick() {
       popupControl.showAction(linkUpdateAction);
@@ -2928,7 +2933,7 @@ var AJAX = AJAX || {};
     		}
     	}
     
-    xhrloc.open("GET","http://x.a11y.in/alipi/getData",true);
+    xhrloc.open("GET","http://dev.a11y.in/getData",true);
     xhrloc.send();//
     //////////////////////////////////////////////////////////////////////////////langs
     langSelect = DOM.BUILDER.SELECT(langSelectAttributes);
@@ -2979,7 +2984,7 @@ var AJAX = AJAX || {};
      		}
      	}
     
-     xhrlang.open("GET","http://x.a11y.in/alipi/getData",true);
+     xhrlang.open("GET","http://dev.a11y.in/getData",true);
      xhrlang.send();//// this is ignored on the server side; for now it just dumps data.json
     
     ///////////////////////////////////////////////////////////////////////////////////////// Style //////////////////////////////////
@@ -3024,7 +3029,7 @@ var AJAX = AJAX || {};
     		}
     	}
    
-    xhr.open("GET","http://x.a11y.in/alipi/getData",true);
+    xhr.open("GET","http://dev.a11y.in/getData",true);
     xhr.send();
 /////////author//////////////////////////////// 
     authorInput = DOM.BUILDER.INPUT(authorInputAttributes);
@@ -3226,7 +3231,7 @@ var AJAX = AJAX || {};
       keepOriginalCheckbox.onclick = function() {
         keepOriginal = keepOriginalCheckbox.checked;
       };
-	var backgroundImage = 'url(http://x.a11y.in/alipi/wsgi/images/container_save_new_page.png) no-repeat scroll 0 0 transparent';
+	var backgroundImage = 'url(http://192.168.100.56:82/wsgi/images/container_save_new_page.png) no-repeat scroll 0 0 transparent';
       var position = 'fixed';
       // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
       //   position = 'absolute';
@@ -3386,7 +3391,7 @@ var AJAX = AJAX || {};
           // show "poof" animation to indicate deletion
           poofPosition = DOM.findPosition(command.element);
 
-          poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://x.a11y.in/alipi/wsgi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
+          poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://192.168.100.56:82/wsgi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
           document.body.appendChild(poofDiv);
 
           UTIL.animate(function(index, last) {
@@ -3552,23 +3557,23 @@ var AJAX = AJAX || {};
 	  // 	  try
 	  // 	  {
 	  // 	      if (xhr.response != '' || xhr.responseText != '') {
-	  // 		      window.open("http://x.a11y.in/alipi/app/printme?token="+xhr.responseText.split('=')[1]);
+	  // 		      window.open("http://192.168.100.56:82/app/printme?token="+xhr.responseText.split('=')[1]);
 	  // 	      }
 	  // 	  }
 	  // 	  catch(err)
 	  // 	  {
-	  // 	       window.open("http://x.a11y.in/alipi/app/printme?token="+xhr.response.split('=')[1]);
+	  // 	       window.open("http://192.168.100.56:82/app/printme?token="+xhr.response.split('=')[1]);
 	  // 	  }
 	  //     }
 	  // }
 	  
-	  // xhr.open('POST', 'http://x.a11y.in/alipi/app/auth', true);
+	  // xhr.open('POST', 'http://192.168.100.56:82/app/auth', true);
 	  // xhr.setRequestHeader('Content-Type', 'text/plain');
 	  
 	  // str = buildDataString();
 	  // xhr.send(str);
 	  
-	  AJAX.post('http://x.a11y.in/alipi/test',
+	  AJAX.post('http://dev.a11y.in/test',
 		    buildDataString(), function(result) {
 			//   alert(buildDataString());
 			ajaxResultProcessor.processPublishedResponse(result);
@@ -3597,11 +3602,17 @@ var AJAX = AJAX || {};
 
 	buffer = new UTIL.StringBuffer();
 
+	d = window.location.search.split('?')[1];
+	var a =[];
+	for (var i = 0;i<d.split('&').length;i++){ 
+	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
+	}
+	var url = a['foruri'];
       //Yass
       UTIL.forEach(history, function(index, command) {
 	  buffer.append('###'); //separates the commands
 	  buffer.append('url=');  //url                                                     //removed '&' on purpose
-	  buffer.append(encodeURIComponent(window.location.search.split('=')[1]));
+	  buffer.append(encodeURIComponent(url));
 	  buffer.append('&lang=');//lang
 	  buffer.append(encodeURIComponent(langName));
 	  buffer.append('&location=');//location
