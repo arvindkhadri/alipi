@@ -1,4 +1,3 @@
-
 (function( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) {
 
     var console, PopupControl, M4ImageElement,locName='',langName = '',styleName='',authorValue;
@@ -1957,7 +1956,7 @@ var AJAX = AJAX || {};
 		      }
 		  }
 	  }
-	  xmlhttp.open("POST","http://localhost/narration",true);
+	  xmlhttp.open("POST","http://192.168.100.100/narration",true);
 	  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	  xmlhttp.send(data);
 	  
@@ -2506,7 +2505,7 @@ var AJAX = AJAX || {};
       self.popdown();
     };
 
-    var backgroundImage = 'http://localhost/server/wsgi/images/replace_image.png';
+    var backgroundImage = 'http://192.168.100.100/server/wsgi/images/replace_image.png';
     backgroundButton = createActionButton(backgroundImage, backgroundButtonText, 'border-right: none;' + leftBorderStyle);
     backgroundButton.onclick = function backgroundButtonOnClick() {
       popupControl.showAction(imageUpdateAction);
@@ -2532,7 +2531,7 @@ var AJAX = AJAX || {};
       self.popdown(true);
     };
 
-    var renImage = 'http://localhost/wsgi/images/renarration.png';
+    var renImage = 'http://192.168.100.100/wsgi/images/renarration.png';
     renButton = createActionButton(renImage, 'Renarration', 'border-right: none;');
     renButton.onclick = function renButtonOnClick() {
       popupControl.showAction(renUpdateAction);
@@ -2666,7 +2665,7 @@ var AJAX = AJAX || {};
       return false;
     };
 
-    var doneImage = 'http://localhost/wsgi/images/done.png';
+    var doneImage = 'http://192.168.100.100/wsgi/images/done.png';
     doneButton = createActionButton(doneImage, 'Done', 'border-right: none;' + leftBorderStyle);
     doneButton.onclick = function doneButtonOnClick() {
       self.popdown(true);
@@ -2674,7 +2673,7 @@ var AJAX = AJAX || {};
     };
     
 
-    var renImage = 'http://localhost/wsgi/images/renarration.png';
+    var renImage = 'http://192.168.100.100/wsgi/images/renarration.png';
     renButton = createActionButton(renImage, 'Renarration', 'border-right: none;');
     renButton.onclick = function renButtonOnClick() {
       popupControl.showAction(renUpdateAction);
@@ -2713,7 +2712,7 @@ var AJAX = AJAX || {};
       self.popdown(true);
     };
 
-    var backgroundImage = 'http://localhost/wsgi/images/replace_images.png';
+    var backgroundImage = 'http://192.168.100.100/wsgi/images/replace_images.png';
     backgroundButton = createActionButton(backgroundImage, 'BG&nbsp;Image', 'border-right: none;');
     backgroundButton.onclick = function backgroundButtonOnClick() {
       popupControl.showAction(imageUpdateAction);
@@ -2919,19 +2918,30 @@ var AJAX = AJAX || {};
 					
 				}//end if
 				else{
+					var texts = [];
 					while(langSelect.firstChild!=null){
 						langSelect.removeChild(langSelect.firstChild);
 					}//end while
 			    		for(var i=0;i<locations.length;i++)
-			    		{
-						for(var j=0;j<locations[i].lang.length;j++){
-                					var op = document.createElement('option');
-						//	var count = locations[i].lang[j];
-						//	counts[item] = counts[item] >= 1 ? counts[item] + 1 : 1;
-							op.text=locations[i].lang[j];
-							langSelect.appendChild(op);
+			    		{	for (var j=0; j<locations[i].lang.length; j++)
+						{ 
+							texts.push(locations[i].lang[j]);
+							texts.sort();
+							for(var k=1;k<texts.length;k++){
+								if (texts[k] === texts[k-1]){ 
+									texts.splice(k, 1);
+							   		k--;
+								}	
+							}
+						
 						}//end inner for
 			    		}//end main for
+					for(var z=0; z<texts.length; z++)
+					{ 
+						var op = document.createElement('option');
+						op.text=texts[z];
+						langSelect.appendChild(op);
+					}
 				}//end else
 				
 				}//end onchange
@@ -3194,7 +3204,7 @@ var AJAX = AJAX || {};
 
     editModeChangeButtonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), editModeChangeSaveButton, editModeChangeDiscardButton);
 //shalini- added cancelButton
-    buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), publishButton, undoButton,locSelect,langSelect,styleSelect,authorInput);
+    buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), publishButton, undoButton,locSelect,langSelect);
 
     firstRowDiv = DOM.BUILDER.DIV(firstRowStyleAttributes,
       DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; top: 0; left: 110px; float: left;').values(), messageDiv), buttonDiv);
@@ -3308,7 +3318,7 @@ var AJAX = AJAX || {};
       keepOriginalCheckbox.onclick = function() {
         keepOriginal = keepOriginalCheckbox.checked;
       };
-	var backgroundImage = 'url(http://localhost/wsgi/images/container_save_new_page.png) no-repeat scroll 0 0 transparent';
+	var backgroundImage = 'url(http://192.168.100.100/wsgi/images/container_save_new_page.png) no-repeat scroll 0 0 transparent';
       var position = 'fixed';
       // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
       //   position = 'absolute';
@@ -3468,7 +3478,7 @@ var AJAX = AJAX || {};
           // show "poof" animation to indicate deletion
           poofPosition = DOM.findPosition(command.element);
 
-          poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://localhost/wsgi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
+          poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://192.168.100.100/wsgi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
           document.body.appendChild(poofDiv);
 
           UTIL.animate(function(index, last) {
@@ -3650,7 +3660,7 @@ var AJAX = AJAX || {};
 	  // str = buildDataString();
 	  // xhr.send(str);
 	  
-	  AJAX.post('http://localhost/test',
+	  AJAX.post('http://192.168.100.100/test',
 		    buildDataString(), function(result) {
 			//   alert(buildDataString());
 			ajaxResultProcessor.processPublishedResponse(result);

@@ -11,9 +11,9 @@ app = Flask(__name__)
 def start_page() :
     d = {}
     d['foruri'] = request.args['foruri']
-    myhandler = urllib2.ProxyHandler({'http':'http://proxy.iiit.ac.in:8080/'})
-    opener = urllib2.build_opener(myhandler)
-    urllib2.install_opener(opener)
+#    myhandler = urllib2.ProxyHandler({'http':'http://proxy.iiit.ac.in:8080/'})
+#    opener = urllib2.build_opener(myhandler)
+#    urllib2.install_opener(opener)
     a = urllib2.urlopen(d['foruri'])
     page = a.read()
     a.close()
@@ -22,7 +22,7 @@ def start_page() :
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
         script_test = root.makeelement('script')
         root[0].append(script_test)
-        script_test.set("src", "http://x.a11y.in/alipi/ajay/alipi/test.js")
+        script_test.set("src", "http://192.168.100.100/server/ui.js")
         script_test.set("type", "text/javascript")
         
         script_jq_mini = root.makeelement('script')
@@ -34,7 +34,7 @@ def start_page() :
         root[0].append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://x.a11y.in/alipi/ajay/alipi/stylesheet.css")
+        style.set("href", "http://192.168.100.100/server/stylesheet.css")
 
         connection = pymongo.Connection('localhost',27017)
         db = connection['alipi']
@@ -81,7 +81,7 @@ def start_page() :
         d['lang'] = request.args['lang']
         script_test = root.makeelement('script')
         root[0].append(script_test)
-        script_test.set("src", "http://x.a11y.in/alipi/ajay/alipi/test.js")
+        script_test.set("src", "http://192.168.100.100/server/ui.js")
         script_test.set("type", "text/javascript")
         root.body.set("onload","a11ypi.ren()");
         # connection = pymongo.Connection('localhost',27017)
@@ -108,7 +108,7 @@ def start_page() :
 import logging
 from logging import FileHandler
 
-fil = FileHandler('/var/www/ajay/alipi/logme',mode='a')
+fil = FileHandler('/var/www/logme',mode='a')
 fil.setLevel(logging.ERROR)
 app.logger.addHandler(fil)
 
