@@ -1,4 +1,3 @@
-
 (function( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) {
 
     var console, PopupControl, M4ImageElement,locName='',langName = '',styleName='',authorValue;
@@ -1962,7 +1961,7 @@ var AJAX = AJAX || {};
 		      }
 		  }
 	  }
-	  xmlhttp.open("POST","http://dev.a11y.in/narration",true);
+	  xmlhttp.open("POST","http://192.168.100.100/narration",true);
 	  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	  xmlhttp.send(data);
 	  
@@ -2511,7 +2510,7 @@ var AJAX = AJAX || {};
       self.popdown();
     };
 
-    var backgroundImage = 'http://dev.a11y.in/wsgi/images/replace_image.png';
+    var backgroundImage = 'http://192.168.100.100/server/wsgi/images/replace_image.png';
     backgroundButton = createActionButton(backgroundImage, backgroundButtonText, 'border-right: none;' + leftBorderStyle);
     backgroundButton.onclick = function backgroundButtonOnClick() {
       popupControl.showAction(imageUpdateAction);
@@ -2537,7 +2536,7 @@ var AJAX = AJAX || {};
       self.popdown(true);
     };
 
-    var renImage = 'http://192.168.100.56:82/wsgi/images/renarration.png';
+    var renImage = 'http://192.168.100.100/wsgi/images/renarration.png';
     renButton = createActionButton(renImage, 'Renarration', 'border-right: none;');
     renButton.onclick = function renButtonOnClick() {
       popupControl.showAction(renUpdateAction);
@@ -2671,7 +2670,7 @@ var AJAX = AJAX || {};
       return false;
     };
 
-    var doneImage = 'http://192.168.100.56:82/wsgi/images/done.png';
+    var doneImage = 'http://192.168.100.100/wsgi/images/done.png';
     doneButton = createActionButton(doneImage, 'Done', 'border-right: none;' + leftBorderStyle);
     doneButton.onclick = function doneButtonOnClick() {
       self.popdown(true);
@@ -2679,7 +2678,7 @@ var AJAX = AJAX || {};
     };
     
 
-    var renImage = 'http://192.168.100.56:82/wsgi/images/renarration.png';
+    var renImage = 'http://192.168.100.100/wsgi/images/renarration.png';
     renButton = createActionButton(renImage, 'Renarration', 'border-right: none;');
     renButton.onclick = function renButtonOnClick() {
       popupControl.showAction(renUpdateAction);
@@ -2718,7 +2717,7 @@ var AJAX = AJAX || {};
       self.popdown(true);
     };
 
-    var backgroundImage = 'http://192.168.100.56:82/wsgi/images/replace_images.png';
+    var backgroundImage = 'http://192.168.100.100/wsgi/images/replace_images.png';
     backgroundButton = createActionButton(backgroundImage, 'BG&nbsp;Image', 'border-right: none;');
     backgroundButton.onclick = function backgroundButtonOnClick() {
       popupControl.showAction(imageUpdateAction);
@@ -2839,9 +2838,9 @@ var AJAX = AJAX || {};
 // Ajay - created
     undoButtonStyleAttributes = panelButtonAttributes.addStyle('width:15%; color:#FFF; float:left; height: 36px; font-weight:bold; font-size:18px; text-align:center; margin-top: 8px; margin-left:45%; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
 
-    locSelectAttributes = panelButtonAttributes.addStyle('width:23%; color:#FFF; float:left; font-weight:bold; font-size:18px; text-align:center; margin-top:8px; margin-left:-43%; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
+    langSelectAttributes = panelButtonAttributes.addStyle('width:23%; color:#FFF; float:left; font-weight:bold; font-size:18px; text-align:center; margin-top:8px; margin-left:-43%; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
 
-    langSelectAttributes = panelButtonAttributes.addStyle('width:25%; color:#FFF; float:left; font-weight:bold; font-size:18px; text-align:center; margin-top:8px; margin-left:-70%; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
+    locSelectAttributes = panelButtonAttributes.addStyle('width:25%; color:#FFF; float:left; font-weight:bold; font-size:18px; text-align:center; margin-top:8px; margin-left:-70%; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
 
     styleSelectAttributes = normalFontAttributes.addStyle('width:20%; color:#FFF; float:left; font-weight:bold; font-size:18px; text-align:center; margin-top:8px; margin-left:-92%; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
 
@@ -2871,10 +2870,9 @@ var AJAX = AJAX || {};
     };
 
 
-
-
-    //shalini-Yass
+//--------------------------------------------------------------------------start locselect
     locSelect = DOM.BUILDER.SELECT(locSelectAttributes);
+    langSelect = DOM.BUILDER.SELECT(langSelectAttributes);
     ////////////////////////////////////////////////////////////////////////////attributes
     var xhrloc = new XMLHttpRequest();
     xhrloc.onreadystatechange = function()
@@ -2886,33 +2884,15 @@ var AJAX = AJAX || {};
     			    json= JSON.parse(xhrloc.responseText);
 			    /* parsing json response*/ 
 		           var loc=[];
+			   var texts=[];
 			    loc.push('--Locations--');
-			    loc.push('*');
-    			    locations = json["Locations"];
-    			    for(var i=0;i<locations.length;i++)
-    				{
-				    loc.push('*'+locations[i]["name"]);
-				    //locSelect.appendChild(c);
-				    states = locations[i]["states"];
-    				    for(var j=0;j<states.length;j++)
-    					{
-					    
-					    //var c=DOM.BUILDER.OPTION('-'+states[j]["name"]);
-					    loc.push('-'+states[j]["name"]);
-					   // locSelect.appendChild(c);
-					    towns = states[j]["towns"];
-    					    for(var k=0;k<towns.length;k++)
-    						{
-    						    //var c=DOM.BUILDER.OPTION(towns[k]["name"]);
-    						    //locSelect.appendChild(c);
-    						    loc.push(towns[k]["name"]);
-    						}
-    					}
-					
-					locSelect.onchange=function(){
-					
-						}
-    				}
+			    //loc.push('*');
+    			    locations = json["state"];
+			    for(var i=0;i<locations.length;i++)
+			    {
+				loc.push(locations[i]["name"]);
+			    }
+				loc.push('None of the above');
       				for(i=0;i<loc.length;i++)	{
 	      				x=DOM.BUILDER.OPTION(loc[i]);
 	      				locSelect.add(x,null);
@@ -2921,7 +2901,61 @@ var AJAX = AJAX || {};
 				locSelect.onchange=function(){
                                 var locindex=locSelect.selectedIndex;
 			 	locName=loc[locindex];
+            			if(locName!='None of the above'){
+					for(var i=0;i<locations[locindex-1]["lang"].length;i++){
+							texts.push(locations[locindex-1].lang[i]);
+					}
+					if(langSelect.firstChild==null){
+						for(var vp=0;vp<texts.length;vp++)
+						{	
+                					var op = document.createElement('option');
+                					op.text = texts[vp];
+                					langSelect.appendChild(op);
+						}//end for
+					}//end if
+					else{
+						while(langSelect.firstChild!=null){
+							langSelect.removeChild(langSelect.firstChild);
+						}//end while
+						for(var vp=0;vp<texts.length;vp++)
+						{
+                					var op = document.createElement('option');
+                					op.text = texts[vp];
+                					langSelect.appendChild(op);
+						}//end for
+					}//end else 		
+					
+				}//end if
+				else{
+					while(langSelect.firstChild!=null){
+						langSelect.removeChild(langSelect.firstChild);
+					}//end while
+			    		for(var i=0;i<locations.length;i++)
+			    		{	for (var j=0; j<locations[i].lang.length; j++)
+						{ 
+							texts.push(locations[i].lang[j]);
+							texts.sort();
+							for(var k=1;k<texts.length;k++){
+								if (texts[k] === texts[k-1]){ 
+									texts.splice(k, 1);
+							   		k--;
+								}	
+							}
+						
+						}//end inner for
+			    		}//end main for
+					for(var z=0; z<texts.length; z++)
+					{ 
+						var op = document.createElement('option');
+						op.text=texts[z];
+						langSelect.appendChild(op);
+					}
+				}//end else
 				
+				}//end onchange
+				langSelect.onchange=function(){
+                                var langindex=langSelect.selectedIndex;
+					langName=texts[langindex];
 				}
     			}
 		    
@@ -2933,114 +2967,10 @@ var AJAX = AJAX || {};
     		}
     	}
     
-    xhrloc.open("GET","http://dev.a11y.in/getData",true);
+    xhrloc.open("GET","http://192.168.100.100/getData",true);
     xhrloc.send();//
-    //////////////////////////////////////////////////////////////////////////////langs
-    langSelect = DOM.BUILDER.SELECT(langSelectAttributes);
-    var xhrlang = new XMLHttpRequest();
-    xhrlang.onreadystatechange = function()
-    	{
-    	    if(xhrlang.readyState == 4)
-    		{
-		    
-    		    if (xhrlang.status == 200)
-    			{
-    			    json= JSON.parse(xhrlang.responseText);
-			    
-    			    /* parsing json response*/ 
-    			    var lang=[];
-			    lang.push('--Languages--');
-			    lang.push('*');
-    			    languages = json["Languages"];
-    			    for(var i=0;i<languages.length;i++)
-    				{
-    				   lang.push(languages[i]["name"]);
-    				   // var c=DOM.BUILDER.OPTION(languages[i]["name"]);
-    				   // langSelect.appendChild(c);
-				    
-    				    dialects = languages[i]["dialects"];
-    				    for(var j=0;j<dialects.length;j++)
-    					{
-    					    lang.push(dialects[j]["name"]);
-				    
- 					}
- 				}
-      				for(i=0;i<lang.length;i++)	{
-	      				x=DOM.BUILDER.OPTION(lang[i]);
-	      				langSelect.add(x,null);
-	  			}
-				langSelect.onchange=function(){
-                                var langindex=langSelect.selectedIndex;
-			 	langName=lang[langindex];
-				
-				}
- 			}
-		    
- 		    /* end parsing json response*/ 
-		    
- 		    else {
-     			alert("couldn't get data file: error number "+xhrlang.status);
-     		    }
-     		}
-     	}
-    
-     xhrlang.open("GET","http://dev.a11y.in/getData",true);
-     xhrlang.send();//// this is ignored on the server side; for now it just dumps data.json
-    
-    ///////////////////////////////////////////////////////////////////////////////////////// Style //////////////////////////////////
-    styleSelect = DOM.BUILDER.SELECT(styleSelectAttributes);
-  var xhr = new XMLHttpRequest();
-     xhr.onreadystatechange = function()
-     	{
-     	    if(xhr.readyState == 4)
-     		{
-	    
-    		    if (xhr.status == 200)
-    			{
-    			    json= JSON.parse(xhr.responseText);
-			    
-    			    /* parsing json response*/ 
-    			   
-    			    var styles = []; 
-			    styles.push('--Style--');//toto
-			    styles.push('*');//toto
-    			    style= json["Style"];
-    			    for(var i=0;i<style.length;i++)
-    				{
- 				    styles.push(style[i]["name"]);
- 				}
-      			    for(i=0;i<styles.length;i++)	{
-	      				x=DOM.BUILDER.OPTION(styles[i]);
-	      				styleSelect.add(x,null);
-	  			}
-				
-			    styleSelect.onchange=function(){
-                                var styleindex=styleSelect.selectedIndex;
-			 	styleName=styles[styleindex];
-			    }	
 
-    			}
-		    
-    		    /* end parsing json response*/ 
-		    
-    		    else {
-    			alert("couldn't get data file: error number "+xhr.status);
-    		    }
-    		}
-    	}
-   
-    xhr.open("GET","http://dev.a11y.in/getData",true);
-    xhr.send();
-/////////author//////////////////////////////// 
-    authorInput = DOM.BUILDER.INPUT(authorInputAttributes);
-      authorInput.placeholder = "Author / Tag";
-   // alert(authorForm.elements[index]);
-   authorInput.onchange = function(){
-    authorValue=authorInput.value;
-    //alert(authorValue);
-};
-   // authorInput.setAttribute('value', authorValue); 
-    //authorValue=authorInput.value;
+    //////////////////////////////////////////////////////////////////////////////langs
     
 
       //shalini-Yass
@@ -3117,7 +3047,7 @@ var AJAX = AJAX || {};
 
     editModeChangeButtonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), editModeChangeSaveButton, editModeChangeDiscardButton);
 //shalini- added cancelButton
-    buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), publishButton, undoButton,locSelect,langSelect,styleSelect,authorInput);
+    buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), publishButton, undoButton,locSelect,langSelect);
 
     firstRowDiv = DOM.BUILDER.DIV(firstRowStyleAttributes,
       DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; top: 0; left: 110px; float: left;').values(), messageDiv), buttonDiv);
@@ -3231,7 +3161,7 @@ var AJAX = AJAX || {};
       keepOriginalCheckbox.onclick = function() {
         keepOriginal = keepOriginalCheckbox.checked;
       };
-	var backgroundImage = 'url(http://192.168.100.56:82/wsgi/images/container_save_new_page.png) no-repeat scroll 0 0 transparent';
+	var backgroundImage = 'url(http://192.168.100.100/wsgi/images/container_save_new_page.png) no-repeat scroll 0 0 transparent';
       var position = 'fixed';
       // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
       //   position = 'absolute';
@@ -3391,7 +3321,7 @@ var AJAX = AJAX || {};
           // show "poof" animation to indicate deletion
           poofPosition = DOM.findPosition(command.element);
 
-          poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://192.168.100.56:82/wsgi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
+          poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://192.168.100.100/wsgi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
           document.body.appendChild(poofDiv);
 
           UTIL.animate(function(index, last) {
@@ -3573,7 +3503,7 @@ var AJAX = AJAX || {};
 	  // str = buildDataString();
 	  // xhr.send(str);
 	  
-	  AJAX.post('http://dev.a11y.in/test',
+	  AJAX.post('http://192.168.100.100/test',
 		    buildDataString(), function(result) {
 			//   alert(buildDataString());
 			ajaxResultProcessor.processPublishedResponse(result);

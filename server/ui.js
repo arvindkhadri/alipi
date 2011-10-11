@@ -16,7 +16,7 @@ var a11ypi = {
 	var a = content.document.createElement("script");
 	for (j=0; j<v.length; j++) {  
 	    c = v[0].appendChild(a);
-	    c.setAttribute("src","http://dev.a11y.in/alipi/wsgi/page_edit.js");
+	    c.setAttribute("src","http://192.168.100.100/server/wsgi/page_edit.js");
 
 	    c.setAttribute("type","text/javascript");
 	}
@@ -58,7 +58,7 @@ var a11ypi = {
 		    }
 		}
 	    }
-	    xhr.open("POST","http://dev.a11y.in/menu",true);
+	    xhr.open("POST","http://192.168.100.100/menu",true);
 	    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    d = window.location.search.split('?')[1];
 	    var a =[];
@@ -148,7 +148,7 @@ var a11ypi = {
 	var lang= a['lang'];
 	var data="url="+encodeURIComponent(url)+"&lang="+encodeURIComponent(lang);
 	
-	xhr.open("POST","http://dev.a11y.in/replace",true);
+	xhr.open("POST","http://192.168.100.100/replace",true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send(data);//
     },

@@ -19,27 +19,27 @@ def start_page() :
     if request.args.has_key('lang') == False and request.args.has_key('blog') == False:
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
         script_test = root.makeelement('script')
-        root[0].append(script_test)
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        root.body.append(script_test)
+        script_test.set("src", "http://192.168.100.100/server/ui.js")
         script_test.set("type", "text/javascript")
         
         script_jq_mini = root.makeelement('script')
-        root[0].append(script_jq_mini)
+        root.body.append(script_jq_mini)
         script_jq_mini.set("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
         script_jq_mini.set("type", "text/javascript")
         
         style = root.makeelement('link')
-        root[0].append(style)
+        root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
+        style.set("href", "http://192.168.100.100/server/stylesheet.css")
 
         connection = pymongo.Connection('localhost',27017)
         db = connection['alipi']
         collection = db['post']
         if collection.find_one({"url" : request.args['foruri']}) is not None:
             ren_overlay = root.makeelement('div')
-            root[0].append(ren_overlay)
+            root.body.append(ren_overlay)
             ren_overlay.set("id", "ren_overlay")
             ren_overlay.text = "Narration(s) available"
 
@@ -51,7 +51,7 @@ def start_page() :
             close.set("value", "Close")
 
             overlay1 = root.makeelement('div')
-            root[0].append(overlay1)
+            root.body.append(overlay1)
             overlay1.set("id", "overlay1")
 
             opt = root.makeelement('option')
@@ -64,7 +64,7 @@ def start_page() :
             rpl.set("onclick", "a11ypi.ajax();")
         
         overlay2 = root.makeelement('div')
-        root[0].append(overlay2)
+        root.body.append(overlay2)
         overlay2.set("id", "overlay2")
         
         btn = root.makeelement('input')
@@ -78,8 +78,8 @@ def start_page() :
     elif request.args.has_key('lang') == True and request.args.has_key('blog') == False:
         d['lang'] = request.args['lang']
         script_test = root.makeelement('script')
-        root[0].append(script_test)
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        root.body.append(script_test)
+        script_test.set("src", "http://192.168.100.100/server/ui.js")
         script_test.set("type", "text/javascript")
         root.body.set("onload","a11ypi.ren()");
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
@@ -87,7 +87,7 @@ def start_page() :
 
     elif request.args.has_key('interactive') == True and request.args.has_key('blog') == True:
         script_test = root.makeelement('script')
-        root[0].append(script_test)
+        root.body.append(script_test)
         script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
         script_test.set("type", "text/javascript")
         root.body.set("onload","a11ypi.filter()");
@@ -96,17 +96,17 @@ def start_page() :
 
     elif request.args.has_key('interactive') == False and request.args.has_key('blog') == True:    
         script_test = root.makeelement('script')
-        root[0].append(script_test)
+        root.body.append(script_test)
         script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
         script_test.set("type", "text/javascript")
         
         script_jq_mini = root.makeelement('script')
-        root[0].append(script_jq_mini)
+        root.body.append(script_jq_mini)
         script_jq_mini.set("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
         script_jq_mini.set("type", "text/javascript")
         
         style = root.makeelement('link')
-        root[0].append(style)
+        root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
         style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
@@ -116,7 +116,7 @@ def start_page() :
         collection = db['post']
         if collection.find_one({"url" : request.args['foruri']}) is not None:
             ren_overlay = root.makeelement('div')
-            root[0].append(ren_overlay)
+            root.body.append(ren_overlay)
             ren_overlay.set("id", "ren_overlay")
             ren_overlay.text = "Narration(s) available"
 
@@ -128,7 +128,7 @@ def start_page() :
             close.set("value", "Close")
 
             overlay1 = root.makeelement('div')
-            root[0].append(overlay1)
+            root.body.append(overlay1)
             overlay1.set("id", "overlay1")
 
             opt = root.makeelement('option')
@@ -141,7 +141,7 @@ def start_page() :
             rpl.set("onclick", "a11ypi.ajax1();")
         
         overlay2 = root.makeelement('div')
-        root[0].append(overlay2)
+        root.body.append(overlay2)
         overlay2.set("id", "overlay2")
         
         btn = root.makeelement('input')
@@ -161,7 +161,7 @@ def start_page() :
 import logging
 from logging import FileHandler
 
-fil = FileHandler('/var/www/dev/alipi/logme',mode='a')
+fil = FileHandler('/var/www/logme',mode='a')
 fil.setLevel(logging.ERROR)
 app.logger.addHandler(fil)
 
