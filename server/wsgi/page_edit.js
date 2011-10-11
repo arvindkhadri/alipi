@@ -1888,8 +1888,13 @@ var AJAX = AJAX || {};
 	  
 
 	  var xmlhttp = new XMLHttpRequest();
-	  var url = window.location;
-	  var data="url="+encodeURIComponent(window.location.search.split('=')[1])+"&xpath="+encodeURIComponent(xpath);
+	  d = window.location.search.split('?')[1];
+	  var a =[];
+	  for (var i = 0;i<d.split('&').length;i++){ 
+	      a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
+	    }
+	  var url = a['foruri'];
+	  var data="url="+encodeURIComponent(url)+"&xpath="+encodeURIComponent(xpath);
 	  xmlhttp.onreadystatechange = function()
 	  {
 	      if(xmlhttp.readyState == 4 && xmlhttp.status== 200)
@@ -2518,7 +2523,7 @@ var AJAX = AJAX || {};
       self.popdown();
     };
 
-    var linkImage = 'http://x.a11y.in/alipi/wsgi/images/link.png';
+    var linkImage = 'http://192.168.100.56:82/wsgi/images/link.png';
     linkButton = createActionButton(linkImage, 'Link', rightBorderStyle);
     linkButton.onclick = function linkButtonOnClick() {
       popupControl.showAction(linkUpdateAction);
@@ -2539,7 +2544,7 @@ var AJAX = AJAX || {};
       return false;
     };
 //shalini
-/*    var deleteImage = 'http://x.a11y.in/alipi/wsgi/images/delete_trashcan.png';
+/*    var deleteImage = 'http://192.168.100.56:82/wsgi/images/delete_trashcan.png';
     deleteButton = createActionButton(deleteImage, 'Delete', 'border-right: none;');
     deleteButton.onclick = function deleteButtonOnClick() {
       deleteElement();
@@ -2699,7 +2704,7 @@ var AJAX = AJAX || {};
     };
 
 //shalini
-/*    var deleteImage = 'http://x.a11y.in/alipi/wsgi/images/delete_trashcan.png';
+/*    var deleteImage = 'http://192.168.100.56:82/wsgi/images/delete_trashcan.png';
     deleteButton = createActionButton(deleteImage, 'Delete', 'border-right: none;');
     deleteButton.onclick = function deleteButtonOnClick() {
       deleteElement();
@@ -2728,7 +2733,7 @@ var AJAX = AJAX || {};
     };
 
 
-    var linkImage = 'http://x.a11y.in/alipi/wsgi/images/link.png';
+    var linkImage = 'http://192.168.100.56:82/wsgi/images/link.png';
     linkButton = createActionButton(linkImage, 'Link', rightBorderStyle);
     linkButton.onclick = function linkButtonOnClick() {
       popupControl.showAction(linkUpdateAction);
@@ -2833,9 +2838,9 @@ var AJAX = AJAX || {};
 // Ajay - created
     undoButtonStyleAttributes = panelButtonAttributes.addStyle('width:15%; color:#FFF; float:left; height: 36px; font-weight:bold; font-size:18px; text-align:center; margin-top: 8px; margin-left:45%; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
 
-    locSelectAttributes = panelButtonAttributes.addStyle('width:23%; color:#FFF; float:left; font-weight:bold; font-size:18px; text-align:center; margin-top:8px; margin-left:-43%; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
+    langSelectAttributes = panelButtonAttributes.addStyle('width:23%; color:#FFF; float:left; font-weight:bold; font-size:18px; text-align:center; margin-top:8px; margin-left:-43%; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
 
-    langSelectAttributes = panelButtonAttributes.addStyle('width:25%; color:#FFF; float:left; font-weight:bold; font-size:18px; text-align:center; margin-top:8px; margin-left:-70%; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
+    locSelectAttributes = panelButtonAttributes.addStyle('width:25%; color:#FFF; float:left; font-weight:bold; font-size:18px; text-align:center; margin-top:8px; margin-left:-70%; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
 
     styleSelectAttributes = normalFontAttributes.addStyle('width:20%; color:#FFF; float:left; font-weight:bold; font-size:18px; text-align:center; margin-top:8px; margin-left:-92%; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
 
@@ -2879,6 +2884,7 @@ var AJAX = AJAX || {};
     			    json= JSON.parse(xhrloc.responseText);
 			    /* parsing json response*/ 
 		           var loc=[];
+			   var texts=[];
 			    loc.push('--Locations--');
 			    //loc.push('*');
     			    locations = json["state"];
@@ -2896,11 +2902,14 @@ var AJAX = AJAX || {};
                                 var locindex=locSelect.selectedIndex;
 			 	locName=loc[locindex];
             			if(locName!='None of the above'){
+					for(var i=0;i<locations[locindex-1]["lang"].length;i++){
+							texts.push(locations[locindex-1].lang[i]);
+					}
 					if(langSelect.firstChild==null){
-						for(var vp=0;vp<locations[locindex-1]["lang"].length;vp++)
+						for(var vp=0;vp<texts.length;vp++)
 						{	
                 					var op = document.createElement('option');
-                					op.text = locations[locindex-1].lang[vp];
+                					op.text = texts[vp];
                 					langSelect.appendChild(op);
 						}//end for
 					}//end if
@@ -2908,17 +2917,16 @@ var AJAX = AJAX || {};
 						while(langSelect.firstChild!=null){
 							langSelect.removeChild(langSelect.firstChild);
 						}//end while
-					for(var vp=0;vp<locations[locindex-1]["lang"].length;vp++)
-					{
-                			var op = document.createElement('option');
-                			op.text = locations[locindex-1].lang[vp];
-                			langSelect.appendChild(op);
-					}//end for
+						for(var vp=0;vp<texts.length;vp++)
+						{
+                					var op = document.createElement('option');
+                					op.text = texts[vp];
+                					langSelect.appendChild(op);
+						}//end for
 					}//end else 		
 					
 				}//end if
 				else{
-					var texts = [];
 					while(langSelect.firstChild!=null){
 						langSelect.removeChild(langSelect.firstChild);
 					}//end while
@@ -2945,6 +2953,10 @@ var AJAX = AJAX || {};
 				}//end else
 				
 				}//end onchange
+				langSelect.onchange=function(){
+                                var langindex=langSelect.selectedIndex;
+					langName=texts[langindex];
+				}
     			}
 		    
     		    /* end parsing json response*/ 
@@ -2958,176 +2970,7 @@ var AJAX = AJAX || {};
     xhrloc.open("GET","http://192.168.100.100/getData",true);
     xhrloc.send();//
 
-//-----------------------------------------------------------------end locselect
-
-//    //shalini-Yass
-//    locSelect = DOM.BUILDER.SELECT(locSelectAttributes);
-//    ////////////////////////////////////////////////////////////////////////////attributes
-//    var xhrloc = new XMLHttpRequest();
-//    xhrloc.onreadystatechange = function()
-//    	{
-//    	    if(xhrloc.readyState == 4)
-//    		{
-//		    if (xhrloc.status == 200)
-//    			{
-//    			    json= JSON.parse(xhrloc.responseText);
-//			    /* parsing json response*/ 
-//		           var loc=[];
-//			    loc.push('--Locations--');
-//			    loc.push('*');
-//    			    locations = json["Locations"];
-//    			    for(var i=0;i<locations.length;i++)
-//    				{
-//				    loc.push('*'+locations[i]["name"]);
-//				    //locSelect.appendChild(c);
-//				    states = locations[i]["states"];
-//    				    for(var j=0;j<states.length;j++)
-//    					{
-//					    
-//					    //var c=DOM.BUILDER.OPTION('-'+states[j]["name"]);
-//					    loc.push('-'+states[j]["name"]);
-//					   // locSelect.appendChild(c);
-//					    towns = states[j]["towns"];
-//    					    for(var k=0;k<towns.length;k++)
-//    						{
-//    						    //var c=DOM.BUILDER.OPTION(towns[k]["name"]);
-//    						    //locSelect.appendChild(c);
-//    						    loc.push(towns[k]["name"]);
-//    						}
-//    					}
-//					
-//					locSelect.onchange=function(){
-//					
-//						}
-//    				}
-//      				for(i=0;i<loc.length;i++)	{
-//	      				x=DOM.BUILDER.OPTION(loc[i]);
-//	      				locSelect.add(x,null);
-//	  			}
-//				
-//				locSelect.onchange=function(){
-//                                var locindex=locSelect.selectedIndex;
-//			 	locName=loc[locindex];
-//				
-//				}
-//    			}
-//		    
-//    		    /* end parsing json response*/ 
-//		    
-//    		    else {
-//    			alert("couldn't get data file: error number "+xhrloc.status);
-//    		    }
-//    		}
-//    	}
-//    
-//    xhrloc.open("GET","http://x.a11y.in/alipi/getData",true);
-//    xhrloc.send();//
-//    //////////////////////////////////////////////////////////////////////////////langs
-//    langSelect = DOM.BUILDER.SELECT(langSelectAttributes);
-//    var xhrlang = new XMLHttpRequest();
-//    xhrlang.onreadystatechange = function()
-//    	{
-//    	    if(xhrlang.readyState == 4)
-//    		{
-//		    
-//    		    if (xhrlang.status == 200)
-//    			{
-//    			    json= JSON.parse(xhrlang.responseText);
-//			    
-//    			    /* parsing json response*/ 
-//    			    var lang=[];
-//			    lang.push('--Languages--');
-//			    lang.push('*');
-//    			    languages = json["Languages"];
-//    			    for(var i=0;i<languages.length;i++)
-//    				{
-//    				   lang.push(languages[i]["name"]);
-//    				   // var c=DOM.BUILDER.OPTION(languages[i]["name"]);
-//    				   // langSelect.appendChild(c);
-//				    
-//    				    dialects = languages[i]["dialects"];
-//    				    for(var j=0;j<dialects.length;j++)
-//    					{
-//    					    lang.push(dialects[j]["name"]);
-//				    
-// 					}
-// 				}
-//      				for(i=0;i<lang.length;i++)	{
-//	      				x=DOM.BUILDER.OPTION(lang[i]);
-//	      				langSelect.add(x,null);
-//	  			}
-//				langSelect.onchange=function(){
-//                                var langindex=langSelect.selectedIndex;
-//			 	langName=lang[langindex];
-//				
-//				}
-// 			}
-//		    
-// 		    /* end parsing json response*/ 
-//		    
-// 		    else {
-//     			alert("couldn't get data file: error number "+xhrlang.status);
-//     		    }
-//     		}
-//     	}
-//    
-//     xhrlang.open("GET","http://x.a11y.in/alipi/getData",true);
-//     xhrlang.send();//// this is ignored on the server side; for now it just dumps data.json
-//    
-//    ///////////////////////////////////////////////////////////////////////////////////////// Style //////////////////////////////////
-//    styleSelect = DOM.BUILDER.SELECT(styleSelectAttributes);
-//  var xhr = new XMLHttpRequest();
-//     xhr.onreadystatechange = function()
-//     	{
-//     	    if(xhr.readyState == 4)
-//     		{
-//	    
-//    		    if (xhr.status == 200)
-//    			{
-//    			    json= JSON.parse(xhr.responseText);
-//			    
-//    			    /* parsing json response*/ 
-//    			   
-//    			    var styles = []; 
-//			    styles.push('--Style--');//toto
-//			    styles.push('*');//toto
-//    			    style= json["Style"];
-//    			    for(var i=0;i<style.length;i++)
-//    				{
-// 				    styles.push(style[i]["name"]);
-// 				}
-//      			    for(i=0;i<styles.length;i++)	{
-//	      				x=DOM.BUILDER.OPTION(styles[i]);
-//	      				styleSelect.add(x,null);
-//	  			}
-//				
-//			    styleSelect.onchange=function(){
-//                                var styleindex=styleSelect.selectedIndex;
-//			 	styleName=styles[styleindex];
-//			    }	
-//
-//    			}
-//		    
-//    		    /* end parsing json response*/ 
-//		    
-//    		    else {
-//    			alert("couldn't get data file: error number "+xhr.status);
-//    		    }
-//    		}
-//    	}
-//   
-//    xhr.open("GET","http://x.a11y.in/alipi/getData",true);
-//    xhr.send();
-///////////author//////////////////////////////// 
-//    authorInput = DOM.BUILDER.INPUT(authorInputAttributes);
-//      authorInput.placeholder = "Author / Tag";
-//   // alert(authorForm.elements[index]);
-//   authorInput.onchange = function(){
-//    authorValue=authorInput.value;
-//    //alert(authorValue);
-//};
-   // authorInput.setAttribute('value', authorValue); 
-    //authorValue=authorInput.value;
+    //////////////////////////////////////////////////////////////////////////////langs
     
 
       //shalini-Yass
@@ -3644,17 +3487,17 @@ var AJAX = AJAX || {};
 	  // 	  try
 	  // 	  {
 	  // 	      if (xhr.response != '' || xhr.responseText != '') {
-	  // 		      window.open("http://x.a11y.in/alipi/app/printme?token="+xhr.responseText.split('=')[1]);
+	  // 		      window.open("http://192.168.100.56:82/app/printme?token="+xhr.responseText.split('=')[1]);
 	  // 	      }
 	  // 	  }
 	  // 	  catch(err)
 	  // 	  {
-	  // 	       window.open("http://x.a11y.in/alipi/app/printme?token="+xhr.response.split('=')[1]);
+	  // 	       window.open("http://192.168.100.56:82/app/printme?token="+xhr.response.split('=')[1]);
 	  // 	  }
 	  //     }
 	  // }
 	  
-	  // xhr.open('POST', 'http://x.a11y.in/alipi/app/auth', true);
+	  // xhr.open('POST', 'http://192.168.100.56:82/app/auth', true);
 	  // xhr.setRequestHeader('Content-Type', 'text/plain');
 	  
 	  // str = buildDataString();
@@ -3689,11 +3532,17 @@ var AJAX = AJAX || {};
 
 	buffer = new UTIL.StringBuffer();
 
+	d = window.location.search.split('?')[1];
+	var a =[];
+	for (var i = 0;i<d.split('&').length;i++){ 
+	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
+	}
+	var url = a['foruri'];
       //Yass
       UTIL.forEach(history, function(index, command) {
 	  buffer.append('###'); //separates the commands
 	  buffer.append('url=');  //url                                                     //removed '&' on purpose
-	  buffer.append(encodeURIComponent(window.location.search.split('=')[1]));
+	  buffer.append(encodeURIComponent(url));
 	  buffer.append('&lang=');//lang
 	  buffer.append(encodeURIComponent(langName));
 	  buffer.append('&location=');//location
