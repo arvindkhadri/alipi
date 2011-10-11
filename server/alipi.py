@@ -11,49 +11,47 @@ app = Flask(__name__)
 def start_page() :
     d = {}
     d['foruri'] = request.args['foruri']
-    # myhandler = urllib2.ProxyHandler({'http':'http://proxy.iiit.ac.in:8080/'})
-    # opener = urllib2.build_opener(myhandler)
-    # urllib2.install_opener(opener)
-    a = urllib2.urlopen(d['foruri'])
+    myhandler1 = urllib2.Request(d['foruri'],headers={'User-Agent':"Mozilla/5.0 (X11; U; Linux i686) Gecko/20071127 Firefox/2.0.0.11"}) #A fix to send user-agents, so that sites render properly.
+    a = urllib2.urlopen(myhandler1)
     page = a.read()
     a.close()
     root = lxml.html.parse(StringIO.StringIO(page)).getroot()
-    if request.args.has_key('lang') == False:
+    if request.args.has_key('lang') == False and request.args.has_key('blog') == False:
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
         script_test = root.makeelement('script')
-        root[0].append(script_test)
-        script_test.set("src", "http://localhost/alipi-1/server/ui.js")
+        root.body.append(script_test)
+        script_test.set("src", "http://192.168.100.100/server/ui.js")
         script_test.set("type", "text/javascript")
         
         script_jq_mini = root.makeelement('script')
-        root[0].append(script_jq_mini)
+        root.body.append(script_jq_mini)
         script_jq_mini.set("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
         script_jq_mini.set("type", "text/javascript")
         
         style = root.makeelement('link')
-        root[0].append(style)
+        root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://localhost/alipi-1/server/stylesheet.css")
+        style.set("href", "http://192.168.100.100/server/stylesheet.css")
 
         connection = pymongo.Connection('localhost',27017)
         db = connection['alipi']
         collection = db['post']
         if collection.find_one({"url" : request.args['foruri']}) is not None:
             ren_overlay = root.makeelement('div')
-            root[0].append(ren_overlay)
+            root.body.append(ren_overlay)
             ren_overlay.set("id", "ren_overlay")
             ren_overlay.text = "Narration(s) available"
 
             close = root.makeelement('input')
             ren_overlay.append(close)
-            close.set("id", "close-msg")
+            close.set("id", "close-button")
             close.set("type", "submit")
-            close.set("onClick", "a11ypi.close_msg();")
+            close.set("onClick", "a11ypi.close();")
             close.set("value", "Close")
 
             overlay1 = root.makeelement('div')
-            root[0].append(overlay1)
+            root.body.append(overlay1)
             overlay1.set("id", "overlay1")
 
             opt = root.makeelement('option')
@@ -66,7 +64,7 @@ def start_page() :
             rpl.set("onclick", "a11ypi.ajax();")
         
         overlay2 = root.makeelement('div')
-        root[0].append(overlay2)
+        root.body.append(overlay2)
         overlay2.set("id", "overlay2")
         
         btn = root.makeelement('input')
@@ -75,41 +73,95 @@ def start_page() :
         btn.set("type", "submit")
         btn.set("onClick", "a11ypi.testContext();")
         btn.set("value", "EDIT")
-
         return lxml.html.tostring(root)
 
-    else:
+    elif request.args.has_key('lang') == True and request.args.has_key('blog') == False:
         d['lang'] = request.args['lang']
         script_test = root.makeelement('script')
-        root[0].append(script_test)
-        script_test.set("src", "http://localhost/alipi-1/server/ui.js")
+        root.body.append(script_test)
+        script_test.set("src", "http://192.168.100.100/server/ui.js")
         script_test.set("type", "text/javascript")
         root.body.set("onload","a11ypi.ren()");
-        # connection = pymongo.Connection('localhost',27017)
-        # db = connection['alipi']
-        # collection = db['post']
-        # query = collection.group(
-        #     key = Code('function(doc){return {"xpath" : doc.xpath, "url": doc.url}}'),
-        #     condition={"url" : request.args['foruri'], "lang" : request.args['lang']},
-        #     initial={'narration': []},
-        #     reduce=Code('function(doc,out){out.narration.push(doc);}')
-        #     )
-        # if len(query)==0:
-        #     return 'empty'
-        # else:
-        #     for key in query:
-        #         post = key['narration'][len(key['narration'])-1] #for now, we only take the first re-narations, after we'll pick regarding filters.
-           
-        #         el = root.xpath('.//*[' + post['xpath'].split('/',2)[2].split('[',1)[1].lower())
-        #         el[0].text = post['data']
+        root.make_links_absolute(d['foruri'], resolve_base_href = True)
+        return lxml.html.tostring(root)
 
+    elif request.args.has_key('interactive') == True and request.args.has_key('blog') == True:
+        script_test = root.makeelement('script')
+        root.body.append(script_test)
+        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("type", "text/javascript")
+        root.body.set("onload","a11ypi.filter()");
+        root.make_links_absolute(d['foruri'], resolve_base_href = True)
+        return lxml.html.tostring(root)
+
+    elif request.args.has_key('interactive') == False and request.args.has_key('blog') == True:    
+        script_test = root.makeelement('script')
+        root.body.append(script_test)
+        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("type", "text/javascript")
+        
+        script_jq_mini = root.makeelement('script')
+        root.body.append(script_jq_mini)
+        script_jq_mini.set("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
+        script_jq_mini.set("type", "text/javascript")
+        
+        style = root.makeelement('link')
+        root.body.append(style)
+        style.set("rel","stylesheet")
+        style.set("type", "text/css")
+        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
+
+        connection = pymongo.Connection('localhost',27017)
+        db = connection['alipi']
+        collection = db['post']
+        if collection.find_one({"url" : request.args['foruri']}) is not None:
+            ren_overlay = root.makeelement('div')
+            root.body.append(ren_overlay)
+            ren_overlay.set("id", "ren_overlay")
+            ren_overlay.text = "Narration(s) available"
+
+            close = root.makeelement('input')
+            ren_overlay.append(close)
+            close.set("id", "close-button")
+            close.set("type", "submit")
+            close.set("onClick", "a11ypi.close();")
+            close.set("value", "Close")
+
+            overlay1 = root.makeelement('div')
+            root.body.append(overlay1)
+            overlay1.set("id", "overlay1")
+
+            opt = root.makeelement('option')
+            opt.text = "Choose a narration"
+
+            rpl = root.makeelement('select')
+            overlay1.append(rpl)
+            rpl.append(opt)
+            rpl.set("id", "menu-button")
+            rpl.set("onclick", "a11ypi.ajax1();")
+        
+        overlay2 = root.makeelement('div')
+        root.body.append(overlay2)
+        overlay2.set("id", "overlay2")
+        
+        btn = root.makeelement('input')
+        overlay2.append(btn)
+        btn.set("id", "edit-button")
+        btn.set("type", "submit")
+        btn.set("onClick", "a11ypi.testContext();")
+        btn.set("value", "EDIT")
+        # script_test1 = root.makeelement('script')
+        # root[0].append(script_test1)
+        # script_test1.set("src", "http://192.168.100.56:82/server/ui.js")
+        # script_test1.set("type", "text/javascript")
+        # root.body.set("onload","a11ypi.filter()");
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
         return lxml.html.tostring(root)
 
 import logging
 from logging import FileHandler
 
-fil = FileHandler('/var/www/alipi-1/server/logme',mode='a')
+fil = FileHandler('/var/www/logme',mode='a')
 fil.setLevel(logging.ERROR)
 app.logger.addHandler(fil)
 
