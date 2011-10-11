@@ -1,6 +1,7 @@
 import json
 from pymongo import *
 from bson.code import *
+from urllib import unquote_plus 
 def application(environ, start_response):
     #set the headers
     status = '200 OK'
@@ -10,28 +11,50 @@ def application(environ, start_response):
     try:
         #read the request
         recieved = environ['wsgi.input'].read(int(environ['CONTENT_LENGTH']))
-        #print >> environ['wsgi.errors'], recieved
+        d={}
+        parameter_pairs = recieved.split('&') 
+        for parameter_pair in parameter_pairs:        
+            parameter_pair = parameter_pair.split('=',1) 
+            d[unquote_plus(parameter_pair[0])]  = unquote_plus(parameter_pair[1])
+
     except KeyError:
         #print >> environ['wsgi.errors'], recieved
         return 'empty'
     
     else:
         #connect to the DB
-        connection = Connection('localhost',27017)
-        db = connection['alipi']
-        collection = db['post']
+        if d.has_key('option') == False:
+            connection = Connection('localhost',27017)
+            db = connection['alipi']
+            collection = db['post']
         #get the ren languages for the received url
-        langForUrl = collection.group(
-            key = Code('function(doc){return {"url" : doc.url}}'),
-            condition={"url" : recieved},
-            initial={'lang': []},
-            reduce=Code('function(doc, out){if (out.lang.indexOf(doc.lang) == -1) out.lang.push(doc.lang)}') #here xpath for test
+            langForUrl = collection.group(
+                key = Code('function(doc){return {"url" : doc.url}}'),
+                condition={"url" : d['url']},
+                initial={'lang': []},
+                reduce=Code('function(doc, out){if (out.lang.indexOf(doc.lang) == -1) out.lang.push(doc.lang)}') #here xpath for test
             )
         
         #send the response
-        if (langForUrl):
-            return json.dumps(langForUrl[0]['lang'])
+            if (langForUrl):
+                return json.dumps(langForUrl[0]['lang'])
+            else:
+                return "empty"
         else:
-            return "empty"
-       
+            connection = Connection('localhost',27017)
+            db = connection['alipi']
+            collection = db['post']
+        #get the ren languages for the received url
+            langForUrl = collection.group(
+                key = Code('function(doc){return {"url" : doc.url}}'),
+                condition={"url" : d['url'],"blog":{'$regex':'/'+d['option']+'.*/'}},
+                initial={'lang': []},
+                reduce=Code('function(doc, out){if (out.lang.indexOf(doc.lang) == -1) out.lang.push(doc.lang)}') #here xpath for test
+            )
         
+        #send the response
+            if (langForUrl):
+                return json.dumps(langForUrl[0]['lang'])
+            else:
+                return "empty"
+
