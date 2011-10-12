@@ -1896,7 +1896,6 @@
 						while(langSelect.firstChild!=null){
 							langSelect.removeChild(langSelect.firstChild);
 						}//end while
-						alert(texts);
 						for(var vp=0;vp<texts.length;vp++)
 						{
 							
@@ -2240,7 +2239,7 @@
 		      }
 		  }
 	  }
-	  xmlhttp.open("POST","http://192.168.100.100/narration",true);
+	  xmlhttp.open("POST","http://dev.a11y.in/narration",true);
 	  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	  xmlhttp.send(data);
 	  
@@ -2788,7 +2787,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	    self.popdown();
 	};
 
-	var backgroundImage = 'http://x.a11y.in/alipi/wsgi/images/replace_image.png';
+	var backgroundImage = 'http://dev.a11y.in/alipi/images/replace_image.png';
 	backgroundButton = createActionButton(backgroundImage, backgroundButtonText, 'border-right: none;' + leftBorderStyle);
 	backgroundButton.onclick = function backgroundButtonOnClick() {
 	    popupControl.showAction(imageUpdateAction);
@@ -2801,7 +2800,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	   self.popdown();
 	   };
 
-	   var linkImage = 'http://x.a11y.in/alipi/wsgi/images/link.png';
+	   var linkImage = 'http://dev.a11y.in/alipi/images/link.png';
 	   linkButton = createActionButton(linkImage, 'Link', rightBorderStyle);
 	   linkButton.onclick = function linkButtonOnClick() {
 	   popupControl.showAction(linkUpdateAction);
@@ -2815,7 +2814,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	};
 
 
-	var renImage = 'http://x.a11y.in/alipi/wsgi/images/renarration.png';
+	var renImage = 'http://dev.a11y.in/alipi/images/renarration.png';
 	renButton = createActionButton(renImage, 'Renarration', 'border-right: none;');
 	renButton.onclick = function renButtonOnClick() {
 	    popupControl.showAction(renUpdateAction);
@@ -2824,7 +2823,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	};
 
 	//shalini
-	/*    var deleteImage = 'http://x.a11y.in/alipi/wsgi/images/delete_trashcan.png';
+	/*    var deleteImage = 'http://dev.a11y.in/alipi/images/delete_trashcan.png';
 	      deleteButton = createActionButton(deleteImage, 'Delete', 'border-right: none;');
 	      deleteButton.onclick = function deleteButtonOnClick() {
 	      deleteElement();
@@ -2950,7 +2949,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	    return false;
 	};
 
-	var doneImage = 'http://x.a11y.in/alipi/wsgi/images/done.png';
+	var doneImage = 'http://dev.a11y.in/alipi/images/done.png';
 	doneButton = createActionButton(doneImage, 'Done', 'border-right: none;' + leftBorderStyle);
 	doneButton.onclick = function doneButtonOnClick() {
 	    self.popdown(true);
@@ -2958,7 +2957,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	};
 	
 
-	var renImage = 'http://x.a11y.in/alipi/wsgi/images/renarration.png';
+	var renImage = 'http://dev.a11y.in/alipi/images/renarration.png';
 	renButton = createActionButton(renImage, 'Renarration', 'border-right: none;');
 	renButton.onclick = function renButtonOnClick() {
 	    popupControl.showAction(renUpdateAction);
@@ -2984,7 +2983,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
     };
 
 	//shalini
-	/*    var deleteImage = 'http://x.a11y.in/alipi/wsgi/images/delete_trashcan.png';
+	/*    var deleteImage = 'http://dev.a11y.in/alipi/images/delete_trashcan.png';
 	      deleteButton = createActionButton(deleteImage, 'Delete', 'border-right: none;');
 	      deleteButton.onclick = function deleteButtonOnClick() {
 	      deleteElement();
@@ -2997,7 +2996,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	    self.popdown(true);
 	};
 
-	var backgroundImage = 'http://x.a11y.in/alipi/wsgi/images/replace_image.png';
+	var backgroundImage = 'http://dev.a11y.in/alipi/images/replace_image.png';
 	backgroundButton = createActionButton(backgroundImage, 'BG&nbsp;Image', 'border-right: none;');
 	backgroundButton.onclick = function backgroundButtonOnClick() {
 	    popupControl.showAction(imageUpdateAction);
@@ -3013,7 +3012,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	      };
 
 
-	      var linkImage = 'http://x.a11y.in/alipi/wsgi/images/link.png';
+	      var linkImage = 'http://dev.a11y.in/alipi/images/link.png';
 	      linkButton = createActionButton(linkImage, 'Link', rightBorderStyle);
 	      linkButton.onclick = function linkButtonOnClick() {
 	      popupControl.showAction(linkUpdateAction);
@@ -3358,7 +3357,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	    keepOriginalCheckbox.onclick = function() {
 		keepOriginal = keepOriginalCheckbox.checked;
 	    };
-	    var backgroundImage = 'url(http://x.a11y.in/alipi/wsgi/images/container_save_new_page.png) no-repeat scroll 0 0 transparent';
+	    var backgroundImage = 'url(http://dev.a11y.in/alipi/images/container_save_new_page.png) no-repeat scroll 0 0 transparent';
 	    var position = 'fixed';
 	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
 	    //   position = 'absolute';
@@ -3518,7 +3517,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 		// show "poof" animation to indicate deletion
 		poofPosition = DOM.findPosition(command.element);
 
-		poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://x.a11y.in/alipi/wsgi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
+		poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://dev.a11y.in/alipi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
 		document.body.appendChild(poofDiv);
 
 		UTIL.animate(function(index, last) {
