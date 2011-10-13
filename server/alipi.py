@@ -154,10 +154,10 @@ def start_page() :
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
         return lxml.html.tostring(root)
 
-import logging
+import logging,os
 from logging import FileHandler
 
-fil = FileHandler('/var/www/logme',mode='a')
+fil = FileHandler(os.path.join(os.path.dirname(__file__),'logme'),mode='a') #Fixing changing directory names, os module will make logme work irrespective of whether it is being run in a server or a local server 
 fil.setLevel(logging.ERROR)
 app.logger.addHandler(fil)
 
