@@ -1,4 +1,3 @@
-
 (function( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) {
 
     var console, PopupControl, M4ImageElement,locName='',langName = '',styleName='',authorValue;
@@ -1099,20 +1098,29 @@
     	    return -1;
 	};
 
-	DOM.makePath = function makePath(currentNode){
-    	    var path = '';
-    	    while(! currentNode.id)
-    	    {
-    		index = DOM.getIndex(currentNode);
-    		//alert(index); //
-    		path = currentNode.tagName+'['+index+']/'+path;
-    		currentNode = currentNode.parentNode;
-    	    }
-    	    path = '//'+currentNode.tagName+'[@id='+"'"+currentNode.id+"'"+']/'+path;
-    	    path = path.substring(0, path.length -1);
-    	    return path;
+	DOM.getElementIdx = function getElementIdx(elt)
+	{
+	    var count = 1;
+	    for (var sib = elt.previousSibling; sib ; sib = sib.previousSibling)
+	    {
+		if(sib.nodeType == 1 && sib.tagName == elt.tagName)count++
+	    }
+    
+	    return count;
 	};
-
+	
+	DOM.makePath = function makePath(elt){
+    	    var path = '';
+	    for (; elt && elt.nodeType == 1; elt = elt.parentNode)
+	    {
+		idx = DOM.getElementIdx(elt);
+		xname = elt.tagName;
+		if (idx > 1) xname += "[" + idx + "]";
+		path = "/" + xname + path;
+	    }
+ 
+	    return path;
+	};
 
 	DOM.evaluate = function evaluate(path,newcontent){
 	    var nodes = content.document.evaluate(path, content.document, null, XPathResult.ANY_TYPE,null);
@@ -1131,8 +1139,6 @@
 			
 		    }
 		    else{
-			//alert(vnew);
-			//alert(newcontent);
 			result.textContent = newcontent;
 		    }
 		    result=nodes.iterateNext();
@@ -1675,7 +1681,7 @@
 	messageOverlay.appendChild(messageDescription);
 
 	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'https://bo.lt/app/asset/page-edit/pencil_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'}).addStyle('position: relative; margin-right: 10px; vertical-align: middle;').values());
-	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'OK');
+	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none; ').values(), 'OK');
 
 	// Ajay - Changed lot of colors - Not using, not sure
 	editButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('color:#FFF; margin-left: auto; margin-right: auto; width: 100px; height: 36px; display: block; float: none; margin-top: 30px; margin-bottom: 30px; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
@@ -1704,7 +1710,7 @@
 	messageOverlay.appendChild(editButton);
 
 	document.body.appendChild(backgroundDiv);
-	    document.body.appendChild(messageOverlay);
+	document.body.appendChild(messageOverlay);
 
 
 	this.show = function show( textToDisplay) {
@@ -1757,8 +1763,8 @@
 		//   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
 		// }
 	    }  else {
-//		messageOverlay.style.display = 'none';
-//		backgroundDiv.style.display = 'none';
+		//		messageOverlay.style.display = 'none';
+		//		backgroundDiv.style.display = 'none';
 		self.hide();
 	    }
 	};
@@ -1782,33 +1788,33 @@
 
 	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'msgoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow:  0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius-topright:10px;-moz-border-radius-bottomright:10px;-moz-border-radius-topleft:10px; -moz-border-radius-bottomleft:10px;-webkit-border-top-right-radius:10px; -webkit-border-bottom-right-radius:10px;-webkit-border-top-left-radius:10px; -webkit-border-bottom-left-radius:10px; position:fixed; left:10px; top:10px; bottom:10px; right:10px; width:98%; height:98%; background:#000; display:none; background: -webkit-gradient(linear, 0% 100%, 0% 0%, from(#000), to(#202020)); background: -moz-linear-gradient(bottom, #000, #202020);').values());
 
-	step1 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; float:left; margin:30px 0 0 100px; font-size: 30px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), 'STEP - 1');
+	step1 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; font-size: 22px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), 'Please provide all the details below');
 
-	step2 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; float:left; margin:30px 0 0 200px; font-size: 30px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), 'STEP - 2');
+//	step2 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; float:left; margin:20px 0 0 210px; font-size: 30px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), '2');
 
-	step3 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; float:left; margin:30px 0 0 200px; font-size: 30px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), 'STEP - 3');
+//	step3 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; float:left; margin:20px 0 0 210px; font-size: 30px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), '3');
 
 	messageOverlay.appendChild(step1);
-	messageOverlay.appendChild(step2);
-	messageOverlay.appendChild(step3);
+//	messageOverlay.appendChild(step2);
+//	messageOverlay.appendChild(step3);
 
-//	messageDescription = DOM.BUILDER.P(normalFontAttributes.addStyle('color:#FFF; font-weight: normal; font-size: 14px; line-height: 22px; width:450px; margin-left: auto; margin-right: auto; text-align: center;').values(), 'HELLO');
-//	messageOverlay.appendChild(messageDescription);
+	//	messageDescription = DOM.BUILDER.P(normalFontAttributes.addStyle('color:#FFF; font-weight: normal; font-size: 14px; line-height: 22px; width:450px; margin-left: auto; margin-right: auto; text-align: center;').values(), 'HELLO');
+	//	messageOverlay.appendChild(messageDescription);
 
 	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'https://bo.lt/app/asset/page-edit/pencil_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'}).addStyle('position: relative; margin-right: 10px; vertical-align: middle;').values());
 	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'OK');
 
 	//---------------------------- state & language target --------------------------
 	locSelectAttributes = panelButtonAttributes.addStyle('position:absolute; top:25%; left:05%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-//	step2 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; float:left; margin:30px 0 0 200px; font-size: 30px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), 'STEP - 2');
+	//	step2 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; float:left; margin:30px 0 0 200px; font-size: 30px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), 'STEP - 2');
 	locSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:24%; left:05%; width:auto; font-size: 14px; font-weight: bold; background: transparent; color: #FFF; display:inline-block;').values());
 	locSelectLabel.innerHTML = 'Select any state';
 
-	langSelectAttributes = panelButtonAttributes.addStyle('position:absolute; top:50%; left:05%; width:23%; color:#FFF; text-align:center; font-weight:bold; font-size:18px; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
+	langSelectAttributes = panelButtonAttributes.addStyle('position:absolute; top:50%; left:05%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
 	langSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:49%; left:05%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
 	langSelectLabel.innerHTML = 'Languages of selected/all state(s)';
 
-	enterBlogAttributes = panelButtonAttributes.put({placeholder : 'http://abc.blogspot.com/', type : 'text'}).addStyle('position:absolute; top:25%; left:36%; width:23%; color:#FFF; text-align:center; font-weight:bold; font-size:18px; background: #aaa; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
+	enterBlogAttributes = panelButtonAttributes.put({placeholder : 'http://abc.blogspot.com/', type : 'text'}).addStyle('position:absolute; top:25%; left:36%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
 	enterBlogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:23%; left:36%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
 	enterBlogLabel.innerHTML = 'Enter your blog URL';
 
@@ -1816,12 +1822,12 @@
 	defaultBlogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:55%; left:39%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
 	defaultBlogLabel.innerHTML = 'Default blog (Our blog)';
 
-	enterMailIdAttributes = panelButtonAttributes.put({placeholder : 'username@gmail.com', type : 'text'}).addStyle('position:absolute; top:25%; left:70%; width:23%; color:#FFF; text-align:center; font-weight:bold; font-size:18px; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
+	enterMailIdAttributes = panelButtonAttributes.put({placeholder : 'username@gmail.com', type : 'text'}).addStyle('position:absolute; top:25%; left:70%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
 	enterMailIdLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:23%; left:70%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
 	enterMailIdLabel.innerHTML = 'USERNAME';
 
 
-	enterPwdAttributes = panelButtonAttributes.put({placeholder : 'password', type : 'password'}).addStyle('position:absolute; top:50%; left:70%; width:23%; color:#FFF; text-align:center; font-weight:bold; font-size:18px; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
+	enterPwdAttributes = panelButtonAttributes.put({placeholder : 'password', type : 'password'}).addStyle('position:absolute; top:50%; left:70%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
 	enterPwdLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:49%; left:70%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
 	enterPwdLabel.innerHTML = 'PASSWORD';
 
@@ -1843,112 +1849,111 @@
 
 	//---------------------------------------------start locLang & locSelect -----------------------
 
-    locSelect = DOM.BUILDER.SELECT(locSelectAttributes);
-    langSelect = DOM.BUILDER.SELECT(langSelectAttributes);
-    ////////////////////////////////////////////////////////////////////////////attributes
-    var xhrloc = new XMLHttpRequest();
-    xhrloc.onreadystatechange = function()
+	locSelect = DOM.BUILDER.SELECT(locSelectAttributes);
+	langSelect = DOM.BUILDER.SELECT(langSelectAttributes);
+	////////////////////////////////////////////////////////////////////////////attributes
+	var xhrloc = new XMLHttpRequest();
+	xhrloc.onreadystatechange = function()
     	{
     	    if(xhrloc.readyState == 4)
+    	    {
+		if (xhrloc.status == 200)
     		{
-		    if (xhrloc.status == 200)
-    			{
-    			    json= JSON.parse(xhrloc.responseText);
-			    /* parsing json response*/ 
-		           var loc=[];
-			   var texts=[];
-			    loc.push('--Locations--');
-			   texts.push('----Languages---');
-			    //loc.push('*');
-    			    locations = json["state"];
-			    for(var i=0;i<locations.length;i++)
-			    {
-				loc.push(locations[i]["name"]);
+    		    json= JSON.parse(xhrloc.responseText);
+		    /* parsing json response*/ 
+		    var loc=[];
+		    var texts=[];
+		    loc.push('--Locations--');
+		    texts.push('----Languages---');
+		    var locations = json["state"];
+		    for(var i=0; i< locations.length;i++)
+		    {
+			loc.push(locations[i]["name"]);
+		    }
+		    loc.push('None of the above');
+      		    for(i=0;i<loc.length;i++)	{
+	      		x=DOM.BUILDER.OPTION(loc[i]);
+	      		locSelect.add(x,null);
+	  	    }
+		    
+		    locSelect.onchange=function(){
+                        var locindex=locSelect.selectedIndex;
+			locName=loc[locindex];
+			if(texts.length>1)
+			{
+			    for(var i=texts.length;i>1;i--){
+				texts.pop()
 			    }
-				loc.push('None of the above');
-      				for(i=0;i<loc.length;i++)	{
-	      				x=DOM.BUILDER.OPTION(loc[i]);
-	      				locSelect.add(x,null);
-	  			}
-				
-				locSelect.onchange=function(){
-                                var locindex=locSelect.selectedIndex;
-			 	locName=loc[locindex];
-				if(texts.length>1)
+			}
+            		if(locName!='None of the above'){
+			    for(var i=0;i<locations[locindex-1]["lang"].length;i++){
+				texts.push(locations[locindex-1].lang[i]);
+			    }
+			    if(langSelect.firstChild==null){
+				for(var vp=0;vp<texts.length;vp++)
+				{	
+                		    var op = document.createElement('option');
+                		    op.text = texts[vp];
+                		    langSelect.appendChild(op);
+				}//end for
+			    }//end if
+			    else{
+				while(langSelect.firstChild!=null){
+				    langSelect.removeChild(langSelect.firstChild);
+				}//end while
+				for(var vp=0;vp<texts.length;vp++)
 				{
-					for(var i=texts.length;i>1;i--){
-						texts.pop()
-					}
-				}
-            			if(locName!='None of the above'){
-					for(var i=0;i<locations[locindex-1]["lang"].length;i++){
-							texts.push(locations[locindex-1].lang[i]);
-					}
-					if(langSelect.firstChild==null){
-						for(var vp=0;vp<texts.length;vp++)
-						{	
-                					var op = document.createElement('option');
-                					op.text = texts[vp];
-                					langSelect.appendChild(op);
-						}//end for
-					}//end if
-					else{
-						while(langSelect.firstChild!=null){
-							langSelect.removeChild(langSelect.firstChild);
-						}//end while
-						for(var vp=0;vp<texts.length;vp++)
-						{
-							
-                					var op = document.createElement('option');
-                					op.text = texts[vp];
-                					langSelect.appendChild(op);
-						}//end for
-					}//end else 		
-					
-				}//end if
-				else{
-					while(langSelect.firstChild!=null){
-						langSelect.removeChild(langSelect.firstChild);
-					}//end while
-			    		for(var i=0;i<locations.length;i++)
-			    		{	for (var j=0; j<locations[i].lang.length; j++)
-						{ 
-							texts.push(locations[i].lang[j]);
-							texts.sort();
-							for(var k=1;k<texts.length;k++){
-								if (texts[k] === texts[k-1]){ 
-									texts.splice(k, 1);
-							   		k--;
-								}	
-							}
-						
-						}//end inner for
-			    		}//end main for
-					for(var z=0; z<texts.length; z++)
-					{ 
-						var op = document.createElement('option');
-						op.text=texts[z];
-						langSelect.appendChild(op);
-					}
-				}//end else
-				
-				}//end onchange
-				langSelect.onchange=function(){
-                                var langindex=langSelect.selectedIndex;
-					langName=texts[langindex];
-				}
-    			}
-		    
-    		    /* end parsing json response*/ 
-		    
-    		    else {
-    			alert("couldn't get data file: error number "+xhrloc.status);
-    		    }
+				    
+                		    var op = document.createElement('option');
+                		    op.text = texts[vp];
+                		    langSelect.appendChild(op);
+				}//end for
+			    }//end else 		
+			    
+			}//end if
+			else{
+			    while(langSelect.firstChild!=null){
+				langSelect.removeChild(langSelect.firstChild);
+			    }//end while
+			    for(var i=0;i<locations.length;i++)
+			    {	for (var j=0; j<locations[i].lang.length; j++)
+				{ 
+				    texts.push(locations[i].lang[j]);
+				    texts.sort();
+				    for(var k=1;k<texts.length;k++){
+					if (texts[k] === texts[k-1]){ 
+					    texts.splice(k, 1);
+					    k--;
+					}	
+				    }
+				    
+				}//end inner for
+			    }//end main for
+			    for(var z=0; z<texts.length; z++)
+			    { 
+				var op = document.createElement('option');
+				op.text=texts[z];
+				langSelect.appendChild(op);
+			    }
+			}//end else
+			
+		    }//end onchange
+		    langSelect.onchange=function(){
+                        var langindex=langSelect.selectedIndex;
+			langName=texts[langindex];
+		    }
     		}
+		
+    		/* end parsing json response*/ 
+		
+    		else {
+    		    alert("couldn't get data file: error number "+xhrloc.status);
+    		}
+    	    }
     	}
-    
-    xhrloc.open("GET","http://dev.a11y.in/getData",true);
-    xhrloc.send();//
+	
+	xhrloc.open("GET","http://dev.a11y.in/getData",true);
+	xhrloc.send();//
 
 
 
@@ -2144,120 +2149,120 @@
      * Action for editing a hyperlink.
      */
 
-  function renAction(pageEditor, actionSlot) {
-      var self = this, renInput,renDiv,selectedElement,renActionControl,optionInput,v,x,i,undoButton,element,vxpath,vdata, varray=[],previousData,xpath;
-      
-      renActionControl = new PopupActionControl(actionSlot);      
-	  
-      this.open = function open(element) {
+    function renAction(pageEditor, actionSlot) {
+	var self = this, renInput,renDiv,selectedElement,renActionControl,optionInput,v,x,i,undoButton,element,vxpath,vdata, varray=[],previousData,xpath;
+	
+	renActionControl = new PopupActionControl(actionSlot);      
+	
+	this.open = function open(element) {
 
-      renInput = DOM.BUILDER.SELECT(editTextInputAttributes.addStyle('margin-left: 5px; background: #FFFFFF;').addStyle(leftBorderStyle + rightBorderStyle).values());
-      
-      undoButton=DOM.BUILDER.INPUT(undoSubmitButton.addStyle('vertical-align: middle; float:left;  margin-left: 5px; margin-right: auto;').values());
-      
-      renDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('overflow: hidden !important; display: none;position: relative; margin-left: auto; margin-right: auto; margin-top: 5px; margin-bottom: 5px; height: auto !important; height: 60px;').values(), renInput,undoButton);
-      
+	    renInput = DOM.BUILDER.SELECT(editTextInputAttributes.addStyle('margin-left: 5px; background: #FFFFFF;').addStyle(leftBorderStyle + rightBorderStyle).values());
+	    
+	    undoButton=DOM.BUILDER.INPUT(undoSubmitButton.addStyle('vertical-align: middle; float:left;  margin-left: 5px; margin-right: auto;').values());
+	    
+	    renDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('overflow: hidden !important; display: none;position: relative; margin-left: auto; margin-right: auto; margin-top: 5px; margin-bottom: 5px; height: auto !important; height: 60px;').values(), renInput,undoButton);
+	    
 
 
-	  xpath = DOM.getXPATH(element);
-	  previousData = element.textContent; //Yass
+	    xpath = DOM.getXPATH(element);
+	    previousData = element.textContent; //Yass
 
-	  
-	  
+	    
+	    
 
-	  var xmlhttp = new XMLHttpRequest();
-	  d = window.location.search.split('?')[1];
-	  var a =[];
-	  for (var i = 0;i<d.split('&').length;i++){ 
-	      a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
+	    var xmlhttp = new XMLHttpRequest();
+	    d = window.location.search.split('?')[1];
+	    var a =[];
+	    for (var i = 0;i<d.split('&').length;i++){ 
+		a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
 	    }
-	  var url = a['foruri'];
-	  var data="url="+encodeURIComponent(url)+"&xpath="+encodeURIComponent(xpath);
-	  xmlhttp.onreadystatechange = function()
-	  {
-	      if(xmlhttp.readyState == 4 && xmlhttp.status== 200)
-		  {
-		      if(xmlhttp.responseText=='')
-			  {
-			      renDiv.style.display = 'none';
-			      alert("Renarrations not available");
-			  }
-		      else {
-			  for (i=0;i<= varray.length;i++) varray.pop(i);
-			  for (i=0; i<=renInput.length;i++) renInput.remove(i,null);
-			  // or = {} 
-			  // or['lang']='original';
-			  // or['location']=' ';
-			  // or['style']=' ';
-			  // or['xpath']=xpath;
-			  // or['data']=previousData;
+	    var url = a['foruri'];
+	    var data="url="+encodeURIComponent(url)+"&xpath="+encodeURIComponent(xpath);
+	    xmlhttp.onreadystatechange = function()
+	    {
+		if(xmlhttp.readyState == 4 && xmlhttp.status== 200)
+		{
+		    if(xmlhttp.responseText=='')
+		    {
+			renDiv.style.display = 'none';
+			alert("Renarrations not available");
+		    }
+		    else {
+			for (i=0;i<= varray.length;i++) varray.pop(i);
+			for (i=0; i<=renInput.length;i++) renInput.remove(i,null);
+			// or = {} 
+			// or['lang']='original';
+			// or['location']=' ';
+			// or['style']=' ';
+			// or['xpath']=xpath;
+			// or['data']=previousData;
 
-			  // varray.push(or);
-			  
-			  x=DOM.BUILDER.OPTION("please choose a Re-narration");
-			   renInput.add(x,null);
-			  //  x=DOM.BUILDER.OPTION("Original content");
-			  // renInput.add(x,null);
-			  
-			  renActionControl.open(renDiv);
-			  renDiv.style.display = 'block';
-			  var response=xmlhttp.responseText.substring(3).split('###');
-			  for (var j= 0; j< response.length ; j++){
-			      d ={}
-			      chunk = response[j].substring(1).split('&');
-			      for (var i= 0; i< chunk.length ; i++){
-				  pair =chunk[i].split("::");
-				  key = pair[0];
-				  value = pair[1];
-				  d[key] = value;
-			      }
-			      varray.push(d);
-			  }
-			  for(i=0;i<varray.length;i++)	{
-			      lang_ = varray[i]['lang'];
-			      location_ = varray[i]['location']; 
-			      style_ = varray[i]['style'];  //toto
-			      x=DOM.BUILDER.OPTION(lang_+', '+location_+', '+style_);
-			      renInput.add(x,null);
-			  }
-			  renInput.onchange=function(){
-			      //vnew=renInput.selectedIndex - 2; // the first option cannot be selected, it is only a label, Yass
-			      if (renInput.selectedIndex -1 < 0)  alert("please choose a Re-narration ");
-			      // else if (renInput.selectedIndex  ==0) {DOM.evaluate(xpath,previousData);}
-			      else   {
-			      DOM.evaluate(varray[renInput.selectedIndex - 1]['xpath'],varray[renInput.selectedIndex - 1]['data']);};
-			      renInput.selectedIndex = 0;
-			  }
-			  
-			  undoButton.onclick =function(){
-			      DOM.evaluate(xpath,previousData);
-			      
-			      //renInput = null;
-			      //for (i=0;i< varray.length;i++) varray.pop(i);
-			  };
-			  
-		      }
-		  }
-	  }
-	  xmlhttp.open("POST","http://dev.a11y.in/narration",true);
-	  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	  xmlhttp.send(data);
-	  
-	  
-      };
-      
-      
-      this.close = function close() {
-      	  //renActionControl.close();
-	  
-      	  selectedElement = null;
-      	  //for (i=0;i< varray.length;i++){ varray.pop(i);}
-	   
-      	  //renInput = null;
-      	  // renDiv.style.display = 'none';
-      };
-  }
-      
+			// varray.push(or);
+			
+			x=DOM.BUILDER.OPTION("please choose a Re-narration");
+			renInput.add(x,null);
+			//  x=DOM.BUILDER.OPTION("Original content");
+			// renInput.add(x,null);
+			
+			renActionControl.open(renDiv);
+			renDiv.style.display = 'block';
+			var response=xmlhttp.responseText.substring(3).split('###');
+			for (var j= 0; j< response.length ; j++){
+			    d ={}
+			    chunk = response[j].substring(1).split('&');
+			    for (var i= 0; i< chunk.length ; i++){
+				pair =chunk[i].split("::");
+				key = pair[0];
+				value = pair[1];
+				d[key] = value;
+			    }
+			    varray.push(d);
+			}
+			for(i=0;i<varray.length;i++)	{
+			    lang_ = varray[i]['lang'];
+			    location_ = varray[i]['location']; 
+			    style_ = varray[i]['style'];  //toto
+			    x=DOM.BUILDER.OPTION(lang_+', '+location_+', '+style_);
+			    renInput.add(x,null);
+			}
+			renInput.onchange=function(){
+			    //vnew=renInput.selectedIndex - 2; // the first option cannot be selected, it is only a label, Yass
+			    if (renInput.selectedIndex -1 < 0)  alert("please choose a Re-narration ");
+			    // else if (renInput.selectedIndex  ==0) {DOM.evaluate(xpath,previousData);}
+			    else   {
+				DOM.evaluate(varray[renInput.selectedIndex - 1]['xpath'],varray[renInput.selectedIndex - 1]['data']);};
+			    renInput.selectedIndex = 0;
+			}
+			
+			undoButton.onclick =function(){
+			    DOM.evaluate(xpath,previousData);
+			    
+			    //renInput = null;
+			    //for (i=0;i< varray.length;i++) varray.pop(i);
+			};
+			
+		    }
+		}
+	    }
+	    xmlhttp.open("POST","http://dev.a11y.in/narration",true);
+	    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	    xmlhttp.send(data);
+	    
+	    
+	};
+	
+	
+	this.close = function close() {
+      	    //renActionControl.close();
+	    
+      	    selectedElement = null;
+      	    //for (i=0;i< varray.length;i++){ varray.pop(i);}
+	    
+      	    //renInput = null;
+      	    // renDiv.style.display = 'none';
+	};
+    }
+    
     
     /*  function LinkPopupAction(pageEditor, actionSlot) {
 	var self = this, linkInput, linkForm, popupDiv, selectedElement, anchorElement, originalHref, updateLink, findAnchorElement, linkActionControl;
@@ -2355,78 +2360,78 @@
     /////
     //******************************** Shalini - Changed AudioupdatePopupAction from ImageUpdatePopupAction *****************
 
-function AudioUpdateByUrl(pageEditor, actionControl) {
-      var self = this, popupDiv, audioUrlInput, randomInput, audioUrlForm, selectedElement, targetName,audioElement;
+    function AudioUpdateByUrl(pageEditor, actionControl) {
+	var self = this, popupDiv, audioUrlInput, randomInput, audioUrlForm, selectedElement, targetName,audioElement;
 
-      var addUrlLabel = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('width: 100%; display: block; float: left; font-size: 10px;position:relative; margin-top: 5px;margin-left: 0px; margin-right: 5px; margin-bottom: 5px; background: transparent; color: #747474; text-shadow: 0 1px 0 #FFFFFF; text-align: left;').values());
-      addUrlLabel.innerHTML = 'Add URL';
-/*	audioUrlInput = document.createElement('audio');
-	audioUrlInput.setAttribute('src','http://01audiovideo.free.fr/ogg/half_asleep_sea_shells.ogg');
-	audioUrlInput.play();*///testing the audio tag creation
+	var addUrlLabel = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('width: 100%; display: block; float: left; font-size: 10px;position:relative; margin-top: 5px;margin-left: 0px; margin-right: 5px; margin-bottom: 5px; background: transparent; color: #747474; text-shadow: 0 1px 0 #FFFFFF; text-align: left;').values());
+	addUrlLabel.innerHTML = 'Add URL';
+	/*	audioUrlInput = document.createElement('audio');
+		audioUrlInput.setAttribute('src','http://01audiovideo.free.fr/ogg/half_asleep_sea_shells.ogg');
+		audioUrlInput.play();*///testing the audio tag creation
 
-      audioUrlInput = DOM.BUILDER.INPUT(editTextInputAttributes.addStyle('display:block; background: #FFFFFF;').values());
-      randomInput = DOM.BUILDER.INPUT(editAttributes.put({ name : 'random', type : 'hidden', value : '1' }).values());
+	audioUrlInput = DOM.BUILDER.INPUT(editTextInputAttributes.addStyle('display:block; background: #FFFFFF;').values());
+	randomInput = DOM.BUILDER.INPUT(editAttributes.put({ name : 'random', type : 'hidden', value : '1' }).values());
     	audioUrlForm = DOM.BUILDER.FORM(elementAttributes.values(),
-        audioUrlInput,
-        DOM.BUILDER.INPUT(editSubmitAttributes.values()));
+					audioUrlInput,
+					DOM.BUILDER.INPUT(editSubmitAttributes.values()));
 
-     /* audioUrlForm = DOM.BUILDER.FORM(elementAttributes.put({ target : targetName, enctype : 'multipart/form-data', method : 'post', action : '/app/page-edit/upload' }).values(),
-        audioUrlInput,
-     //   DOM.BUILDER.INPUT(editAttributes.put({ name : 'pageSlug', type : 'hidden', value : pageSlug }).values()),
-       // randomInput,
-        DOM.BUILDER.INPUT(editSubmitAttributes.values()));*/
+	/* audioUrlForm = DOM.BUILDER.FORM(elementAttributes.put({ target : targetName, enctype : 'multipart/form-data', method : 'post', action : '/app/page-edit/upload' }).values(),
+           audioUrlInput,
+	   //   DOM.BUILDER.INPUT(editAttributes.put({ name : 'pageSlug', type : 'hidden', value : pageSlug }).values()),
+	   // randomInput,
+           DOM.BUILDER.INPUT(editSubmitAttributes.values()));*/
 
-      audioUrlForm.onsubmit = function updateFormOnSubmit() {
-        var url = audioUrlInput.value;
-		updateAudio(url);
-        return false;
-      };
+	audioUrlForm.onsubmit = function updateFormOnSubmit() {
+            var url = audioUrlInput.value;
+	    updateAudio(url);
+            return false;
+	};
 
-      audioDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('width: 100%; float:left; position: relative; margin: 0px auto auto 10px; display: block;').values(), addUrlLabel, audioUrlForm);
+	audioDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('width: 100%; float:left; position: relative; margin: 0px auto auto 10px; display: block;').values(), addUrlLabel, audioUrlForm);
 
-      audioActionControl = new PopupActionControl(actionControl);
+	audioActionControl = new PopupActionControl(actionControl);
 
-      this.getActionDiv = function getActionDiv() {
-        return audioDiv;
-      };
+	this.getActionDiv = function getActionDiv() {
+            return audioDiv;
+	};
 
-      this.open = function open(element) {
-	audioActionControl.open(audioDiv);
-        audioUrlInput.value = '';
-        selectedElement = element;
-        audioDiv.style.display = 'block';
-      };
+	this.open = function open(element) {
+	    audioActionControl.open(audioDiv);
+            audioUrlInput.value = '';
+            selectedElement = element;
+            audioDiv.style.display = 'block';
+	};
 
-      this.close = function close() {
-        selectedElement = null;
-        audioDiv.style.display = 'none';
-      };
+	this.close = function close() {
+            selectedElement = null;
+            audioDiv.style.display = 'none';
+	};
 
-    updateAudio = function updateAudio(src) {
-      var command;
-      if (audioElement) {
-        command = {
-          command : 'AUDIO_UPDATE',
-          element : audioElement,
-          elementId : audioElement.getAttribute('m4pageeditid'),
-          data : src,
-          previousData : originalHref
-        };
-      } else {
-        command = {
-          command : 'AUDIO_CREATE',
-          element : selectedElement,
-	  elementType : 'audio/ogg',
-	  xpath : DOM.getXPATH(selectedElement), //Yassine
-	  url : window.location.href,
-          elementId : selectedElement.getAttribute('m4pageeditid'),
-          data : src,
-          previousData : ''
-        };
-      }
-      pageEditor.commandApply(command);
-     // self.actionComplete();
-    };
+	updateAudio = function updateAudio(src) {
+	    var command;
+	    if (audioElement) {
+		command = {
+		    command : 'AUDIO_UPDATE',
+		    element : audioElement,
+		    elementId : audioElement.getAttribute('m4pageeditid'),
+		    data : src,
+		    previousData : originalHref
+		};
+	    } else {
+		command = {
+		    command : 'AUDIO_CREATE',
+		    element : selectedElement,
+		    elementType : 'audio/ogg',
+		    xpath : DOM.getXPATH(selectedElement), //Yassine
+		    url : window.location.href,
+		    elementId : selectedElement.getAttribute('m4pageeditid'),
+		    data : src,
+		    previousData : ''
+		};
+	    }
+	    pageEditor.commandApply(command);
+	    // self.actionComplete();
+	};
 
     }
 
@@ -2980,7 +2985,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	audioButton.onclick = function audioButtonOnClick() {
 	    popupControl.showAction(audioUpdateAction);
 	    return false;
-    };
+	};
 
 	//shalini
 	/*    var deleteImage = 'http://dev.a11y.in/alipi/images/delete_trashcan.png';
@@ -3115,7 +3120,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	redButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; top:-13px; right:04%; width:30%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
 
 	//Ajay - button for filling up the target and other detail
-//	fillUpButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; top:-13px; right:30%; width:20%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
+	//	fillUpButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; top:-13px; right:30%; width:20%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
 
 	// Ajay - created
 	undoButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; left:35%; top:-13px; width:15%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
@@ -3147,25 +3152,25 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	publishButton.onclick = function publishButtonOnClick() {
  	    ajayWindow = new AjayWindow(pageEditor);
  	    ajayWindow.activate();
-	okButton.onclick = function okButtonOnClick() {  // Ajay
-	    ajayWindow.okClick();
+	    okButton.onclick = function okButtonOnClick() {  // Ajay
+		ajayWindow.okClick();
 
-	    if (pageEditor.hasChangesPending() /* && (pageEditor.formUncomplete() ==false) */ ) {
-		pageEditor.commandPublish();
-		this.disabled=true;
-		pageEditor.showMessage("... Please wait, your blog is being posted");
-	    }
-//	    else if ((pageEditor.hasChangesPending() ==false)&& (pageEditor.formUncomplete() == false)){
-//		pageEditor.showMessage(" Nothing to publish !");
-//	    }
-//	    else if (pageEditor.hasChangesPending()&& (pageEditor.formUncomplete() ==true)){
-//		pageEditor.showMessage("you need to choose at least a language, a location or a style before you can save & publish !");
-//            }
-	    else{
-		pageEditor.showMessage("Nothing to publish");
-	    }
-	    return false;
-	};
+		if (pageEditor.hasChangesPending() /* && (pageEditor.formUncomplete() ==false) */ ) {
+		    pageEditor.commandPublish();
+		    this.disabled=true;
+		    pageEditor.showMessage("... Please wait, your blog is being posted");
+		}
+		//	    else if ((pageEditor.hasChangesPending() ==false)&& (pageEditor.formUncomplete() == false)){
+		//		pageEditor.showMessage(" Nothing to publish !");
+		//	    }
+		//	    else if (pageEditor.hasChangesPending()&& (pageEditor.formUncomplete() ==true)){
+		//		pageEditor.showMessage("you need to choose at least a language, a location or a style before you can save & publish !");
+		//            }
+		else{
+		    pageEditor.showMessage("Nothing to publish");
+		}
+		return false;
+	    };
 	}; // End of okButton function
 
 	//shalini-Yass
@@ -3243,7 +3248,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	editModeChangeButtonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), editModeChangeSaveButton, editModeChangeDiscardButton);
 	//shalini- added cancelButton
 	buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), undoButton, publishButton //, fillUpButton
-);
+				   );
 
 	firstRowDiv = DOM.BUILDER.DIV(// firstRowStyleAttributes,
 	    DOM.BUILDER.DIV(editAttributes.addStyle('width:500px; position: absolute; top: 0; left: 1%;').values(), messageDiv), buttonDiv);
@@ -3579,15 +3584,15 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 		pageEditor.showMessage('Audio changed');
 		break;
 		
-        case 'AUDIO_CREATE':
-          audioElement = document.createElement('audio');
-	  audioElement.setAttribute('src',command.data);
-	  audioElement.setAttribute('controls','controls');
-          command.element.appendChild(audioElement);
-	  audioElement.play();
-         // command.previousData = audioElement;
-          pageEditor.showMessage('Audio added');
-          break;
+            case 'AUDIO_CREATE':
+		audioElement = document.createElement('audio');
+		audioElement.setAttribute('src',command.data);
+		audioElement.setAttribute('controls','controls');
+		command.element.appendChild(audioElement);
+		audioElement.play();
+		// command.previousData = audioElement;
+		pageEditor.showMessage('Audio added');
+		break;
 
             default:
 		console.error('Unknown command:', command);
@@ -3712,14 +3717,13 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 		buffer.append('&elementType='); // text, audio, img
 		buffer.append(encodeURIComponent(command.elementType));
 		buffer.append('&xpath=');//xpath
+		command.xpath = '/' + command.xpath.slice(10,command.xpath.length);
 		buffer.append(encodeURIComponent(command.xpath));
 		buffer.append('&data=');  //data
 		buffer.append(encodeURIComponent(command.data));
 		buffer.append('&author='); //author
 		buffer.append(encodeURIComponent(authorValue));
 	    });
-	    //alert(buffer.toString().substring(1));
-	    // window.open("http://x.a11y.in/alipi/app/auth?" +  buffer.toString().substring(3)); 
 	    return buffer.toString().substring(3);
 	};
     }
