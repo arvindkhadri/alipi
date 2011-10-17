@@ -25,13 +25,6 @@ var a11ypi = {
 	    }
 	}
 	v[0].removeChild(document.getElementById('overlay2'));
-
-	msg_overlay = document.createElement("div");
-	v[0].appendChild(msg_overlay);
-	msg_overlay.setAttribute("id", "msg-overlay");
-	msg_overlay.textContent = "Now your page is ready to edit... Enjoy editing !!";
-
-	setTimeout("document.getElementById('msg-overlay').style.display='none'", 3000);	
     },
 
 
@@ -147,21 +140,10 @@ var a11ypi = {
             dump( 'error: Document tree modified during iteration ' + e );
         }
     },
-    close_msg: function() {
+    close: function() {
 	// var v = content.document.getElementsByTagName("body");
 	// v[0].removeChild(document.getElementById('ren_overlay'));
 	document.getElementById('ren_overlay').style.display = 'none';
     },
 
 };
-
-$(document).ready(function ($) {
-    $("a").click(function () {
-	var a = $(this),
-        href = a.attr('href'),
-        content  = a.parent().next();
-	// content.load(href + " #content");
-	return false;
-    });
-});
-

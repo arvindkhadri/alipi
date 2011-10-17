@@ -15,12 +15,13 @@ def start_page() :
     a = urllib2.urlopen(myhandler1)
     page = a.read()
     a.close()
+    page = unicode(page,'utf-8')  #Hack to fix improperly displayed chars on wikipedia.
     root = lxml.html.parse(StringIO.StringIO(page)).getroot()
     if request.args.has_key('lang') == False and request.args.has_key('blog') == False:
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        script_test.set("src", "http://192.168.100.100/server/ui.js")
+        script_test.set("src", "http://localhost/alipi-1/server/ui.js")
         script_test.set("type", "text/javascript")
         
         script_jq_mini = root.makeelement('script')
@@ -32,7 +33,7 @@ def start_page() :
         root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://192.168.100.100/server/stylesheet.css")
+        style.set("href", "http://localhost/alipi-1/server/stylesheet.css")
 
         connection = pymongo.Connection('localhost',27017)
         db = connection['alipi']
@@ -79,7 +80,7 @@ def start_page() :
         d['lang'] = request.args['lang']
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        script_test.set("src", "http://192.168.100.100/server/ui.js")
+        script_test.set("src", "http://localhost/alipi-1/server/ui.js")
         script_test.set("type", "text/javascript")
         root.body.set("onload","a11ypi.ren()");
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
@@ -88,7 +89,7 @@ def start_page() :
     elif request.args.has_key('interactive') == True and request.args.has_key('blog') == True:
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("src", "http://localhost/alipi-1/server/ui.js")
         script_test.set("type", "text/javascript")
         root.body.set("onload","a11ypi.filter()");
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
@@ -97,7 +98,7 @@ def start_page() :
     elif request.args.has_key('interactive') == False and request.args.has_key('blog') == True:    
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("src", "http://localhost/alipi-1/server/ui.js")
         script_test.set("type", "text/javascript")
         
         script_jq_mini = root.makeelement('script')
@@ -109,7 +110,7 @@ def start_page() :
         root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
+        style.set("href", "http://localhost/alipi-1/server/stylesheet.css")
 
         connection = pymongo.Connection('localhost',27017)
         db = connection['alipi']
@@ -150,18 +151,13 @@ def start_page() :
         btn.set("type", "submit")
         btn.set("onClick", "a11ypi.testContext();")
         btn.set("value", "EDIT")
-        # script_test1 = root.makeelement('script')
-        # root[0].append(script_test1)
-        # script_test1.set("src", "http://192.168.100.56:82/server/ui.js")
-        # script_test1.set("type", "text/javascript")
-        # root.body.set("onload","a11ypi.filter()");
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
         return lxml.html.tostring(root)
 
-import logging
+import logging,os
 from logging import FileHandler
 
-fil = FileHandler('/var/www/logme',mode='a')
+fil = FileHandler(os.path.join(os.path.dirname(__file__),'logme'),mode='a') #Fixing changing directory names, os module will make logme work irrespective of whether it is being run in a server or a local server 
 fil.setLevel(logging.ERROR)
 app.logger.addHandler(fil)
 
