@@ -1,4 +1,3 @@
-
 (function( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) {
 
     var console, PopupControl, M4ImageElement,locName='',langName = '',styleName='',authorValue;
@@ -2815,7 +2814,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 
 
 	var renImage = 'http://dev.a11y.in/alipi/images/renarration.png';
-	renButton = createActionButton(renImage, 'Renarration', 'border-right: none;');
+	renButton = createActionButton(renImage, 'See other renarration', 'border-right: none;');
 	renButton.onclick = function renButtonOnClick() {
 	    popupControl.showAction(renUpdateAction);
 	    //self.popdown(true);
@@ -2958,7 +2957,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	
 
 	var renImage = 'http://dev.a11y.in/alipi/images/renarration.png';
-	renButton = createActionButton(renImage, 'Renarration', 'border-right: none;');
+	renButton = createActionButton(renImage, 'See other renarration', 'border-right: none;');
 	renButton.onclick = function renButtonOnClick() {
 	    popupControl.showAction(renUpdateAction);
 	    //self.popdown(true);

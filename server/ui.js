@@ -72,7 +72,7 @@ var a11ypi = {
 		    }
 		}
 	    }
-	    xhr.open("POST","http://dev.a11y.in/menu",true);
+	    xhr.open("POST","http://192.168.100.100/menu",true);
 	    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    d = window.location.search.split('?')[1];
 	    var a =[];
@@ -102,7 +102,7 @@ var a11ypi = {
 		    }
 		}
 	    }
-	    xhr.open("POST","http://dev.a11y.in/menu",true);
+	    xhr.open("POST","http://192.168.100.100/menu",true);
 	    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    d = window.location.search.split('?')[1];
 	    var a =[];
@@ -162,7 +162,7 @@ var a11ypi = {
 	var lang= a['lang'];
 	var data="url="+encodeURIComponent(url)+"&lang="+encodeURIComponent(lang);
 	
-	xhr.open("POST","http://dev.a11y.in/replace",true);
+	xhr.open("POST","http://192.168.100.100/replace",true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send(data);//
     },
@@ -240,7 +240,7 @@ var a11ypi = {
 	var blog= a['blog'];
 	var data="url="+encodeURIComponent(url)+"&lang="+encodeURIComponent(lang)+"&blog="+encodeURIComponent(blog);
 	
-	xhr.open("POST","http://dev.a11y.in/filter",true);
+	xhr.open("POST","http://192.168.100.100/filter",true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send(data);//
     },
@@ -268,7 +268,7 @@ var a11ypi = {
      },
 };
 
-$(document).ready(function ($) {
+/*$(document).ready(function ($) {
     $("a").click(function () {
 	var a = $(this),
         href = a.attr('href'),
@@ -276,5 +276,5 @@ $(document).ready(function ($) {
 	// content.load(href + " #content");
 	return false;
     });
-});
+});*/
 
