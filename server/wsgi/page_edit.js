@@ -1,3 +1,4 @@
+
 (function( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) {
 
     var console, PopupControl, M4ImageElement,locName='',langName = '',styleName='',authorValue;
@@ -1097,7 +1098,7 @@
     	    }
     	    return -1;
 	};
-
+	
 	DOM.getElementIdx = function getElementIdx(elt)
 	{
 	    var count = 1;
@@ -1109,6 +1110,20 @@
 	    return count;
 	};
 	
+	// DOM.makePath = function makePath(currentNode){
+    	//     var path = '';
+    	//     while(! currentNode.alipiid)
+    	//     {
+    	// 	index = DOM.getIndex(currentNode);
+    	// 	//alert(index); //
+    	// 	path = currentNode.tagName+'['+index+']/'+path;
+    	// 	currentNode = currentNode.parentNode;
+    	//     }
+    	//     path = '//'+currentNode.tagName+'[@id='+"'"+currentNode.id+"'"+']/'+path;
+    	//     path = path.substring(0, path.length -1);
+    	//     return path;
+	// };
+
 	DOM.makePath = function makePath(elt){
     	    var path = '';
 	    for (; elt && elt.nodeType == 1; elt = elt.parentNode)
@@ -1121,6 +1136,7 @@
  
 	    return path;
 	};
+	
 
 	DOM.evaluate = function evaluate(path,newcontent){
 	    var nodes = content.document.evaluate(path, content.document, null, XPathResult.ANY_TYPE,null);
@@ -1139,6 +1155,8 @@
 			
 		    }
 		    else{
+			//alert(vnew);
+			//alert(newcontent);
 			result.textContent = newcontent;
 		    }
 		    result=nodes.iterateNext();
@@ -1556,7 +1574,7 @@
 	this.processPublishedResponse = function processPublishedResponse(result) {
 	    // alert(result);
 	    var resultString = result.responseText;
-	    //alert(resultString);
+	    // alert(resultString);
 	    if (resultString == 'ok'){
 		alert("Re-narration successfuly posted");
 		window.location.reload();
@@ -1681,7 +1699,7 @@
 	messageOverlay.appendChild(messageDescription);
 
 	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'https://bo.lt/app/asset/page-edit/pencil_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'}).addStyle('position: relative; margin-right: 10px; vertical-align: middle;').values());
-	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none; ').values(), 'OK');
+	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'OK');
 
 	// Ajay - Changed lot of colors - Not using, not sure
 	editButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('color:#FFF; margin-left: auto; margin-right: auto; width: 100px; height: 36px; display: block; float: none; margin-top: 30px; margin-bottom: 30px; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
@@ -1710,7 +1728,7 @@
 	messageOverlay.appendChild(editButton);
 
 	document.body.appendChild(backgroundDiv);
-	document.body.appendChild(messageOverlay);
+	    document.body.appendChild(messageOverlay);
 
 
 	this.show = function show( textToDisplay) {
@@ -1763,8 +1781,8 @@
 		//   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
 		// }
 	    }  else {
-		//		messageOverlay.style.display = 'none';
-		//		backgroundDiv.style.display = 'none';
+//		messageOverlay.style.display = 'none';
+//		backgroundDiv.style.display = 'none';
 		self.hide();
 	    }
 	};
@@ -1773,7 +1791,7 @@
     //------------------------------------ Target UI --------------------------------------------
     AjayWindow = function SplashWindow(pageEditor ) {
 
-	var self = this, messageOverlay, editButton, hideOverlayCheckbox, messageDescription, messageTitle, loadingImage, loadingText, loadingDiv;
+	var self = this, messageOverlay, editButton, hideOverlayCheckbox, messageDescription, messageTitle, loadingImage, loadingText, loadingDiv, step1;
 
 	// because PageEditor is activated on "onload", we show a loading panel until
 	// onload finally fires, which can be a while if any resource on the page is
@@ -1781,56 +1799,44 @@
 
 	// Ajay - This is ovelay for 'Saving and Loading' - changed rgba colors
 	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'bgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; min-height: 800px; min-width: 1024px; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.87))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
-	//    loadingImage = DOM.BUILDER.IMG(normalFontAttributes.put({src: './images/loading.gif'}).addStyle('position: relative; width: 24px; height: 24px; display: inline; vertical-align: middle; ').values()); // Ajay - replaced loading.gif image
 	loadingText = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; font-size: 14px; font-weight: bold; margin-left: 10px; color:#ECECEC; display: inline; vertical-align: middle;').values(), 'Loading');
 	loadingDiv = DOM.BUILDER.DIV(normalFontAttributes.addStyle('position: relative; width: auto; height: auto; display: block; text-align: left;').values(), loadingText);
 	backgroundDiv.appendChild(loadingDiv);
 
-	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'msgoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow:  0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius-topright:10px;-moz-border-radius-bottomright:10px;-moz-border-radius-topleft:10px; -moz-border-radius-bottomleft:10px;-webkit-border-top-right-radius:10px; -webkit-border-bottom-right-radius:10px;-webkit-border-top-left-radius:10px; -webkit-border-bottom-left-radius:10px; position:fixed; left:10px; top:10px; bottom:10px; right:10px; width:98%; height:98%; background:#000; display:none; background: -webkit-gradient(linear, 0% 100%, 0% 0%, from(#000), to(#202020)); background: -moz-linear-gradient(bottom, #000, #202020);').values());
+	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'msgoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow:  0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px;-webkit-border-top-right-radius:10px; -webkit-border-bottom-right-radius:10px;-webkit-border-top-left-radius:10px; -webkit-border-bottom-left-radius:10px; position:fixed; left:10%; top:10%; bottom:10%; right:10%; width:80%; height:80%; background:#000; display:none;').values());
 
 	step1 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; font-size: 22px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), 'Please provide all the details below');
 
-//	step2 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; float:left; margin:20px 0 0 210px; font-size: 30px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), '2');
-
-//	step3 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; float:left; margin:20px 0 0 210px; font-size: 30px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), '3');
-
 	messageOverlay.appendChild(step1);
-//	messageOverlay.appendChild(step2);
-//	messageOverlay.appendChild(step3);
-
-	//	messageDescription = DOM.BUILDER.P(normalFontAttributes.addStyle('color:#FFF; font-weight: normal; font-size: 14px; line-height: 22px; width:450px; margin-left: auto; margin-right: auto; text-align: center;').values(), 'HELLO');
-	//	messageOverlay.appendChild(messageDescription);
 
 	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'https://bo.lt/app/asset/page-edit/pencil_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'}).addStyle('position: relative; margin-right: 10px; vertical-align: middle;').values());
 	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'OK');
 
 	//---------------------------- state & language target --------------------------
-	locSelectAttributes = panelButtonAttributes.addStyle('position:absolute; top:25%; left:05%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	//	step2 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; float:left; margin:30px 0 0 200px; font-size: 30px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), 'STEP - 2');
+	locSelectAttributes = panelButtonAttributes.put({ id : 'loc-select'}).addStyle('position:absolute; top:25%; left:05%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
 	locSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:24%; left:05%; width:auto; font-size: 14px; font-weight: bold; background: transparent; color: #FFF; display:inline-block;').values());
 	locSelectLabel.innerHTML = 'Select any state';
 
-	langSelectAttributes = panelButtonAttributes.addStyle('position:absolute; top:50%; left:05%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
+	langSelectAttributes = panelButtonAttributes.put({ id : 'lang-select'}).addStyle('position:absolute; top:50%; left:05%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
 	langSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:49%; left:05%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
 	langSelectLabel.innerHTML = 'Languages of selected/all state(s)';
 
-	enterBlogAttributes = panelButtonAttributes.put({placeholder : 'http://abc.blogspot.com/', type : 'text'}).addStyle('position:absolute; top:25%; left:36%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
+	enterBlogAttributes = panelButtonAttributes.put({id : 'enter-blog', placeholder : 'http://abc.blogspot.com/', type : 'text'}).addStyle('position:absolute; top:25%; left:36%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
 	enterBlogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:23%; left:36%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
 	enterBlogLabel.innerHTML = 'Enter your blog URL';
 
-	defaultBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({ name : 'Loading Checkbox', type : 'checkbox'}).addStyle('position:absolute; top:54%; left:36%; background: transparent; display: inline-block;').values());
+	defaultBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'defaultcheck', name : 'Loading Checkbox', type : 'checkbox'}).addStyle('position:absolute; top:54%; left:36%; background: transparent; display: inline-block;').values());
 	defaultBlogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:55%; left:39%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
 	defaultBlogLabel.innerHTML = 'Default blog (Our blog)';
 
-	enterMailIdAttributes = panelButtonAttributes.put({placeholder : 'username@gmail.com', type : 'text'}).addStyle('position:absolute; top:25%; left:70%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
+	enterMailIdAttributes = panelButtonAttributes.put({id : 'enter-mail', placeholder : 'username@gmail.com', type : 'text'}).addStyle('position:absolute; top:25%; left:70%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
 	enterMailIdLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:23%; left:70%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
 	enterMailIdLabel.innerHTML = 'USERNAME';
 
 
-	enterPwdAttributes = panelButtonAttributes.put({placeholder : 'password', type : 'password'}).addStyle('position:absolute; top:50%; left:70%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
+	enterPwdAttributes = panelButtonAttributes.put({id : 'enter-pwd', placeholder : 'password', type : 'password'}).addStyle('position:absolute; top:50%; left:70%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
 	enterPwdLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:49%; left:70%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
 	enterPwdLabel.innerHTML = 'PASSWORD';
-
 
 	//-----------------------------End of state & language target -------------------
 
@@ -1838,8 +1844,16 @@
 	okButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:absolute; left:44%; bottom:5%; color:#FFF; margin:auto; width: 100px; height: 36px; display: block; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
 
 	this.okClick = function okClick() {
-	    messageOverlay.style.display = 'none';
-	    backgroundDiv.style.display = 'none';
+	    if(document.getElementById('loc-select').value == '--Locations--' || document.getElementById('lang-select').value == '') {
+		alert('Please select a Location & Language');
+	    }
+	    else {
+ 		overlayBar = new OverlayBar(pageEditor);
+ 		overlayBar.blogpost();
+		messageOverlay.style.display = 'none';
+		backgroundDiv.style.display = 'none';
+		
+	    }
 	    // self.hide();
 	    // return false;
 	};
@@ -1862,11 +1876,10 @@
     		    json= JSON.parse(xhrloc.responseText);
 		    /* parsing json response*/ 
 		    var loc=[];
-		    var texts=[];
 		    loc.push('--Locations--');
-		    texts.push('----Languages---');
-		    var locations = json["state"];
-		    for(var i=0; i< locations.length;i++)
+		    //loc.push('*');
+    		    locations = json["state"];
+		    for(var i=0;i<locations.length;i++)
 		    {
 			loc.push(locations[i]["name"]);
 		    }
@@ -1879,21 +1892,12 @@
 		    locSelect.onchange=function(){
                         var locindex=locSelect.selectedIndex;
 			locName=loc[locindex];
-			if(texts.length>1)
-			{
-			    for(var i=texts.length;i>1;i--){
-				texts.pop()
-			    }
-			}
             		if(locName!='None of the above'){
-			    for(var i=0;i<locations[locindex-1]["lang"].length;i++){
-				texts.push(locations[locindex-1].lang[i]);
-			    }
 			    if(langSelect.firstChild==null){
-				for(var vp=0;vp<texts.length;vp++)
+				for(var vp=0;vp<locations[locindex-1]["lang"].length;vp++)
 				{	
                 		    var op = document.createElement('option');
-                		    op.text = texts[vp];
+                		    op.text = locations[locindex-1].lang[vp];
                 		    langSelect.appendChild(op);
 				}//end for
 			    }//end if
@@ -1901,17 +1905,17 @@
 				while(langSelect.firstChild!=null){
 				    langSelect.removeChild(langSelect.firstChild);
 				}//end while
-				for(var vp=0;vp<texts.length;vp++)
+				for(var vp=0;vp<locations[locindex-1]["lang"].length;vp++)
 				{
-				    
                 		    var op = document.createElement('option');
-                		    op.text = texts[vp];
+                		    op.text = locations[locindex-1].lang[vp];
                 		    langSelect.appendChild(op);
 				}//end for
 			    }//end else 		
 			    
 			}//end if
 			else{
+			    var texts = [];
 			    while(langSelect.firstChild!=null){
 				langSelect.removeChild(langSelect.firstChild);
 			    }//end while
@@ -1938,12 +1942,7 @@
 			}//end else
 			
 		    }//end onchange
-		    langSelect.onchange=function(){
-                        var langindex=langSelect.selectedIndex;
-			langName=texts[langindex];
-		    }
-    		}
-		
+    		}  			
     		/* end parsing json response*/ 
 		
     		else {
@@ -1952,10 +1951,8 @@
     	    }
     	}
 	
-	xhrloc.open("GET","http://dev.a11y.in/getData",true);
+	xhrloc.open("GET","http://192.168.100.100/getData",true);
 	xhrloc.send();//
-
-
 
 	//---------------------------------------------end locLang & locSelect ------------------------
 
@@ -1973,8 +1970,7 @@
 
 	//    var redHelpLink = DOM.BUILDER.A(normalFontAttributes.put({ href : 'http://bo.lt/editor'}).addStyle('z-index: 2147483647; float: right;  margin-right: 34px; display: inline-block;text-decoration: none; color: #FFF; font-size: 10px; font-weight: bold; ').values(), 'Need Help?')
 
-	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), locSelect, locSelectLabel, langSelect, langSelectLabel, enterBlog, enterBlogLabel, defaultBlog, defaultBlogLabel, enterMailId, enterMailIdLabel, enterPwd, enterPwdLabel //,hideOverlayCheckbox//, checkboxLabel , redHelpLink
-						  ));
+	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), locSelect, locSelectLabel, langSelect, langSelectLabel, enterBlog, enterBlogLabel, defaultBlog, defaultBlogLabel, enterMailId, enterMailIdLabel, enterPwd, enterPwdLabel));
 	okButton.appendChild(text);
 	messageOverlay.appendChild(okButton);
 
@@ -2145,10 +2141,10 @@
 	}
     };
 
-    /*
+    /**
      * Action for editing a hyperlink.
      */
-
+    
     function renAction(pageEditor, actionSlot) {
 	var self = this, renInput,renDiv,selectedElement,renActionControl,optionInput,v,x,i,undoButton,element,vxpath,vdata, varray=[],previousData,xpath;
 	
@@ -2171,18 +2167,13 @@
 	    
 
 	    var xmlhttp = new XMLHttpRequest();
-	    d = window.location.search.split('?')[1];
-	    var a =[];
-	    for (var i = 0;i<d.split('&').length;i++){ 
-		a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
-	    }
-	    var url = a['foruri'];
+	    var url = content.window.location;
 	    var data="url="+encodeURIComponent(url)+"&xpath="+encodeURIComponent(xpath);
 	    xmlhttp.onreadystatechange = function()
 	    {
 		if(xmlhttp.readyState == 4 && xmlhttp.status== 200)
 		{
-		    if(xmlhttp.responseText=='')
+		    if(xmlhttp.responseText=='empty')
 		    {
 			renDiv.style.display = 'none';
 			alert("Renarrations not available");
@@ -2222,6 +2213,9 @@
 			    lang_ = varray[i]['lang'];
 			    location_ = varray[i]['location']; 
 			    style_ = varray[i]['style'];  //toto
+			    
+			    
+			    
 			    x=DOM.BUILDER.OPTION(lang_+', '+location_+', '+style_);
 			    renInput.add(x,null);
 			}
@@ -2244,7 +2238,7 @@
 		    }
 		}
 	    }
-	    xmlhttp.open("POST","http://dev.a11y.in/narration",true);
+	    xmlhttp.open("POST","http://x.a11y.in/alipi/narration",true);
 	    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlhttp.send(data);
 	    
@@ -2261,9 +2255,10 @@
       	    //renInput = null;
       	    // renDiv.style.display = 'none';
 	};
+	
     }
-    
-    
+
+
     /*  function LinkPopupAction(pageEditor, actionSlot) {
 	var self = this, linkInput, linkForm, popupDiv, selectedElement, anchorElement, originalHref, updateLink, findAnchorElement, linkActionControl;
 
@@ -2360,78 +2355,78 @@
     /////
     //******************************** Shalini - Changed AudioupdatePopupAction from ImageUpdatePopupAction *****************
 
-    function AudioUpdateByUrl(pageEditor, actionControl) {
-	var self = this, popupDiv, audioUrlInput, randomInput, audioUrlForm, selectedElement, targetName,audioElement;
+function AudioUpdateByUrl(pageEditor, actionControl) {
+      var self = this, popupDiv, audioUrlInput, randomInput, audioUrlForm, selectedElement, targetName,audioElement;
 
-	var addUrlLabel = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('width: 100%; display: block; float: left; font-size: 10px;position:relative; margin-top: 5px;margin-left: 0px; margin-right: 5px; margin-bottom: 5px; background: transparent; color: #747474; text-shadow: 0 1px 0 #FFFFFF; text-align: left;').values());
-	addUrlLabel.innerHTML = 'Add URL';
-	/*	audioUrlInput = document.createElement('audio');
-		audioUrlInput.setAttribute('src','http://01audiovideo.free.fr/ogg/half_asleep_sea_shells.ogg');
-		audioUrlInput.play();*///testing the audio tag creation
+      var addUrlLabel = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('width: 100%; display: block; float: left; font-size: 10px;position:relative; margin-top: 5px;margin-left: 0px; margin-right: 5px; margin-bottom: 5px; background: transparent; color: #747474; text-shadow: 0 1px 0 #FFFFFF; text-align: left;').values());
+      addUrlLabel.innerHTML = 'Add URL';
+/*	audioUrlInput = document.createElement('audio');
+	audioUrlInput.setAttribute('src','http://01audiovideo.free.fr/ogg/half_asleep_sea_shells.ogg');
+	audioUrlInput.play();*///testing the audio tag creation
 
-	audioUrlInput = DOM.BUILDER.INPUT(editTextInputAttributes.addStyle('display:block; background: #FFFFFF;').values());
-	randomInput = DOM.BUILDER.INPUT(editAttributes.put({ name : 'random', type : 'hidden', value : '1' }).values());
+      audioUrlInput = DOM.BUILDER.INPUT(editTextInputAttributes.addStyle('display:block; background: #FFFFFF;').values());
+      randomInput = DOM.BUILDER.INPUT(editAttributes.put({ name : 'random', type : 'hidden', value : '1' }).values());
     	audioUrlForm = DOM.BUILDER.FORM(elementAttributes.values(),
-					audioUrlInput,
-					DOM.BUILDER.INPUT(editSubmitAttributes.values()));
+        audioUrlInput,
+        DOM.BUILDER.INPUT(editSubmitAttributes.values()));
 
-	/* audioUrlForm = DOM.BUILDER.FORM(elementAttributes.put({ target : targetName, enctype : 'multipart/form-data', method : 'post', action : '/app/page-edit/upload' }).values(),
-           audioUrlInput,
-	   //   DOM.BUILDER.INPUT(editAttributes.put({ name : 'pageSlug', type : 'hidden', value : pageSlug }).values()),
-	   // randomInput,
-           DOM.BUILDER.INPUT(editSubmitAttributes.values()));*/
+     /* audioUrlForm = DOM.BUILDER.FORM(elementAttributes.put({ target : targetName, enctype : 'multipart/form-data', method : 'post', action : '/app/page-edit/upload' }).values(),
+        audioUrlInput,
+     //   DOM.BUILDER.INPUT(editAttributes.put({ name : 'pageSlug', type : 'hidden', value : pageSlug }).values()),
+       // randomInput,
+        DOM.BUILDER.INPUT(editSubmitAttributes.values()));*/
 
-	audioUrlForm.onsubmit = function updateFormOnSubmit() {
-            var url = audioUrlInput.value;
-	    updateAudio(url);
-            return false;
-	};
+      audioUrlForm.onsubmit = function updateFormOnSubmit() {
+        var url = audioUrlInput.value;
+		updateAudio(url);
+        return false;
+      };
 
-	audioDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('width: 100%; float:left; position: relative; margin: 0px auto auto 10px; display: block;').values(), addUrlLabel, audioUrlForm);
+      audioDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('width: 100%; float:left; position: relative; margin: 0px auto auto 10px; display: block;').values(), addUrlLabel, audioUrlForm);
 
-	audioActionControl = new PopupActionControl(actionControl);
+      audioActionControl = new PopupActionControl(actionControl);
 
-	this.getActionDiv = function getActionDiv() {
-            return audioDiv;
-	};
+      this.getActionDiv = function getActionDiv() {
+        return audioDiv;
+      };
 
-	this.open = function open(element) {
-	    audioActionControl.open(audioDiv);
-            audioUrlInput.value = '';
-            selectedElement = element;
-            audioDiv.style.display = 'block';
-	};
+      this.open = function open(element) {
+	audioActionControl.open(audioDiv);
+        audioUrlInput.value = '';
+        selectedElement = element;
+        audioDiv.style.display = 'block';
+      };
 
-	this.close = function close() {
-            selectedElement = null;
-            audioDiv.style.display = 'none';
-	};
+      this.close = function close() {
+        selectedElement = null;
+        audioDiv.style.display = 'none';
+      };
 
-	updateAudio = function updateAudio(src) {
-	    var command;
-	    if (audioElement) {
-		command = {
-		    command : 'AUDIO_UPDATE',
-		    element : audioElement,
-		    elementId : audioElement.getAttribute('m4pageeditid'),
-		    data : src,
-		    previousData : originalHref
-		};
-	    } else {
-		command = {
-		    command : 'AUDIO_CREATE',
-		    element : selectedElement,
-		    elementType : 'audio/ogg',
-		    xpath : DOM.getXPATH(selectedElement), //Yassine
-		    url : window.location.href,
-		    elementId : selectedElement.getAttribute('m4pageeditid'),
-		    data : src,
-		    previousData : ''
-		};
-	    }
-	    pageEditor.commandApply(command);
-	    // self.actionComplete();
-	};
+    updateAudio = function updateAudio(src) {
+      var command;
+      if (audioElement) {
+        command = {
+          command : 'AUDIO_UPDATE',
+          element : audioElement,
+          elementId : audioElement.getAttribute('m4pageeditid'),
+          data : src,
+          previousData : originalHref
+        };
+      } else {
+        command = {
+          command : 'AUDIO_CREATE',
+          element : selectedElement,
+	  elementType : 'audio/ogg',
+	  xpath : DOM.getXPATH(selectedElement), //Yassine
+	  url : window.location.href,
+          elementId : selectedElement.getAttribute('m4pageeditid'),
+          data : src,
+          previousData : ''
+        };
+      }
+      pageEditor.commandApply(command);
+     // self.actionComplete();
+    };
 
     }
 
@@ -2792,7 +2787,7 @@
 	    self.popdown();
 	};
 
-	var backgroundImage = 'http://dev.a11y.in/alipi/images/replace_image.png';
+	var backgroundImage = 'http://x.a11y.in/alipi/wsgi/images/replace_image.png';
 	backgroundButton = createActionButton(backgroundImage, backgroundButtonText, 'border-right: none;' + leftBorderStyle);
 	backgroundButton.onclick = function backgroundButtonOnClick() {
 	    popupControl.showAction(imageUpdateAction);
@@ -2805,7 +2800,7 @@
 	   self.popdown();
 	   };
 
-	   var linkImage = 'http://dev.a11y.in/alipi/images/link.png';
+	   var linkImage = 'http://x.a11y.in/alipi/wsgi/images/link.png';
 	   linkButton = createActionButton(linkImage, 'Link', rightBorderStyle);
 	   linkButton.onclick = function linkButtonOnClick() {
 	   popupControl.showAction(linkUpdateAction);
@@ -2819,7 +2814,7 @@
 	};
 
 
-	var renImage = 'http://dev.a11y.in/alipi/images/renarration.png';
+	var renImage = 'http://x.a11y.in/alipi/wsgi/images/renarration.png';
 	renButton = createActionButton(renImage, 'Renarration', 'border-right: none;');
 	renButton.onclick = function renButtonOnClick() {
 	    popupControl.showAction(renUpdateAction);
@@ -2827,8 +2822,19 @@
 	    return false;
 	};
 
+	audioUpdateAction = new AudioUpdateByUrl(pageEditor, actionSlot);
+	audioUpdateAction.onComplete = function audioUpdateActionOnComplete() {
+	    self.popdown();
+	};
+	
+	var audioImage = './images/audio.png';
+	audioButton = createActionButton(audioImage,'Audio','border-right:none;');
+	audioButton.onclick = function audioButtonOnClick() {
+	    popupControl.showAction(audioUpdateAction);
+	    return false;
+    };
 	//shalini
-	/*    var deleteImage = 'http://dev.a11y.in/alipi/images/delete_trashcan.png';
+	/*    var deleteImage = 'http://x.a11y.in/alipi/wsgi/images/delete_trashcan.png';
 	      deleteButton = createActionButton(deleteImage, 'Delete', 'border-right: none;');
 	      deleteButton.onclick = function deleteButtonOnClick() {
 	      deleteElement();
@@ -2849,6 +2855,7 @@
 	//    buttonPanel.appendChild(linkButton);
 	//shalini
 	buttonPanel.appendChild(renButton);
+	buttonPanel.appendChild(audioButton);
 
 	imagePopupDiv.appendChild(closeButton);
 	imagePopupDiv.appendChild(buttonPanel);
@@ -2954,7 +2961,7 @@
 	    return false;
 	};
 
-	var doneImage = 'http://dev.a11y.in/alipi/images/done.png';
+	var doneImage = 'http://x.a11y.in/alipi/wsgi/images/done.png';
 	doneButton = createActionButton(doneImage, 'Done', 'border-right: none;' + leftBorderStyle);
 	doneButton.onclick = function doneButtonOnClick() {
 	    self.popdown(true);
@@ -2962,7 +2969,7 @@
 	};
 	
 
-	var renImage = 'http://dev.a11y.in/alipi/images/renarration.png';
+	var renImage = 'http://x.a11y.in/alipi/wsgi/images/renarration.png';
 	renButton = createActionButton(renImage, 'Renarration', 'border-right: none;');
 	renButton.onclick = function renButtonOnClick() {
 	    popupControl.showAction(renUpdateAction);
@@ -2975,20 +2982,8 @@
 	    self.popdown(true);
 	};
 
-	audioUpdateAction = new AudioUpdateByUrl(pageEditor, actionSlot);
-	audioUpdateAction.onComplete = function audioUpdateActionOnComplete() {
-	    self.popdown();
-	};
-	
-	var audioImage = './images/audio.png';
-	audioButton = createActionButton(audioImage,'Audio','border-right:none;');
-	audioButton.onclick = function audioButtonOnClick() {
-	    popupControl.showAction(audioUpdateAction);
-	    return false;
-	};
-
 	//shalini
-	/*    var deleteImage = 'http://dev.a11y.in/alipi/images/delete_trashcan.png';
+	/*    var deleteImage = 'http://x.a11y.in/alipi/wsgi/images/delete_trashcan.png';
 	      deleteButton = createActionButton(deleteImage, 'Delete', 'border-right: none;');
 	      deleteButton.onclick = function deleteButtonOnClick() {
 	      deleteElement();
@@ -3001,7 +2996,7 @@
 	    self.popdown(true);
 	};
 
-	var backgroundImage = 'http://dev.a11y.in/alipi/images/replace_image.png';
+	var backgroundImage = 'http://x.a11y.in/alipi/wsgi/images/replace_image.png';
 	backgroundButton = createActionButton(backgroundImage, 'BG&nbsp;Image', 'border-right: none;');
 	backgroundButton.onclick = function backgroundButtonOnClick() {
 	    popupControl.showAction(imageUpdateAction);
@@ -3017,7 +3012,7 @@
 	      };
 
 
-	      var linkImage = 'http://dev.a11y.in/alipi/images/link.png';
+	      var linkImage = 'http://x.a11y.in/alipi/wsgi/images/link.png';
 	      linkButton = createActionButton(linkImage, 'Link', rightBorderStyle);
 	      linkButton.onclick = function linkButtonOnClick() {
 	      popupControl.showAction(linkUpdateAction);
@@ -3033,7 +3028,6 @@
 	//    buttonPanel.appendChild(deleteButton);
 	//shalini
 	buttonPanel.appendChild(renButton);
-	buttonPanel.appendChild(audioButton);
 	
 	//    buttonPanel.appendChild(backgroundButton);
 	//shalini
@@ -3120,7 +3114,7 @@
 	redButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; top:-13px; right:04%; width:30%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
 
 	//Ajay - button for filling up the target and other detail
-	//	fillUpButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; top:-13px; right:30%; width:20%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
+//	fillUpButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; top:-13px; right:30%; width:20%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
 
 	// Ajay - created
 	undoButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; left:35%; top:-13px; width:15%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
@@ -3150,28 +3144,33 @@
 	publishButton = DOM.BUILDER.BUTTON(redButtonStyleAttributes, 'Fill-up & Publish'); // Ajay - Done to Save Yass
 	//pageEditor.saveAndClose();
 	publishButton.onclick = function publishButtonOnClick() {
- 	    ajayWindow = new AjayWindow(pageEditor);
- 	    ajayWindow.activate();
-	    okButton.onclick = function okButtonOnClick() {  // Ajay
-		ajayWindow.okClick();
 
-		if (pageEditor.hasChangesPending() /* && (pageEditor.formUncomplete() ==false) */ ) {
-		    pageEditor.commandPublish();
-		    this.disabled=true;
-		    pageEditor.showMessage("... Please wait, your blog is being posted");
+	    if (pageEditor.hasChangesPending() /* && (pageEditor.formUncomplete() ==false) */ ) {
+ 		ajayWindow = new AjayWindow(pageEditor);
+ 		ajayWindow.activate();
+	
+		okButton.onclick = function okButtonOnClick() {  // Ajay
+		    ajayWindow.okClick();
 		}
-		//	    else if ((pageEditor.hasChangesPending() ==false)&& (pageEditor.formUncomplete() == false)){
-		//		pageEditor.showMessage(" Nothing to publish !");
-		//	    }
-		//	    else if (pageEditor.hasChangesPending()&& (pageEditor.formUncomplete() ==true)){
-		//		pageEditor.showMessage("you need to choose at least a language, a location or a style before you can save & publish !");
-		//            }
-		else{
-		    pageEditor.showMessage("Nothing to publish");
-		}
-		return false;
-	    };
-	}; // End of okButton function
+	    }
+//	    else if ((pageEditor.hasChangesPending() ==false)&& (pageEditor.formUncomplete() == false)){
+//		pageEditor.showMessage(" Nothing to publish !");
+//	    }
+//	    else if (pageEditor.hasChangesPending()&& (pageEditor.formUncomplete() ==true)){
+//		pageEditor.showMessage("you need to choose at least a language, a location or a style before you can save & publish !");
+//            }
+	    else{
+		pageEditor.showMessage("Nothing to publish");
+	    }
+	    return false;
+	};
+
+	this.blogpost = function blogpost() {
+	    pageEditor.commandPublish();
+	    this.disabled=true;
+	    pageEditor.showMessage("... Please wait, your blog is being posted");
+	};
+	 // End of okButton function
 
 	//shalini-Yass
 	/* cancelButton = DOM.BUILDER.BUTTON(cancelButtonStyleAttributes, 'Cancel');
@@ -3247,8 +3246,8 @@
 
 	editModeChangeButtonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), editModeChangeSaveButton, editModeChangeDiscardButton);
 	//shalini- added cancelButton
-	buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), undoButton, publishButton //, fillUpButton
-				   );
+	buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), publishButton, undoButton//, fillUpButton
+);
 
 	firstRowDiv = DOM.BUILDER.DIV(// firstRowStyleAttributes,
 	    DOM.BUILDER.DIV(editAttributes.addStyle('width:500px; position: absolute; top: 0; left: 1%;').values(), messageDiv), buttonDiv);
@@ -3362,7 +3361,7 @@
 	    keepOriginalCheckbox.onclick = function() {
 		keepOriginal = keepOriginalCheckbox.checked;
 	    };
-	    var backgroundImage = 'url(http://dev.a11y.in/alipi/images/container_save_new_page.png) no-repeat scroll 0 0 transparent';
+	    var backgroundImage = 'url(http://x.a11y.in/alipi/wsgi/images/container_save_new_page.png) no-repeat scroll 0 0 transparent';
 	    var position = 'fixed';
 	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
 	    //   position = 'absolute';
@@ -3522,7 +3521,7 @@
 		// show "poof" animation to indicate deletion
 		poofPosition = DOM.findPosition(command.element);
 
-		poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://dev.a11y.in/alipi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
+		poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://x.a11y.in/alipi/wsgi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
 		document.body.appendChild(poofDiv);
 
 		UTIL.animate(function(index, last) {
@@ -3584,15 +3583,15 @@
 		pageEditor.showMessage('Audio changed');
 		break;
 		
-            case 'AUDIO_CREATE':
-		audioElement = document.createElement('audio');
-		audioElement.setAttribute('src',command.data);
-		audioElement.setAttribute('controls','controls');
-		command.element.appendChild(audioElement);
-		audioElement.play();
-		// command.previousData = audioElement;
-		pageEditor.showMessage('Audio added');
-		break;
+        case 'AUDIO_CREATE':
+          audioElement = document.createElement('audio');
+	  audioElement.setAttribute('src',command.data);
+	  audioElement.setAttribute('controls','controls');
+          command.element.appendChild(audioElement);
+	  audioElement.play();
+         // command.previousData = audioElement;
+          pageEditor.showMessage('Audio added');
+          break;
 
             default:
 		console.error('Unknown command:', command);
@@ -3672,9 +3671,24 @@
 	// Ajay - publish
 	this.publish = function publish() {
 	    var result;
-	    AJAX.post('http://dev.a11y.in/test',
+	    var xhr = new XMLHttpRequest();
+	    xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200) {
+		    if (xhr.response != '') {
+			window.open("http://x.a11y.in/alipi/app/printme?token="+xhr.response.split('=')[1]);
+		    }
+		}
+	    }
+	    
+	    xhr.open('POST', 'http://x.a11y.in/alipi/app/auth', true);
+	    xhr.setRequestHeader('Content-Type', 'text/plain');
+	    
+	    str = buildDataString();
+	    xhr.send(str);
+
+	    AJAX.post('http://x.a11y.in/alipi/test',
 		      buildDataString(), function(result) {
-			  //alert(buildDataString());
+			  //   alert(buildDataString());
 			  ajaxResultProcessor.processPublishedResponse(result);
 		      });
 	};
@@ -3717,13 +3731,14 @@
 		buffer.append('&elementType='); // text, audio, img
 		buffer.append(encodeURIComponent(command.elementType));
 		buffer.append('&xpath=');//xpath
-		command.xpath = '/' + command.xpath.slice(10,command.xpath.length);
 		buffer.append(encodeURIComponent(command.xpath));
 		buffer.append('&data=');  //data
 		buffer.append(encodeURIComponent(command.data));
 		buffer.append('&author='); //author
 		buffer.append(encodeURIComponent(authorValue));
 	    });
+	    //alert(buffer.toString().substring(1));
+	    // window.open("http://x.a11y.in/alipi/app/auth?" +  buffer.toString().substring(3)); 
 	    return buffer.toString().substring(3);
 	};
     }

@@ -21,7 +21,7 @@ def start_page() :
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("src", "http://localhost/alipi-1/server/ui.js")
         script_test.set("type", "text/javascript")
         
         script_jq_mini = root.makeelement('script')
@@ -33,7 +33,7 @@ def start_page() :
         root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
+        style.set("href", "http://localhost/alipi-1/server/stylesheet.css")
 
         connection = pymongo.Connection('localhost',27017)
         db = connection['alipi']
@@ -80,7 +80,7 @@ def start_page() :
         d['lang'] = request.args['lang']
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("src", "http://localhost/alipi-1/server/ui.js")
         script_test.set("type", "text/javascript")
         root.body.set("onload","a11ypi.ren()");
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
@@ -89,7 +89,7 @@ def start_page() :
     elif request.args.has_key('interactive') == True and request.args.has_key('blog') == True:
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("src", "http://localhost/alipi-1/server/ui.js")
         script_test.set("type", "text/javascript")
         root.body.set("onload","a11ypi.filter()");
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
@@ -98,7 +98,7 @@ def start_page() :
     elif request.args.has_key('interactive') == False and request.args.has_key('blog') == True:    
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("src", "http://localhost/alipi-1/server/ui.js")
         script_test.set("type", "text/javascript")
         
         script_jq_mini = root.makeelement('script')
@@ -110,7 +110,7 @@ def start_page() :
         root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
+        style.set("href", "http://localhost/alipi-1/server/stylesheet.css")
 
         connection = pymongo.Connection('localhost',27017)
         db = connection['alipi']
