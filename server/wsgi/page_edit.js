@@ -1699,7 +1699,7 @@
 	messageOverlay.appendChild(messageDescription);
 
 	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'https://bo.lt/app/asset/page-edit/pencil_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'}).addStyle('position: relative; margin-right: 10px; vertical-align: middle;').values());
-	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'OK');
+	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none; ').values(), 'OK');
 
 	// Ajay - Changed lot of colors - Not using, not sure
 	editButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('color:#FFF; margin-left: auto; margin-right: auto; width: 100px; height: 36px; display: block; float: none; margin-top: 30px; margin-bottom: 30px; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
@@ -1951,7 +1951,7 @@
     	    }
     	}
 	
-	xhrloc.open("GET","http://192.168.100.100/getData",true);
+	xhrloc.open("GET","http://dev.a11y.in/getData",true);
 	xhrloc.send();//
 
 	//---------------------------------------------end locLang & locSelect ------------------------
@@ -2167,13 +2167,18 @@
 	    
 
 	    var xmlhttp = new XMLHttpRequest();
-	    var url = content.window.location;
+	    d = window.location.search.split('?')[1];
+	    var a =[];
+	    for (var i = 0;i<d.split('&').length;i++){ 
+		a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
+	    }
+	    var url = a['foruri'];
 	    var data="url="+encodeURIComponent(url)+"&xpath="+encodeURIComponent(xpath);
 	    xmlhttp.onreadystatechange = function()
 	    {
 		if(xmlhttp.readyState == 4 && xmlhttp.status== 200)
 		{
-		    if(xmlhttp.responseText=='empty')
+		    if(xmlhttp.responseText=='')
 		    {
 			renDiv.style.display = 'none';
 			alert("Renarrations not available");
@@ -2238,7 +2243,7 @@
 		    }
 		}
 	    }
-	    xmlhttp.open("POST","http://x.a11y.in/alipi/narration",true);
+	    xmlhttp.open("POST","http://dev.a11y.in/narration",true);
 	    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlhttp.send(data);
 	    
@@ -2370,63 +2375,31 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
         audioUrlInput,
         DOM.BUILDER.INPUT(editSubmitAttributes.values()));
 
-     /* audioUrlForm = DOM.BUILDER.FORM(elementAttributes.put({ target : targetName, enctype : 'multipart/form-data', method : 'post', action : '/app/page-edit/upload' }).values(),
-        audioUrlInput,
-     //   DOM.BUILDER.INPUT(editAttributes.put({ name : 'pageSlug', type : 'hidden', value : pageSlug }).values()),
-       // randomInput,
-        DOM.BUILDER.INPUT(editSubmitAttributes.values()));*/
-
-      audioUrlForm.onsubmit = function updateFormOnSubmit() {
-        var url = audioUrlInput.value;
-		updateAudio(url);
-        return false;
-      };
-
-      audioDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('width: 100%; float:left; position: relative; margin: 0px auto auto 10px; display: block;').values(), addUrlLabel, audioUrlForm);
-
-      audioActionControl = new PopupActionControl(actionControl);
-
-      this.getActionDiv = function getActionDiv() {
-        return audioDiv;
-      };
-
-      this.open = function open(element) {
-	audioActionControl.open(audioDiv);
-        audioUrlInput.value = '';
-        selectedElement = element;
-        audioDiv.style.display = 'block';
-      };
-
-      this.close = function close() {
-        selectedElement = null;
-        audioDiv.style.display = 'none';
-      };
-
-    updateAudio = function updateAudio(src) {
-      var command;
-      if (audioElement) {
-        command = {
-          command : 'AUDIO_UPDATE',
-          element : audioElement,
-          elementId : audioElement.getAttribute('m4pageeditid'),
-          data : src,
-          previousData : originalHref
-        };
-      } else {
-        command = {
-          command : 'AUDIO_CREATE',
-          element : selectedElement,
-	  elementType : 'audio/ogg',
-	  xpath : DOM.getXPATH(selectedElement), //Yassine
-	  url : window.location.href,
-          elementId : selectedElement.getAttribute('m4pageeditid'),
-          data : src,
-          previousData : ''
-        };
-      }
-      pageEditor.commandApply(command);
-     // self.actionComplete();
-    };
+	updateAudio = function updateAudio(src) {
+	    var command;
+	    if (audioElement) {
+		command = {
+		    command : 'AUDIO_UPDATE',
+		    element : audioElement,
+		    elementId : audioElement.getAttribute('m4pageeditid'),
+		    data : src,
+		    previousData : originalHref
+		};
+	    } else {
+		command = {
+		    command : 'AUDIO_CREATE',
+		    element : selectedElement,
+		    elementType : 'audio/ogg',
+		    xpath : DOM.getXPATH(selectedElement), //Yassine
+		    url : window.location.href,
+		    elementId : selectedElement.getAttribute('m4pageeditid'),
+		    data : src,
+		    previousData : ''
+		};
+	    }
+	    pageEditor.commandApply(command);
+	    // self.actionComplete();
+	};
 
     }
 
@@ -2787,7 +2760,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	    self.popdown();
 	};
 
-	var backgroundImage = 'http://x.a11y.in/alipi/wsgi/images/replace_image.png';
+	var backgroundImage = 'http://dev.a11y.in/alipi/images/replace_image.png';
 	backgroundButton = createActionButton(backgroundImage, backgroundButtonText, 'border-right: none;' + leftBorderStyle);
 	backgroundButton.onclick = function backgroundButtonOnClick() {
 	    popupControl.showAction(imageUpdateAction);
@@ -2800,7 +2773,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	   self.popdown();
 	   };
 
-	   var linkImage = 'http://x.a11y.in/alipi/wsgi/images/link.png';
+	   var linkImage = 'http://dev.a11y.in/alipi/images/link.png';
 	   linkButton = createActionButton(linkImage, 'Link', rightBorderStyle);
 	   linkButton.onclick = function linkButtonOnClick() {
 	   popupControl.showAction(linkUpdateAction);
@@ -2814,7 +2787,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	};
 
 
-	var renImage = 'http://x.a11y.in/alipi/wsgi/images/renarration.png';
+	var renImage = 'http://dev.a11y.in/alipi/images/renarration.png';
 	renButton = createActionButton(renImage, 'Renarration', 'border-right: none;');
 	renButton.onclick = function renButtonOnClick() {
 	    popupControl.showAction(renUpdateAction);
@@ -2834,7 +2807,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	    return false;
     };
 	//shalini
-	/*    var deleteImage = 'http://x.a11y.in/alipi/wsgi/images/delete_trashcan.png';
+	/*    var deleteImage = 'http://dev.a11y.in/alipi/images/delete_trashcan.png';
 	      deleteButton = createActionButton(deleteImage, 'Delete', 'border-right: none;');
 	      deleteButton.onclick = function deleteButtonOnClick() {
 	      deleteElement();
@@ -2961,7 +2934,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	    return false;
 	};
 
-	var doneImage = 'http://x.a11y.in/alipi/wsgi/images/done.png';
+	var doneImage = 'http://dev.a11y.in/alipi/images/done.png';
 	doneButton = createActionButton(doneImage, 'Done', 'border-right: none;' + leftBorderStyle);
 	doneButton.onclick = function doneButtonOnClick() {
 	    self.popdown(true);
@@ -2969,7 +2942,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	};
 	
 
-	var renImage = 'http://x.a11y.in/alipi/wsgi/images/renarration.png';
+	var renImage = 'http://dev.a11y.in/alipi/images/renarration.png';
 	renButton = createActionButton(renImage, 'Renarration', 'border-right: none;');
 	renButton.onclick = function renButtonOnClick() {
 	    popupControl.showAction(renUpdateAction);
@@ -2982,8 +2955,20 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	    self.popdown(true);
 	};
 
+	audioUpdateAction = new AudioUpdateByUrl(pageEditor, actionSlot);
+	audioUpdateAction.onComplete = function audioUpdateActionOnComplete() {
+	    self.popdown();
+	};
+	
+	var audioImage = './images/audio.png';
+	audioButton = createActionButton(audioImage,'Audio','border-right:none;');
+	audioButton.onclick = function audioButtonOnClick() {
+	    popupControl.showAction(audioUpdateAction);
+	    return false;
+	};
+
 	//shalini
-	/*    var deleteImage = 'http://x.a11y.in/alipi/wsgi/images/delete_trashcan.png';
+	/*    var deleteImage = 'http://dev.a11y.in/alipi/images/delete_trashcan.png';
 	      deleteButton = createActionButton(deleteImage, 'Delete', 'border-right: none;');
 	      deleteButton.onclick = function deleteButtonOnClick() {
 	      deleteElement();
@@ -2996,7 +2981,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	    self.popdown(true);
 	};
 
-	var backgroundImage = 'http://x.a11y.in/alipi/wsgi/images/replace_image.png';
+	var backgroundImage = 'http://dev.a11y.in/alipi/images/replace_image.png';
 	backgroundButton = createActionButton(backgroundImage, 'BG&nbsp;Image', 'border-right: none;');
 	backgroundButton.onclick = function backgroundButtonOnClick() {
 	    popupControl.showAction(imageUpdateAction);
@@ -3012,7 +2997,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	      };
 
 
-	      var linkImage = 'http://x.a11y.in/alipi/wsgi/images/link.png';
+	      var linkImage = 'http://dev.a11y.in/alipi/images/link.png';
 	      linkButton = createActionButton(linkImage, 'Link', rightBorderStyle);
 	      linkButton.onclick = function linkButtonOnClick() {
 	      popupControl.showAction(linkUpdateAction);
@@ -3028,6 +3013,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	//    buttonPanel.appendChild(deleteButton);
 	//shalini
 	buttonPanel.appendChild(renButton);
+	buttonPanel.appendChild(audioButton);
 	
 	//    buttonPanel.appendChild(backgroundButton);
 	//shalini
@@ -3361,7 +3347,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	    keepOriginalCheckbox.onclick = function() {
 		keepOriginal = keepOriginalCheckbox.checked;
 	    };
-	    var backgroundImage = 'url(http://x.a11y.in/alipi/wsgi/images/container_save_new_page.png) no-repeat scroll 0 0 transparent';
+	    var backgroundImage = 'url(http://dev.a11y.in/alipi/images/container_save_new_page.png) no-repeat scroll 0 0 transparent';
 	    var position = 'fixed';
 	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
 	    //   position = 'absolute';
@@ -3521,7 +3507,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 		// show "poof" animation to indicate deletion
 		poofPosition = DOM.findPosition(command.element);
 
-		poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://x.a11y.in/alipi/wsgi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
+		poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://dev.a11y.in/alipi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
 		document.body.appendChild(poofDiv);
 
 		UTIL.animate(function(index, last) {
@@ -3731,14 +3717,13 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 		buffer.append('&elementType='); // text, audio, img
 		buffer.append(encodeURIComponent(command.elementType));
 		buffer.append('&xpath=');//xpath
+		command.xpath = '/' + command.xpath.slice(10,command.xpath.length);
 		buffer.append(encodeURIComponent(command.xpath));
 		buffer.append('&data=');  //data
 		buffer.append(encodeURIComponent(command.data));
 		buffer.append('&author='); //author
 		buffer.append(encodeURIComponent(authorValue));
 	    });
-	    //alert(buffer.toString().substring(1));
-	    // window.open("http://x.a11y.in/alipi/app/auth?" +  buffer.toString().substring(3)); 
 	    return buffer.toString().substring(3);
 	};
     }
