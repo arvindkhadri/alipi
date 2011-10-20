@@ -1798,45 +1798,44 @@
 	// slow to load.
 
 	// Ajay - This is ovelay for 'Saving and Loading' - changed rgba colors
-	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'bgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; min-height: 800px; min-width: 1024px; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.87))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
+	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'bgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.87))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
 	loadingText = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; font-size: 14px; font-weight: bold; margin-left: 10px; color:#ECECEC; display: inline; vertical-align: middle;').values(), 'Loading');
 	loadingDiv = DOM.BUILDER.DIV(normalFontAttributes.addStyle('position: relative; width: auto; height: auto; display: block; text-align: left;').values(), loadingText);
 	backgroundDiv.appendChild(loadingDiv);
 
-	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'msgoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow:  0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px;-webkit-border-top-right-radius:10px; -webkit-border-bottom-right-radius:10px;-webkit-border-top-left-radius:10px; -webkit-border-bottom-left-radius:10px; position:fixed; left:10%; top:10%; bottom:10%; right:10%; width:80%; height:80%; background:#000; display:none;').values());
+	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'msgoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow:  0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px;-webkit-border-top-right-radius:10px; -webkit-border-bottom-right-radius:10px;-webkit-border-top-left-radius:10px; -webkit-border-bottom-left-radius:10px; position:fixed; left:5%; top:5%; bottom:5%; right:5%; background:#000; display:none; vertical-align:middle;').values());
 
 	step1 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; font-size: 22px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), 'Please provide all the details below');
 
 	messageOverlay.appendChild(step1);
 
-	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'https://bo.lt/app/asset/page-edit/pencil_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'}).addStyle('position: relative; margin-right: 10px; vertical-align: middle;').values());
+//	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'https://bo.lt/app/asset/page-edit/pencil_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'}).addStyle('position: relative; margin-right: 10px; vertical-align: middle;').values());
 	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'OK');
 
 	//---------------------------- state & language target --------------------------
-	locSelectAttributes = panelButtonAttributes.put({ id : 'loc-select'}).addStyle('position:absolute; top:25%; left:05%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	locSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:24%; left:05%; width:auto; font-size: 14px; font-weight: bold; background: transparent; color: #FFF; display:inline-block;').values());
+	locSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:20%; left:10%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;').values());
 	locSelectLabel.innerHTML = 'Select any state';
-
-	langSelectAttributes = panelButtonAttributes.put({ id : 'lang-select'}).addStyle('position:absolute; top:50%; left:05%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	langSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:49%; left:05%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
-	langSelectLabel.innerHTML = 'Languages of selected/all state(s)';
-
-	enterBlogAttributes = panelButtonAttributes.put({id : 'enter-blog', placeholder : 'http://abc.blogspot.com/', type : 'text'}).addStyle('position:absolute; top:25%; left:36%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	enterBlogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:23%; left:36%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
+	enterBlogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:20%; left:40%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;').values());
 	enterBlogLabel.innerHTML = 'Enter your blog URL';
-
-	defaultBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'defaultcheck', name : 'Loading Checkbox', type : 'checkbox'}).addStyle('position:absolute; top:54%; left:36%; background: transparent; display: inline-block;').values());
-	defaultBlogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:55%; left:39%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
-	defaultBlogLabel.innerHTML = 'Default blog (Our blog)';
-
-	enterMailIdAttributes = panelButtonAttributes.put({id : 'enter-mail', placeholder : 'username@gmail.com', type : 'text'}).addStyle('position:absolute; top:25%; left:70%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	enterMailIdLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:23%; left:70%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
+	enterMailIdLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:20%; left:70%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;').values());
 	enterMailIdLabel.innerHTML = 'USERNAME';
 
 
-	enterPwdAttributes = panelButtonAttributes.put({id : 'enter-pwd', placeholder : 'password', type : 'password'}).addStyle('position:absolute; top:50%; left:70%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	enterPwdLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:49%; left:70%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
+	locSelectAttributes = panelButtonAttributes.put({ id : 'loc-select'}).addStyle('position:fixed; top:21%; left:10%;  width:220px; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
+	enterBlogAttributes = panelButtonAttributes.put({id : 'enter-blog', placeholder : 'http://abc.blogspot.com/', type : 'text'}).addStyle('position:fixed; top:21%; left:40%; width:220px; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
+	enterMailIdAttributes = panelButtonAttributes.put({id : 'enter-mail', placeholder : 'username@gmail.com', type : 'text'}).addStyle('position:fixed; top:21%; left:70%; width:220px; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
+
+
+	langSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:50%; left:10%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
+	langSelectLabel.innerHTML = 'Languages of selected/all state(s)';
+	enterPwdLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:50%; left:70%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
 	enterPwdLabel.innerHTML = 'PASSWORD';
+
+	langSelectAttributes = panelButtonAttributes.put({ id : 'lang-select'}).addStyle('position:fixed; top:51%; left:10%; width:220px; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
+	defaultBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'defaultcheck', name : 'Loading Checkbox', type : 'checkbox'}).addStyle('position:fixed; top:51%; left:40%; background: transparent; display: inline-block;').values());
+	defaultBlogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:51.5%; left:42%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
+	defaultBlogLabel.innerHTML = 'Default blog (Our blog)';
+	enterPwdAttributes = panelButtonAttributes.put({id : 'enter-pwd', placeholder : 'password', type : 'password'}).addStyle('position:fixed; top:51%; left:70%;width:220px; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
 
 	//-----------------------------End of state & language target -------------------
 
@@ -1970,7 +1969,7 @@
 
 	//    var redHelpLink = DOM.BUILDER.A(normalFontAttributes.put({ href : 'http://bo.lt/editor'}).addStyle('z-index: 2147483647; float: right;  margin-right: 34px; display: inline-block;text-decoration: none; color: #FFF; font-size: 10px; font-weight: bold; ').values(), 'Need Help?')
 
-	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), locSelect, locSelectLabel, langSelect, langSelectLabel, enterBlog, enterBlogLabel, defaultBlog, defaultBlogLabel, enterMailId, enterMailIdLabel, enterPwd, enterPwdLabel));
+	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), locSelectLabel, enterBlogLabel, enterMailIdLabel,  locSelect, enterBlog, enterMailId, langSelectLabel, enterPwdLabel, langSelect, defaultBlog, defaultBlogLabel, enterPwd));
 	okButton.appendChild(text);
 	messageOverlay.appendChild(okButton);
 
@@ -3127,7 +3126,7 @@ function AudioUpdateByUrl(pageEditor, actionControl) {
 	//     }
  	// };
 
-	publishButton = DOM.BUILDER.BUTTON(redButtonStyleAttributes, 'Fill-up & Publish'); // Ajay - Done to Save Yass
+	publishButton = DOM.BUILDER.BUTTON(redButtonStyleAttributes, 'Publish'); // Ajay - Done to Save Yass
 	//pageEditor.saveAndClose();
 	publishButton.onclick = function publishButtonOnClick() {
 
