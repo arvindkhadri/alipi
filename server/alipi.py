@@ -15,7 +15,10 @@ def start_page() :
     a = urllib2.urlopen(myhandler1)
     page = a.read()
     a.close()
-    page = unicode(page,'utf-8')  #Hack to fix improperly displayed chars on wikipedia.
+    try:
+        page = unicode(page,'utf-8')  #Hack to fix improperly displayed chars on wikipedia.
+    except UnicodeDecodeError:
+        pass #Some pages dont need to be utf-8'ed
     root = lxml.html.parse(StringIO.StringIO(page)).getroot()
     if request.args.has_key('lang') == False and request.args.has_key('blog') == False:
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
