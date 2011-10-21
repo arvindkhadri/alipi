@@ -1781,7 +1781,6 @@
 
 	// Ajay - This is ovelay for 'Saving and Loading' - changed rgba colors
 	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'bgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; min-height: 800px; min-width: 1024px; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.87))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
-	//    loadingImage = DOM.BUILDER.IMG(normalFontAttributes.put({src: './images/loading.gif'}).addStyle('position: relative; width: 24px; height: 24px; display: inline; vertical-align: middle; ').values()); // Ajay - replaced loading.gif image
 	loadingText = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; font-size: 14px; font-weight: bold; margin-left: 10px; color:#ECECEC; display: inline; vertical-align: middle;').values(), 'Loading');
 	loadingDiv = DOM.BUILDER.DIV(normalFontAttributes.addStyle('position: relative; width: auto; height: auto; display: block; text-align: left;').values(), loadingText);
 	backgroundDiv.appendChild(loadingDiv);
@@ -1790,23 +1789,13 @@
 
 	step1 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; font-size: 22px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), 'Please provide all the details below');
 
-//	step2 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; float:left; margin:20px 0 0 210px; font-size: 30px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), '2');
-
-//	step3 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; float:left; margin:20px 0 0 210px; font-size: 30px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), '3');
-
 	messageOverlay.appendChild(step1);
-//	messageOverlay.appendChild(step2);
-//	messageOverlay.appendChild(step3);
 
-	//	messageDescription = DOM.BUILDER.P(normalFontAttributes.addStyle('color:#FFF; font-weight: normal; font-size: 14px; line-height: 22px; width:450px; margin-left: auto; margin-right: auto; text-align: center;').values(), 'HELLO');
-	//	messageOverlay.appendChild(messageDescription);
-
-	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'https://bo.lt/app/asset/page-edit/pencil_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'}).addStyle('position: relative; margin-right: 10px; vertical-align: middle;').values());
+	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: '../images/close_button.png'}).addStyle('position: relative; margin-right: 10px; vertical-align: middle;').values());
 	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'OK');
 
 	//---------------------------- state & language target --------------------------
 	locSelectAttributes = panelButtonAttributes.addStyle('position:absolute; top:25%; left:05%; width:23%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	//	step2 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; float:left; margin:30px 0 0 200px; font-size: 30px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), 'STEP - 2');
 	locSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:absolute; top:24%; left:05%; width:auto; font-size: 14px; font-weight: bold; background: transparent; color: #FFF; display:inline-block;').values());
 	locSelectLabel.innerHTML = 'Select any state';
 
@@ -1864,7 +1853,7 @@
 		    var loc=[];
 		    var texts=[];
 		    loc.push('--Locations--');
-		    texts.push('----Languages---');
+		    texts.push('---Languages---');
 		    var locations = json["state"];
 		    for(var i=0; i< locations.length;i++)
 		    {
