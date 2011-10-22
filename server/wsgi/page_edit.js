@@ -1473,6 +1473,8 @@
 
     // Ajay - injecting edit-control to tag elements
     editAttributes = new DOM.Attributes({ 'm4pageeditcontrol': true });
+    //editAttributes.designMode = 'on';
+    //editAttributes.html="0";
     elementAttributes = editAttributes.addStyle('margin:0; padding:0; border:none; text-indent: 0px; background: none;');
     fontTypeAttributes = elementAttributes.addStyle("font-family: Helvetica Neue, Helvetica, Arial, Sans-serif;");
     normalFontAttributes = fontTypeAttributes.addStyle("font-weight:bold; font-size:12px; line-height: 10px;");

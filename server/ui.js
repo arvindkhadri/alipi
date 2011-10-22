@@ -6,7 +6,7 @@ var a11ypi = {
     flag : 0,
     testContext : function()
     {
-	$(document).ready(function(){$('body *').contents().filter(function() {return (this.nodeType == 3) && this.nodeValue.match(/\S/);}).wrap('<span m4pageedittype=text/>')});
+	$(document).ready(function(){$('body *').contents().filter(function() {return (this.nodeType == 3) && this.nodeValue.match(/\S/);}).wrap('<span m4pageedittype="text" oncopy="" onpaste=""/>')});
 	vimg = document.getElementsByTagName('img');
 	for(i=0; i<vimg.length; i++)
 	{
@@ -19,6 +19,9 @@ var a11ypi = {
 	v[0].appendChild(a);
 	var alltags = document.getElementsByTagName('*');
 	for (x=0; x<alltags.length; x++) {
+	   if(alltags[x].getAttribute("_moz_dirty")){
+			alert("hello _moz_dirty");
+		}
 	    if (alltags[x].id == 'ren_overlay' || alltags[x].id == 'overlay1' ) {
 		v[0].removeChild(document.getElementById('ren_overlay'));
 		v[0].removeChild(document.getElementById('overlay1'));
@@ -26,12 +29,6 @@ var a11ypi = {
 	}
 	v[0].removeChild(document.getElementById('overlay2'));
 
-	msg_overlay = document.createElement("div");
-	v[0].appendChild(msg_overlay);
-	msg_overlay.setAttribute("id", "msg-overlay");
-	msg_overlay.textContent = "Now your page is ready to edit... Enjoy editing !!";
-
-	setTimeout("document.getElementById('msg-overlay').style.display='none'", 3000);	
     },
 
 
@@ -192,7 +189,7 @@ var a11ypi = {
             dump( 'error: Document tree modified during iteration ' + e );
         }
     },
-    close_msg: function() {
+    close: function() {
 	// var v = content.document.getElementsByTagName("body");
 	// v[0].removeChild(document.getElementById('ren_overlay'));
 	document.getElementById('ren_overlay').style.display = 'none';
