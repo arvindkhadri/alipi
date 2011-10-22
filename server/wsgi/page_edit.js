@@ -1665,31 +1665,29 @@
 	// slow to load.
 
 	// Ajay - This is ovelay for 'Saving and Loading' - changed rgba colors
-	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.addStyle(' z-index: 2147483646; width: 100%; height: 100%; min-height: 800px; min-width: 1024px; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.87))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
+	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'bgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; min-height: 800px; min-width: 1024px; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.87))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
 //	loadingImage = DOM.BUILDER.IMG(normalFontAttributes.put({src: './images/loading.gif'}).addStyle('position: relative; width: 24px; height: 24px; display: inline; vertical-align: middle; ').values()); // Ajay - replaced loading.gif image
 //	loadingText = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; font-size: 14px; font-weight: bold; margin-left: 10px; color:#ECECEC; display: inline; vertical-align: middle;').values(), 'Loading');
 //	loadingDiv = DOM.BUILDER.DIV(normalFontAttributes.addStyle('position: relative; width: auto; height: auto; display: block; text-align: left;').values()//, loadingImage, loadingText);
 //	backgroundDiv.appendChild(loadingDiv);
 
-	messageOverlay = DOM.BUILDER.DIV(elementAttributes.addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:20%; top:20%; bottom:20%; right:20%; background:#000; display:none;').values());
+	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'msgoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:20%; top:20%; bottom:20%; right:20%; background:#000; display:none;').values());
 
-	messageTitle = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:23%; left:44%; color:#FFF; font-size: 30px; line-height:36px; font-weight: normal; text-decoration:none;').values(), 'Page Editor');
+	messageTitle = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:23%; left:44.5%; color:#FFF; font-size:200%; line-height:120%; font-weight:normal; text-decoration:none;').values(), 'Page Editor');
 
 	messageOverlay.appendChild(messageTitle);
 
-	messageDescription = DOM.BUILDER.P(normalFontAttributes.addStyle('position:fixed; top:32%; left:22%; right:22%; text-align:justify; color:#FFF; font-weight: normal; font-size: 16px; line-height:24px;').values(), 'Click on any part of the page, and you will activate buttons that allow you to modify text, replace images and add audio. Just refresh your page to exit from editing without saving your changes. Don\'t forget to hit "Publish" when you\'re finished editing so we can save your newly-crafted page.');
+	messageDescription = DOM.BUILDER.P(normalFontAttributes.addStyle('position:fixed; top:32%; left:22%; right:22%; text-align:justify; color:#FFF; font-weight: normal; font-size:120%; line-height:130%;').values(), 'Click on any part of the page, and you will activate buttons that allow you to modify text, replace images and add audio. Just refresh your page to exit from editing without saving your changes. Don\'t forget to hit "Publish" when you\'re finished editing so we can save your newly-crafted page.');
 	messageOverlay.appendChild(messageDescription);
 
 //	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'https://bo.lt/app/asset/page-edit/pencil_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'}).addStyle('position: relative; margin-right: 10px; vertical-align: middle;').values());
-	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none; ').values(), 'OK');
+	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position:fixed; bottom:24.5%; left:49%; font-size:120%;').values(), 'OK');
 
 	// Ajay - Changed lot of colors - Not using, not sure
-	editButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:46%; bottom:23%; color:#FFF; margin-left: auto; margin-right: auto; width: 100px; height:36px; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
+	editButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:46%; bottom:23%; color:#FFF; width:8%; height:5%; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
 	editButton.onclick = function loadingEditButtonOnClick() {
-	    messageOverlay.style.display = 'none';
-	    backgroundDiv.style.display = 'none';
-	    // self.hide();
-	    // return false;
+	    self.hide();
+	    return false;
 	};
 
 	//    editButton.appendChild(image);
@@ -1697,14 +1695,14 @@
 	messageOverlay.appendChild(editButton);
 
 
-	hideOverlayCheckbox = DOM.BUILDER.INPUT(editAttributes.put({ name : 'Loading Checkbox', type : 'checkbox'}).addStyle('position:relative; top:5%; left:-23%; background: transparent; display: inline-block;').values());
+	hideOverlayCheckbox = DOM.BUILDER.INPUT(editAttributes.put({ id:'hideoverlay', name:'Loading Checkbox', type:'checkbox', checked:'yes'}).addStyle('position:fixed; bottom:29.5%; left:44.5%; background: transparent; display: inline-block;').values());
 
-	var checkboxLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:relative; left:-22%; font-size: 10px; font-weight: bold;  transparent; color: #FFF;display: inline-block;').values());
+	var checkboxLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; left:46.5%; bottom:30%; font-size:80%; font-weight:bold;  transparent; color: #FFF;display: inline-block;').values());
 	checkboxLabel.innerHTML = 'Don\'t show this again.';
 
 	//    var redHelpLink = DOM.BUILDER.A(normalFontAttributes.put({ href : 'http://bo.lt/editor'}).addStyle('z-index: 2147483647; float: right;  margin-right: 34px; display: inline-block;text-decoration: none; color: #FFF; font-size: 10px; font-weight: bold; ').values(), 'Need Help?')
 
-	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values()//,hideOverlayCheckbox, checkboxLabel// , redHelpLink
+	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), hideOverlayCheckbox, checkboxLabel// , redHelpLink
 						  ));
 	editButton.appendChild(text);
 	messageOverlay.appendChild(editButton);
@@ -1713,62 +1711,60 @@
 	document.body.appendChild(messageOverlay);
 
 
-	this.show = function show( textToDisplay) {
+this.show = function show( textToDisplay) {
 
-	    if (textToDisplay) {
-		DOM.textContent(textToDisplay);
-	    }
-	    // var screenSize = DOM.viewDimension();
-	    // backgroundDiv.style.minWidth = screenSize[0] + 'px';
-	    // backgroundDiv.style.minHeight = screenSize[1] + 'px';
+      if (textToDisplay) {
+        DOM.textContent(loadingText, textToDisplay);
+      }
+      // var screenSize = DOM.viewDimension();
+      // backgroundDiv.style.minWidth = screenSize[0] + 'px';
+      // backgroundDiv.style.minHeight = screenSize[1] + 'px';
 
-	    // messageOverlay.style.left = (screenSize[0] - parseInt(messageOverlay.style.width) ) / 2 + 'px';
-	    // messageOverlay.style.top = (screenSize[1] - parseInt(messageOverlay.style.height) ) / 2 + 'px';
-	    // loadingDiv.style.left = (screenSize[0] - parseInt(loadingImage.style.width) ) / 2 + 'px';
-	    // loadingDiv.style.top = (screenSize[1] - parseInt(loadingImage.style.height) ) / 2 + 'px';
+      // messageOverlay.style.left = (screenSize[0] - parseInt(messageOverlay.style.width) ) / 2 + 'px';
+      // messageOverlay.style.top = (screenSize[1] - parseInt(messageOverlay.style.height) ) / 2 + 'px';
+      // loadingDiv.style.left = (screenSize[0] - parseInt(loadingImage.style.width) ) / 2 + 'px';
+      // loadingDiv.style.top = (screenSize[1] - parseInt(loadingImage.style.height) ) / 2 + 'px';
 
-	    backgroundDiv.style.display = 'block';
-
-	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
-	    //   backgroundDiv.style.position = 'absolute';
-	    //   messageOverlay.style.position = 'absolute';
-	    //   backgroundDiv.style.background = '#fff'; // Ajay - changed color
-	    // }
-	};
-
+    backgroundDiv.style.display = 'block';
+    
+    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
+    //   backgroundDiv.style.position = 'absolute';
+    //   messageOverlay.style.position = 'absolute';
+    //   backgroundDiv.style.background = '#A51414';
+    // }
+};
+	
 	this.hide = function hide() {
-	    if (hideOverlayCheckbox.checked) {
-		document.cookie ='m4.show.redbar.overlay=no;'
-	    } else {
-		var date = new Date();
-		document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
-	    }
+	if (hideOverlayCheckbox.checked) {
+          document.cookie ='m4.show.redbar.overlay=no;'
+      } else {
+	  var date = new Date();
+	  document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
+      }
 
-	    messageOverlay.style.display = 'block';
-	    backgroundDiv.style.display = 'block';
-	}
-
-	this.activate = function activate() {
-	    /*
-	     *  Cookie logic is temporary. This needs to be part of a user preference.
-	     *  Bug http://bugzilla.boltnet.com/bugzilla/boltnet/show_bug.cgi?id=2962
-	     *  created for this purpose.
-	     */
-	    var allCookies = document.cookie;
-	    if (editMode != 'HTML' && allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
-		messageOverlay.style.display = 'block';
-		backgroundDiv.style.display = 'block';
-		// if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
-		//   messageDescription.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(messageDescription).width )/2 + 'px';
-		//   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
-		// }
-	    }  else {
-		//		messageOverlay.style.display = 'none';
-		//		backgroundDiv.style.display = 'none';
-		self.hide();
-	    }
-	};
+      messageOverlay.style.display = 'none';
+      backgroundDiv.style.display = 'none';
     };
+
+    this.activate = function activate() {
+      /*
+       *  Cookie logic is temporary. This needs to be part of a user preference.
+       *  Bug http://bugzilla.boltnet.com/bugzilla/boltnet/show_bug.cgi?id=2962
+       *  created for this purpose.
+       */
+      var allCookies = document.cookie;
+      if (allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
+        messageOverlay.style.display = 'block';
+        // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
+        //   messageDescription.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(messageDescription).width )/2 + 'px';
+        //   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
+        // }
+      }  else {
+        self.hide();
+      }
+    };
+  } ;
+
 
     //------------------------------------ Target UI --------------------------------------------
     AjayWindow = function SplashWindow(pageEditor ) {
@@ -1780,11 +1776,11 @@
 	// slow to load.
 
 	// Ajay - This is ovelay for 'Saving and Loading' - changed rgba colors
-	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'bgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 1))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
+	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'targetbgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 1))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
 //	loadingDiv = DOM.BUILDER.DIV(normalFontAttributes.addStyle('position: relative; width: auto; height: auto; display: block; text-align: left;').values());
 //	backgroundDiv.appendChild(loadingDiv);
 
-	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'msgoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:5%; top:5%; bottom:5%; right:5%; background:#000; display:none; vertical-align:middle;').values());
+	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'targetoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:5%; top:5%; bottom:5%; right:5%; background:#000; display:none; vertical-align:middle;').values());
 
 	step1 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; font-size: 22px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), 'Please provide all the details below');
 
@@ -1794,8 +1790,8 @@
 	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'OK');
 
 	image.onclick=function(){
-	    document.getElementById("msgoverlay").style.display = "none";
-	    document.getElementById("bgdiv").style.display = "none";
+	    document.body.removeChild(document.getElementById('targetoverlay'));
+	    document.body.removeChild(document.getElementById('targetbgdiv'));
 	}
 
 
@@ -2015,8 +2011,8 @@
 	//     document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
 	//   }
 
-	messageOverlay.style.display = 'block';
-	backgroundDiv.style.display = 'block';
+//	messageOverlay.style.display = 'block';
+//	backgroundDiv.style.display = 'block';
 	// };
 
 	this.activate = function activate() {
@@ -2025,16 +2021,16 @@
 	     *  Bug http://bugzilla.boltnet.com/bugzilla/boltnet/show_bug.cgi?id=2962
 	     *  created for this purpose.
 	     */
-	    var allCookies = document.cookie;
-	    if (editMode != 'HTML' && allCookies && allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
+	    // var allCookies = document.cookie;
+	    // if (editMode != 'HTML' && allCookies && allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
 		messageOverlay.style.display = 'block';
 		// if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
 		//   messageDescription.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(messageDescription).width )/2 + 'px';
 		//   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
 		// }
-	    }  else {
-		//    self.hide();
-	    }
+	    // }  else {
+	    // 	//    self.hide();
+	    // }
 	};
     };
 
