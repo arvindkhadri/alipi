@@ -1770,7 +1770,7 @@ this.show = function show( textToDisplay) {
     AjayWindow = function SplashWindow(pageEditor ) {
 
 	var self = this, messageOverlay, editButton, hideOverlayCheckbox, messageDescription, messageTitle, loadingImage, loadingText, loadingDiv;
-
+	tooltip = new DOM.Attributes({ 'title': 'Check this if you want to post to our blog. That is "http://alipi-workshop.blogspot.com/"'});
 	// because PageEditor is activated on "onload", we show a loading panel until
 	// onload finally fires, which can be a while if any resource on the page is
 	// slow to load.
@@ -1782,7 +1782,7 @@ this.show = function show( textToDisplay) {
 
 	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'targetoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:20%; top:20%; bottom:20%; right:20%; background:#000; display:none; vertical-align:middle;').values());
 
-	step1 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:21%; left:38%; color:#FFF; font-size: 22px; line-height: 36px; font-weight: normal; display: block; ').values(), 'Please provide all the details below');
+	step1 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:21%; left:40%; color:#FFF; font-size:100%; line-height: 36px; font-weight: bold; display: block; ').values(), 'Please provide all the details below');
 
 	messageOverlay.appendChild(step1);
 
@@ -1808,16 +1808,20 @@ this.show = function show( textToDisplay) {
 
 	langSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:50%; left:25%; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
 	langSelectLabel.innerHTML = 'Languages of selected/all state(s)';
+	authorLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:50%; left:53.5%; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
+	authorLabel.innerHTML = 'Author name';
 
 	langSelectAttributes = panelButtonAttributes.put({ id : 'lang-select'}).addStyle('position:fixed; top:51%; left:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	defaultBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'defaultcheck', name : 'Loading Checkbox', type : 'checkbox'}).addStyle('position:fixed; top:54%; left:53.5%; background: transparent; display: inline-block;').values());
-	defaultBlogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:54.5%; left:56%; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
-	defaultBlogLabel.innerHTML = 'Default blog (Our blog)';
+	authorAttributes = DOM.BUILDER.INPUT(editAttributes.put({ id : 'author', placeholder:'E.g:- John Doe'}).addStyle('position:fixed; top:54%; right:26%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values());
+
+	defaultBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'defaultcheck', name : 'Loading Checkbox', type : 'checkbox'}).addStyle('position:fixed; top:70%; left:44%; background: transparent; display: inline-block;').values());
+	defaultBlogLabel = DOM.BUILDER.LABEL(tooltip.addStyle('position:fixed; top:70%; left:47%; background: transparent; color: #FFF;display: inline-block; text-align:center; font-size:80%; font-weight: bold;').values());
+	defaultBlogLabel.innerHTML = 'To our blog--[?]';
 
 	//-----------------------------End of state & language target -------------------
 
 	// Ajay - Changed lot of colors - Not using, not sure
-	okButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:absolute; left:44%; bottom:5%; color:#FFF; margin:auto; width: 100px; height: 36px; display: block; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
+	okButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; right:25%; bottom:25%; color:#FFF; margin:auto; width: 100px; height: 36px; display: block; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
 
 	this.okClick = function okClick() {
 	    if(document.getElementById('loc-select').value == '--Locations--' || document.getElementById('lang-select').value == '---Languages---' || document.getElementById('style-select').value == '---Style---') {
@@ -1962,10 +1966,11 @@ this.show = function show( textToDisplay) {
 
 	//-------------------------------------------- start blog details ---------------------------
 	defaultBlog = defaultBlogAttributes;
+	author = authorAttributes;
 	//-------------------------------------------- end blog details ------------------------------
 
 
-	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), locSelect, locSelectLabel, langSelect, langSelectLabel, defaultBlog, defaultBlogLabel, enterMailIdLabel, styleSelect));
+	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), locSelect, locSelectLabel, langSelect, langSelectLabel, defaultBlog, defaultBlogLabel, enterMailIdLabel, styleSelect, author, authorLabel));
 	okButton.appendChild(text);
 	messageOverlay.appendChild(okButton);
 
