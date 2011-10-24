@@ -1666,10 +1666,10 @@
 
 	// Ajay - This is ovelay for 'Saving and Loading' - changed rgba colors
 	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'bgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; min-height: 800px; min-width: 1024px; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.87))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
-//	loadingImage = DOM.BUILDER.IMG(normalFontAttributes.put({src: './images/loading.gif'}).addStyle('position: relative; width: 24px; height: 24px; display: inline; vertical-align: middle; ').values()); // Ajay - replaced loading.gif image
-//	loadingText = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; font-size: 14px; font-weight: bold; margin-left: 10px; color:#ECECEC; display: inline; vertical-align: middle;').values(), 'Loading');
-//	loadingDiv = DOM.BUILDER.DIV(normalFontAttributes.addStyle('position: relative; width: auto; height: auto; display: block; text-align: left;').values()//, loadingImage, loadingText);
-//	backgroundDiv.appendChild(loadingDiv);
+	//	loadingImage = DOM.BUILDER.IMG(normalFontAttributes.put({src: './images/loading.gif'}).addStyle('position: relative; width: 24px; height: 24px; display: inline; vertical-align: middle; ').values()); // Ajay - replaced loading.gif image
+	//	loadingText = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; font-size: 14px; font-weight: bold; margin-left: 10px; color:#ECECEC; display: inline; vertical-align: middle;').values(), 'Loading');
+	//	loadingDiv = DOM.BUILDER.DIV(normalFontAttributes.addStyle('position: relative; width: auto; height: auto; display: block; text-align: left;').values()//, loadingImage, loadingText);
+	//	backgroundDiv.appendChild(loadingDiv);
 
 	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'msgoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:20%; top:20%; bottom:20%; right:20%; background:#000; display:none;').values());
 
@@ -1680,7 +1680,7 @@
 	messageDescription = DOM.BUILDER.P(normalFontAttributes.addStyle('position:fixed; top:32%; left:22%; right:22%; text-align:justify; color:#FFF; font-weight: normal; font-size:120%; line-height:130%;').values(), 'Click on any part of the page, and you will activate buttons that allow you to modify text, replace images and add audio. Just refresh your page to exit from editing without saving your changes. Don\'t forget to hit "Publish" when you\'re finished editing so we can save your newly-crafted page.');
 	messageOverlay.appendChild(messageDescription);
 
-//	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'https://bo.lt/app/asset/page-edit/pencil_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'}).addStyle('position: relative; margin-right: 10px; vertical-align: middle;').values());
+	//	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'https://bo.lt/app/asset/page-edit/pencil_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'}).addStyle('position: relative; margin-right: 10px; vertical-align: middle;').values());
 	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position:fixed; bottom:24.5%; left:49%; font-size:120%;').values(), 'OK');
 
 	// Ajay - Changed lot of colors - Not using, not sure
@@ -1711,59 +1711,59 @@
 	document.body.appendChild(messageOverlay);
 
 
-this.show = function show( textToDisplay) {
+	this.show = function show( textToDisplay) {
 
-      if (textToDisplay) {
-        DOM.textContent(loadingText, textToDisplay);
-      }
-      // var screenSize = DOM.viewDimension();
-      // backgroundDiv.style.minWidth = screenSize[0] + 'px';
-      // backgroundDiv.style.minHeight = screenSize[1] + 'px';
+	    if (textToDisplay) {
+		DOM.textContent(loadingText, textToDisplay);
+	    }
+	    // var screenSize = DOM.viewDimension();
+	    // backgroundDiv.style.minWidth = screenSize[0] + 'px';
+	    // backgroundDiv.style.minHeight = screenSize[1] + 'px';
 
-      // messageOverlay.style.left = (screenSize[0] - parseInt(messageOverlay.style.width) ) / 2 + 'px';
-      // messageOverlay.style.top = (screenSize[1] - parseInt(messageOverlay.style.height) ) / 2 + 'px';
-      // loadingDiv.style.left = (screenSize[0] - parseInt(loadingImage.style.width) ) / 2 + 'px';
-      // loadingDiv.style.top = (screenSize[1] - parseInt(loadingImage.style.height) ) / 2 + 'px';
+	    // messageOverlay.style.left = (screenSize[0] - parseInt(messageOverlay.style.width) ) / 2 + 'px';
+	    // messageOverlay.style.top = (screenSize[1] - parseInt(messageOverlay.style.height) ) / 2 + 'px';
+	    // loadingDiv.style.left = (screenSize[0] - parseInt(loadingImage.style.width) ) / 2 + 'px';
+	    // loadingDiv.style.top = (screenSize[1] - parseInt(loadingImage.style.height) ) / 2 + 'px';
 
-    backgroundDiv.style.display = 'block';
-    
-    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
-    //   backgroundDiv.style.position = 'absolute';
-    //   messageOverlay.style.position = 'absolute';
-    //   backgroundDiv.style.background = '#A51414';
-    // }
-};
+	    backgroundDiv.style.display = 'block';
+	    
+	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
+	    //   backgroundDiv.style.position = 'absolute';
+	    //   messageOverlay.style.position = 'absolute';
+	    //   backgroundDiv.style.background = '#A51414';
+	    // }
+	};
 	
 	this.hide = function hide() {
-	if (hideOverlayCheckbox.checked) {
-          document.cookie ='m4.show.redbar.overlay=no;'
-      } else {
-	  var date = new Date();
-	  document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
-      }
+	    if (hideOverlayCheckbox.checked) {
+		document.cookie ='m4.show.redbar.overlay=no;'
+	    } else {
+		var date = new Date();
+		document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
+	    }
 
-      messageOverlay.style.display = 'none';
-      backgroundDiv.style.display = 'none';
-    };
+	    messageOverlay.style.display = 'none';
+	    backgroundDiv.style.display = 'none';
+	};
 
-    this.activate = function activate() {
-      /*
-       *  Cookie logic is temporary. This needs to be part of a user preference.
-       *  Bug http://bugzilla.boltnet.com/bugzilla/boltnet/show_bug.cgi?id=2962
-       *  created for this purpose.
-       */
-      var allCookies = document.cookie;
-      if (allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
-        messageOverlay.style.display = 'block';
-        // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
-        //   messageDescription.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(messageDescription).width )/2 + 'px';
-        //   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
-        // }
-      }  else {
-        self.hide();
-      }
-    };
-  } ;
+	this.activate = function activate() {
+	    /*
+	     *  Cookie logic is temporary. This needs to be part of a user preference.
+	     *  Bug http://bugzilla.boltnet.com/bugzilla/boltnet/show_bug.cgi?id=2962
+	     *  created for this purpose.
+	     */
+	    var allCookies = document.cookie;
+	    if (allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
+		messageOverlay.style.display = 'block';
+		// if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
+		//   messageDescription.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(messageDescription).width )/2 + 'px';
+		//   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
+		// }
+	    }  else {
+		self.hide();
+	    }
+	};
+    } ;
 
 
     //------------------------------------ Target UI --------------------------------------------
@@ -1777,8 +1777,8 @@ this.show = function show( textToDisplay) {
 
 	// Ajay - This is ovelay for 'Saving and Loading' - changed rgba colors
 	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'targetbgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 1))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
-//	loadingDiv = DOM.BUILDER.DIV(normalFontAttributes.addStyle('position: relative; width: auto; height: auto; display: block; text-align: left;').values());
-//	backgroundDiv.appendChild(loadingDiv);
+	//	loadingDiv = DOM.BUILDER.DIV(normalFontAttributes.addStyle('position: relative; width: auto; height: auto; display: block; text-align: left;').values());
+	//	backgroundDiv.appendChild(loadingDiv);
 
 	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'targetoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:20%; top:20%; bottom:20%; right:20%; background:#000; display:none; vertical-align:middle;').values());
 
@@ -1786,7 +1786,7 @@ this.show = function show( textToDisplay) {
 
 	messageOverlay.appendChild(step1);
 
-	 var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:19%; right:19%; width:25px; height:25px;').values());
+	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:19%; right:19%; width:25px; height:25px;').values());
 	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'OK');
 
 	image.onclick=function(){
@@ -1849,10 +1849,11 @@ this.show = function show( textToDisplay) {
 	style_list={"stylename":[{"name":"---Style---"},{"name":"Simplication"},{"name":"Abstract"},{"name":"Translation"},{"name":"Funny"},{"name":"Children"}]}
 	for(var i=0;i<style_list.stylename.length;i++)
 	{
-	      	y=DOM.BUILDER.OPTION(style_list.stylename[i].name);
-		styleSelect.appendChild(y);
+	    y=DOM.BUILDER.OPTION(style_list.stylename[i].name);
+	    styleSelect.appendChild(y);
 	}
 
+	//---------------------------------------------start locLang & locSelect -----------------------
 
 	locSelect = DOM.BUILDER.SELECT(locSelectAttributes);
 	langSelect = DOM.BUILDER.SELECT(langSelectAttributes);
@@ -2008,8 +2009,8 @@ this.show = function show( textToDisplay) {
 	//     document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
 	//   }
 
-//	messageOverlay.style.display = 'block';
-//	backgroundDiv.style.display = 'block';
+	//	messageOverlay.style.display = 'block';
+	//	backgroundDiv.style.display = 'block';
 	// };
 
 	this.activate = function activate() {
@@ -2021,11 +2022,11 @@ this.show = function show( textToDisplay) {
 	    // var allCookies = document.cookie;
 	    // if (editMode != 'HTML' && allCookies && allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
 	    backgroundDiv.style.display = 'block';
-		messageOverlay.style.display = 'block';
-		// if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
-		//   messageDescription.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(messageDescription).width )/2 + 'px';
-		//   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
-		// }
+	    messageOverlay.style.display = 'block';
+	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
+	    //   messageDescription.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(messageDescription).width )/2 + 'px';
+	    //   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
+	    // }
 	    // }  else {
 	    // 	//    self.hide();
 	    // }
@@ -2927,7 +2928,7 @@ this.show = function show( textToDisplay) {
 	popupControl.onClose = function onClose(saveChanges) {
 	    upArrow.style.display = 'none';
 	    if (saveChanges && (DOM.textContent(selectedElement) != originalTextContent)) // || (saveChanges && hasAudio==true)
-	    {// alert(DOM.textContent(selectedElement, originalTextContent));
+	    {
 		updateText();
 	    } else {
 		DOM.textContent(selectedElement, originalTextContent);
@@ -3147,20 +3148,21 @@ this.show = function show( textToDisplay) {
 	//pageEditor.saveAndClose();
 
 	publishButton.onclick = function publishButtonOnClick() {
+
 	    if (pageEditor.hasChangesPending() /* && (pageEditor.formUncomplete() ==false) */ ) {
  		ajayWindow = new AjayWindow(pageEditor);
  		ajayWindow.activate();
-	
+		
 		okButton.onclick = function okButtonOnClick() {  // Ajay
 		    ajayWindow.okClick();
 		}
 	    }
-//	    else if ((pageEditor.hasChangesPending() ==false)&& (pageEditor.formUncomplete() == false)){
-//		pageEditor.showMessage(" Nothing to publish !");
-//	    }
-//	    else if (pageEditor.hasChangesPending()&& (pageEditor.formUncomplete() ==true)){
-//		pageEditor.showMessage("you need to choose at least a language, a location or a style before you can save & publish !");
-//            }
+	    //	    else if ((pageEditor.hasChangesPending() ==false)&& (pageEditor.formUncomplete() == false)){
+	    //		pageEditor.showMessage(" Nothing to publish !");
+	    //	    }
+	    //	    else if (pageEditor.hasChangesPending()&& (pageEditor.formUncomplete() ==true)){
+	    //		pageEditor.showMessage("you need to choose at least a language, a location or a style before you can save & publish !");
+	    //            }
 	    else{
 		pageEditor.showMessage("Nothing to publish");
 	    }
@@ -3172,7 +3174,7 @@ this.show = function show( textToDisplay) {
 	    this.disabled=true;
 	    pageEditor.showMessage("... Please wait, your blog is being posted");
 	};
-	 // End of okButton function
+	// End of okButton function
 
 	//shalini-Yass
 	/* cancelButton = DOM.BUILDER.BUTTON(cancelButtonStyleAttributes, 'Cancel');
@@ -3249,12 +3251,12 @@ this.show = function show( textToDisplay) {
 	editModeChangeButtonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), editModeChangeSaveButton, editModeChangeDiscardButton);
 	//shalini- added cancelButton
 	buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), undoButton, publishButton //, fillUpButton
-		   );
+				   );
 
 	firstRowDiv = DOM.BUILDER.DIV(// firstRowStyleAttributes,
 	    DOM.BUILDER.DIV(editAttributes.addStyle('width:500px; position: absolute; top: 0; left: 1%;').values(), messageDiv), buttonDiv);
 
-		var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:0.5%; width:25px; height:25px;').values());
+	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:0.5%; width:25px; height:25px;').values());
 
 	// Ajay - Changed background color, made it transparent :)
 	wrapperDiv =  DOM.BUILDER.DIV(fontTypeAttributes.addStyle('overflow: inherit; overflow-x: visible; position: fixed; z-index: 2147483645; left: 0; top: 0;min-width:800px; width: 100%; height:30px;; background-color: rgba(0, 0, 0, 0.5);').values(),
@@ -3271,7 +3273,7 @@ this.show = function show( textToDisplay) {
 	    answer = confirm("Do you really want to exit the editor?")
 	    if (answer !=0)
 	    {
-	    window.location.reload();
+		window.location.reload();
 	    }
 	}
 
@@ -3522,6 +3524,7 @@ this.show = function show( textToDisplay) {
 
 	    switch (command.command) {
             case 'TEXT_UPDATE':
+		
 		DOM.textContent(command.element, command.data);
 		pageEditor.showMessage('Text changed');
 		break;
@@ -3622,7 +3625,6 @@ this.show = function show( textToDisplay) {
 		switch (command.command) {
 		case 'TEXT_UPDATE':
 		    command.element.innerHTML = command.previousData;
-		    //alert(command.element.innerHTML);
 		    pageEditor.showMessage('Text change undone');
 		    break;
 
@@ -3685,11 +3687,20 @@ this.show = function show( textToDisplay) {
 	// Ajay - publish
 	this.publish = function publish() {
 	    var result;
-	    AJAX.post('http://dev.a11y.in/test',
-	    	      buildDataString(), function(result) {
-	    		  //alert(buildDataString());
-	    		  ajaxResultProcessor.processPublishedResponse(result);
-	    	      });
+	    if(document.getElementById('defaultcheck').checked == false)
+	    {
+		localStorage.myContent = buildDataString();
+		window.location.href = "http://dev.a11y.in/test.html";
+		window.reload();
+	    }
+	    else{
+		
+		AJAX.post('http://dev.a11y.in/test',
+	    		  buildDataString(), function(result) {
+	    		      //alert(buildDataString());
+	    		      ajaxResultProcessor.processPublishedResponse(result);
+	    		  });
+	    }
 	};
 
 	this.switchMode = function switchMode(saveChanges) {
@@ -3728,7 +3739,7 @@ this.show = function show( textToDisplay) {
 	    }
 	    if (index.length > 0) 
 	    {
-	    for (var z=0; z<index.length; z++) 
+		for (var z=0; z<index.length; z++) 
 		{
 		    delete history[index[z]];
 		}
@@ -3765,12 +3776,17 @@ this.show = function show( textToDisplay) {
 		command.xpath = '/' + command.xpath.slice(10,command.xpath.length);
 		buffer.append(encodeURIComponent(command.xpath));
 		buffer.append('&data=');  //data
-		buffer.append(encodeURIComponent(command.data));
+		if(command.elementType == 'audio/ogg')
+		{
+		    aud = '<audio controls="controls" src="'+command.data+'"></audio>';
+		    buffer.append(encodeURIComponent(aud));
+		}else{
+		    buffer.append(encodeURIComponent(command.data));}
 		buffer.append('&author='); //author
 		buffer.append(encodeURIComponent(authorValue));
 	    }); 
 	    return buffer.toString().substring(3);
-		    };//}}
+	};
     }
 
     /**
@@ -4382,7 +4398,7 @@ this.show = function show( textToDisplay) {
 	    overlayBar.show(false);
 	    result = AJAX.post('/app/page-edit/publish?slug=' + pageSlug + '&uploadSlug=' + uploadSlug + '&keepOriginal=' + keepOriginal,
 			       buildDataString(), function(result) {
-				   //alert(buildDataString());
+				   // alert(buildDataString());
 				   ajaxResultProcessor.processPublishedResponse(result);
 			       });
 
@@ -4453,5 +4469,6 @@ this.show = function show( textToDisplay) {
 	clearTimeout(loadingTimerId);
 	activateEditor();
     });
+
 
 })('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');

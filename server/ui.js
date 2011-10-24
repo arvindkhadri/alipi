@@ -14,8 +14,8 @@ var a11ypi = {
 	}
 	var v = document.getElementsByTagName("body");
 	var a = document.createElement("script");
-//	a.setAttribute("src","http://dev.a11y.in/alipi/wsgi/page_edit.js");
-	a.setAttribute("src","http://localhost/alipi-1/server/wsgi/page_edit.js");
+	a.setAttribute("src","http://dev.a11y.in/alipi/wsgi/page_edit.js");
+//	a.setAttribute("src","http://localhost/alipi-1/server/wsgi/page_edit.js");
 	a.setAttribute("type","text/javascript");
 	v[0].appendChild(a);
 	var alltags = document.getElementsByTagName('*');
@@ -168,6 +168,7 @@ var a11ypi = {
             var result = nodes.iterateNext();
             while (result)
             {
+		console.log(newContent);
                 if (result.tagName == "img" || result.tagName =='IMG'){
                     result.setAttribute('src',newContent.split(',')[1]);  //A hack to display images properly, the size has been saved in the database.
 		    width = newContent.split(',')[0].split('x')[0];
@@ -175,6 +176,11 @@ var a11ypi = {
 		    result.setAttribute('width',width);
 		    result.setAttribute('height', height);
                 }
+		else if(newContent.match('<audio'))
+		{
+		    newContent = decodeURIComponent(newContent);
+		    $(result).before(newContent);
+		}
                 else{
                     result.textContent = newContent;
                 }
