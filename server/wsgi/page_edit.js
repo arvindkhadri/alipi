@@ -1123,7 +1123,7 @@
 	};
 
 	DOM.evaluate = function evaluate(path,newcontent){
-	    var nodes = content.document.evaluate(path, content.document, null, XPathResult.ANY_TYPE,null);
+	    var nodes = document.evaluate(path, document, null, XPathResult.ANY_TYPE,null);
 	    try{
 		var result = nodes.iterateNext();
 		while (result)
@@ -1153,9 +1153,9 @@
 	
 	DOM.getXPATH = function getXPath(element)
 	{
-    	    var doc = content.document;
+    	    var doc = document;
     	    //we get the selections
-    	    var selection =  content.window.getSelection();
+    	    var selection =  window.getSelection();
     	    var str = '';
     	    //var currentNode = selection.getRangeAt(i).commonAncestorContainer;
     	    var currentNode = element;
@@ -1821,9 +1821,9 @@ this.show = function show( textToDisplay) {
 
 	this.okClick = function okClick() {
 	    if(document.getElementById('loc-select').value == '--Locations--' || document.getElementById('lang-select').value == '---Languages---' || document.getElementById('style-select').value == '---Style---') {
-		alert('Please select a Location, Language & Style');
-	    }
-	    else {
+	//	alert('Please select a Location, Language & Style');
+	    // }
+	    // else {
 		overlayBar = new OverlayBar(pageEditor);
 		overlayBar.blogpost();
 		messageOverlay.style.display = 'none';
@@ -1987,7 +1987,6 @@ this.show = function show( textToDisplay) {
 	    // loadingDiv.style.left = (screenSize[0] - parseInt(loadingImage.style.width) ) / 2 + 'px';
 	    // loadingDiv.style.top = (screenSize[1] - parseInt(loadingImage.style.height) ) / 2 + 'px';
 
-	    backgroundDiv.style.display = 'block';
 
 	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
 	    //   backgroundDiv.style.position = 'absolute';
@@ -2016,6 +2015,7 @@ this.show = function show( textToDisplay) {
 	     */
 	    // var allCookies = document.cookie;
 	    // if (editMode != 'HTML' && allCookies && allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
+	    backgroundDiv.style.display = 'block';
 		messageOverlay.style.display = 'block';
 		// if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
 		//   messageDescription.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(messageDescription).width )/2 + 'px';
@@ -2811,7 +2811,7 @@ this.show = function show( textToDisplay) {
 
 
 	var renImage = 'http://dev.a11y.in/alipi/images/renarration.png';
-	renButton = createActionButton(renImage, 'See narrations', 'border-right: none;');
+	renButton = createActionButton(renImage, 'See (other) narrations', 'border-right: none;');
 	renButton.onclick = function renButtonOnClick() {
 	    popupControl.showAction(renUpdateAction);
 	    //self.popdown(true);
@@ -2922,7 +2922,7 @@ this.show = function show( textToDisplay) {
 	popupControl.onClose = function onClose(saveChanges) {
 	    upArrow.style.display = 'none';
 	    if (saveChanges && (DOM.textContent(selectedElement) != originalTextContent)) // || (saveChanges && hasAudio==true)
-	    {
+	    {// alert(DOM.textContent(selectedElement, originalTextContent));
 		updateText();
 	    } else {
 		DOM.textContent(selectedElement, originalTextContent);
@@ -3681,10 +3681,10 @@ this.show = function show( textToDisplay) {
 	this.publish = function publish() {
 	    var result;
 	    AJAX.post('http://dev.a11y.in/test',
-		      buildDataString(), function(result) {
-			  //alert(buildDataString());
-			  ajaxResultProcessor.processPublishedResponse(result);
-		      });
+	    	      buildDataString(), function(result) {
+	    		  //alert(buildDataString());
+	    		  ajaxResultProcessor.processPublishedResponse(result);
+	    	      });
 	};
 
 	this.switchMode = function switchMode(saveChanges) {
@@ -3705,11 +3705,43 @@ this.show = function show( textToDisplay) {
 	};
 
 	buildDataString = function buildDataString() {
+	    
+	    var check_xpath = [], temp_history = [], index = [];
+	    for(x=0; x<history.length; x++) 
+	    {
+		check_xpath.push(history[x].xpath);
+	    }
+	    for(i=0; i<check_xpath.length-1; i++) 
+	    {
+		for(j=i+1; j<check_xpath.length; j++) 
+		{
+		    if (check_xpath[i] == check_xpath[j]) 
+		    {
+			index.push(i);  
+		    } 
+		}
+	    }
+	    if (index.length > 0) 
+	    {
+	    for (var z=0; z<index.length; z++) 
+		{
+		    delete history[index[z]];
+		}
+	    }
+
+	    for (var x=0; x<history.length; x++)
+	    {
+		if (history[x] != undefined)
+		{
+		    temp_history.push(history[x]);
+		}
+	    }
+
+	    history = temp_history;
+
+
 	    var command, buffer;
-
 	    buffer = new UTIL.StringBuffer();
-
-	    //Yass
 	    UTIL.forEach(history, function(index, command) {
 		buffer.append('###'); //separates the commands
 		buffer.append('url=');  //url                                                     //removed '&' on purpose
@@ -3731,9 +3763,9 @@ this.show = function show( textToDisplay) {
 		buffer.append(encodeURIComponent(command.data));
 		buffer.append('&author='); //author
 		buffer.append(encodeURIComponent(authorValue));
-	    });
+	    }); 
 	    return buffer.toString().substring(3);
-	};
+		    };//}}
     }
 
     /**
@@ -4345,7 +4377,7 @@ this.show = function show( textToDisplay) {
 	    overlayBar.show(false);
 	    result = AJAX.post('/app/page-edit/publish?slug=' + pageSlug + '&uploadSlug=' + uploadSlug + '&keepOriginal=' + keepOriginal,
 			       buildDataString(), function(result) {
-				   // alert(buildDataString());
+				   //alert(buildDataString());
 				   ajaxResultProcessor.processPublishedResponse(result);
 			       });
 
