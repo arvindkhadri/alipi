@@ -1821,9 +1821,9 @@ this.show = function show( textToDisplay) {
 
 	this.okClick = function okClick() {
 	    if(document.getElementById('loc-select').value == '--Locations--' || document.getElementById('lang-select').value == '---Languages---' || document.getElementById('style-select').value == '---Style---') {
-	//	alert('Please select a Location, Language & Style');
-	    // }
-	    // else {
+		alert('Please select a Location, Language & Style');
+	    }
+	    else {
 		overlayBar = new OverlayBar(pageEditor);
 		overlayBar.blogpost();
 		messageOverlay.style.display = 'none';
