@@ -15,13 +15,18 @@ def start_page() :
     a = urllib2.urlopen(myhandler1)
     page = a.read()
     a.close()
-    page = unicode(page,'utf-8')  #Hack to fix improperly displayed chars on wikipedia.
+    try:
+        page = unicode(page,'utf-8')  #Hack to fix improperly displayed chars on wikipedia.
+    except UnicodeDecodeError:
+        pass #Some pages dont need to be utf-8'ed
     root = lxml.html.parse(StringIO.StringIO(page)).getroot()
     if request.args.has_key('lang') == False and request.args.has_key('blog') == False:
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
         script_test = root.makeelement('script')
         root.body.append(script_test)
         script_test.set("src", "http://192.168.100.100/server/ui.js")
+#        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+#        script_test.set("src", "http://localhost/alipi-1/server/ui.js")
         script_test.set("type", "text/javascript")
         
         script_jq_mini = root.makeelement('script')
@@ -34,6 +39,8 @@ def start_page() :
         style.set("rel","stylesheet")
         style.set("type", "text/css")
         style.set("href", "http://192.168.100.100/server/stylesheet.css")
+#        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
+#        style.set("href", "http://localhost/alipi-1/server/stylesheet.css")
 
         connection = pymongo.Connection('localhost',27017)
         db = connection['alipi']
