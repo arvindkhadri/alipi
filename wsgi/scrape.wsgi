@@ -23,26 +23,25 @@ def application(environ, start_response):
     ren_id = random.random()
     for element in elements:
         temp = {}
-        store = {}
         for i in element.attrib['alipius'].split(','):
             temp[i.split(':')[0]] = i.split(':')[1]
-        if temp.elementtype == 'audio/ogg':
-            temp['about'] = element.about
-            temp['xpath'] = element.xpath
-            temp['data'] = element.src
+        if temp['elementtype'] == 'audio/ogg':
+            temp['about'] = element.attrib['about']
+            temp['xpath'] = element.attrib['xpath']
+            temp['data'] = element.attrib['src']
             temp['blog'] = url
             temp['ren_id'] = ren_id
             store_list.append(temp)
-        elif temp.elementtype.find('image'):
-            temp['about'] = element.about
-            temp['xpath'] = element.xpath
-            temp['data'] = element.width+'x'+element.height+','element.src
+        elif temp['elementtype'] == 'image':
+            temp['about'] = element.attrib['about']
+            temp['xpath'] = element.attrib['xpath']
+            temp['data'] = element.attrib['width']+'x'+element.attrib['height']+','+element.attrib['src']
             temp['blog'] = url
             temp['ren_id'] = ren_id
             store_list.append(temp)
         else:
-            temp['about'] = element.about
-            temp['xpath'] = element.xpath
+            temp['about'] = element.attrib['about']
+            temp['xpath'] = element.attrib['xpath']
             temp['data'] = element.text
             temp['blog'] = url
             temp['ren_id'] = ren_id
