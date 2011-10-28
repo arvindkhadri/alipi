@@ -6,7 +6,7 @@ var a11ypi = {
     flag : 0,
     testContext : function()
     {
-	$(document).ready(function(){$('body *').contents().filter(function() {return (this.nodeType == 3) && this.nodeValue.match(/\S/);}).wrap('<span m4pageedittype=text/>')});
+	$(document).ready(function(){$('body *').contents().filter(function() {return (this.nodeType == 3) && this.nodeValue.match(/\S/);}).wrap('<span m4pageedittype="text"/>')});
 	vimg = document.getElementsByTagName('img');
 	for(i=0; i<vimg.length; i++)
 	{
@@ -14,8 +14,8 @@ var a11ypi = {
 	}
 	var v = document.getElementsByTagName("body");
 	var a = document.createElement("script");
-	a.setAttribute("src","http://dev.a11y.in/alipi/wsgi/page_edit.js");
-//	a.setAttribute("src","http://localhost/alipi-1/server/wsgi/page_edit.js");
+//	a.setAttribute("src","http://dev.a11y.in/alipi/wsgi/page_edit.js");
+	a.setAttribute("src","http://localhost/alipi-1/server/wsgi/page_edit.js");
 	a.setAttribute("type","text/javascript");
 	v[0].appendChild(a);
 	var alltags = document.getElementsByTagName('*');
