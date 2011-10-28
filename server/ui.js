@@ -6,7 +6,7 @@ var a11ypi = {
     flag : 0,
     testContext : function()
     {
-	$(document).ready(function(){$('body *').contents().filter(function() {return (this.nodeType == 3) && this.nodeValue.match(/\S/);}).wrap('<span m4pageedittype=text/>')});
+	$(document).ready(function(){$('body *').contents().filter(function() {return (this.nodeType == 3) && this.nodeValue.match(/\S/);}).wrap('<span m4pageedittype="text"/>')});
 	vimg = document.getElementsByTagName('img');
 	for(i=0; i<vimg.length; i++)
 	{
@@ -168,6 +168,7 @@ var a11ypi = {
             var result = nodes.iterateNext();
             while (result)
             {
+		console.log(newContent);
                 if (result.tagName == "img" || result.tagName =='IMG'){
                     result.setAttribute('src',newContent.split(',')[1]);  //A hack to display images properly, the size has been saved in the database.
 		    width = newContent.split(',')[0].split('x')[0];
@@ -175,6 +176,11 @@ var a11ypi = {
 		    result.setAttribute('width',width);
 		    result.setAttribute('height', height);
                 }
+		else if(newContent.match('<audio'))
+		{
+		    newContent = decodeURIComponent(newContent);
+		    $(result).before(newContent);
+		}
                 else{
                     result.textContent = newContent;
                 }
