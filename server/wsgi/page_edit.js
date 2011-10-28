@@ -3280,12 +3280,7 @@
                     command.xpath = command.xpath.slice(0,command.xpath.lastIndexOf('SPAN')-1)
                 buffer.append(encodeURIComponent(command.xpath));
 		buffer.append('&data=');  //data
-		if(command.elementType == 'audio/ogg')
-		{
-		    aud = '<audio controls="controls" src="'+command.data+'"></audio>';
-		    buffer.append(encodeURIComponent(aud));
-		}else{
-		    buffer.append(encodeURIComponent(command.data));}
+		buffer.append(encodeURIComponent(command.data));
 		buffer.append('&author='); //author
 		buffer.append(encodeURIComponent(author.value));
 	    }); 
