@@ -1767,7 +1767,7 @@
 
 
     //------------------------------------ Target UI --------------------------------------------
-    AjayWindow = function SplashWindow(pageEditor ) {
+    TargetWindow = function TargetWindow(pageEditor ) {
 
 	var self = this, messageOverlay, editButton, hideOverlayCheckbox, messageDescription, messageTitle, loadingImage, loadingText, loadingDiv;
 	tooltip = new DOM.Attributes({ 'title': 'Check this if you want to post to our blog. That is "http://alipi-workshop.blogspot.com/"'});
@@ -2035,6 +2035,128 @@
 
     // ------------------------------------ Target UI end ---------------------------------------------
 
+// ========================================== Edit Window start ======================================================
+
+
+    EditWindow = function EditWindow(pageEditor) {
+
+	var self = this, messageOverlay, editButton, hideOverlayCheckbox, messageDescription, messageTitle, loadingImage, loadingText, loadingDiv, textElementPopup;
+
+
+	// Ajay - This is ovelay for 'Saving and Loading' - changed rgba colors
+	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'editorbgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; min-height: 800px; min-width: 1024px; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.87))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
+
+
+	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'editoroverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:10%; top:15%; bottom:10%; right:10%; background:#000; display:none;').values());
+
+
+	leftEditor = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:23%; left:27%; color:#FFF; font-size:150%; line-height:120%; font-weight:normal; text-decoration:none;').values(), 'Reference');
+
+	rightEditor = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:23%; right:28%; color:#FFF; font-size:150%; line-height:120%; font-weight:normal; text-decoration:none;').values(), 'Editor');
+
+	messageOverlay.appendChild(leftEditor);
+	messageOverlay.appendChild(rightEditor);
+
+	messageDescription = DOM.BUILDER.TEXTAREA(normalFontAttributes.put({id : 'originaltext', readonly:'yes'}).addStyle('position:fixed; top:35%; left:13%; text-align:justify; color:#FFF; font-weight: normal; font-size:90%; line-height:130%; min-width:35%; min-height:43%; max-width:35%; max-height:43%; box-shadow: 0px 0px 5px #aaa; -webkit-box-shadow: 0px 0px 5px #aaa; -moz-box-shadow: 0px 0px 5px #aaa; -moz-border-radius:10px; -webkit-border-radius:10px; padding:5px;').values());
+
+	textArea = DOM.BUILDER.TEXTAREA(normalFontAttributes.put({id : 'texteditor'}).addStyle('position:fixed; top:35%; left:52%; text-align:justify; color:#a84; font-weight: normal; font-size:90%; line-height:130%; max-width:35%; max-height:43%; min-width:35%; min-height:43%; box-shadow: 0px 0px 5px #aaa; -webkit-box-shadow: 0px 0px 5px #aaa; -moz-box-shadow: 0px 0px 5px #aaa; -moz-border-radius:10px; -webkit-border-radius:10px; padding:5px;').values());
+
+	messageOverlay.appendChild(messageDescription);
+	messageOverlay.appendChild(textArea);
+
+	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position:fixed; bottom:13.7%; left:49%; font-size:120%;').values(), 'OK');
+	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:13%; right:9%; width:25px; height:25px;').values());
+
+	// Ajay - Changed lot of colors - Not using, not sure
+	okButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:46%; bottom:12%; color:#FFF; width:8%; height:5%; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
+	okButton.onclick = function loadingOkButtonOnClick() {
+	    textElement = new TextElementPopup(pageEditor);
+	    textElement.variable();
+//	    console.log(textElement.selectedElement);
+	    // document.body.removeChild(document.getElementById('editoroverlay'));
+	    // document.body.removeChild(document.getElementById('editorbgdiv'));
+//	    selectedElement.textContent = document.getElementById('texteditor').innerHTML;
+//	    self.hide();
+//	    return false;
+	};
+
+	image.onclick=function(){
+	    document.body.removeChild(document.getElementById('editoroverlay'));
+	    document.body.removeChild(document.getElementById('editorbgdiv'));
+	}
+
+	//    editButton.appendChild(image);
+	okButton.appendChild(text);
+	messageOverlay.appendChild(okButton);
+	messageOverlay.appendChild(image);
+	//    var redHelpLink = DOM.BUILDER.A(normalFontAttributes.put({ href : 'http://bo.lt/editor'}).addStyle('z-index: 2147483647; float: right;  margin-right: 34px; display: inline-block;text-decoration: none; color: #FFF; font-size: 10px; font-weight: bold; ').values(), 'Need Help?')
+
+	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values()));
+	okButton.appendChild(text);
+	messageOverlay.appendChild(okButton);
+
+	document.body.appendChild(backgroundDiv);
+	document.body.appendChild(messageOverlay);
+
+
+	this.show = function show( textToDisplay) {
+
+	    if (textToDisplay) {
+		DOM.textContent(loadingText, textToDisplay);
+	    }
+	    // var screenSize = DOM.viewDimension();
+	    // backgroundDiv.style.minWidth = screenSize[0] + 'px';
+	    // backgroundDiv.style.minHeight = screenSize[1] + 'px';
+
+	    // messageOverlay.style.left = (screenSize[0] - parseInt(messageOverlay.style.width) ) / 2 + 'px';
+	    // messageOverlay.style.top = (screenSize[1] - parseInt(messageOverlay.style.height) ) / 2 + 'px';
+	    // loadingDiv.style.left = (screenSize[0] - parseInt(loadingImage.style.width) ) / 2 + 'px';
+	    // loadingDiv.style.top = (screenSize[1] - parseInt(loadingImage.style.height) ) / 2 + 'px';
+
+	    backgroundDiv.style.display = 'block';
+	    
+	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
+	    //   backgroundDiv.style.position = 'absolute';
+	    //   messageOverlay.style.position = 'absolute';
+	    //   backgroundDiv.style.background = '#A51414';
+	    // }
+	};
+	
+	// this.hide = function hide() {
+	//     if (hideOverlayCheckbox.checked) {
+	// 	document.cookie ='m4.show.redbar.overlay=no;'
+	//     } else {
+	// 	var date = new Date();
+	// 	document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
+	//     }
+
+	//     messageOverlay.style.display = 'none';
+	//     backgroundDiv.style.display = 'none';
+	// };
+
+	this.activate = function activate() {
+	    /*
+	     *  Cookie logic is temporary. This needs to be part of a user preference.
+	     *  Bug http://bugzilla.boltnet.com/bugzilla/boltnet/show_bug.cgi?id=2962
+	     *  created for this purpose.
+	     */
+	    var allCookies = document.cookie;
+	//    if (allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
+	    backgroundDiv.style.display = 'block';
+	    messageOverlay.style.display = 'block';
+		// if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
+		//   messageDescription.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(messageDescription).width )/2 + 'px';
+		//   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
+		// }
+	  //  }  else {
+//		self.hide();
+//	    }
+	};
+    } ;
+
+
+
+// ===========================================Edit Window end =======================================================
     /*
      * Control for displaying/hiding an action panel that appears below the popup buttons.
      */
@@ -2875,7 +2997,7 @@
     function TextElementPopup(pageEditor) {
 	var self = this, updateText, deleteElement, textPopupDiv, selectedElement, originalTextContent, deleteButton, 
 	imageUpdateAction, popupControl, linkUpdateAction, linkButton, closeButton, textButton, doneButton,
-	imageUpdateDiv, backgroundButton, redArrow, buttonPanel, upArrow, actionSlot,renButton;
+	imageUpdateDiv, backgroundButton, redArrow, buttonPanel, upArrow, actionSlot,renButton, variablePassing;
 
 	this.popupAt = function popupAt(element, popX, popY) {
 	    popupControl.openAt(element, popX, popY);
@@ -2923,6 +3045,7 @@
 		actionSlot.style.marginTop = '-8px';
 		actionSlot.style.paddingTop = '0px';
 	    }
+	    selectedElement.setAttribute('contentEditable', false);
 	};
 
 	popupControl.onClose = function onClose(saveChanges) {
@@ -2945,19 +3068,34 @@
 	    return false;
 	};
 
-	textButton = createTitleButton('Text', 'width: 45px;');
+
+
+	var doneImage = 'http://dev.a11y.in/alipi/images/done.png';
+	doneButton = createActionButton(doneImage, 'Editor', 'border-right: none;' + leftBorderStyle);
+	doneButton.onclick = function doneButtonOnClick(elements) {
+	    editWindow = new EditWindow(pageEditor);
+ 	    editWindow.activate();
+	    document.getElementById('originaltext').value = selectedElement.textContent;
+	    document.getElementById('texteditor').value = selectedElement.textContent;
+	    document.getElementById('editoroverlay').appendChild(textButton);
+	    selectedElement.setAttribute('id', 'alipiSelectedElement');
+//	    self.popdown(true);
+//	    return false;
+	};
+
+	textButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:46%; bottom:12%; color:#FFF; width:8%; height:5%; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values(), 'OK');
 	textButton.onclick = function textButtonOnClick() {
-	    popupControl.hideAction();
+	    document.getElementById('alipiSelectedElement').textContent = document.getElementById('texteditor').value;
+	    document.body.removeChild(document.getElementById('editoroverlay'));
+	    document.body.removeChild(document.getElementById('editorbgdiv'));
+	    handleKeyDown;
+//	    UTIL.addEvent(document.getElementById('alipiSelectedElement'), 'keydown', handleKeyDown);
+	    document.getElementById('alipiSelectedElement').removeAttribute('id', 'alipiSelectedElement');
+	    self.popdown(true);
+//	    popupControl.hideAction();
 	    return false;
 	};
 
-	var doneImage = 'http://dev.a11y.in/alipi/images/done.png';
-	doneButton = createActionButton(doneImage, 'Done', 'border-right: none;' + leftBorderStyle);
-	doneButton.onclick = function doneButtonOnClick() {
-	    self.popdown(true);
-	    return false;
-	};
-	
 
 	var renImage = 'http://dev.a11y.in/alipi/images/renarration.png';
 	renButton = createActionButton(renImage, 'See (other) narrations', 'border-right: none;');
@@ -3023,7 +3161,8 @@
 	      };*/
 	//shalini
 
-	//    buttonPanel.appendChild(textButton);
+//	mm = new EditWindow(pageEditor);
+//	console.log(EditWindow.msgg);
 	//    buttonPanel.appendChild(redArrow);
 	buttonPanel.appendChild(doneButton);
 	//shalini
@@ -3148,13 +3287,12 @@
 	//pageEditor.saveAndClose();
 
 	publishButton.onclick = function publishButtonOnClick() {
-
 	    if (pageEditor.hasChangesPending() /* && (pageEditor.formUncomplete() ==false) */ ) {
- 		ajayWindow = new AjayWindow(pageEditor);
- 		ajayWindow.activate();
-		
+ 		targetWindow = new TargetWindow(pageEditor);
+ 		targetWindow.activate();
+	
 		okButton.onclick = function okButtonOnClick() {  // Ajay
-		    ajayWindow.okClick();
+		    targetWindow.okClick();
 		}
 	    }
 	    //	    else if ((pageEditor.hasChangesPending() ==false)&& (pageEditor.formUncomplete() == false)){
@@ -3524,7 +3662,6 @@
 
 	    switch (command.command) {
             case 'TEXT_UPDATE':
-		
 		DOM.textContent(command.element, command.data);
 		pageEditor.showMessage('Text changed');
 		break;
@@ -3816,6 +3953,7 @@
 	    return editCommandHistory.hasChangesPending();
 	};
 
+
 	this.formUncomplete = function fromUncomplete() {
 	    return editCommandHistory.formUncomplete();
 	};
@@ -3873,6 +4011,7 @@
 	    overlayBar.show(false);
 	    overlayBar.message("Ready to Narrate"); //Ajay
 	};
+
 
 	updateSelection = function updateSelection(action, event) {
 	    var type, selector, element = event.target;
@@ -4206,6 +4345,7 @@
 		editor.startEditing(event);
 	    };
 
+
 	    this.unselect = function unselect() {
 		if (lastSelection) {
 		    self.unhighlight(lastSelection);
@@ -4469,6 +4609,5 @@
 	clearTimeout(loadingTimerId);
 	activateEditor();
     });
-
 
 })('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');
