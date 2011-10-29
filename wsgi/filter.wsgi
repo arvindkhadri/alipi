@@ -35,11 +35,11 @@ def application(environ, start_response):
            
         url = d['url']
         lang = d['lang']
-
+        filters = d['blog']
         #all re-narrations of the same xpath are grouped
         query = collection.group(
-            key = Code('function(doc){return {"xpath" : doc.xpath, "url": doc.url}}'),
-            condition={"url" : url, "lang" : lang, "blog":blog},
+            key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
+            condition={"about" : url, "lang" : lang, "blog":{'$regex':'/'+filters+'.*/'}},
             initial={'narration': []},
             reduce=Code('function(doc,out){out.narration.push(doc);}') 
             )
@@ -50,7 +50,7 @@ def application(environ, start_response):
             return 'empty'
         else:
             for key in query:
-#                print >> environ['wsgi.errors'], query
+
                 post = key['narration'][len(key['narration'])-1] #Fetching the last done re-narration
                 
                 try:

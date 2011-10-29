@@ -39,7 +39,7 @@ def application(environ, start_response):
         #get the ren languages for the received url
         query = collection.group(
             key = Code('function(doc){return {"ren_id" : doc.ren_id}}'),
-            condition={"url" : url, "xpath" : xpath},
+            condition={"about" : url, "xpath" : xpath},
             initial={'narration': []},
             reduce=Code('function(doc,out){out.narration.push(doc);}') 
             )

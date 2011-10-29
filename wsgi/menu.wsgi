@@ -29,8 +29,8 @@ def application(environ, start_response):
             collection = db['post']
         #get the ren languages for the received url
             langForUrl = collection.group(
-                key = Code('function(doc){return {"url" : doc.url}}'),
-                condition={"url" : d['url']},
+                key = Code('function(doc){return {"about" : doc.url}}'),
+                condition={"about" : d['url']},
                 initial={'lang': []},
                 reduce=Code('function(doc, out){if (out.lang.indexOf(doc.lang) == -1) out.lang.push(doc.lang)}') #here xpath for test
             )
@@ -46,8 +46,8 @@ def application(environ, start_response):
             collection = db['post']
         #get the ren languages for the received url
             langForUrl = collection.group(
-                key = Code('function(doc){return {"url" : doc.url}}'),
-                condition={"url" : d['url'],"blog":{'$regex':'/'+d['option']+'.*/'}},
+                key = Code('function(doc){return {"about" : doc.url}}'),
+                condition={"about" : d['url'],"blog":{'$regex':'/'+d['option']+'.*/'}},
                 initial={'lang': []},
                 reduce=Code('function(doc, out){if (out.lang.indexOf(doc.lang) == -1) out.lang.push(doc.lang)}') #here xpath for test
             )

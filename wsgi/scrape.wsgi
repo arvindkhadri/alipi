@@ -1,6 +1,7 @@
 import lxml.html
 import pymongo
 from urllib import unquote_plus
+import random
 
 def application(environ, start_response):
     #set the headers
@@ -46,5 +47,7 @@ def application(environ, start_response):
             temp['blog'] = url
             temp['ren_id'] = ren_id
             store_list.append(temp)
-    for i in store_list:
-        collection.insert(i)
+    for z in store_list:
+        collection.insert(z)
+        print >> environ['wsgi.errors'], z
+    return ['ok']
