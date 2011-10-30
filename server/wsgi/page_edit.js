@@ -3287,7 +3287,11 @@
 		}else{
 		    buffer.append(encodeURIComponent(command.data));}
 		buffer.append('&author='); //author
-		buffer.append(encodeURIComponent(author.value));
+		if (author.value == '') {
+		    buffer.append(encodeURIComponent('Anonymous'));
+		} else {
+		    buffer.append(encodeURIComponent(author.value));
+		}
 	    }); 
 	    return buffer.toString().substring(3);
 	};
