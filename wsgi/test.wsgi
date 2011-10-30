@@ -4,10 +4,7 @@ from gdata import service
 import json
 from pymongo import *
 from bson.code import *
-#from gdata import service
 from urllib import unquote_plus
-#import commands
-#import time
 import random
 
 def application(environ, start_response):
@@ -42,7 +39,7 @@ def application(environ, start_response):
         string = ''
         lang = ''
         target = ''
-        url = ''
+        about = ''
         author = ''
         commands = recieved.split('###') #for every elementary re-narration (e.g a paragraph)
         dicts = []
@@ -55,27 +52,26 @@ def application(environ, start_response):
                 d[unquote_plus(parameter_pair[0])] = unquote_plus(parameter_pair[1])
             
             d['ren_id']= ren_id
-            string+='<p '
-            string+='about='+'"'+d['url']+'"'+' '
-            string+='xpath='+'"'+d['xpath']+'"'+' '
-            string+='location='+'"'+d['location']+'"'+' '
-            string+='lang='+'"'+d['lang']+'"'+' '
-            string+='author='+'"'+d['author']+'"'+' '
-            string+='style='+'"'+d['style']+'"'+' '
-            string+='elementType='+'"'+d['elementType']+'"'+' '
-            string+='>'
-            string += d['data']
-            string+='<p>'
-            
+            alipius = "lang:{0},location:{1},elementtype:{2},style:{3},author:{4}".format(d['lang'],d['location'],d['elementtype'],d['style'],d['author'])
+            if d['elementtype'] == 'text':
+                string +='<p about="{0}" xpath="{1}" alipius="{2}">{3}</p>'.format(d['about'],d['xpath'],alipius,d['data'])
+            elif d['elementtype'] == 'audio/ogg':
+                string+='<audio about="{0}" xpath="{1}" controls="controls" alipius="{2}" src="{3}"></audio>'.format(d['about'],d['xpath'],alipius,d['data'])
+            else:
+                src = d['data'].split(',')[1]
+                width = d['data'].split(',')[0].split('x')[0]
+                height = d['data'].split(',')[0].split('x')[1]
+                string+='<img about="{0}" xpath="{1}" alipius="{2}" src="{3}" width={4} height={5}></img>'.format(d['about'],d['xpath'],alipius,src,width,height)
+
             lang = d['lang']
             target = d['location']
-            url = d['url']
+            about = d['about']
             author = d['author']
             
             dicts.append(d)
             i+=1
         blogEntry= ''
-        blogger_service = service.GDataService("allipi123@gmail.com", "allipi3354")
+        blogger_service = service.GDataService("arvindkhadri@gmail.com", "((blackstone))")
         blogger_service.source = 'Servelots-alipi-1.0'
         blogger_service.service = 'blogger'
         blogger_service.account_type = 'GOOGLE'
@@ -86,9 +82,9 @@ def application(environ, start_response):
         feed = blogger_service.Get(query.ToUri())
         blog_id = " "
         for entry in feed.entry:
-            if "http://alipi-workshop.blogspot.com/" == entry.GetHtmlLink().href:
+            if "http://rookie-trekker.blogspot.com/" == entry.GetHtmlLink().href:
                 blog_id = entry.GetSelfLink().href.split("/")[-1]
-                blogEntry = CreatePublicPost(blogger_service, blog_id, title="Re-narration", content=string + "<blockquote><p>Re-narration by "+author+' in '+lang+' targeting '+target+' for this web <a href="'+url+'">page</a></p></blockquote>')
+                blogEntry = CreatePublicPost(blogger_service, blog_id, title="Re-narration", content=string + "<blockquote><p>Re-narration by "+author+' in '+lang+' targeting '+target+' for this web <a href="'+about+'">page</a></p></blockquote>')
 
         j=0
         while j< len(dicts):

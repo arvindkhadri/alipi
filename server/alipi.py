@@ -6,6 +6,10 @@ import pymongo
 from bson import Code
 import urllib2
 import StringIO
+import gdata.gauth
+import gdata.blogger.client
+from flask import g
+from flask import redirect
 app = Flask(__name__)
 @app.route('/')
 def start_page() :
@@ -18,14 +22,13 @@ def start_page() :
     try:
         page = unicode(page,'utf-8')  #Hack to fix improperly displayed chars on wikipedia.
     except UnicodeDecodeError:
-        pass #Some pages dont need to be utf-8'ed
+        pass #Some pages may not need be utf-8'ed
     root = lxml.html.parse(StringIO.StringIO(page)).getroot()
     if request.args.has_key('lang') == False and request.args.has_key('blog') == False:
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
         script_test = root.makeelement('script')
         root.body.append(script_test)
-#        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
-        script_test.set("src", "http://localhost/alipi-1/server/ui.js")
+        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
         script_test.set("type", "text/javascript")
         
         script_jq_mini = root.makeelement('script')
@@ -37,13 +40,12 @@ def start_page() :
         root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-#        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
-        style.set("href", "http://localhost/alipi-1/server/stylesheet.css")
+        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
 
         connection = pymongo.Connection('localhost',27017)
         db = connection['alipi']
         collection = db['post']
-        if collection.find_one({"url" : request.args['foruri']}) is not None:
+        if collection.find_one({"about" : request.args['foruri']}) is not None:
             ren_overlay = root.makeelement('div')
             root.body.append(ren_overlay)
             ren_overlay.set("id", "ren_overlay")
@@ -120,7 +122,7 @@ def start_page() :
         connection = pymongo.Connection('localhost',27017)
         db = connection['alipi']
         collection = db['post']
-        if collection.find_one({"url" : request.args['foruri']}) is not None:
+        if collection.find_one({"about" : request.args['foruri']}) is not None:
             ren_overlay = root.makeelement('div')
             root.body.append(ren_overlay)
             ren_overlay.set("id", "ren_overlay")
@@ -159,10 +161,32 @@ def start_page() :
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
         return lxml.html.tostring(root)
 
+@app.route('/login')
+def do_login():
+    CONSUMER_SECRET = 'xDNhUo4MrsYCdSVLT1UDrkO7'
+    CONSUMER_KEY = 'dev.a11y.in'
+    client = gdata.blogger.client.BloggerClient(source='Alipi')
+    SCOPES = ['http://www.blogger.com/feeds']
+    oauth_callback_url = 'http://dev.a11y.in/take_token'
+    request_token = client.GetOAuthToken(SCOPES, oauth_callback_url, CONSUMER_KEY, consumer_secret=CONSUMER_SECRET)
+    g.my_token = request_token
+    return redirect('google.com')
+#    return redirect(request_token.generate_authorization_url(),code=302)
+
+@app.route('/take_token')
+def post_to_blog():
+    request_token = gdata.gauth.AuthorizeRequestToken(g.my_token, request.uri)
+    access_token = client.GetAccessToken(request_token)
+    client = gdata.blogger.client.BloggerClient(source='yourCo-yourAppName-v1')
+    client.auth_token = gdata.gauth.OAuthHmacToken(CONSUMER_KEY, CONSUMER_SECRET, request_token.token,request_token.token_secret, gdata.gauth.ACCESS_TOKEN)
+    feed = client.GetFeed()
+    for entry in feed.entry:
+        return entry
+
 import logging,os
 from logging import FileHandler
 
-fil = FileHandler(os.path.join(os.path.dirname(__file__),'logme'),mode='a') #Fixing changing directory names, os module will make logme work irrespective of whether it is being run in a server or a local server 
+fil = FileHandler(os.path.join(os.path.dirname(__file__),'logme'),mode='a')
 fil.setLevel(logging.ERROR)
 app.logger.addHandler(fil)
 

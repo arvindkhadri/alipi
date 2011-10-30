@@ -6,7 +6,7 @@ var a11ypi = {
     flag : 0,
     testContext : function()
     {
-	$(document).ready(function(){$('body *').contents().filter(function() {return (this.nodeType == 3) && this.nodeValue.match(/\S/);}).wrap('<span m4pageedittype="text"/>')});
+	$(document).ready(function(){$('body *').contents().filter(function() {return (this.nodeType == 3) && this.nodeValue.match(/\S/);}).wrap('<span m4pageedittype=text/>')});
 	vimg = document.getElementsByTagName('img');
 	for(i=0; i<vimg.length; i++)
 	{
@@ -14,8 +14,8 @@ var a11ypi = {
 	}
 	var v = document.getElementsByTagName("body");
 	var a = document.createElement("script");
-//	a.setAttribute("src","http://dev.a11y.in/alipi/wsgi/page_edit.js");
-	a.setAttribute("src","http://localhost/alipi-1/server/wsgi/page_edit.js");
+	a.setAttribute("src","http://dev.a11y.in/alipi/wsgi/page_edit.js");
+//	a.setAttribute("src","http://localhost/alipi-1/server/wsgi/page_edit.js");
 	a.setAttribute("type","text/javascript");
 	v[0].appendChild(a);
 	var alltags = document.getElementsByTagName('*');
@@ -142,7 +142,8 @@ var a11ypi = {
 			}
 			path = d['xpath'];
 			newContent = d['data'];
-			a11ypi.evaluate(path,newContent);
+			elementType = d['elementtype'];
+			a11ypi.evaluate(path,newContent,elementType);
 		    }
 		}
 	    }
@@ -162,21 +163,20 @@ var a11ypi = {
     },
     evaluate: function()
     {
-	path = path.slice(0, path.lastIndexOf('SPAN')-1);  //A hack to fix xpath after adding span.  This must be corrected from the server side.  #TODO
 	var nodes = document.evaluate(path, document, null, XPathResult.ANY_TYPE,null);
         try{
             var result = nodes.iterateNext();
             while (result)
             {
-		console.log(newContent);
-                if (result.tagName == "img" || result.tagName =='IMG'){
+                if (elementType == 'image')
+		{
                     result.setAttribute('src',newContent.split(',')[1]);  //A hack to display images properly, the size has been saved in the database.
 		    width = newContent.split(',')[0].split('x')[0];
 		    height = newContent.split(',')[0].split('x')[1];
 		    result.setAttribute('width',width);
 		    result.setAttribute('height', height);
                 }
-		else if(newContent.match('<audio'))
+		else if(elementType =='audio/ogg')
 		{
 		    newContent = decodeURIComponent(newContent);
 		    $(result).before(newContent);
@@ -193,8 +193,6 @@ var a11ypi = {
         }
     },
     close: function() {
-	// var v = content.document.getElementsByTagName("body");
-	// v[0].removeChild(document.getElementById('ren_overlay'));
 	document.getElementById('ren_overlay').style.display = 'none';
     },
     filter: function()
