@@ -1123,7 +1123,7 @@
 	};
 
 	DOM.evaluate = function evaluate(path,newcontent){
-	    var nodes = content.document.evaluate(path, content.document, null, XPathResult.ANY_TYPE,null);
+	    var nodes = document.evaluate(path, document, null, XPathResult.ANY_TYPE,null);
 	    try{
 		var result = nodes.iterateNext();
 		while (result)
@@ -1153,9 +1153,9 @@
 	
 	DOM.getXPATH = function getXPath(element)
 	{
-    	    var doc = content.document;
+    	    var doc = document;
     	    //we get the selections
-    	    var selection =  content.window.getSelection();
+    	    var selection =  window.getSelection();
     	    var str = '';
     	    //var currentNode = selection.getRangeAt(i).commonAncestorContainer;
     	    var currentNode = element;
@@ -1782,13 +1782,13 @@ this.show = function show( textToDisplay) {
 //	loadingDiv = DOM.BUILDER.DIV(normalFontAttributes.addStyle('position: relative; width: auto; height: auto; display: block; text-align: left;').values());
 //	backgroundDiv.appendChild(loadingDiv);
 
-	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'targetoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:5%; top:5%; bottom:5%; right:5%; background:#000; display:none; vertical-align:middle;').values());
+	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'targetoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:20%; top:20%; bottom:20%; right:20%; background:#000; display:none; vertical-align:middle;').values());
 
-	step1 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position: relative; color:#FFF; width:auto; font-size: 22px; line-height: 36px; text-align: center; font-weight: normal; display: block; ').values(), 'Please provide all the details below');
+	step1 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:21%; left:38%; color:#FFF; font-size: 22px; line-height: 36px; font-weight: normal; display: block; ').values(), 'Please provide all the details below');
 
 	messageOverlay.appendChild(step1);
 
-	 var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:3%; right:4%; width:25px; height:25px;').values());
+	 var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:19%; right:19%; width:25px; height:25px;').values());
 	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'OK');
 
 	image.onclick=function(){
@@ -1798,29 +1798,23 @@ this.show = function show( textToDisplay) {
 
 
 	//---------------------------- state & language target --------------------------
-	locSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:20%; left:10%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;').values());
-	locSelectLabel.innerHTML = 'Select any state';
-	enterBlogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:20%; left:40%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;').values());
-	enterBlogLabel.innerHTML = 'Enter your blog URL';
-	enterMailIdLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:20%; left:70%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;').values());
-	enterMailIdLabel.innerHTML = 'USERNAME';
+	locSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:34%; left:25%; font-weight: bold; background: transparent; color: #FFF;').values());
+	locSelectLabel.innerHTML = 'Select any state from the list';
+	enterMailIdLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:34%; left:53.5%; font-weight: bold; background: transparent; color: #FFF;').values());
+	enterMailIdLabel.innerHTML = 'Select any style from the list';
 
 
-	locSelectAttributes = panelButtonAttributes.put({ id : 'loc-select'}).addStyle('position:fixed; top:21%; left:10%; width:220px; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	enterBlogAttributes = panelButtonAttributes.put({id : 'enter-blog', placeholder : 'http://abc.blogspot.com/', type : 'text'}).addStyle('position:fixed; top:21%; left:40%; width:220px; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	styleSelectAttributes = panelButtonAttributes.put({id : 'style-select'}).addStyle('position:fixed; top:21%; left:70%; width:220px; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
+	locSelectAttributes = panelButtonAttributes.put({ id : 'loc-select'}).addStyle('position:fixed; top:35%; left:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
+	styleSelectAttributes = panelButtonAttributes.put({id : 'style-select'}).addStyle('position:fixed; top:35%; right:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
 
 
-	langSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:50%; left:10%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
+	langSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:50%; left:25%; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
 	langSelectLabel.innerHTML = 'Languages of selected/all state(s)';
-	enterPwdLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:50%; left:70%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
-	enterPwdLabel.innerHTML = 'PASSWORD';
 
-	langSelectAttributes = panelButtonAttributes.put({ id : 'lang-select'}).addStyle('position:fixed; top:51%; left:10%; width:220px; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	defaultBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'defaultcheck', name : 'Loading Checkbox', type : 'checkbox'}).addStyle('position:fixed; top:51%; left:40%; background: transparent; display: inline-block;').values());
-	defaultBlogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:51.5%; left:42%; font-size: 14px; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
+	langSelectAttributes = panelButtonAttributes.put({ id : 'lang-select'}).addStyle('position:fixed; top:51%; left:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
+	defaultBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'defaultcheck', name : 'Loading Checkbox', type : 'checkbox'}).addStyle('position:fixed; top:54%; left:53.5%; background: transparent; display: inline-block;').values());
+	defaultBlogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:54.5%; left:56%; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
 	defaultBlogLabel.innerHTML = 'Default blog (Our blog)';
-	enterPwdAttributes = panelButtonAttributes.put({id : 'enter-pwd', placeholder : 'password', type : 'password'}).addStyle('position:fixed; top:51%; left:70%;width:220px; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
 
 	//-----------------------------End of state & language target -------------------
 
@@ -1828,8 +1822,8 @@ this.show = function show( textToDisplay) {
 	okButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:absolute; left:44%; bottom:5%; color:#FFF; margin:auto; width: 100px; height: 36px; display: block; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
 
 	this.okClick = function okClick() {
-	    if(document.getElementById('loc-select').value == '--Locations--' || document.getElementById('lang-select').value == '---Languages---') {
-		alert('Please select a Location & Language');
+	    if(document.getElementById('loc-select').value == '--Locations--' || document.getElementById('lang-select').value == '---Languages---' || document.getElementById('style-select').value == '---Style---') {
+		alert('Please select a Location, Language & Style');
 	    }
 	    else {
 		overlayBar = new OverlayBar(pageEditor);
@@ -1846,16 +1840,17 @@ this.show = function show( textToDisplay) {
 	messageOverlay.appendChild(okButton);
 	messageOverlay.appendChild(image);
 
-	//----------------------------------------------style select-------------------------------------
-	style_list={"stylename":[{"name":"Simplication"},{"name":"Abstract"},{"name":"Translation"},{"name":"Funny"},{"name":"Children"}]}
+	
+	//---------------------------------------------start locLang, locSelect & styleSelect -----------------------
+	styleSelect = DOM.BUILDER.SELECT(styleSelectAttributes);
+
+	style_list={"stylename":[{"name":"---Style---"},{"name":"Simplication"},{"name":"Abstract"},{"name":"Translation"},{"name":"Funny"},{"name":"Children"}]}
 	for(var i=0;i<style_list.stylename.length;i++)
 	{
 	      	y=DOM.BUILDER.OPTION(style_list.stylename[i].name);
 		styleSelect.appendChild(y);
 	}
-	
 
-	//---------------------------------------------start locLang & locSelect -----------------------
 
 	locSelect = DOM.BUILDER.SELECT(locSelectAttributes);
 	langSelect = DOM.BUILDER.SELECT(langSelectAttributes);
@@ -1968,20 +1963,11 @@ this.show = function show( textToDisplay) {
 	//---------------------------------------------end locLang & locSelect ------------------------
 
 	//-------------------------------------------- start blog details ---------------------------
-	enterBlog = DOM.BUILDER.INPUT(enterBlogAttributes);
 	defaultBlog = defaultBlogAttributes;
-	styleSelect = DOM.BUILDER.SELECT(styleSelectAttributes);
 	//-------------------------------------------- end blog details ------------------------------
 
-	//    hideOverlayCheckbox = DOM.BUILDER.INPUT(editAttributes.put({ name : 'Loading Checkbox', type : 'submit'}).addStyle('position:relative; margin-left: 34px; background: transparent; float:left; margin-top: 0px; padding-top: 0px; display: inline-block;').values());
 
-	//    var checkboxLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:relative; font-size: 10px; font-weight: bold; float:left;  margin-left: 5px; margin-right: 5px; background: transparent; color: #FFF;display: inline-block;').values());
-	//    checkboxLabel.innerHTML = 'Don\'t show this again.';
-
-	//    var redHelpLink = DOM.BUILDER.A(normalFontAttributes.put({ href : 'http://bo.lt/editor'}).addStyle('z-index: 2147483647; float: right;  margin-right: 34px; display: inline-block;text-decoration: none; color: #FFF; font-size: 10px; font-weight: bold; ').values(), 'Need Help?')
-
-	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), locSelect, locSelectLabel, langSelect,styleSelect, langSelectLabel, enterBlog, enterBlogLabel, defaultBlog, defaultBlogLabel, enterMailIdLabel, enterPwdLabel //,hideOverlayCheckbox//, checkboxLabel , redHelpLink
-						  ));
+	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), locSelect, locSelectLabel, langSelect, langSelectLabel, defaultBlog, defaultBlogLabel, enterMailIdLabel, styleSelect));
 	okButton.appendChild(text);
 	messageOverlay.appendChild(okButton);
 
@@ -2003,7 +1989,6 @@ this.show = function show( textToDisplay) {
 	    // loadingDiv.style.left = (screenSize[0] - parseInt(loadingImage.style.width) ) / 2 + 'px';
 	    // loadingDiv.style.top = (screenSize[1] - parseInt(loadingImage.style.height) ) / 2 + 'px';
 
-	    backgroundDiv.style.display = 'block';
 
 	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
 	    //   backgroundDiv.style.position = 'absolute';
@@ -2032,6 +2017,7 @@ this.show = function show( textToDisplay) {
 	     */
 	    // var allCookies = document.cookie;
 	    // if (editMode != 'HTML' && allCookies && allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
+	    backgroundDiv.style.display = 'block';
 		messageOverlay.style.display = 'block';
 		// if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
 		//   messageDescription.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(messageDescription).width )/2 + 'px';
@@ -2251,7 +2237,7 @@ this.show = function show( textToDisplay) {
 		    }
 		}
 	    }
-	    xmlhttp.open("POST","http://dev.a11y.in/narration",true);
+	    xmlhttp.open("POST","http://192.168.100.100/narration",true);
 	    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlhttp.send(data);
 	    
@@ -2938,7 +2924,7 @@ this.show = function show( textToDisplay) {
 	popupControl.onClose = function onClose(saveChanges) {
 	    upArrow.style.display = 'none';
 	    if (saveChanges && (DOM.textContent(selectedElement) != originalTextContent)) // || (saveChanges && hasAudio==true)
-	    {
+	    {// alert(DOM.textContent(selectedElement, originalTextContent));
 		updateText();
 	    } else {
 		DOM.textContent(selectedElement, originalTextContent);
@@ -3158,7 +3144,6 @@ this.show = function show( textToDisplay) {
 	//pageEditor.saveAndClose();
 
 	publishButton.onclick = function publishButtonOnClick() {
-
 	    if (pageEditor.hasChangesPending() /* && (pageEditor.formUncomplete() ==false) */ ) {
  		ajayWindow = new AjayWindow(pageEditor);
  		ajayWindow.activate();
@@ -3261,20 +3246,32 @@ this.show = function show( textToDisplay) {
 	editModeChangeButtonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), editModeChangeSaveButton, editModeChangeDiscardButton);
 	//shalini- added cancelButton
 	buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), undoButton, publishButton //, fillUpButton
-				   );
+		   );
 
 	firstRowDiv = DOM.BUILDER.DIV(// firstRowStyleAttributes,
 	    DOM.BUILDER.DIV(editAttributes.addStyle('width:500px; position: absolute; top: 0; left: 1%;').values(), messageDiv), buttonDiv);
 
+		var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:0.5%; width:25px; height:25px;').values());
+
 	// Ajay - Changed background color, made it transparent :)
 	wrapperDiv =  DOM.BUILDER.DIV(fontTypeAttributes.addStyle('overflow: inherit; overflow-x: visible; position: fixed; z-index: 2147483645; left: 0; top: 0;min-width:800px; width: 100%; height:30px;; background-color: rgba(0, 0, 0, 0.5);').values(),
 				      //logoAnchor, //Ajay
-				      //secondRowDiv, //Ajay
+				      image,
 				      firstRowDiv);
+
 
 	overlayDiv = DOM.BUILDER.DIV(fontTypeAttributes.addStyle('overflow: inherit;').values(), wrapperDiv);
 
 	document.body.appendChild(overlayDiv);
+
+	image.onclick=function(){
+	    answer = confirm("Do you really want to exit the editor?")
+	    if (answer !=0)
+	    {
+	    window.location.reload();
+	    }
+	}
+
 
 	// if (DOM.isQuirksMode() && DOM.isIEBrowser()) {
 	//   // We need to manually move the edit bar when the window scrolls since IE quirks mode doesn't support
@@ -3685,26 +3682,11 @@ this.show = function show( textToDisplay) {
 	// Ajay - publish
 	this.publish = function publish() {
 	    var result;
-	    var xhr = new XMLHttpRequest();
-	   /* xhr.onreadystatechange = function() {
-		if(xhr.readyState == 4 && xhr.status == 200) {
-		    if (xhr.response != '') {
-			window.open("http://x.a11y.in/alipi/app/printme?token="+xhr.response.split('=')[1]);
-		    }
-		}
-	    }
-	    
-	    xhr.open('POST', 'http://x.a11y.in/alipi/app/auth', true);
-	    xhr.setRequestHeader('Content-Type', 'text/plain');
-	    
-	    str = buildDataString();
-	    xhr.send(str);*/
-
 	    AJAX.post('http://192.168.100.100/test',
-		      buildDataString(), function(result) {
-			  //alert(buildDataString());
-			  ajaxResultProcessor.processPublishedResponse(result);
-		      });
+	    	      buildDataString(), function(result) {
+	    		  //alert(buildDataString());
+	    		  ajaxResultProcessor.processPublishedResponse(result);
+	    	      });
 	};
 
 	this.switchMode = function switchMode(saveChanges) {
@@ -3725,11 +3707,43 @@ this.show = function show( textToDisplay) {
 	};
 
 	buildDataString = function buildDataString() {
+	    
+	    var check_xpath = [], temp_history = [], index = [];
+	    for(x=0; x<history.length; x++) 
+	    {
+		check_xpath.push(history[x].xpath);
+	    }
+	    for(i=0; i<check_xpath.length-1; i++) 
+	    {
+		for(j=i+1; j<check_xpath.length; j++) 
+		{
+		    if (check_xpath[i] == check_xpath[j]) 
+		    {
+			index.push(i);  
+		    } 
+		}
+	    }
+	    if (index.length > 0) 
+	    {
+	    for (var z=0; z<index.length; z++) 
+		{
+		    delete history[index[z]];
+		}
+	    }
+
+	    for (var x=0; x<history.length; x++)
+	    {
+		if (history[x] != undefined)
+		{
+		    temp_history.push(history[x]);
+		}
+	    }
+
+	    history = temp_history;
+
+
 	    var command, buffer;
-
 	    buffer = new UTIL.StringBuffer();
-
-	    //Yass
 	    UTIL.forEach(history, function(index, command) {
 		buffer.append('###'); //separates the commands
 		buffer.append('url=');  //url                                                     //removed '&' on purpose
@@ -3751,9 +3765,9 @@ this.show = function show( textToDisplay) {
 		buffer.append(encodeURIComponent(command.data));
 		buffer.append('&author='); //author
 		buffer.append(encodeURIComponent(authorValue));
-	    });
+	    }); 
 	    return buffer.toString().substring(3);
-	};
+		    };//}}
     }
 
     /**
@@ -4365,7 +4379,7 @@ this.show = function show( textToDisplay) {
 	    overlayBar.show(false);
 	    result = AJAX.post('/app/page-edit/publish?slug=' + pageSlug + '&uploadSlug=' + uploadSlug + '&keepOriginal=' + keepOriginal,
 			       buildDataString(), function(result) {
-				   // alert(buildDataString());
+				   //alert(buildDataString());
 				   ajaxResultProcessor.processPublishedResponse(result);
 			       });
 
