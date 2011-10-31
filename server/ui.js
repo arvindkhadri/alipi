@@ -146,7 +146,8 @@ var a11ypi = {
 			}
 			path = d['xpath'];
 			newContent = d['data'];
-			a11ypi.evaluate(path,newContent);
+			elementType = d['elementtype'];
+			a11ypi.evaluate(path,newContent,elementType);
 		    }
 		}
 	    }
@@ -166,19 +167,24 @@ var a11ypi = {
     },
     evaluate: function()
     {
-	path = path.slice(0, path.lastIndexOf('SPAN')-1);  //A hack to fix xpath after adding span.  This must be corrected from the server side.  #TODO
 	var nodes = document.evaluate(path, document, null, XPathResult.ANY_TYPE,null);
         try{
             var result = nodes.iterateNext();
             while (result)
             {
-                if (result.tagName == "img" || result.tagName =='IMG'){
+                if (elementType == 'image')
+		{
                     result.setAttribute('src',newContent.split(',')[1]);  //A hack to display images properly, the size has been saved in the database.
 		    width = newContent.split(',')[0].split('x')[0];
 		    height = newContent.split(',')[0].split('x')[1];
 		    result.setAttribute('width',width);
 		    result.setAttribute('height', height);
                 }
+		else if(elementType =='audio/ogg')
+		{
+		    newContent = decodeURIComponent(newContent);
+		    $(result).before(newContent);
+		}
                 else{
                     result.textContent = newContent;
                 }
@@ -191,8 +197,6 @@ var a11ypi = {
         }
     },
     close: function() {
-	// var v = content.document.getElementsByTagName("body");
-	// v[0].removeChild(document.getElementById('ren_overlay'));
 	document.getElementById('ren_overlay').style.display = 'none';
     },
     filter: function()

@@ -39,8 +39,8 @@ def application(environ, start_response):
 
         #all re-narrations of the same xpath are grouped
         query = collection.group(
-            key = Code('function(doc){return {"xpath" : doc.xpath, "url": doc.url}}'),
-            condition={"url" : url, "lang" : lang},
+            key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
+            condition={"about" : url, "lang" : lang},
             initial={'narration': []},
             reduce=Code('function(doc,out){out.narration.push(doc);}') 
             )
