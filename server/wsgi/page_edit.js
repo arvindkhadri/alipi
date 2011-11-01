@@ -1471,8 +1471,6 @@
     }
 
     editAttributes = new DOM.Attributes({ 'm4pageeditcontrol': true });
-    //editAttributes.designMode = 'on';
-    //editAttributes.html="0";
     elementAttributes = editAttributes.addStyle('margin:0; padding:0; border:none; text-indent: 0px; background: none;');
     fontTypeAttributes = elementAttributes.addStyle("font-family: Helvetica Neue, Helvetica, Arial, Sans-serif;");
     normalFontAttributes = fontTypeAttributes.addStyle("font-weight:bold; font-size:12px; line-height: 10px;");
@@ -1819,13 +1817,14 @@
 			if(texts.length>1)
 			{
 			    for(var i=texts.length;i>1;i--){
-				texts.pop();
+				texts.pop()
 			    }
 			}
             		if(locName!='None of the above'){
 			    for(var i=0;i<locations[locindex-1]["lang"].length;i++){
 				texts.push(locations[locindex-1].lang[i]);
 			    }
+			   texts.push("---More---");
 			    if(langSelect.firstChild==null){
 				for(var vp=0;vp<texts.length;vp++)
 				{	
@@ -1878,7 +1877,33 @@
 		    langSelect.onchange=function(){
                         var langindex=langSelect.selectedIndex;
 			langName=texts[langindex];
-		    }
+			if(langName=='---More---'){
+			    while(langSelect.firstChild!=null){
+				langSelect.removeChild(langSelect.firstChild);
+			    }//end while
+				texts.pop();
+			    for(var i=0;i<locations.length;i++)
+			    {	for (var j=0; j<locations[i].lang.length; j++)
+				{ 
+				    texts.push(locations[i].lang[j]);
+				    texts.sort();
+				    for(var k=1;k<texts.length;k++){
+					if (texts[k] === texts[k-1]){ 
+					    texts.splice(k, 1);
+					    k--;
+					}	
+				    }
+				    
+				}//end inner for
+			    }//end main for
+			    for(var z=0; z<texts.length; z++)
+			    { 
+				var op = document.createElement('option');
+				op.text=texts[z];
+				langSelect.appendChild(op);
+			    }
+			}
+		    }//end onchange
     		}
 		
     		/* end parsing json response*/ 
@@ -1888,9 +1913,9 @@
     		}
     	    }
     	}
-    
-    xhrloc.open("GET","http://192.168.100.100/getData",true);
-    xhrloc.send();//
+	
+	xhrloc.open("GET","http://dev.a11y.in/getData",true);
+	xhrloc.send();
 
 
 
@@ -2187,7 +2212,7 @@
 		    }
 		}
 	    }
-	    xmlhttp.open("POST","http://192.168.100.100/narration",true);
+	    xmlhttp.open("POST","http://dev.a11y.in/narration",true);
 	    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlhttp.send(data);
 	    
