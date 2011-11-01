@@ -34,7 +34,10 @@ def application(environ, start_response):
             d[unquote_plus(parameter_pair[0])]  = unquote_plus(parameter_pair[1])
            
         url = d['url']
-        xpath = d['xpath']
+        xpath = d['xpath'].rsplit('span',1)[0]
+        print >> environ['wsgi.errors'], xpath
+	#xpath = '/'+xpath.split('/html/body')[1]
+        #print >> environ['wsgi.errors'], xpath
                 
         #get the ren languages for the received url
         query = collection.group(

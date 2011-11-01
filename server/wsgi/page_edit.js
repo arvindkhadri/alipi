@@ -1824,6 +1824,7 @@
 			    for(var i=0;i<locations[locindex-1]["lang"].length;i++){
 				texts.push(locations[locindex-1].lang[i]);
 			    }
+			   texts.push("---More---");
 			    if(langSelect.firstChild==null){
 				for(var vp=0;vp<texts.length;vp++)
 				{	
@@ -1876,7 +1877,33 @@
 		    langSelect.onchange=function(){
                         var langindex=langSelect.selectedIndex;
 			langName=texts[langindex];
-		    }
+			if(langName=='---More---'){
+			    while(langSelect.firstChild!=null){
+				langSelect.removeChild(langSelect.firstChild);
+			    }//end while
+				texts.pop();
+			    for(var i=0;i<locations.length;i++)
+			    {	for (var j=0; j<locations[i].lang.length; j++)
+				{ 
+				    texts.push(locations[i].lang[j]);
+				    texts.sort();
+				    for(var k=1;k<texts.length;k++){
+					if (texts[k] === texts[k-1]){ 
+					    texts.splice(k, 1);
+					    k--;
+					}	
+				    }
+				    
+				}//end inner for
+			    }//end main for
+			    for(var z=0; z<texts.length; z++)
+			    { 
+				var op = document.createElement('option');
+				op.text=texts[z];
+				langSelect.appendChild(op);
+			    }
+			}
+		    }//end onchange
     		}
 		
     		/* end parsing json response*/ 
