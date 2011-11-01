@@ -21,9 +21,6 @@ var a11ypi = {
 	v[0].appendChild(a);
 	var alltags = document.getElementsByTagName('*');
 	for (x=0; x<alltags.length; x++) {
-	   if(alltags[x].getAttribute("_moz_dirty")){
-			alert("hello _moz_dirty");
-		}
 	    if (alltags[x].id == 'ren_overlay' || alltags[x].id == 'overlay1' ) {
 		v[0].removeChild(document.getElementById('ren_overlay'));
 		v[0].removeChild(document.getElementById('overlay1'));
@@ -120,6 +117,7 @@ var a11ypi = {
     },
     ren: function()
     {
+	alert("ren-shalini");
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function()
 	{
@@ -167,6 +165,7 @@ var a11ypi = {
     },
     evaluate: function()
     {
+	alert("evaluate-shalini");
 	var nodes = document.evaluate(path, document, null, XPathResult.ANY_TYPE,null);
         try{
             var result = nodes.iterateNext();
@@ -187,6 +186,7 @@ var a11ypi = {
 		}
                 else{
                     result.textContent = newContent;
+			alert(result.textContent);
                 }
                 result=nodes.iterateNext();
             }

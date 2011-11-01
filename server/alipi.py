@@ -88,6 +88,7 @@ def start_page() :
         return lxml.html.tostring(root)
 
     elif request.args.has_key('lang') == True and request.args.has_key('blog') == False:
+	print "shalini"
         d['lang'] = request.args['lang']
         script_test = root.makeelement('script')
         root.body.append(script_test)
