@@ -1623,18 +1623,19 @@
 
 	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'bgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; min-height: 800px; min-width: 1024px; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.87))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
 
-	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'msgoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:10%; top:15%; bottom:10%; right:10%; background:#000; display:none;').values());
+	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'msgoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:25%; top:25%; bottom:25%; right:25%; background:#000; display:none;').values());
 
-	messageTitle = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:17%; left:44.5%; color:#FFF; font-size:200%; line-height:120%; font-weight:normal; text-decoration:none;').values(), 'Page Editor');
+	messageTitle = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:27%; left:44.5%; color:#FFF; font-size:200%; line-height:120%; font-weight:normal; text-decoration:none;').values(), 'Page Editor');
 
 	messageOverlay.appendChild(messageTitle);
 
-	messageDescription = DOM.BUILDER.TEXTAREA(normalFontAttributes.put({readonly:true}).addStyle('position:fixed; top:25%; left:14%; min-width:72%; max-width:72%; min-height:50%; max-height:50%; text-align:justify; color:#FFF; font-weight: normal; font-size:105%; line-height:130%;').values(), "TEXT:- \n\t Editor - It will popup a window and allow you to modify/replace text of select element on editor(right) box. \n\t\t To delete - Empty the editor(right) box and press 'OK'. \n\t See narrations - If the selected element has other narrations then it will list, on click. \n\t Audio - It allows you to enter audio URL. \n\n IMAGE:- \n\t Replace - It allows you to enter image URL. \n\t See narrations -  If the selected element has other image narration then it will show, on click. \n\n UNDO - Use it when you want to revert back to previous change. \n\t  Revert deleted - Press 'Undo' button twice. \n\n PUBLISH - To publish your crafted changes to database and blog (our/your). \n\t States - To the place you are targetting. \n\t Languages - In language you publishing. \n\t Style - In what style you crafted? \n\t Author - Who is a crafter? \n\t To our blog - If you don't have blogspot ID then check this to post it to our blog.");
+	messageDescription = DOM.BUILDER.TEXTAREA(normalFontAttributes.put({readonly:true}).addStyle('position:fixed; top:40%; left:27.5%; min-width:48%; max-width:48%; min-height:48%; max-height:48%; text-align:justify; color:#FFF; font-weight: normal; font-size:105%; line-height:130%;').values(), 'Click on any part of the page, and you will activate buttons that allow you to modify text, replace images and add audio. Don\'t forget to hit "Publish" when you\'re finished editing so we can save your newly-crafted page... And at any moment if you need help then hit a "Help" button.');
+
 	messageOverlay.appendChild(messageDescription);
 
-	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position:fixed; bottom:14.5%; left:43%; font-size:120%;').values(), 'OK');
+	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position:fixed; bottom:29.5%; left:43%; font-size:120%;').values(), 'OK');
 
-	editButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:40%; bottom:13%; color:#FFF; width:8%; height:5%; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
+	editButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:40%; bottom:28%; color:#FFF; width:8%; height:5%; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
 	editButton.onclick = function loadingEditButtonOnClick() {
 	    self.hide();
 	    return false;
@@ -1644,9 +1645,9 @@
 	messageOverlay.appendChild(editButton);
 
 
-	hideOverlayCheckbox = DOM.BUILDER.INPUT(editAttributes.put({ id:'hideoverlay', name:'Loading Checkbox', type:'checkbox', checked:'yes'}).addStyle('position:fixed; bottom:14%; right:48%; background: transparent; display: inline-block;').values());
+	hideOverlayCheckbox = DOM.BUILDER.INPUT(editAttributes.put({ id:'hideoverlay', name:'Loading Checkbox', type:'checkbox', checked:'yes'}).addStyle('position:fixed; bottom:29%; right:48%; background: transparent; display: inline-block;').values());
 
-	var checkboxLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; left:52.5%; bottom:14.5%; font-size:80%; font-weight:bold;  transparent; color: #FFF;display: inline-block;').values());
+	var checkboxLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; left:52.5%; bottom:29.5%; font-size:80%; font-weight:bold;  transparent; color: #FFF;display: inline-block;').values());
 	checkboxLabel.innerHTML = 'Don\'t show this again.';
 
 
@@ -1691,16 +1692,6 @@
 		self.hide();
 	    }
 	};
-
-	this.help = function help() {
-	    /*
-	     *  Cookie logic is temporary. This needs to be part of a user preference.
-	     *  Bug http://bugzilla.boltnet.com/bugzilla/boltnet/show_bug.cgi?id=2962
-	     *  created for this purpose.
-	     */
-	    backgroundDiv.style.display = 'block';
-	    messageOverlay.style.display = 'block';
-	};
     } ;
 
 
@@ -1712,13 +1703,13 @@
 
 	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'targetbgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 1))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
 
-	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'targetoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:20%; top:20%; bottom:20%; right:20%; background:#000; display:none; vertical-align:middle;').values());
+	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'targetoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:15%; top:15%; bottom:15%; right:15%; background:#000; display:none; vertical-align:middle;').values());
 
-	step1 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:21%; left:40%; color:#FFF; font-size:100%; line-height: 36px; font-weight: bold; display: block; ').values(), 'Please provide all the details below');
+	step1 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:16%; left:40%; color:#FFF; font-size:100%; line-height: 36px; font-weight: bold; display: block; ').values(), 'Please provide all the details below');
 
 	messageOverlay.appendChild(step1);
 
-	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:19%; right:19%; width:25px; height:25px;').values());
+	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:13.5%; right:14%; width:25px; height:25px;').values());
 	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'OK');
 
 	image.onclick=function(){
@@ -1728,31 +1719,38 @@
 
 
 	//---------------------------- state & language target --------------------------
-	locSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:34%; left:25%; font-weight: bold; background: transparent; color: #FFF;').values());
+	locSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:44%; left:25%; font-weight: bold; background: transparent; color: #FFF;').values());
 	locSelectLabel.innerHTML = 'Select any state from the list';
-	enterMailIdLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:34%; left:53.5%; font-weight: bold; background: transparent; color: #FFF;').values());
+	enterMailIdLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:44%; left:53.5%; font-weight: bold; background: transparent; color: #FFF;').values());
 	enterMailIdLabel.innerHTML = 'Select any style from the list';
 
 
-	locSelectAttributes = panelButtonAttributes.put({ id : 'loc-select'}).addStyle('position:fixed; top:35%; left:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	styleSelectAttributes = panelButtonAttributes.put({id : 'style-select'}).addStyle('position:fixed; top:35%; right:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
+	locSelectAttributes = panelButtonAttributes.put({ id : 'loc-select'}).addStyle('position:fixed; top:45%; left:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
+	styleSelectAttributes = panelButtonAttributes.put({id : 'style-select'}).addStyle('position:fixed; top:45%; right:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
 
 
-	langSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:50%; left:25%; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
+	langSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:59%; left:25%; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
 	langSelectLabel.innerHTML = 'Languages of selected/all state(s)';
-	authorLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:50%; left:53.5%; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
+	authorLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:59%; left:53.5%; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
 	authorLabel.innerHTML = 'Author name';
 
-	langSelectAttributes = panelButtonAttributes.put({ id : 'lang-select'}).addStyle('position:fixed; top:51%; left:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	authorAttributes = DOM.BUILDER.INPUT(editAttributes.put({ id : 'author', placeholder:'E.g:- John Doe'}).addStyle('position:fixed; top:54%; right:26%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values());
+	langSelectAttributes = panelButtonAttributes.put({ id : 'lang-select'}).addStyle('position:fixed; top:60%; left:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
+	authorAttributes = DOM.BUILDER.INPUT(editAttributes.put({ id : 'author', placeholder:'E.g:- John Doe'}).addStyle('position:fixed; top:62.6%; right:26.2%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values());
 
-	defaultBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'defaultcheck', name : 'Loading Checkbox', type : 'checkbox'}).addStyle('position:fixed; top:70%; left:44%; background: transparent; display: inline-block;').values());
-	defaultBlogLabel = DOM.BUILDER.LABEL(tooltip.addStyle('position:fixed; top:70%; left:47%; background: transparent; color: #FFF;display: inline-block; text-align:center; font-size:80%; font-weight: bold;').values());
-	defaultBlogLabel.innerHTML = 'To our blog--[?]';
+	blogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:25%; left:20%; min-width:60%; max-width:60%; font-weight: bold; background: transparent; color: #FFF; line-height:100%;').values());
+	blogLabel.innerHTML = 'If you want to post the changes to you own blog then check "My blog" or if you don\'t have a blog then let it be "Our blog" checked.';
+
+	ourBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'ourcheck', name : 'Loading Checkbox', type : 'radio', checked:'yes'}).addStyle('position:fixed; top:32%; left:30%; background: transparent; display: inline-block;').values());
+	ourBlogLabel = DOM.BUILDER.LABEL(tooltip.addStyle('position:fixed; top:32%; left:33%; background: transparent; color: #FFF;display: inline-block; text-align:center; font-size:80%; font-weight: bold;').values());
+	ourBlogLabel.innerHTML = 'Our blog  [?]';
+
+	myBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'mycheck', name : 'Loading Checkbox', type : 'radio'}).addStyle('position:fixed; top:32%; left:57%; background: transparent; display: inline-block;').values());
+	myBlogLabel = DOM.BUILDER.LABEL(tooltip.addStyle('position:fixed; top:32%; left:60%; background: transparent; color: #FFF;display: inline-block; text-align:center; font-size:80%; font-weight: bold;').values());
+	myBlogLabel.innerHTML = 'My blog';
 
 	//-----------------------------End of state & language target -------------------
 
-	okButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; right:25%; bottom:25%; color:#FFF; margin:auto; width: 100px; height: 36px; display: block; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
+	okButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; right:20%; bottom:18.5%; color:#FFF; margin:auto; width: 100px; height: 36px; display: block; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
 
 	this.okClick = function okClick() {
 	    if(document.getElementById('loc-select').value == '--Locations--' || document.getElementById('lang-select').value == '---Languages---' || document.getElementById('style-select').value == '---Style---') {
@@ -1922,12 +1920,13 @@
 	//---------------------------------------------end locLang & locSelect ------------------------
 
 	//-------------------------------------------- start blog details ---------------------------
-	defaultBlog = defaultBlogAttributes;
+	ourBlog = ourBlogAttributes;
+	myBlog = myBlogAttributes;
 	author = authorAttributes;
 	//-------------------------------------------- end blog details ------------------------------
 
 
-	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), locSelect, locSelectLabel, langSelect, langSelectLabel, defaultBlog, defaultBlogLabel, enterMailIdLabel, styleSelect, author, authorLabel));
+	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), locSelect, locSelectLabel, langSelect, langSelectLabel, ourBlog, ourBlogLabel, myBlog, myBlogLabel, enterMailIdLabel, styleSelect, author, authorLabel, blogLabel));
 	okButton.appendChild(text);
 	messageOverlay.appendChild(okButton);
 
@@ -2023,6 +2022,61 @@
 
 // =========================================== Edit Window end =======================================================
 
+// ========================================== Help Window Start =================================================
+
+    HelpWindow = function HelpWindow(pageEditor ) {
+
+	var self = this, messageOverlay, editButton, hideOverlayCheckbox, messageDescription, messageTitle, loadingImage, loadingText, loadingDiv;
+
+	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'helpbgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; min-height: 800px; min-width: 1024px; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.87))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
+
+	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'helpmsgoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:10%; top:15%; bottom:10%; right:10%; background:#000; display:none;').values());
+
+	messageTitle = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:17%; left:44.5%; color:#FFF; font-size:200%; line-height:120%; font-weight:normal; text-decoration:none;').values(), 'Help Window');
+
+	messageOverlay.appendChild(messageTitle);
+
+	messageDescription = DOM.BUILDER.TEXTAREA(normalFontAttributes.put({readonly:true}).addStyle('position:fixed; top:25%; left:14%; min-width:72%; max-width:72%; min-height:50%; max-height:50%; text-align:justify; color:#FFF; font-weight: normal; font-size:105%; line-height:130%;').values(), "TEXT:- \n\t Editor - It will popup a window and allow you to modify/replace text of select element on editor(right) box. \n\t\t To delete - Empty the editor(right) box and press 'OK'. \n\t See narrations - If the selected element has other narrations then it will list, on click. \n\t Audio - It allows you to enter audio URL. \n\n IMAGE:- \n\t Replace - It allows you to enter image URL. \n\t See narrations -  If the selected element has other image narration then it will show, on click. \n\n UNDO:- Use it when you want to revert back to previous change. \n\t  Revert deleted - Press 'Undo' button twice. \n\n PUBLISH:- To publish your crafted changes to database and blog (our/your). \n\t States - To the place you are targetting. \n\t Languages - In language you publishing. \n\t Style - In what style you crafted? \n\t Author - Who is a crafter? \n\t Our blog - If you don't have blogspot ID then check this to post it to our blog.");
+
+	messageOverlay.appendChild(messageDescription);
+
+	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position:fixed; bottom:14.5%; left:49%; font-size:120%;').values(), 'OK');
+
+	editButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:46%; bottom:13%; color:#FFF; width:8%; height:5%; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
+	editButton.onclick = function loadingEditButtonOnClick() {
+	    document.body.removeChild(document.getElementById('helpbgdiv'));
+	    document.body.removeChild(document.getElementById('helpmsgoverlay'));
+	};
+
+	editButton.appendChild(text);
+	messageOverlay.appendChild(editButton);
+
+
+	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values()));
+	editButton.appendChild(text);
+	messageOverlay.appendChild(editButton);
+
+	document.body.appendChild(backgroundDiv);
+	document.body.appendChild(messageOverlay);
+
+
+	this.show = function show( textToDisplay) {
+	    
+	    if (textToDisplay) {
+		DOM.textContent(loadingText, textToDisplay);
+	    }
+	};
+	
+	this.activate = function activate() {
+	    backgroundDiv.style.display = 'block';
+	    messageOverlay.style.display = 'block';
+	};
+
+    } ;
+
+
+
+// ========================================= Help Window end ===================================================
     /*
      * Control for displaying/hiding an action panel that appears below the popup buttons.
      */
@@ -2900,8 +2954,8 @@
 
 	helpLink = DOM.BUILDER.BUTTON(helpLinkStyleAttributes, 'Help');
 	helpLink.onclick = function undoButtonOnClick() {
-	    splashWindow = new SplashWindow(pageEditor);
-	    splashWindow.help();
+	    helpWindow = new HelpWindow(pageEditor);
+	    helpWindow.activate();
 
 	};
 
@@ -3218,7 +3272,7 @@
 
 	this.publish = function publish() {
 	    var result;
-	    if(document.getElementById('defaultcheck').checked == false)
+	    if(document.getElementById('ourcheck').checked == false)
 	    {
 		localStorage.myContent = buildDataString();
 		window.location.href = "http://dev.a11y.in/test.html";
