@@ -29,8 +29,8 @@ def start_page() :
         script_test = root.makeelement('script')
         root.body.append(script_test)
 #        script_test.set("src", "http://192.168.100.100/server/ui.js")
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
-#        script_test.set("src", "http://localhost/alipi-1/server/ui.js")
+#        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("src", "http://localhost/alipi-1/server/ui.js")
         script_test.set("type", "text/javascript")
         
         script_jq_mini = root.makeelement('script')
@@ -43,8 +43,8 @@ def start_page() :
         style.set("rel","stylesheet")
         style.set("type", "text/css")
 #        style.set("href", "http://192.168.100.100/server/stylesheet.css")
-        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
-#        style.set("href", "http://localhost/alipi-1/server/stylesheet.css")
+#        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
+        style.set("href", "http://localhost/alipi-1/server/stylesheet.css")
 
         connection = pymongo.Connection('localhost',27017)
         db = connection['alipi']

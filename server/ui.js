@@ -15,8 +15,8 @@ var a11ypi = {
 	var v = content.document.getElementsByTagName("body");
 	var a = content.document.createElement("script");
 //	a.setAttribute("src","http://192.168.100.100/server/wsgi/page_edit.js");
-	a.setAttribute("src","http://dev.a11y.in/alipi/wsgi/page_edit.js");
-//	a.setAttribute("src","http://localhost/alipi-1/server/wsgi/page_edit.js");
+//	a.setAttribute("src","http://dev.a11y.in/alipi/wsgi/page_edit.js");
+	a.setAttribute("src","http://localhost/alipi-1/server/wsgi/page_edit.js");
 	a.setAttribute("type","text/javascript");
 	v[0].appendChild(a);
 	var alltags = document.getElementsByTagName('*');
