@@ -80,5 +80,6 @@ def application(environ, start_response):
                     return 'empty'
                 else:
                     i+=1
-            return string
+        print >> environ['wsgi.errors'], string
+        return string
             

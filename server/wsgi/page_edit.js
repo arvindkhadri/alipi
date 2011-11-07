@@ -1738,14 +1738,14 @@
 	authorAttributes = DOM.BUILDER.INPUT(editAttributes.put({ id : 'author', placeholder:'E.g:- John Doe'}).addStyle('position:fixed; top:62.6%; right:26.2%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values());
 
 	blogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:25%; left:20%; min-width:60%; max-width:60%; font-weight: bold; background: transparent; color: #FFF; line-height:100%;').values());
-	blogLabel.innerHTML = 'If you want to post the changes to you own blog then check "My blog" or if you don\'t have a blog then let it be "Our blog" checked.';
+	blogLabel.innerHTML = 'If you have blogspot ID and want to post the changes to that blog then check "My blog" or you want to post to our blog then check "Our blog". If you have doubt then go with the default option.';
 
-	ourBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'ourcheck', name : 'Loading Checkbox', type : 'radio', checked:'yes'}).addStyle('position:fixed; top:32%; left:30%; background: transparent; display: inline-block;').values());
+	ourBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'ourcheck', name : 'Loading Checkbox', type : 'radio', checked:'yes'}).addStyle('position:fixed; top:31.6%; left:30%; background: transparent; display: inline-block;').values());
 	ourBlogLabel = DOM.BUILDER.LABEL(tooltip.addStyle('position:fixed; top:32%; left:33%; background: transparent; color: #FFF;display: inline-block; text-align:center; font-size:80%; font-weight: bold;').values());
 	ourBlogLabel.innerHTML = 'Our blog  [?]';
 
 	myBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'mycheck', name : 'Loading Checkbox', type : 'radio'}).addStyle('position:fixed; top:32%; left:57%; background: transparent; display: inline-block;').values());
-	myBlogLabel = DOM.BUILDER.LABEL(tooltip.addStyle('position:fixed; top:32%; left:60%; background: transparent; color: #FFF;display: inline-block; text-align:center; font-size:80%; font-weight: bold;').values());
+	myBlogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:32.5%; left:60%; background: transparent; color: #FFF;display: inline-block; text-align:center; font-size:80%; font-weight: bold;').values());
 	myBlogLabel.innerHTML = 'My blog';
 
 	//-----------------------------End of state & language target -------------------
@@ -2205,6 +2205,7 @@
 
 
 	    xpath = DOM.getXPATH(element);
+		alert(xpath);
 	    previousData = element.textContent; 
 
 	    var xmlhttp = new XMLHttpRequest();
@@ -2268,7 +2269,7 @@
 		}
 	    }
 	    //xmlhttp.open("POST","http://dev.a11y.in/narration",true);
-	    xmlhttp.open("POST","http://192.168.100.100/narration",true);
+	    xmlhttp.open("POST","http://192.168.100.100/replace",true);
 	    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlhttp.send(data);
 	    

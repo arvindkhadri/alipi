@@ -78,7 +78,7 @@ function addEditorToPage() {
   var sampleContainerDiv = document.getElementById(blogThis.SAMPLE_CONTAINER);
   sampleContainerDiv.innerHTML = [
       '<div id="login_button">',
-      ' <input type="button" value="Login" onclick="login();"></input>',
+      ' <input type="image" src="http://localhost/alipi-1/server/images/blogspot.jpg" name="blogspot image" width="100" height="100"  onclick="login();"></input>',
       '</div>',
       '<div id="blog_this_div" style="display: none;">',
       '  Choose blog: <select id="available_blogs">',
