@@ -1112,10 +1112,13 @@
     	    var path = '';
 	    for (; elt && elt.nodeType == 1; elt = elt.parentNode)
 	    {
-		idx = DOM.getElementIdx(elt);
-		xname = elt.tagName;
-		if (idx > 1) xname += "[" + idx + "]";
-		path = "/" + xname + path;
+		if(elt.attributes['m4pageedittype'] === undefined)
+		{
+		    idx = DOM.getElementIdx(elt);
+		    xname = elt.tagName;
+		    if (idx > 1) xname += "[" + idx + "]";
+		    path = "/" + xname + path;
+		}
 	    }
 	    
 	    return path;
@@ -2215,6 +2218,7 @@
 		a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
 	    }
 	    var url = a['foruri'];
+	    //xpath = '/' + xpath.slice(10,xpath.length);
 	    var data="url="+encodeURIComponent(url)+"&xpath="+encodeURIComponent(xpath);
 	    xmlhttp.onreadystatechange = function()
 	    {
@@ -3359,9 +3363,9 @@
 		buffer.append('&elementtype='); // text, audio, img
 		buffer.append(encodeURIComponent(command.elementType));
 		buffer.append('&xpath=');//xpath
-		command.xpath = '/' + command.xpath.slice(10,command.xpath.length);
-		if(command.elementType == 'text')
-                    command.xpath = command.xpath.slice(0,command.xpath.lastIndexOf('SPAN')-1)
+		//command.xpath = '/' + command.xpath.slice(10,command.xpath.length);
+		//if(command.elementType == 'text')
+                //    command.xpath = command.xpath.slice(0,command.xpath.lastIndexOf('SPAN')-1)
                 buffer.append(encodeURIComponent(command.xpath));
 		buffer.append('&data=');  //data
 		buffer.append(encodeURIComponent(command.data));
