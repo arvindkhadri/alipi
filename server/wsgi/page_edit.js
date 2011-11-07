@@ -2208,7 +2208,6 @@
 
 
 	    xpath = DOM.getXPATH(element);
-		alert(xpath);
 	    previousData = element.textContent; 
 
 	    var xmlhttp = new XMLHttpRequest();
@@ -2262,7 +2261,7 @@
 			    if (renInput.selectedIndex -1 < 0)  alert("please choose a Re-narration ");
 			    else   {
 				DOM.evaluate(varray[renInput.selectedIndex - 1]['xpath'],varray[renInput.selectedIndex - 1]['data']);};
-			    renInput.selectedIndex = 0;
+			    //renInput.selectedIndex = 0;
 			}
 			
 			undoButton.onclick =function(){
@@ -2273,7 +2272,7 @@
 		}
 	    }
 	    //xmlhttp.open("POST","http://dev.a11y.in/narration",true);
-	    xmlhttp.open("POST","http://192.168.100.100/replace",true);
+	    xmlhttp.open("POST","http://192.168.100.100/narration",true);
 	    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlhttp.send(data);
 	    
@@ -2282,6 +2281,7 @@
 	
 	
 	this.close = function close() {
+		if (renDiv) { renDiv.style.display = "none";}
       	    selectedElement = null;
 	};
     }

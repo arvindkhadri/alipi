@@ -6,7 +6,7 @@ var a11ypi = {
     flag : 0,
     testContext : function()
     {
-	$(document).ready(function(){$('body *').contents().filter(function() {return (this.nodeType == 3) && this.nodeValue.match(/\S/);}).wrap('<span m4pageedittype="text" oncopy="" onpaste=""/>')});
+	$(document).ready(function(){$('body *').contents().filter(function() {return (this.nodeType == 3) && this.nodeValue.match(/\S/);}).wrap('<span m4pageedittype="text">')});
 	vimg = document.getElementsByTagName('img');
 	for(i=0; i<vimg.length; i++)
 	{
