@@ -1915,7 +1915,8 @@
     	    }
     	}
 	
-	xhrloc.open("GET","http://dev.a11y.in/getData",true);
+//	xhrloc.open("GET","http://dev.a11y.in/getData",true);
+	xhrloc.open("GET","http://192.168.100.100/getData",true);
 	xhrloc.send();
 
 
@@ -2260,7 +2261,7 @@
 			    if (renInput.selectedIndex -1 < 0)  alert("please choose a Re-narration ");
 			    else   {
 				DOM.evaluate(varray[renInput.selectedIndex - 1]['xpath'],varray[renInput.selectedIndex - 1]['data']);};
-			    renInput.selectedIndex = 0;
+			    //renInput.selectedIndex = 0;
 			}
 			
 			undoButton.onclick =function(){
@@ -2270,7 +2271,8 @@
 		    }
 		}
 	    }
-	    xmlhttp.open("POST","http://dev.a11y.in/narration",true);
+	    //xmlhttp.open("POST","http://dev.a11y.in/narration",true);
+	    xmlhttp.open("POST","http://192.168.100.100/narration",true);
 	    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlhttp.send(data);
 	    
@@ -2279,6 +2281,7 @@
 	
 	
 	this.close = function close() {
+		if (renDiv) { renDiv.style.display = "none";}
       	    selectedElement = null;
 	};
     }
@@ -3279,12 +3282,12 @@
 	    if(document.getElementById('ourcheck').checked == false)
 	    {
 		localStorage.myContent = buildDataString();
-		window.location.href = "http://dev.a11y.in/test.html";
+		window.location.href = "http://192.168.100.100/test.html";
 		window.reload();
 	    }
 	    else{
 		
-		AJAX.post('http://dev.a11y.in/test',
+		AJAX.post('http://192.168.100.100/test',
 	    		  buildDataString(), function(result) {
 	    		      ajaxResultProcessor.processPublishedResponse(result);
 	    		  });

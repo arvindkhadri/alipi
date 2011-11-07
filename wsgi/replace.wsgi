@@ -76,6 +76,6 @@ def application(environ, start_response):
                     print >> environ['wsgi.errors'], key
                     print >> environ['wsgi.errors'], 'Error Encoding request string'
                     return 'empty'
-                    
+        print >> environ['wsgi.errors'], string
         return string
     

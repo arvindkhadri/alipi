@@ -6,7 +6,7 @@ var a11ypi = {
     flag : 0,
     testContext : function()
     {
-	$(document).ready(function(){$('body *').contents().filter(function() {return (this.nodeType == 3) && this.nodeValue.match(/\S/);}).wrap('<span m4pageedittype="text" oncopy="" onpaste=""/>')});
+	$(document).ready(function(){$('body *').contents().filter(function() {return (this.nodeType == 3) && this.nodeValue.match(/\S/);}).wrap('<span m4pageedittype="text">')});
 	vimg = document.getElementsByTagName('img');
 	for(i=0; i<vimg.length; i++)
 	{
@@ -14,9 +14,9 @@ var a11ypi = {
 	}
 	var v = content.document.getElementsByTagName("body");
 	var a = content.document.createElement("script");
-//	a.setAttribute("src","http://192.168.100.100/server/wsgi/page_edit.js");
+	a.setAttribute("src","http://192.168.100.100/server/wsgi/page_edit.js");
 //	a.setAttribute("src","http://dev.a11y.in/alipi/wsgi/page_edit.js");
-	a.setAttribute("src","http://localhost/alipi-1/server/wsgi/page_edit.js");
+//	a.setAttribute("src","http://localhost/alipi-1/server/wsgi/page_edit.js");
 	a.setAttribute("type","text/javascript");
 	v[0].appendChild(a);
 	var alltags = document.getElementsByTagName('*');
@@ -158,7 +158,7 @@ var a11ypi = {
 	var lang= a['lang'];
 	var data="url="+encodeURIComponent(url)+"&lang="+encodeURIComponent(lang);
 	
-	xhr.open("POST","http://dev.a11y.in/replace",true);
+	xhr.open("POST","http://192.168.100.100/replace",true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send(data);//
     },
