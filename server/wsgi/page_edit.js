@@ -1112,7 +1112,7 @@
     	    var path = '';
 	    for (; elt && elt.nodeType == 1; elt = elt.parentNode)
 	    {
-		if(elt.attributes['m4pageedittype'] === undefined)
+		if (elt.attributes['m4pageedittype'] === undefined || elt.attributes['m4pageedittype'].nodeValue != 'text')
 		{
 		    idx = DOM.getElementIdx(elt);
 		    xname = elt.tagName;

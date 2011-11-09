@@ -180,7 +180,8 @@ var a11ypi = {
 		else if(elementType =='audio/ogg')
 		{
 		    newContent = decodeURIComponent(newContent);
-		    $(result).before(newContent);
+		    audio = '<audio controls="controls" src="'+newContent+'"></audio>';
+		    $(result).before(audio);
 		}
                 else{
                     result.textContent = newContent;

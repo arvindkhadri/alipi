@@ -36,8 +36,6 @@ def application(environ, start_response):
         url = d['url']
         xpath = d['xpath'].rsplit('span',1)[0]
         print >> environ['wsgi.errors'], xpath
-	#xpath = '/'+xpath.split('/html/body')[1]
-        #print >> environ['wsgi.errors'], xpath
                 
         #get the ren languages for the received url
         query = collection.group(
