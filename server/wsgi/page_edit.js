@@ -1,4 +1,5 @@
-(function( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) {
+function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) 
+{
 
     var console, PopupControl, M4ImageElement,locName='',langName = '',styleName='',authorValue;
     var editAttributes, elementAttributes, fontTypeAttributes, normalFontAttributes, popupContainerAttributes, editButtonAttributes, editTextInputAttributes, editSubmitAttributes, editTitleAttributes, panelButtonAttributes, buttonPanelAttributes, actionPanelAttributes, closeButtonAttributes, actionButtonAttributes, redButtonAttributes, leftBorderStyle, rightBorderStyle, titleButtonImageAttributes, titleButtonDisplayTextAttributes, actionButtonImageAttributes, actionButtonDisplayTextAttributes,greyArrowAttributes, pageEditor, splashWindow, loadingTimerId, keepOriginal = false;
@@ -1120,7 +1121,7 @@
 		    path = "/" + xname + path;
 		}
 	    }
-	    
+	    console.log(path);
 	    return path;
 	};
 
@@ -1173,7 +1174,7 @@
     		path = DOM.makePath(currentNode.parentNode);
     	    }
 
-    	    //alert ("xpath\n"+path);
+    	   
     	    return path;
 	};
 
@@ -1915,8 +1916,7 @@
     	    }
     	}
 	
-//	xhrloc.open("GET","http://dev.a11y.in/getData",true);
-	xhrloc.open("GET","http://192.168.100.100/getData",true);
+	xhrloc.open("GET","http://dev.a11y.in/getData",true);
 	xhrloc.send();
 
 
@@ -2217,7 +2217,6 @@
 		a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
 	    }
 	    var url = a['foruri'];
-	    //xpath = '/' + xpath.slice(10,xpath.length);
 	    var data="url="+encodeURIComponent(url)+"&xpath="+encodeURIComponent(xpath);
 	    xmlhttp.onreadystatechange = function()
 	    {
@@ -2261,7 +2260,7 @@
 			    if (renInput.selectedIndex -1 < 0)  alert("please choose a Re-narration ");
 			    else   {
 				DOM.evaluate(varray[renInput.selectedIndex - 1]['xpath'],varray[renInput.selectedIndex - 1]['data']);};
-			    //renInput.selectedIndex = 0;
+			    renInput.selectedIndex = 0;
 			}
 			
 			undoButton.onclick =function(){
@@ -2271,8 +2270,7 @@
 		    }
 		}
 	    }
-	    //xmlhttp.open("POST","http://dev.a11y.in/narration",true);
-	    xmlhttp.open("POST","http://192.168.100.100/narration",true);
+	    xmlhttp.open("POST","http://dev.a11y.in/narration",true);
 	    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlhttp.send(data);
 	    
@@ -2281,7 +2279,6 @@
 	
 	
 	this.close = function close() {
-		if (renDiv) { renDiv.style.display = "none";}
       	    selectedElement = null;
 	};
     }
@@ -3282,12 +3279,12 @@
 	    if(document.getElementById('ourcheck').checked == false)
 	    {
 		localStorage.myContent = buildDataString();
-		window.location.href = "http://192.168.100.100/test.html";
+		window.location.href = "http://dev.a11y.in/test.html";
 		window.reload();
 	    }
 	    else{
 		
-		AJAX.post('http://192.168.100.100/test',
+		AJAX.post('http://dev.a11y.in/test',
 	    		  buildDataString(), function(result) {
 	    		      ajaxResultProcessor.processPublishedResponse(result);
 	    		  });
@@ -3363,10 +3360,7 @@
 		buffer.append('&elementtype='); // text, audio, img
 		buffer.append(encodeURIComponent(command.elementType));
 		buffer.append('&xpath=');//xpath
-		//command.xpath = '/' + command.xpath.slice(10,command.xpath.length);
-		//if(command.elementType == 'text')
-                //    command.xpath = command.xpath.slice(0,command.xpath.lastIndexOf('SPAN')-1)
-                buffer.append(encodeURIComponent(command.xpath));
+		buffer.append(encodeURIComponent(command.xpath));
 		buffer.append('&data=');  //data
 		buffer.append(encodeURIComponent(command.data));
 		buffer.append('&author='); //author
@@ -3897,7 +3891,7 @@
      * Main coordinator for the html editor's overlay and other functionality.
      */
     function HtmlPageEditor(editor) {
-	var self = this, overlayBar, buildDataString, ajaxResultProcessor = new AjaxResultProcessor();
+    	var self = this, overlayBar, buildDataString, ajaxResultProcessor = new AjaxResultProcessor();
 
 	overlayBar = new OverlayBar(this, false);
 
@@ -4001,4 +3995,4 @@
 	activateEditor();
     });
 
-})('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');
+}

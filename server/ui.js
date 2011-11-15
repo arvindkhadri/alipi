@@ -6,19 +6,33 @@ var a11ypi = {
     flag : 0,
     testContext : function()
     {
-	$(document).ready(function(){$('body *').contents().filter(function() {return (this.nodeType == 3) && this.nodeValue.match(/\S/);}).wrap('<span m4pageedittype="text">')});
+
+ 	    $(document).ready(function(){$('body *').contents().filter(function() 
+								       {
+									   //console.log(this.nodeName);
+									   try{
+									       if(this.nodeType == 3)
+									       {
+										   return (this.nodeType == 3) && this.nodeValue.match(/\S/);}}
+									   catch(err)
+									   {
+//									       console.log(err.message);
+//									       console.log(this);
+									   }}).wrap('<span m4pageedittype=text/>')}); 
+
+
 	vimg = document.getElementsByTagName('img');
 	for(i=0; i<vimg.length; i++)
 	{
 	    vimg[i].setAttribute('m4pageedittype','image');
 	}
-	var v = content.document.getElementsByTagName("body");
-	var a = content.document.createElement("script");
-	a.setAttribute("src","http://192.168.100.100/server/wsgi/page_edit.js");
-//	a.setAttribute("src","http://dev.a11y.in/alipi/wsgi/page_edit.js");
-//	a.setAttribute("src","http://localhost/alipi-1/server/wsgi/page_edit.js");
-	a.setAttribute("type","text/javascript");
-	v[0].appendChild(a);
+
+ 	var v = document.getElementsByTagName("body");
+// 	var a = document.createElement("script");
+// 	a.setAttribute("src","http://dev.a11y.in/alipi/wsgi/page_edit.js");
+// //	a.setAttribute("src","http://localhost/alipi-1/server/wsgi/page_edit.js");
+// 	a.setAttribute("type","text/javascript");
+// 	v[0].appendChild(a);
 	var alltags = document.getElementsByTagName('*');
 	for (x=0; x<alltags.length; x++) {
 	    if (alltags[x].id == 'ren_overlay' || alltags[x].id == 'overlay1' ) {
@@ -28,7 +42,6 @@ var a11ypi = {
 	}
 	v[0].removeChild(document.getElementById('overlay2'));
     },
-
 
     createMenu: function(menu_list) {
 	var xyz = document.getElementById("menu-button");
@@ -158,7 +171,7 @@ var a11ypi = {
 	var lang= a['lang'];
 	var data="url="+encodeURIComponent(url)+"&lang="+encodeURIComponent(lang);
 	
-	xhr.open("POST","http://192.168.100.100/replace",true);
+	xhr.open("POST","http://dev.a11y.in/replace",true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send(data);//
     },

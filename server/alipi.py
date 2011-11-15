@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import request
+from flask import render_template
 import lxml.html
 import cgi
 import pymongo
@@ -16,9 +17,12 @@ def start_page() :
     d = {}
     d['foruri'] = request.args['foruri']
     myhandler1 = urllib2.Request(d['foruri'],headers={'User-Agent':"Mozilla/5.0 (X11; U; Linux i686) Gecko/20071127 Firefox/2.0.0.11"}) #A fix to send user-agents, so that sites render properly.
-    a = urllib2.urlopen(myhandler1)
-    page = a.read()
-    a.close()
+    try:
+        a = urllib2.urlopen(myhandler1)
+        page = a.read()
+        a.close()
+    except urllib2.URLError:
+        return render_template('error.html')
     try:
         page = unicode(page,'utf-8')  #Hack to fix improperly displayed chars on wikipedia.
     except UnicodeDecodeError:
@@ -27,27 +31,28 @@ def start_page() :
     if request.args.has_key('lang') == False and request.args.has_key('blog') == False:
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
         script_test = root.makeelement('script')
+        script_edit = root.makeelement('script')
         root.body.append(script_test)
-        script_test.set("src", "http://192.168.100.100/server/ui.js")
-#        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
-#        script_test.set("src", "http://localhost/alipi-1/server/ui.js")
+        root.body.append(script_edit)
+        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
         script_test.set("type", "text/javascript")
+        script_edit.set("src", "http://dev.a11y.in/alipi/wsgi/page_edit.js")
+        script_edit.set("type","text/javascript")
         
         script_jq_mini = root.makeelement('script')
         root.body.append(script_jq_mini)
-        script_jq_mini.set("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
+        script_jq_mini.set("src", "http://code.jquery.com/jquery-1.7.min.js")
+        #script_jq_mini.set("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
         script_jq_mini.set("type", "text/javascript")
         
         style = root.makeelement('link')
         root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://192.168.100.100/server/stylesheet.css")
-#        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
-#        style.set("href", "http://localhost/alipi-1/server/stylesheet.css")
+        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
 
         connection = pymongo.Connection('localhost',27017)
-        db = connection['alipi']
+        db = connection['dev_alipi']
         collection = db['post']
         if collection.find_one({"about" : request.args['foruri']}) is not None:
             ren_overlay = root.makeelement('div')
@@ -83,7 +88,7 @@ def start_page() :
         overlay2.append(btn)
         btn.set("id", "edit-button")
         btn.set("type", "submit")
-        btn.set("onClick", "a11ypi.testContext();")
+        btn.set("onClick", "a11ypi.testContext();page_edit('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');")
         btn.set("value", "EDIT")
         return lxml.html.tostring(root)
 
@@ -91,8 +96,7 @@ def start_page() :
         d['lang'] = request.args['lang']
         script_test = root.makeelement('script')
         root.body.append(script_test)
-#        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
-        script_test.set("src", "http://192.168.100.100/server/ui.js")
+        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
         script_test.set("type", "text/javascript")
         root.body.set("onload","a11ypi.ren()");
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
@@ -101,8 +105,7 @@ def start_page() :
     elif request.args.has_key('interactive') == True and request.args.has_key('blog') == True:
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        #script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
-        script_test.set("src", "http://192.168.100.100/server/ui.js")
+        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
         script_test.set("type", "text/javascript")
         root.body.set("onload","a11ypi.filter()");
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
@@ -111,8 +114,7 @@ def start_page() :
     elif request.args.has_key('interactive') == False and request.args.has_key('blog') == True:    
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        #script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
-        script_test.set("src", "http://192.168.100.100/server/ui.js")
+        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
         script_test.set("type", "text/javascript")
         
         script_jq_mini = root.makeelement('script')
@@ -124,11 +126,10 @@ def start_page() :
         root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        #script_test.set("src", "http://dev.a11y.in/alipi/stylesheet.css")
-        style.set("href", "http://192.168.100.100/server/stylesheet.css")
+        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
 
         connection = pymongo.Connection('localhost',27017)
-        db = connection['alipi']
+        db = connection['dev_alipi']
         collection = db['post']
         if collection.find_one({"about" : request.args['foruri']}) is not None:
             ren_overlay = root.makeelement('div')
