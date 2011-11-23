@@ -2812,8 +2812,8 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	doneButton.onclick = function doneButtonOnClick(elements) {
 	    editWindow = new EditWindow(pageEditor);
  	    editWindow.activate();
-	    document.getElementById('originaltext').value = selectedElement.textContent;
-	    document.getElementById('texteditor').value = selectedElement.textContent;
+	    document.getElementById('originaltext').value = selectedElement.parentNode.innerHTML;
+	    document.getElementById('texteditor').value = selectedElement.parentNode.innerHTML;
 	    document.getElementById('editoroverlay').appendChild(textButton);
 	    selectedElement.setAttribute('id', 'alipiSelectedElement');
 	};
