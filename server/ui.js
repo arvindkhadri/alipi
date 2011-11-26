@@ -45,7 +45,7 @@ var a11ypi = {
 
     createMenu: function(menu_list) {
 	var xyz = document.getElementById("menu-button");
-	for(var i in menu_list)
+	for(var i=0;i<menu_list.length;i++)
 	{
 	    var newel = document.createElement("option");
 	    newel.textContent = menu_list[i];
@@ -169,7 +169,7 @@ var a11ypi = {
 	}
 	var url = a['foruri'];
 	var lang= a['lang'];
-	var data="url="+encodeURIComponent(url)+"&lang="+encodeURIComponent(lang);
+	var data="url="+url+"&lang="+encodeURIComponent(lang);
 	
 	xhr.open("POST","http://dev.a11y.in/replace",true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
@@ -177,7 +177,13 @@ var a11ypi = {
     },
     evaluate: function()
     {
+	try{
 	var nodes = document.evaluate(path, document, null, XPathResult.ANY_TYPE,null);
+	}
+	catch(e)
+	{
+	    console.log(e);
+	}
         try{
             var result = nodes.iterateNext();
             while (result)

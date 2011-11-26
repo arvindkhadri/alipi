@@ -3348,7 +3348,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    UTIL.forEach(history, function(index, command) {
 		buffer.append('###'); //separates the commands
 		buffer.append('about=');  //url=about    //removed '&' on purpose
-		buffer.append(encodeURIComponent(window.location.search.split('=')[1]));
+		buffer.append(window.location.search.split('=')[1]);
 		buffer.append('&lang=');//lang
 		buffer.append(encodeURIComponent(langName));
 		buffer.append('&location=');//location
