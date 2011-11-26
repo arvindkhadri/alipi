@@ -71,7 +71,7 @@ def application(environ, start_response):
             dicts.append(d)
             i+=1
         blogEntry= ''
-        blogger_service = service.GDataService("arvindkhadri@gmail.com", "((blackstone))")
+        blogger_service = service.GDataService("allipi123@gmail.com", "allipi3354")
         blogger_service.source = 'Servelots-alipi-1.0'
         blogger_service.service = 'blogger'
         blogger_service.account_type = 'GOOGLE'
