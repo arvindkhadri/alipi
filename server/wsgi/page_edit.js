@@ -1639,7 +1639,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    pubLabel.setAttribute("id", "check-box");
 	    pubLabel.setAttribute("alipielements", "alipi");
 	    pubLabel.setAttribute("type", "checkbox");
-	    pubLabel.setAttribute("value", true);
+	    pubLabel.setAttribute("name","msgcheckbox");
 	    pubLabel.setAttribute("style", "margin-top:20px;");
 	    msg.appendChild(pubLabel);	    
 	};
@@ -1655,8 +1655,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 				$("#msgoverlay").remove();
 			    },
 				buttons: {
-				OK: function() {
-				    //				    hide();
+				OK: function() { hide();
 				    $("#msgoverlay").remove();
 				} 
 			    }
@@ -1671,17 +1670,18 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    if (allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
 		display();
 	    }  else {
-		$("#msgoverlay").remove();
+		hide();
 	    }
 
 	};
 
 	function hide() {
-	    if (document.getElementById("check-box").checked == true) {
+	    if (document.getElementById("check-box").checked) {
 		document.cookie ='m4.show.redbar.overlay=no;'
 		    } else {
-		var date = new Date();
-		document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
+		//		var date = new Date();
+		//		document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
+		$("#msgoverlay").hide();
 	    }
 	};
     } ;
@@ -1776,8 +1776,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	this.activate = function activate() {
 	    $(function() {
-		    $( "#targetoverlay" ).dialog( "destroy" );
-
 		    $( "#targetoverlay" ).dialog({
 			    height:500,
 				width:500,
@@ -1789,7 +1787,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 				} 
 			    },
 				close: function() {
-				$( "#targetoverlay" ).remove();
+				$( "#targetoverlay" ).hide();
 			    }
 			});
 		});
@@ -2891,10 +2889,13 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	
     
 	this.blogpost = function blogpost() {
+	    if (locName.value == "" || langName.value == "" || styleSelect.value == "" || author.value == "" || (ourcheck.checked == false && yourcheck.checked == false)) {
+		alert("Please give all the details, it will be used further");
+	    } else {
 	    pageEditor.commandPublish();
-	    //	    this.disabled=true;
 	    $('#targetoverlay').remove();
 	    pageEditor.showMessage("... Please wait, your blog is being posted");
+	    }
 	};
 	// End of okButton function
 
@@ -3093,6 +3094,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		break;
             case 'AUDIO_SRC_UPDATE':
 		textElementPopup.hasAudio = true;	
+		command.previousData = "";
 		pageEditor.showMessage('Audio updated');
 		break;
 
@@ -3209,6 +3211,8 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    break;
 		    
 		case 'AUDIO_SRC_UPDATE':
+		    command.element.remove();
+		    pageEditor.showMessage('Link removed');
 		    break;
 		case 'ANCHOR_UPDATE':
 		    command.element.setAttribute('href', command.previousData);
