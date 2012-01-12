@@ -1799,7 +1799,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    source: function(req, add){
 				
 			//pass request to server
-			$.getJSON("http://localhost/getData?", req, function(data) {
+			$.getJSON("http://dev.a11y.in/getData?", req, function(data) {
 						    
 				//create array for response objects
 				var suggestions = [];
@@ -1823,7 +1823,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    source: function(req, add){
 				
 			//pass request to server
-			$.getJSON("http://localhost/getLang?", req, function(data) {
+			$.getJSON("http://dev.a11y.in/getLang?", req, function(data) {
 						    
 				//create array for response objects
 				var suggestions = [];
@@ -2178,7 +2178,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 			}
 		    }
 	    }
-	    xmlhttp.open("POST","http://localhost/narration",true);
+	    xmlhttp.open("POST","http://dev.a11y.in/narration",true);
 	    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlhttp.send(data);
 	    
@@ -3156,11 +3156,13 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		break;
 		
             case 'AUDIO_CREATE':
+		brk = document.createElement("br");		
 		audioElement = document.createElement('audio');
+		audioElement.setAttribute("id", "audiotag");
 		audioElement.setAttribute('src',command.data);
 		audioElement.setAttribute('controls','controls');
-		selectedElement.appendChild(audioElement);
-		audioElement.play();
+		$(brk).insertBefore("#alipiSelectedElement");
+		$(audioElement).insertBefore($(brk));		
 		pageEditor.showMessage('Audio added');
 		break;
 
@@ -3231,12 +3233,12 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    if(document.getElementById('our-check').checked)
 		{
 		    localStorage.myContent = buildDataString();
-		    window.location.href = "http://localhost/test.html";
+		    window.location.href = "http://dev.a11y.in/test.html";
 		    window.reload();
 		}
 	    else{
 		
-		AJAX.post('http://localhost/test',  buildDataString(), function(result) {
+		AJAX.post('http://dev.a11y.in/test',  buildDataString(), function(result) {
 	    		      ajaxResultProcessor.processPublishedResponse(result);
 	    		  });
 	    }
