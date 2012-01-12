@@ -1639,7 +1639,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    pubLabel.setAttribute("id", "check-box");
 	    pubLabel.setAttribute("alipielements", "alipi");
 	    pubLabel.setAttribute("type", "checkbox");
-	    pubLabel.setAttribute("value", true);
+	    pubLabel.setAttribute("name","msgcheckbox");
 	    pubLabel.setAttribute("style", "margin-top:20px;");
 	    msg.appendChild(pubLabel);	    
 	};
@@ -1655,8 +1655,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 				$("#msgoverlay").remove();
 			    },
 				buttons: {
-				OK: function() {
-				    //				    hide();
+				OK: function() { hide();
 				    $("#msgoverlay").remove();
 				} 
 			    }
@@ -1671,17 +1670,18 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    if (allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
 		display();
 	    }  else {
-		$("#msgoverlay").remove();
+		hide();
 	    }
 
 	};
 
 	function hide() {
-	    if (document.getElementById("check-box").checked == true) {
+	    if (document.getElementById("check-box").checked) {
 		document.cookie ='m4.show.redbar.overlay=no;'
 		    } else {
-		var date = new Date();
-		document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
+		//		var date = new Date();
+		//		document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
+		$("#msgoverlay").hide();
 	    }
 	};
     } ;
@@ -1776,8 +1776,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	this.activate = function activate() {
 	    $(function() {
-		    $( "#targetoverlay" ).dialog( "destroy" );
-
 		    $( "#targetoverlay" ).dialog({
 			    height:500,
 				width:500,
@@ -1789,7 +1787,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 				} 
 			    },
 				close: function() {
-				$( "#targetoverlay" ).remove();
+				$( "#targetoverlay" ).hide();
 			    }
 			});
 		});
@@ -1799,7 +1797,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    source: function(req, add){
 				
 			//pass request to server
-			$.getJSON("http://localhost/getData?", req, function(data) {
+			$.getJSON("http://dev.a11y.in/getData?", req, function(data) {
 						    
 				//create array for response objects
 				var suggestions = [];
@@ -1823,7 +1821,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    source: function(req, add){
 				
 			//pass request to server
-			$.getJSON("http://localhost/getLang?", req, function(data) {
+			$.getJSON("http://dev.a11y.in/getLang?", req, function(data) {
 						    
 				//create array for response objects
 				var suggestions = [];
@@ -2178,7 +2176,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 			}
 		    }
 	    }
-	    xmlhttp.open("POST","http://localhost/narration",true);
+	    xmlhttp.open("POST","http://dev.a11y.in/narration",true);
 	    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlhttp.send(data);
 	    
@@ -2891,10 +2889,13 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	
     
 	this.blogpost = function blogpost() {
+	    if (locName.value == "" || langName.value == "" || styleSelect.value == "" || author.value == "" || (ourcheck.checked == false && yourcheck.checked == false)) {
+		alert("Please give all the details, it will be used further");
+	    } else {
 	    pageEditor.commandPublish();
-	    //	    this.disabled=true;
 	    $('#targetoverlay').remove();
 	    pageEditor.showMessage("... Please wait, your blog is being posted");
+	    }
 	};
 	// End of okButton function
 
@@ -3093,6 +3094,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		break;
             case 'AUDIO_SRC_UPDATE':
 		textElementPopup.hasAudio = true;	
+		command.previousData = "";
 		pageEditor.showMessage('Audio updated');
 		break;
 
@@ -3156,11 +3158,13 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		break;
 		
             case 'AUDIO_CREATE':
+		brk = document.createElement("br");		
 		audioElement = document.createElement('audio');
+		audioElement.setAttribute("id", "audiotag");
 		audioElement.setAttribute('src',command.data);
 		audioElement.setAttribute('controls','controls');
-		selectedElement.appendChild(audioElement);
-		audioElement.play();
+		$(brk).insertBefore("#alipiSelectedElement");
+		$(audioElement).insertBefore($(brk));		
 		pageEditor.showMessage('Audio added');
 		break;
 
@@ -3207,6 +3211,8 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    break;
 		    
 		case 'AUDIO_SRC_UPDATE':
+		    command.element.remove();
+		    pageEditor.showMessage('Link removed');
 		    break;
 		case 'ANCHOR_UPDATE':
 		    command.element.setAttribute('href', command.previousData);
@@ -3231,12 +3237,12 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    if(document.getElementById('our-check').checked)
 		{
 		    localStorage.myContent = buildDataString();
-		    window.location.href = "http://localhost/test.html";
+		    window.location.href = "http://dev.a11y.in/test.html";
 		    window.reload();
 		}
 	    else{
 		
-		AJAX.post('http://localhost/test',  buildDataString(), function(result) {
+		AJAX.post('http://dev.a11y.in/test',  buildDataString(), function(result) {
 	    		      ajaxResultProcessor.processPublishedResponse(result);
 	    		  });
 	    }
