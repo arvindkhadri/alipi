@@ -7,8 +7,8 @@ import pymongo
 from bson import Code
 import urllib2
 import StringIO
-import gdata.gauth
-import gdata.blogger.client
+#import gdata.gauth
+#import gdata.blogger.client
 from flask import g
 from flask import redirect
 app = Flask(__name__)
@@ -34,22 +34,33 @@ def start_page() :
         script_edit = root.makeelement('script')
         root.body.append(script_test)
         root.body.append(script_edit)
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("src", "http://localhost/server/ui.js")
         script_test.set("type", "text/javascript")
-        script_edit.set("src", "http://dev.a11y.in/alipi/wsgi/page_edit.js")
+        script_edit.set("src", "http://localhost/server/wsgi/page_edit.js")
         script_edit.set("type","text/javascript")
         
         script_jq_mini = root.makeelement('script')
         root.body.append(script_jq_mini)
         script_jq_mini.set("src", "http://code.jquery.com/jquery-1.7.min.js")
+        #script_jq_mini.set("src", "http://192.168.1.5/server/js/jquery-ui-1.8.16.custom.min.js")
         #script_jq_mini.set("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
         script_jq_mini.set("type", "text/javascript")
+        script_jq_cust = root.makeelement('script')
+        root.body.append(script_jq_cust)
+        script_jq_cust.set("src", "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js")
+        script_jq_cust.set("type", "text/javascript")
         
         style = root.makeelement('link')
         root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
+        style.set("href", "http://localhost/server/stylesheet.css")
+
+        style_cust = root.makeelement('link')
+        style_cust.set("rel","stylesheet")
+        style_cust.set("type", "text/css")
+        style_cust.set("href", "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css")
+        root.body.append(style_cust)
 
         connection = pymongo.Connection('localhost',27017)
         db = connection['dev_alipi']
@@ -96,7 +107,7 @@ def start_page() :
         d['lang'] = request.args['lang']
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("src", "http://localhost/server/ui.js")
         script_test.set("type", "text/javascript")
         root.body.set("onload","a11ypi.ren()");
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
@@ -105,7 +116,7 @@ def start_page() :
     elif request.args.has_key('interactive') == True and request.args.has_key('blog') == True:
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("src", "http://localhost/server/ui.js")
         script_test.set("type", "text/javascript")
         root.body.set("onload","a11ypi.filter()");
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
@@ -114,7 +125,7 @@ def start_page() :
     elif request.args.has_key('interactive') == False and request.args.has_key('blog') == True:    
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("src", "http://localhost/server/ui.js")
         script_test.set("type", "text/javascript")
         
         script_jq_mini = root.makeelement('script')
@@ -126,7 +137,8 @@ def start_page() :
         root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
+        style.set("href", "http://localhost/server/stylesheet.css")
+
 
         connection = pymongo.Connection('localhost',27017)
         db = connection['dev_alipi']
