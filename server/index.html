@@ -23,7 +23,7 @@
     window.open("http://127.0.0.1:5000/?foruri=" + encodeURIComponent(foruri));
     }
     else if (foruri.substring(0,8) == "https://") {
-        window.open("http://127.0.0.1:5000/?foruri=" + foruri);
+        window.open("http://127.0.0.1:5000/?foruri=" + encodeURIComponent(foruri));
     }
     else {
     alert("Please enter 'HTTP' protocoled URL");

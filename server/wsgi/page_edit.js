@@ -1,5 +1,4 @@
-function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) 
-{
+(function( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) {
 
     var console, PopupControl, M4ImageElement,locName='',langName = '',styleName='',authorValue;
     var editAttributes, elementAttributes, fontTypeAttributes, normalFontAttributes, popupContainerAttributes, editButtonAttributes, editTextInputAttributes, editSubmitAttributes, editTitleAttributes, panelButtonAttributes, buttonPanelAttributes, actionPanelAttributes, closeButtonAttributes, actionButtonAttributes, redButtonAttributes, leftBorderStyle, rightBorderStyle, titleButtonImageAttributes, titleButtonDisplayTextAttributes, actionButtonImageAttributes, actionButtonDisplayTextAttributes,greyArrowAttributes, pageEditor, splashWindow, loadingTimerId, keepOriginal = false;
@@ -1079,6 +1078,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 
 	DOM.BUILDER = DOMBuilder.apply();
+	////////////////////////////////Yassine
 
 	DOM.getIndex = function getIndex (currentNode)
 	{
@@ -1113,15 +1113,12 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
     	    var path = '';
 	    for (; elt && elt.nodeType == 1; elt = elt.parentNode)
 	    {
-		if (elt.attributes['m4pageedittype'] === undefined || elt.attributes['m4pageedittype'].nodeValue != 'text')
-		{
-		    idx = DOM.getElementIdx(elt);
-		    xname = elt.tagName;
-		    if (idx > 1) xname += "[" + idx + "]";
-		    path = "/" + xname + path;
-		}
+		idx = DOM.getElementIdx(elt);
+		xname = elt.tagName;
+		if (idx > 1) xname += "[" + idx + "]";
+		path = "/" + xname + path;
 	    }
-	    console.log(path);
+	    
 	    return path;
 	};
 
@@ -1174,10 +1171,10 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
     		path = DOM.makePath(currentNode.parentNode);
     	    }
 
-    	   
+    	    //alert ("xpath\n"+path);
     	    return path;
 	};
-
+	/////////////////////////////////Yassine
 	DOM.findPosition = function findPosition(element) {
 	    var currentLeft = 0, currentTop = 0;
 
@@ -1474,6 +1471,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	console = window.console;
     }
 
+    // Ajay - injecting edit-control to tag elements
     editAttributes = new DOM.Attributes({ 'm4pageeditcontrol': true });
     elementAttributes = editAttributes.addStyle('margin:0; padding:0; border:none; text-indent: 0px; background: none;');
     fontTypeAttributes = elementAttributes.addStyle("font-family: Helvetica Neue, Helvetica, Arial, Sans-serif;");
@@ -1491,6 +1489,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
     var closeButtonIconPath = 'http://dev.a11y.in/alipi/images/close_button.png';
     closeButtonAttributes = editButtonAttributes.addStyle('top: -8px; left: -8px; position: absolute; border:none; background: url("' + closeButtonIconPath +'") no-repeat; width: 15px; height: 15px; z-index: 2;');
 
+    // Ajay - Redarrow is not using
     var redArrowIconPath = './images/caret_red.png';
     redArrowAttributes =  elementAttributes.addStyle('width: 8px; height: 11px;position: relative;background: url(' + redArrowIconPath + ') no-repeat; float: left;margin-top: 10px;z-index:2;left: -1px;');
 
@@ -1504,6 +1503,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
     actionButtonAttributes = editButtonAttributes.addStyle('font-size:11px; height: 50px; margin: 0; padding-left: 5px; padding-right: 5px; left: -6px; color: #747474; background-color: #DBDBDB; background: -webkit-gradient(linear, 0% 100%, 0% 0%, from(#D9D9D9), to(#F6F6F6));background: -moz-linear-gradient(bottom, #D9D9D9, #F6F6F6); text-shadow: 0px 1px 0px #FFF; -moz-text-shadow: 0px 1px 0px #FFF; -webkit-text-shadow: 0px 1px 0px #FFF;');
 
+    // Ajay - changed color - but we are not using this, not sure
     redButtonAttributes = editButtonAttributes.addStyle('font-size:11px; height: 50px; margin: 0; border:1px solid #777; -moz-border-radius-topright:3px;-moz-border-radius-bottomright:3px;-moz-border-radius-topleft:3px; -moz-border-radius-bottomleft:3px;-webkit-border-top-right-radius:3px; -webkit-border-bottom-right-radius:3px;-webkit-border-top-left-radius:3px; -webkit-border-bottom-left-radius:3px;text-shadow: 2px 1px 1px #777;-moz-text-shadow: 2px 1px 0px #777;-webkit-text-shadow: 2px 1px 0px #777;background-color: #AAA;background: -webkit-gradient(linear, 0% 100%, 0% 5%, from(#777), to(#fff));background: -moz-linear-gradient(bottom, #777, #fff);');
 
     editSubmitAttributes = redButtonAttributes.put({ type: 'submit', value : 'OK' }).addStyle('height:20px; width: 32px; padding-left: 5px; padding-right: 5px; margin-left: 5px;');
@@ -1552,8 +1552,11 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	};
 
 
+	//Yass
 	this.processPublishedResponse = function processPublishedResponse(result) {
+	    // alert(result);
 	    var resultString = result.responseText;
+	    //alert(resultString);
 	    if (resultString == 'ok'){
 		alert("Re-narration successfuly posted");
 		window.location.reload();
@@ -1565,6 +1568,42 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	};
     };
 
+    //   this.processPublishedResponse = function processPublishedResponse(result) {
+    //     var resultObject = eval("(" + result.responseText + ")");
+    //     var cloneRequestId = resultObject.cloneRequestId;
+    //     var newBoltSlug = resultObject.newBoltSlug;
+    //     var count = 0;
+    //     var timerId = setInterval(function() {
+    //       // check for 20 seconds and redirect to error page
+    //       if (count++ > 10) {
+    //         clearInterval(timerId);
+    //         if (hasEditPermission) {
+    //           window.location.href = 'https://bo.lt/app/bolt/' + boltSlug;
+    //         } else {
+    //           window.location.href = 'https://bo.lt/app';
+    //         }
+    //         return;
+    //       }
+    //       var response = AJAX.get('/app/ajax/grab/status?id=' + cloneRequestId);
+    //       var resultObject = eval( '(' + response.responseText + ')');
+
+    //       if (resultObject[cloneRequestId].status != 'NEW') {
+    //         clearInterval(timerId);
+    //         if (successUrl) {
+    //           var redirectUrl = successUrl;
+    //           if (redirectUrl == 'bolt') {
+    //             redirectUrl = 'http://bo.lt/' + newBoltSlug + '+admin?m4.mtime=' + resultObject[cloneRequestId].cacheBustingTime + '&m4.bolt-admin-bar-hide=true';
+    //           } else if (redirectUrl == 'bolt+admin') {
+    //             redirectUrl = 'http://bo.lt/' + newBoltSlug + '+admin?m4.mtime=' + resultObject[cloneRequestId].cacheBustingTime;
+    //           }
+    //           window.location.href = redirectUrl;
+    //         } else {
+    //           window.location.href = 'https://bo.lt/app/bolt/' + newBoltSlug;
+    //         }
+    //       }
+    //     }, 2000);
+    //   };
+    // };
 
     M4ImageElement = function M4ImageElement(element) {
 	var self = this;
@@ -1625,37 +1664,46 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	// onload finally fires, which can be a while if any resource on the page is
 	// slow to load.
 
+	// Ajay - This is ovelay for 'Saving and Loading' - changed rgba colors
 	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'bgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; min-height: 800px; min-width: 1024px; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.87))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
+	//	loadingImage = DOM.BUILDER.IMG(normalFontAttributes.put({src: './images/loading.gif'}).addStyle('position: relative; width: 24px; height: 24px; display: inline; vertical-align: middle; ').values()); // Ajay - replaced loading.gif image
+	//	loadingText = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; font-size: 14px; font-weight: bold; margin-left: 10px; color:#ECECEC; display: inline; vertical-align: middle;').values(), 'Loading');
+	//	loadingDiv = DOM.BUILDER.DIV(normalFontAttributes.addStyle('position: relative; width: auto; height: auto; display: block; text-align: left;').values()//, loadingImage, loadingText);
+	//	backgroundDiv.appendChild(loadingDiv);
 
-	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'msgoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:25%; top:25%; bottom:25%; right:25%; background:#000; display:none;').values());
+	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'msgoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:20%; top:20%; bottom:20%; right:20%; background:#000; display:none;').values());
 
-	messageTitle = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:27%; left:44.5%; color:#FFF; font-size:200%; line-height:120%; font-weight:normal; text-decoration:none;').values(), 'Page Editor');
+	messageTitle = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:23%; left:44.5%; color:#FFF; font-size:200%; line-height:120%; font-weight:normal; text-decoration:none;').values(), 'Page Editor');
 
 	messageOverlay.appendChild(messageTitle);
 
-	messageDescription = DOM.BUILDER.TEXTAREA(normalFontAttributes.put({readonly:true}).addStyle('position:fixed; top:40%; left:27.5%; min-width:48%; max-width:48%; min-height:48%; max-height:48%; text-align:justify; color:#FFF; font-weight: normal; font-size:105%; line-height:130%;').values(), 'Click on any part of the page, and you will activate buttons that allow you to modify text, replace images and add audio. Don\'t forget to hit "Publish" when you\'re finished editing so we can save your newly-crafted page... And at any moment if you need help then hit a "Help" button.');
-
+	messageDescription = DOM.BUILDER.P(normalFontAttributes.addStyle('position:fixed; top:32%; left:22%; right:22%; text-align:justify; color:#FFF; font-weight: normal; font-size:120%; line-height:130%;').values(), 'Click on any part of the page, and you will activate buttons that allow you to modify text, replace images and add audio. Just refresh your page to exit from editing without saving your changes. Don\'t forget to hit "Publish" when you\'re finished editing so we can save your newly-crafted page.');
 	messageOverlay.appendChild(messageDescription);
 
-	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position:fixed; bottom:29.5%; left:43%; font-size:120%;').values(), 'OK');
+	//	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'https://bo.lt/app/asset/page-edit/pencil_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'}).addStyle('position: relative; margin-right: 10px; vertical-align: middle;').values());
+	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position:fixed; bottom:24.5%; left:49%; font-size:120%;').values(), 'OK');
 
-	editButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:40%; bottom:28%; color:#FFF; width:8%; height:5%; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
+	// Ajay - Changed lot of colors - Not using, not sure
+	editButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:46%; bottom:23%; color:#FFF; width:8%; height:5%; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
 	editButton.onclick = function loadingEditButtonOnClick() {
 	    self.hide();
 	    return false;
 	};
 
+	//    editButton.appendChild(image);
 	editButton.appendChild(text);
 	messageOverlay.appendChild(editButton);
 
 
-	hideOverlayCheckbox = DOM.BUILDER.INPUT(editAttributes.put({ id:'hideoverlay', name:'Loading Checkbox', type:'checkbox', checked:'yes'}).addStyle('position:fixed; bottom:29%; right:48%; background: transparent; display: inline-block;').values());
+	hideOverlayCheckbox = DOM.BUILDER.INPUT(editAttributes.put({ id:'hideoverlay', name:'Loading Checkbox', type:'checkbox', checked:'yes'}).addStyle('position:fixed; bottom:29.5%; left:44.5%; background: transparent; display: inline-block;').values());
 
-	var checkboxLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; left:52.5%; bottom:29.5%; font-size:80%; font-weight:bold;  transparent; color: #FFF;display: inline-block;').values());
+	var checkboxLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; left:46.5%; bottom:30%; font-size:80%; font-weight:bold;  transparent; color: #FFF;display: inline-block;').values());
 	checkboxLabel.innerHTML = 'Don\'t show this again.';
 
+	//    var redHelpLink = DOM.BUILDER.A(normalFontAttributes.put({ href : 'http://bo.lt/editor'}).addStyle('z-index: 2147483647; float: right;  margin-right: 34px; display: inline-block;text-decoration: none; color: #FFF; font-size: 10px; font-weight: bold; ').values(), 'Need Help?')
 
-	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), hideOverlayCheckbox, checkboxLabel));
+	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), hideOverlayCheckbox, checkboxLabel// , redHelpLink
+						  ));
 	editButton.appendChild(text);
 	messageOverlay.appendChild(editButton);
 
@@ -1668,7 +1716,22 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    if (textToDisplay) {
 		DOM.textContent(loadingText, textToDisplay);
 	    }
+	    // var screenSize = DOM.viewDimension();
+	    // backgroundDiv.style.minWidth = screenSize[0] + 'px';
+	    // backgroundDiv.style.minHeight = screenSize[1] + 'px';
+
+	    // messageOverlay.style.left = (screenSize[0] - parseInt(messageOverlay.style.width) ) / 2 + 'px';
+	    // messageOverlay.style.top = (screenSize[1] - parseInt(messageOverlay.style.height) ) / 2 + 'px';
+	    // loadingDiv.style.left = (screenSize[0] - parseInt(loadingImage.style.width) ) / 2 + 'px';
+	    // loadingDiv.style.top = (screenSize[1] - parseInt(loadingImage.style.height) ) / 2 + 'px';
+
 	    backgroundDiv.style.display = 'block';
+	    
+	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
+	    //   backgroundDiv.style.position = 'absolute';
+	    //   messageOverlay.style.position = 'absolute';
+	    //   backgroundDiv.style.background = '#A51414';
+	    // }
 	};
 	
 	this.hide = function hide() {
@@ -1692,6 +1755,10 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    var allCookies = document.cookie;
 	    if (allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
 		messageOverlay.style.display = 'block';
+		// if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
+		//   messageDescription.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(messageDescription).width )/2 + 'px';
+		//   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
+		// }
 	    }  else {
 		self.hide();
 	    }
@@ -1704,16 +1771,22 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	var self = this, messageOverlay, editButton, hideOverlayCheckbox, messageDescription, messageTitle, loadingImage, loadingText, loadingDiv;
 	tooltip = new DOM.Attributes({ 'title': 'Check this if you want to post to our blog. That is "http://alipi-workshop.blogspot.com/"'});
+	// because PageEditor is activated on "onload", we show a loading panel until
+	// onload finally fires, which can be a while if any resource on the page is
+	// slow to load.
 
+	// Ajay - This is ovelay for 'Saving and Loading' - changed rgba colors
 	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'targetbgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 1))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
+	//	loadingDiv = DOM.BUILDER.DIV(normalFontAttributes.addStyle('position: relative; width: auto; height: auto; display: block; text-align: left;').values());
+	//	backgroundDiv.appendChild(loadingDiv);
 
-	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'targetoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:15%; top:15%; bottom:15%; right:15%; background:#000; display:none; vertical-align:middle;').values());
+	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'targetoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:20%; top:20%; bottom:20%; right:20%; background:#000; display:none; vertical-align:middle;').values());
 
-	step1 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:16%; left:40%; color:#FFF; font-size:100%; line-height: 36px; font-weight: bold; display: block; ').values(), 'Please provide all the details below');
+	step1 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:21%; left:40%; color:#FFF; font-size:100%; line-height: 36px; font-weight: bold; display: block; ').values(), 'Please provide all the details below');
 
 	messageOverlay.appendChild(step1);
 
-	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:13.5%; right:14%; width:25px; height:25px;').values());
+	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:19%; right:19%; width:25px; height:25px;').values());
 	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'OK');
 
 	image.onclick=function(){
@@ -1723,38 +1796,32 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 
 	//---------------------------- state & language target --------------------------
-	locSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:44%; left:25%; font-weight: bold; background: transparent; color: #FFF;').values());
+	locSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:34%; left:25%; font-weight: bold; background: transparent; color: #FFF;').values());
 	locSelectLabel.innerHTML = 'Select any state from the list';
-	enterMailIdLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:44%; left:53.5%; font-weight: bold; background: transparent; color: #FFF;').values());
+	enterMailIdLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:34%; left:53.5%; font-weight: bold; background: transparent; color: #FFF;').values());
 	enterMailIdLabel.innerHTML = 'Select any style from the list';
 
 
-	locSelectAttributes = panelButtonAttributes.put({ id : 'loc-select'}).addStyle('position:fixed; top:45%; left:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	styleSelectAttributes = panelButtonAttributes.put({id : 'style-select'}).addStyle('position:fixed; top:45%; right:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
+	locSelectAttributes = panelButtonAttributes.put({ id : 'loc-select'}).addStyle('position:fixed; top:35%; left:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
+	styleSelectAttributes = panelButtonAttributes.put({id : 'style-select'}).addStyle('position:fixed; top:35%; right:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
 
 
-	langSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:59%; left:25%; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
+	langSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:50%; left:25%; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
 	langSelectLabel.innerHTML = 'Languages of selected/all state(s)';
-	authorLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:59%; left:53.5%; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
+	authorLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:50%; left:53.5%; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
 	authorLabel.innerHTML = 'Author name';
 
-	langSelectAttributes = panelButtonAttributes.put({ id : 'lang-select'}).addStyle('position:fixed; top:60%; left:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	authorAttributes = DOM.BUILDER.INPUT(editAttributes.put({ id : 'author', placeholder:'E.g:- John Doe'}).addStyle('position:fixed; top:62.6%; right:26.2%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values());
+	langSelectAttributes = panelButtonAttributes.put({ id : 'lang-select'}).addStyle('position:fixed; top:51%; left:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
+	authorAttributes = DOM.BUILDER.INPUT(editAttributes.put({ id : 'author', placeholder:'E.g:- John Doe'}).addStyle('position:fixed; top:54%; right:26%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values());
 
-	blogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:25%; left:20%; min-width:60%; max-width:60%; font-weight: bold; background: transparent; color: #FFF; line-height:100%;').values());
-	blogLabel.innerHTML = 'If you have blogspot ID and want to post the changes to that blog then check "My blog" or you want to post to our blog then check "Our blog". If you have doubt then go with the default option.';
-
-	ourBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'ourcheck', name : 'Loading Checkbox', type : 'radio', checked:'yes'}).addStyle('position:fixed; top:31.6%; left:30%; background: transparent; display: inline-block;').values());
-	ourBlogLabel = DOM.BUILDER.LABEL(tooltip.addStyle('position:fixed; top:32%; left:33%; background: transparent; color: #FFF;display: inline-block; text-align:center; font-size:80%; font-weight: bold;').values());
-	ourBlogLabel.innerHTML = 'Our blog  [?]';
-
-	myBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'mycheck', name : 'Loading Checkbox', type : 'radio'}).addStyle('position:fixed; top:32%; left:57%; background: transparent; display: inline-block;').values());
-	myBlogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:32.5%; left:60%; background: transparent; color: #FFF;display: inline-block; text-align:center; font-size:80%; font-weight: bold;').values());
-	myBlogLabel.innerHTML = 'My blog';
+	defaultBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'defaultcheck', name : 'Loading Checkbox', type : 'checkbox'}).addStyle('position:fixed; top:70%; left:44%; background: transparent; display: inline-block;').values());
+	defaultBlogLabel = DOM.BUILDER.LABEL(tooltip.addStyle('position:fixed; top:70%; left:47%; background: transparent; color: #FFF;display: inline-block; text-align:center; font-size:80%; font-weight: bold;').values());
+	defaultBlogLabel.innerHTML = 'To our blog--[?]';
 
 	//-----------------------------End of state & language target -------------------
 
-	okButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; right:20%; bottom:18.5%; color:#FFF; margin:auto; width: 100px; height: 36px; display: block; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
+	// Ajay - Changed lot of colors - Not using, not sure
+	okButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; right:25%; bottom:25%; color:#FFF; margin:auto; width: 100px; height: 36px; display: block; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
 
 	this.okClick = function okClick() {
 	    if(document.getElementById('loc-select').value == '--Locations--' || document.getElementById('lang-select').value == '---Languages---' || document.getElementById('style-select').value == '---Style---') {
@@ -1767,8 +1834,10 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		backgroundDiv.style.display = 'none';
 
 	    }
+	    // self.hide();
+	    // return false;
 	};
-
+	// editButton.appendChild(image);
 	okButton.appendChild(text);
 	messageOverlay.appendChild(okButton);
 	messageOverlay.appendChild(image);
@@ -1788,7 +1857,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	locSelect = DOM.BUILDER.SELECT(locSelectAttributes);
 	langSelect = DOM.BUILDER.SELECT(langSelectAttributes);
-
+	////////////////////////////////////////////////////////////////////////////attributes
 	var xhrloc = new XMLHttpRequest();
 	xhrloc.onreadystatechange = function()
     	{
@@ -1826,7 +1895,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 			    for(var i=0;i<locations[locindex-1]["lang"].length;i++){
 				texts.push(locations[locindex-1].lang[i]);
 			    }
-			   texts.push("---More---");
 			    if(langSelect.firstChild==null){
 				for(var vp=0;vp<texts.length;vp++)
 				{	
@@ -1879,33 +1947,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    langSelect.onchange=function(){
                         var langindex=langSelect.selectedIndex;
 			langName=texts[langindex];
-			if(langName=='---More---'){
-			    while(langSelect.firstChild!=null){
-				langSelect.removeChild(langSelect.firstChild);
-			    }//end while
-				texts.pop();
-			    for(var i=0;i<locations.length;i++)
-			    {	for (var j=0; j<locations[i].lang.length; j++)
-				{ 
-				    texts.push(locations[i].lang[j]);
-				    texts.sort();
-				    for(var k=1;k<texts.length;k++){
-					if (texts[k] === texts[k-1]){ 
-					    texts.splice(k, 1);
-					    k--;
-					}	
-				    }
-				    
-				}//end inner for
-			    }//end main for
-			    for(var z=0; z<texts.length; z++)
-			    { 
-				var op = document.createElement('option');
-				op.text=texts[z];
-				langSelect.appendChild(op);
-			    }
-			}
-		    }//end onchange
+		    }
     		}
 		
     		/* end parsing json response*/ 
@@ -1917,20 +1959,19 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
     	}
 	
 	xhrloc.open("GET","http://dev.a11y.in/getData",true);
-	xhrloc.send();
+	xhrloc.send();//
 
 
 
 	//---------------------------------------------end locLang & locSelect ------------------------
 
 	//-------------------------------------------- start blog details ---------------------------
-	ourBlog = ourBlogAttributes;
-	myBlog = myBlogAttributes;
+	defaultBlog = defaultBlogAttributes;
 	author = authorAttributes;
 	//-------------------------------------------- end blog details ------------------------------
 
 
-	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), locSelect, locSelectLabel, langSelect, langSelectLabel, ourBlog, ourBlogLabel, myBlog, myBlogLabel, enterMailIdLabel, styleSelect, author, authorLabel, blogLabel));
+	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), locSelect, locSelectLabel, langSelect, langSelectLabel, defaultBlog, defaultBlogLabel, enterMailIdLabel, styleSelect, author, authorLabel));
 	okButton.appendChild(text);
 	messageOverlay.appendChild(okButton);
 
@@ -1943,11 +1984,52 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    if (textToDisplay) {
 		DOM.textContent(textToDisplay);
 	    }
+	    // var screenSize = DOM.viewDimension();
+	    // backgroundDiv.style.minWidth = screenSize[0] + 'px';
+	    // backgroundDiv.style.minHeight = screenSize[1] + 'px';
+
+	    // messageOverlay.style.left = (screenSize[0] - parseInt(messageOverlay.style.width) ) / 2 + 'px';
+	    // messageOverlay.style.top = (screenSize[1] - parseInt(messageOverlay.style.height) ) / 2 + 'px';
+	    // loadingDiv.style.left = (screenSize[0] - parseInt(loadingImage.style.width) ) / 2 + 'px';
+	    // loadingDiv.style.top = (screenSize[1] - parseInt(loadingImage.style.height) ) / 2 + 'px';
+
+
+	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
+	    //   backgroundDiv.style.position = 'absolute';
+	    //   messageOverlay.style.position = 'absolute';
+	    //   backgroundDiv.style.background = '#fff'; // Ajay - changed color
+	    // }
 	};
 
+	// this.hide = function hide() {
+	//   if (hideOverlayCheckbox.checked) {
+	//     document.cookie ='m4.show.redbar.overlay=no;'
+	//   } else {
+	//     var date = new Date();
+	//     document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
+	//   }
+
+	//	messageOverlay.style.display = 'block';
+	//	backgroundDiv.style.display = 'block';
+	// };
+
 	this.activate = function activate() {
+	    /*
+	     *  Cookie logic is temporary. This needs to be part of a user preference.
+	     *  Bug http://bugzilla.boltnet.com/bugzilla/boltnet/show_bug.cgi?id=2962
+	     *  created for this purpose.
+	     */
+	    // var allCookies = document.cookie;
+	    // if (editMode != 'HTML' && allCookies && allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
 	    backgroundDiv.style.display = 'block';
 	    messageOverlay.style.display = 'block';
+	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
+	    //   messageDescription.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(messageDescription).width )/2 + 'px';
+	    //   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
+	    // }
+	    // }  else {
+	    // 	//    self.hide();
+	    // }
 	};
     };
 
@@ -1961,6 +2043,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	var self = this, messageOverlay, editButton, hideOverlayCheckbox, messageDescription, messageTitle, loadingImage, loadingText, loadingDiv, textElementPopup;
 
 
+	// Ajay - This is ovelay for 'Saving and Loading' - changed rgba colors
 	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'editorbgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; min-height: 800px; min-width: 1024px; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.87))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
 
 
@@ -1984,10 +2067,17 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position:fixed; bottom:13.7%; left:49%; font-size:120%;').values(), 'OK');
 	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:13%; right:9%; width:25px; height:25px;').values());
 
+	// Ajay - Changed lot of colors - Not using, not sure
 	okButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:46%; bottom:12%; color:#FFF; width:8%; height:5%; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
 	okButton.onclick = function loadingOkButtonOnClick() {
 	    textElement = new TextElementPopup(pageEditor);
 	    textElement.variable();
+//	    console.log(textElement.selectedElement);
+	    // document.body.removeChild(document.getElementById('editoroverlay'));
+	    // document.body.removeChild(document.getElementById('editorbgdiv'));
+//	    selectedElement.textContent = document.getElementById('texteditor').innerHTML;
+//	    self.hide();
+//	    return false;
 	};
 
 	image.onclick=function(){
@@ -1995,9 +2085,11 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    document.body.removeChild(document.getElementById('editorbgdiv'));
 	}
 
+	//    editButton.appendChild(image);
 	okButton.appendChild(text);
 	messageOverlay.appendChild(okButton);
 	messageOverlay.appendChild(image);
+	//    var redHelpLink = DOM.BUILDER.A(normalFontAttributes.put({ href : 'http://bo.lt/editor'}).addStyle('z-index: 2147483647; float: right;  margin-right: 34px; display: inline-block;text-decoration: none; color: #FFF; font-size: 10px; font-weight: bold; ').values(), 'Need Help?')
 
 	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values()));
 	okButton.appendChild(text);
@@ -2012,75 +2104,59 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    if (textToDisplay) {
 		DOM.textContent(loadingText, textToDisplay);
 	    }
+	    // var screenSize = DOM.viewDimension();
+	    // backgroundDiv.style.minWidth = screenSize[0] + 'px';
+	    // backgroundDiv.style.minHeight = screenSize[1] + 'px';
+
+	    // messageOverlay.style.left = (screenSize[0] - parseInt(messageOverlay.style.width) ) / 2 + 'px';
+	    // messageOverlay.style.top = (screenSize[1] - parseInt(messageOverlay.style.height) ) / 2 + 'px';
+	    // loadingDiv.style.left = (screenSize[0] - parseInt(loadingImage.style.width) ) / 2 + 'px';
+	    // loadingDiv.style.top = (screenSize[1] - parseInt(loadingImage.style.height) ) / 2 + 'px';
 
 	    backgroundDiv.style.display = 'block';
-	};
-	
-	this.activate = function activate() {
-	    backgroundDiv.style.display = 'block';
-	    messageOverlay.style.display = 'block';
-	};
-    } ;
-
-
-
-// =========================================== Edit Window end =======================================================
-
-// ========================================== Help Window Start =================================================
-
-    HelpWindow = function HelpWindow(pageEditor ) {
-
-	var self = this, messageOverlay, editButton, hideOverlayCheckbox, messageDescription, messageTitle, loadingImage, loadingText, loadingDiv;
-
-	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'helpbgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; min-height: 800px; min-width: 1024px; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.87))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
-
-	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'helpmsgoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:10%; top:15%; bottom:10%; right:10%; background:#000; display:none;').values());
-
-	messageTitle = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:17%; left:44.5%; color:#FFF; font-size:200%; line-height:120%; font-weight:normal; text-decoration:none;').values(), 'Help Window');
-
-	messageOverlay.appendChild(messageTitle);
-
-	messageDescription = DOM.BUILDER.TEXTAREA(normalFontAttributes.put({readonly:true}).addStyle('position:fixed; top:25%; left:14%; min-width:72%; max-width:72%; min-height:50%; max-height:50%; text-align:justify; color:#FFF; font-weight: normal; font-size:105%; line-height:130%;').values(), "TEXT:- \n\t Editor - It will popup a window and allow you to modify/replace text of select element on editor(right) box. \n\t\t To delete - Empty the editor(right) box and press 'OK'. \n\t See narrations - If the selected element has other narrations then it will list, on click. \n\t Audio - It allows you to enter audio URL. \n\n IMAGE:- \n\t Replace - It allows you to enter image URL. \n\t See narrations -  If the selected element has other image narration then it will show, on click. \n\n UNDO:- Use it when you want to revert back to previous change. \n\t  Revert deleted - Press 'Undo' button twice. \n\n PUBLISH:- To publish your crafted changes to database and blog (our/your). \n\t States - To the place you are targetting. \n\t Languages - In language you publishing. \n\t Style - In what style you crafted? \n\t Author - Who is a crafter? \n\t Our blog - If you don't have blogspot ID then check this to post it to our blog.");
-
-	messageOverlay.appendChild(messageDescription);
-
-	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position:fixed; bottom:14.5%; left:49%; font-size:120%;').values(), 'OK');
-
-	editButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:46%; bottom:13%; color:#FFF; width:8%; height:5%; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
-	editButton.onclick = function loadingEditButtonOnClick() {
-	    document.body.removeChild(document.getElementById('helpbgdiv'));
-	    document.body.removeChild(document.getElementById('helpmsgoverlay'));
-	};
-
-	editButton.appendChild(text);
-	messageOverlay.appendChild(editButton);
-
-
-	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values()));
-	editButton.appendChild(text);
-	messageOverlay.appendChild(editButton);
-
-	document.body.appendChild(backgroundDiv);
-	document.body.appendChild(messageOverlay);
-
-
-	this.show = function show( textToDisplay) {
 	    
-	    if (textToDisplay) {
-		DOM.textContent(loadingText, textToDisplay);
-	    }
+	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
+	    //   backgroundDiv.style.position = 'absolute';
+	    //   messageOverlay.style.position = 'absolute';
+	    //   backgroundDiv.style.background = '#A51414';
+	    // }
 	};
 	
+	// this.hide = function hide() {
+	//     if (hideOverlayCheckbox.checked) {
+	// 	document.cookie ='m4.show.redbar.overlay=no;'
+	//     } else {
+	// 	var date = new Date();
+	// 	document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
+	//     }
+
+	//     messageOverlay.style.display = 'none';
+	//     backgroundDiv.style.display = 'none';
+	// };
+
 	this.activate = function activate() {
+	    /*
+	     *  Cookie logic is temporary. This needs to be part of a user preference.
+	     *  Bug http://bugzilla.boltnet.com/bugzilla/boltnet/show_bug.cgi?id=2962
+	     *  created for this purpose.
+	     */
+	    var allCookies = document.cookie;
+	//    if (allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
 	    backgroundDiv.style.display = 'block';
 	    messageOverlay.style.display = 'block';
+		// if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
+		//   messageDescription.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(messageDescription).width )/2 + 'px';
+		//   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
+		// }
+	  //  }  else {
+//		self.hide();
+//	    }
 	};
-
     } ;
 
 
 
-// ========================================= Help Window end ===================================================
+// ===========================================Edit Window end =======================================================
     /*
      * Control for displaying/hiding an action panel that appears below the popup buttons.
      */
@@ -2208,7 +2284,10 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 
 	    xpath = DOM.getXPATH(element);
-	    previousData = element.textContent; 
+	    previousData = element.textContent; //Yass
+
+	    
+	    
 
 	    var xmlhttp = new XMLHttpRequest();
 	    d = window.location.search.split('?')[1];
@@ -2230,9 +2309,19 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    else {
 			for (i=0;i<= varray.length;i++) varray.pop(i);
 			for (i=0; i<=renInput.length;i++) renInput.remove(i,null);
+			// or = {} 
+			// or['lang']='original';
+			// or['location']=' ';
+			// or['style']=' ';
+			// or['xpath']=xpath;
+			// or['data']=previousData;
+
+			// varray.push(or);
 			
 			x=DOM.BUILDER.OPTION("please choose a Re-narration");
 			renInput.add(x,null);
+			//  x=DOM.BUILDER.OPTION("Original content");
+			// renInput.add(x,null);
 			
 			renActionControl.open(renDiv);
 			renDiv.style.display = 'block';
@@ -2251,13 +2340,14 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 			for(i=0;i<varray.length;i++)	{
 			    lang_ = varray[i]['lang'];
 			    location_ = varray[i]['location']; 
-			    style_ = varray[i]['style']; 
+			    style_ = varray[i]['style'];  //toto
 			    x=DOM.BUILDER.OPTION(lang_+', '+location_+', '+style_);
 			    renInput.add(x,null);
 			}
 			renInput.onchange=function(){
-
+			    //vnew=renInput.selectedIndex - 2; // the first option cannot be selected, it is only a label, Yass
 			    if (renInput.selectedIndex -1 < 0)  alert("please choose a Re-narration ");
+			    // else if (renInput.selectedIndex  ==0) {DOM.evaluate(xpath,previousData);}
 			    else   {
 				DOM.evaluate(varray[renInput.selectedIndex - 1]['xpath'],varray[renInput.selectedIndex - 1]['data']);};
 			    renInput.selectedIndex = 0;
@@ -2265,6 +2355,9 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 			
 			undoButton.onclick =function(){
 			    DOM.evaluate(xpath,previousData);
+			    
+			    //renInput = null;
+			    //for (i=0;i< varray.length;i++) varray.pop(i);
 			};
 			
 		    }
@@ -2279,11 +2372,111 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	
 	
 	this.close = function close() {
+      	    //renActionControl.close();
+	    
       	    selectedElement = null;
+      	    //for (i=0;i< varray.length;i++){ varray.pop(i);}
+	    
+      	    //renInput = null;
+      	    // renDiv.style.display = 'none';
 	};
     }
     
     
+    /*  function LinkPopupAction(pageEditor, actionSlot) {
+	var self = this, linkInput, linkForm, popupDiv, selectedElement, anchorElement, originalHref, updateLink, findAnchorElement, linkActionControl;
+
+	var addUrlLabel = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('display: block; width: 100%; float: left; text-align: left; padding: 3px; font-size: 10px;position:relative; margin-top: 5px;margin-left: 5px; margin-right: 5px;background: transparent; color: #747474; text-shadow: 0 1px 0 #FFFFFF;').values());
+	addUrlLabel.innerHTML = 'Link to:';
+	linkInput = DOM.BUILDER.INPUT(editTextInputAttributes.addStyle('margin-left: 5px; background: #FFFFFF;').addStyle(leftBorderStyle + rightBorderStyle).values());
+
+	linkForm = DOM.BUILDER.FORM(elementAttributes.values(),
+	addUrlLabel,
+	linkInput,
+	DOM.BUILDER.INPUT(editSubmitAttributes.addStyle('vertical-align: middle; float:left;  margin-left: 5px; margin-right: auto;').values()));
+
+	linkForm.onsubmit = function linkFormOnSubmit() {
+	updateLink(linkInput.value);
+	return false;
+	};
+
+	popupDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('overflow: hidden !important; display: none;position: relative; margin-left: auto; margin-right: auto; margin-top: 5px; margin-bottom: 5px; height: auto !important; height: 60px;').values(),
+	linkForm);
+	linkActionControl = new PopupActionControl(actionSlot);
+
+	this.open = function open(element) {
+	linkActionControl.open(popupDiv);
+	popupDiv.style.display = 'block';
+	selectedElement = element;
+	anchorElement = findAnchorElement(selectedElement);
+	if (anchorElement == null) {
+        anchorElement = null;
+        linkInput.value = 'http://';
+        linkInput.focus();
+	} else {
+        originalHref = anchorElement.getAttribute('href');
+        linkInput.value = originalHref;
+        linkInput.select();
+	}
+	};
+
+	this.close = function close() {
+	linkActionControl.close();
+	selectedElement = null;
+	anchorElement = null;
+	linkInput.value = null;
+	popupDiv.style.display = 'none';
+	};
+
+	this.onComplete = function onComplete() {
+	};
+
+	this.onError = function onError() {
+	};
+
+	this.actionComplete = function actionComplete() {
+	self.onComplete();
+	};
+
+	this.handleError = function handleError() {
+	self.onError();
+	};
+
+	updateLink = function updateLink(href) {
+	var command;
+	if (anchorElement) {
+        command = {
+        command : 'ANCHOR_UPDATE',
+        element : anchorElement,
+        elementId : anchorElement.getAttribute('m4pageeditid'),
+        data : href,
+        previousData : originalHref
+        };
+	} else {
+        command = {
+        command : 'ANCHOR_CREATE',
+        element : selectedElement,
+        elementId : selectedElement.getAttribute('m4pageeditid'),
+        data : href,
+        previousData : ''
+        };
+	}
+	pageEditor.commandApply(command);
+	self.actionComplete();
+	};
+
+	findAnchorElement = function findAnchorElement(element) {
+	if (element.nodeName.toLowerCase() == 'a') {
+        return element;
+	} else if (element.parentNode) {
+        return findAnchorElement(element.parentNode);
+	} else {
+        return null;
+	}
+	}
+	}*/
+
+    /////
     //******************************** Shalini - Changed AudioupdatePopupAction from ImageUpdatePopupAction *****************
 
     function AudioUpdateByUrl(pageEditor, actionControl) {
@@ -2291,12 +2484,21 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	var addUrlLabel = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('width: 100%; display: block; float: left; font-size: 10px;position:relative; margin-top: 5px;margin-left: 0px; margin-right: 5px; margin-bottom: 5px; background: transparent; color: #747474; text-shadow: 0 1px 0 #FFFFFF; text-align: left;').values());
 	addUrlLabel.innerHTML = 'Add URL';
+	/*	audioUrlInput = document.createElement('audio');
+		audioUrlInput.setAttribute('src','http://01audiovideo.free.fr/ogg/half_asleep_sea_shells.ogg');
+		audioUrlInput.play();*///testing the audio tag creation
 
 	audioUrlInput = DOM.BUILDER.INPUT(editTextInputAttributes.addStyle('display:block; background: #FFFFFF;').values());
 	randomInput = DOM.BUILDER.INPUT(editAttributes.put({ name : 'random', type : 'hidden', value : '1' }).values());
     	audioUrlForm = DOM.BUILDER.FORM(elementAttributes.values(),
 					audioUrlInput,
 					DOM.BUILDER.INPUT(editSubmitAttributes.values()));
+
+	/* audioUrlForm = DOM.BUILDER.FORM(elementAttributes.put({ target : targetName, enctype : 'multipart/form-data', method : 'post', action : '/app/page-edit/upload' }).values(),
+           audioUrlInput,
+	   //   DOM.BUILDER.INPUT(editAttributes.put({ name : 'pageSlug', type : 'hidden', value : pageSlug }).values()),
+	   // randomInput,
+           DOM.BUILDER.INPUT(editSubmitAttributes.values()));*/
 
 	audioUrlForm.onsubmit = function updateFormOnSubmit() {
             var url = audioUrlInput.value;
@@ -2339,7 +2541,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    command : 'AUDIO_CREATE',
 		    element : selectedElement,
 		    elementType : 'audio/ogg',
-		    xpath : DOM.getXPATH(selectedElement),
+		    xpath : DOM.getXPATH(selectedElement), //Yassine
 		    url : window.location.href,
 		    elementId : selectedElement.getAttribute('m4pageeditid'),
 		    data : src,
@@ -2347,12 +2549,16 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		};
 	    }
 	    pageEditor.commandApply(command);
+	    // self.actionComplete();
 	};
 
     }
 
 
     //*******************************************************************
+
+    
+
 
     /**
      * Action for updating an image. //Yass to be edited
@@ -2396,7 +2602,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		command : 'IMAGE_SRC_UPDATE',
 		element : selectedElement,
 		elementType : 'image',
-		xpath : DOM.getXPATH(selectedElement),
+		xpath : DOM.getXPATH(selectedElement), //Yassine
 		url : window.location.href,
 		data : new UTIL.StringBuffer().append(fittedSize.width).append('x').append(fittedSize.height).append(',').append(url).toString(),
 		previousData : {
@@ -2515,6 +2721,8 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		}
 		var upload, resultText = DOM.textContent(iframeBody);
 
+		// resultText is empty the first time the form is added to the DOM
+		// selectedElement can be null if the user reloads the page and resubmits the form
 		if (!/^\s*\{.*\}\s*/.test(resultText) || selectedElement == null) {
 		    return;
 		}
@@ -2639,11 +2847,16 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    popupControl.close();
 	};
 
+	// Ajay - "Image" name on drop down
 	if (imageElement) {
 	    uploadMode = 'IMAGE_SRC_UPDATE';
 	    backgroundButtonText = "Replace";
 	    imageButtonText = 'Image';
-	}
+	} // else {
+	//   uploadMode = 'BACKGROUND_IMAGE_UPDATE';
+	//   backgroundButtonText = "BG&nbsp;Image";
+	//   imageButtonText = 'Block';
+	// }
 
 	buttonPanel = DOM.BUILDER.DIV(buttonPanelAttributes.values());
 	upArrow = DOM.BUILDER.SPAN(greyArrowAttributes.values());
@@ -2665,10 +2878,15 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		deleteButton.style.display = 'block';
 	    }
 	    actionSlot.style.width =   actionSlotWidth + 'px';
+	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
+	    //   actionSlot.style.marginTop = '-8px';
+	    //   actionSlot.style.paddingTop = '0px';
+	    // }
 	};
 
 	popupControl.onClose = function onClose() {
 	    upArrow.style.display = 'none';
+	    //deleteButton.style.display = 'block';
 	    selectedElement = null;
 	};
 
@@ -2679,6 +2897,14 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    return false;
 	};
 
+	// redArrow = DOM.BUILDER.SPAN(redArrowAttributes.values());
+
+	// imageButton = createTitleButton(imageButtonText, 'width: 45px;');
+	// imageButton.onclick = function imageButtonOnClick() {
+	//   popupControl.hideAction();
+	//   upArrow.style.display = 'none';
+	//   return false;
+	// };
 
 	imageUpdateAction = new ImageUpdatePopupAction(pageEditor, actionSlot, uploadMode);
 	imageUpdateAction.onComplete = function imageUpdateActionOnComplete() {
@@ -2692,7 +2918,20 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    displayUpArrowUnderButton(backgroundButton, upArrow);
 	    return false;
 	};
+	//shalini
+	/* linkUpdateAction = new LinkPopupAction(pageEditor, actionSlot);
+	   linkUpdateAction.onComplete = function linkUpdateActionOnComplete() {
+	   self.popdown();
+	   };
 
+	   var linkImage = 'http://dev.a11y.in/alipi/images/link.png';
+	   linkButton = createActionButton(linkImage, 'Link', rightBorderStyle);
+	   linkButton.onclick = function linkButtonOnClick() {
+	   popupControl.showAction(linkUpdateAction);
+	   displayUpArrowUnderButton(linkButton, upArrow);
+	   return false;
+	   };*/
+	//shalini
 	renUpdateAction = new renAction(pageEditor, actionSlot);
 	renUpdateAction.onComplete = function renUpdateActionOnComplete() {
 	    self.popdown(true);
@@ -2703,13 +2942,36 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	renButton = createActionButton(renImage, 'See (other) narrations', 'border-right: none;');
 	renButton.onclick = function renButtonOnClick() {
 	    popupControl.showAction(renUpdateAction);
+	    //self.popdown(true);
 	    return false;
 	};
 
+	//shalini
+	/*    var deleteImage = 'http://dev.a11y.in/alipi/images/delete_trashcan.png';
+	      deleteButton = createActionButton(deleteImage, 'Delete', 'border-right: none;');
+	      deleteButton.onclick = function deleteButtonOnClick() {
+	      deleteElement();
+	      popupControl.close();
+	      return false;
+	      };
+	*/
+	//shalini
+
+	// Ajay
+	//    buttonPanel.appendChild(imageButton);
+	//    buttonPanel.appendChild(redArrow);
 	buttonPanel.appendChild(backgroundButton);
+	//shalini
+	//    buttonPanel.appendChild(deleteButton);
+	//shalini
+
+	//    buttonPanel.appendChild(linkButton);
+	//shalini
 	buttonPanel.appendChild(renButton);
+
 	imagePopupDiv.appendChild(closeButton);
 	imagePopupDiv.appendChild(buttonPanel);
+	//    imagePopupDiv.appendChild(upArrow);
 	imagePopupDiv.appendChild(actionSlot);
 
 	document.body.appendChild(imagePopupDiv);
@@ -2719,7 +2981,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		command : 'DELETE',
 		element : selectedElement,
 		url : '',
-		xpath : '',
+		xpath : '', //Yassine
 		elementType : 'text',
 		data : '',
 		previousData : ''
@@ -2730,7 +2992,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
     }
 
     /**
-     * Popup for text edit.
+     * Popup for text edit. //Yass for text
      */
     function TextElementPopup(pageEditor) {
 	var self = this, updateText, deleteElement, textPopupDiv, selectedElement, originalTextContent, deleteButton, 
@@ -2774,6 +3036,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	popupControl.onOpen = function onOpen(element) {
 	    selectedElement = element;
 	    originalTextContent = DOM.textContent(selectedElement);
+	    // actionSlot.style.width = (textPopupDiv.offsetWidth - textButton.offsetWidth - 10) + 'px';
 	    actionSlot.style.marginLeft = (textButton.offsetWidth) + 'px';
 	    UTIL.addEvent(selectedElement, 'keydown', handleKeyDown);
 	    UTIL.addEvent(selectedElement, 'keyup', eatKeyboardEvents);
@@ -2812,10 +3075,12 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	doneButton.onclick = function doneButtonOnClick(elements) {
 	    editWindow = new EditWindow(pageEditor);
  	    editWindow.activate();
-	    document.getElementById('originaltext').value = selectedElement.parentNode.innerHTML;
-	    document.getElementById('texteditor').value = selectedElement.parentNode.innerHTML;
+	    document.getElementById('originaltext').value = selectedElement.textContent;
+	    document.getElementById('texteditor').value = selectedElement.textContent;
 	    document.getElementById('editoroverlay').appendChild(textButton);
 	    selectedElement.setAttribute('id', 'alipiSelectedElement');
+//	    self.popdown(true);
+//	    return false;
 	};
 
 	textButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:46%; bottom:12%; color:#FFF; width:8%; height:5%; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values(), 'OK');
@@ -2824,8 +3089,10 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    document.body.removeChild(document.getElementById('editoroverlay'));
 	    document.body.removeChild(document.getElementById('editorbgdiv'));
 	    handleKeyDown;
+//	    UTIL.addEvent(document.getElementById('alipiSelectedElement'), 'keydown', handleKeyDown);
 	    document.getElementById('alipiSelectedElement').removeAttribute('id', 'alipiSelectedElement');
 	    self.popdown(true);
+//	    popupControl.hideAction();
 	    return false;
 	};
 
@@ -2834,6 +3101,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	renButton = createActionButton(renImage, 'See (other) narrations', 'border-right: none;');
 	renButton.onclick = function renButtonOnClick() {
 	    popupControl.showAction(renUpdateAction);
+	    //self.popdown(true);
 	    return false;
 	};
 
@@ -2854,6 +3122,14 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    return false;
 	};
 
+	//shalini
+	/*    var deleteImage = 'http://dev.a11y.in/alipi/images/delete_trashcan.png';
+	      deleteButton = createActionButton(deleteImage, 'Delete', 'border-right: none;');
+	      deleteButton.onclick = function deleteButtonOnClick() {
+	      deleteElement();
+	      self.popdown(true);
+	      return false;
+	      };*/
 
 	imageUpdateAction = new ImageUpdatePopupAction(pageEditor, actionSlot, 'BACKGROUND_IMAGE_UPDATE');
 	imageUpdateAction.onComplete = function imageUpdateActionOnComplete() {
@@ -2868,13 +3144,43 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    displayUpArrowUnderButton(backgroundButton, upArrow);
 	    return false;
 	};
+	//shalini
 
+	/*    linkUpdateAction = new LinkPopupAction(pageEditor, actionSlot);
+	      linkUpdateAction.onComplete = function linkUpdateActionOnComplete() {
+	      self.popdown(true);
+	      };
+
+
+	      var linkImage = 'http://dev.a11y.in/alipi/images/link.png';
+	      linkButton = createActionButton(linkImage, 'Link', rightBorderStyle);
+	      linkButton.onclick = function linkButtonOnClick() {
+	      popupControl.showAction(linkUpdateAction);
+	      displayUpArrowUnderButton(linkButton, upArrow);
+	      return false;
+	      };*/
+	//shalini
+
+//	mm = new EditWindow(pageEditor);
+//	console.log(EditWindow.msgg);
+	//    buttonPanel.appendChild(redArrow);
 	buttonPanel.appendChild(doneButton);
+	//shalini
+	//    buttonPanel.appendChild(deleteButton);
+	//shalini
 	buttonPanel.appendChild(renButton);
 	buttonPanel.appendChild(audioButton);
+	
+	//    buttonPanel.appendChild(backgroundButton);
+	//shalini
+	//    buttonPanel.appendChild(linkButton);
+	//shalini
+
 	textPopupDiv.appendChild(closeButton);
 	textPopupDiv.appendChild(buttonPanel);
+	//    textPopupDiv.appendChild(upArrow);
 	textPopupDiv.appendChild(actionSlot);
+
 	document.body.appendChild(textPopupDiv);
 
 	updateText = function updateText() {
@@ -2882,7 +3188,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		command : 'TEXT_UPDATE',
 		element : selectedElement,
 		url : window.location.href,
-		xpath : DOM.getXPATH(selectedElement),
+		xpath : DOM.getXPATH(selectedElement), //Yassine
 		elementType : 'text',
 		data : DOM.textContent(selectedElement),
 		previousData : originalTextContent
@@ -2898,7 +3204,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		command : 'DELETE',
 		element : selectedElement,
 		url : '',
-		elementType : 'text',
+		elementType : 'text', //Yass
 		data : '',
 		xpath : '',
 		data : '',
@@ -2914,29 +3220,87 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
      * Overlay bar which can function in either visual editor or html editor mode.
      */
     function OverlayBar(pageEditor, isVisualEditor) {
+	//shalini-added cancelbutton
 	var self = this, overlayDiv, firstRowDiv, firstRowStyleAttributes, messageDiv, publishButton, undoButton,fillUpButton;
 	var moveDiv, editModeChangeOverlayDiv, buttonDiv, editModeChangeButtonDiv, editModeChangeSaveButton, editModeChangeDiscardButton;
 	var redButtonStyleAttributes, fillUpButtonStyleAttributes, firstRowDivOffset, calculateScrollPositionY, wrapperDiv,showKeepOriginalOverlay, publishOptions = new PublishOptions();
 
+	// -webkit-gradient is for chrome, safari, etc.
+	// -moz-linear-gradient is for firefox
+	// -ms-filter is for ie8+
+	// filter is for ie quirks mode (5.5)
+	//firstRowDivOffset = 32; //Ajay
+	// firstRowStyleAttributes = editAttributes.addStyle('color: #FFF;'
+	//   + ' background-color: rgba(0, 0, 0, 0.589844);'
+	//   + ' min-width: 800px; height: 20px; width: 100%; position: relative; left: 0;'
+	//   + ' overflow-x: visible;'
+	//   + ' font-weight:normal; font-size:20px; font-family: Helvetica Neue, Helvetica, Arial, Sans-serif; text-align: left; border-top: 1px solid rgba(0, 0, 0, 0.14); display: block;').values();
+
+	/*    secondRowStyleAttributes = fontTypeAttributes.addStyle('color: #FFF; background-color: transparent;'
+	      + ' background: -webkit-gradient(linear, 0% 100%, 0% 0%, from(rgba(0, 0, 0, 0.05)), to(rgba(0, 0, 0, 0.589844)));'
+	      + ' background: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.05),rgba(0, 0, 0, 0.589844));'
+	      + ' -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr=\'#6A2222\',EndColorStr=\'#653535\')";'
+	      + ' filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = \'#6A2222\', EndColorStr = \'#653535\');'
+	      + ' min-width: 800px; height: 33px; width: 100%; position: relative; left: 0; overflow-x: visible;'
+	      + ' z-index: 2147483646; font-weight:normal; font-size:14px; font-family: Helvetica Neue, Helvetica, Arial, Sans-serif; text-align: left;'
+	      + ' padding-top: 5px; border:1px transparent; vertical-align: middle; border-top: 1px solid transparent; display:block;').values();
+	*/  // Ajay
+
+	/*    logoAnchor = DOM.BUILDER.A(editAttributes.put({ href : 'https://bo.lt/app/'}).addStyle('z-index: 2147483647; position: absolute; left: 0; margin-bottom: 19px; display: inline-block;').values(),
+	      DOM.BUILDER.IMG(editAttributes.put({ src : 'https://bo.lt/app/asset/page-edit/bo_square.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079' }).addStyle('border: 0 none; margin-left: 16px; display:inline; box-shadow: 0 3px 1px rgba(0, 0, 0, 0.24); -webkit-box-shadow: 0 3px 1px rgba(0, 0, 0, 0.24); -moz-box-shadow:0 3px 1px rgba(0, 0, 0, 0.24);').values())); */ //Ajay
+
+	// Ajay - Below message display bar
 	messageDiv = DOM.BUILDER.DIV(editAttributes.addStyle('font-weight:italic; font-size:20px; font-family: Helvetica Neue,Helvetica,Arial,Sans-serif; position:absolute; left:30%; width:100%; display:inline-block;  color:#fff;').values());
 
+	// Ajay - background-color & rgba changed
 	redButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; top:-13px; right:04%; width:22%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
 
+	//Ajay - button for filling up the target and other detail
+	//	fillUpButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; top:-13px; right:30%; width:20%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
+
+	// Ajay - created
 	undoButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; left:35%; top:-13px; width:15%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
 
-	helpLinkStyleAttributes = panelButtonAttributes.addStyle('position:absolute; left:0%; top:-13px; width:15%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
+	// locSelectAttributes = panelButtonAttributes.addStyle('width:23%; color:#FFF; float:left; font-weight:bold; font-size:18px; text-align:center; margin-top:8px; margin-left:-43%; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
 
-	publishButton = DOM.BUILDER.BUTTON(redButtonStyleAttributes, 'Publish'); 
+	// langSelectAttributes = panelButtonAttributes.addStyle('width:25%; color:#FFF; float:left; font-weight:bold; font-size:18px; text-align:center; margin-top:8px; margin-left:-70%; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
+
+	styleSelectAttributes = normalFontAttributes.addStyle('width:20%; color:#FFF; float:left; font-weight:bold; font-size:18px; text-align:center; margin-top:8px; margin-left:-92%; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
+
+	authorInputAttributes = panelButtonAttributes.addStyle('width:28%; color:#FFF; float:left; font-weight:bold; font-size:18px; text-align:center; margin-top:8px; margin-left:-125%; background: #AAA;  border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
+
+
+	//shalini
+	/*  cancelButtonStyleAttributes = panelButtonAttributes.addStyle('width:15%; color:#FFF; float:left; height: 36px; font-weight:bold; font-size:18px; text-align:center; margin-top: 8px; margin-left:-130%; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values();*/
+
+ 	// fillUpButton = DOM.BUILDER.BUTTON(fillUpButtonStyleAttributes, 'Fill up'); 
+	// fillUpButton.onclick = function fillUpButtonOnLoad() {
+
+	//     }
+	//     else {
+	//     messageOverlay.style.display = 'none';
+	//     backgroundDiv.style.display = 'none';
+	//     }
+ 	// };
+
+	publishButton = DOM.BUILDER.BUTTON(redButtonStyleAttributes, 'Publish'); // Ajay - Done to Save Yass
+	//pageEditor.saveAndClose();
 
 	publishButton.onclick = function publishButtonOnClick() {
 	    if (pageEditor.hasChangesPending() /* && (pageEditor.formUncomplete() ==false) */ ) {
  		targetWindow = new TargetWindow(pageEditor);
  		targetWindow.activate();
 	
-		okButton.onclick = function okButtonOnClick() { 
+		okButton.onclick = function okButtonOnClick() {  // Ajay
 		    targetWindow.okClick();
 		}
 	    }
+	    //	    else if ((pageEditor.hasChangesPending() ==false)&& (pageEditor.formUncomplete() == false)){
+	    //		pageEditor.showMessage(" Nothing to publish !");
+	    //	    }
+	    //	    else if (pageEditor.hasChangesPending()&& (pageEditor.formUncomplete() ==true)){
+	    //		pageEditor.showMessage("you need to choose at least a language, a location or a style before you can save & publish !");
+	    //            }
 	    else{
 		pageEditor.showMessage("Nothing to publish");
 	    }
@@ -2950,29 +3314,93 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	};
 	// End of okButton function
 
+	//shalini-Yass
+	/* cancelButton = DOM.BUILDER.BUTTON(cancelButtonStyleAttributes, 'Cancel');
+	   cancelButton.onclick = function cancelButtonOnClick(){
+ 	   if(confirm("Do you want to cancel?"))
+	   {
+	   overlayBar.show(true);
+	   }
+	   };*/
+	// Ajay - If the bar on top
+	// UTIL.addEvent(publishButton, 'mouseover', function publishButtonMouseOver(event) {
+	//   var height = DOM.findSize(wrapperDiv).height;
+	//   if (onTop) {
+	//     height = height - DOM.findSize(secondRowDiv).height;
+	//   }
+	//   publishOptions.show(onTop, height);
+	// });
+
 	undoButton = DOM.BUILDER.BUTTON(undoButtonStyleAttributes, 'Undo');
 	undoButton.onclick = function undoButtonOnClick() {
 	    pageEditor.commandUndo();
 	    return false;
 	};
 
-	helpLink = DOM.BUILDER.BUTTON(helpLinkStyleAttributes, 'Help');
-	helpLink.onclick = function undoButtonOnClick() {
-	    helpWindow = new HelpWindow(pageEditor);
-	    helpWindow.activate();
+	// if (isVisualEditor) {
+	//   switchModeButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('opacity: 0.4;font-weight: bold; border: none; color:#fff; background: transparent; float: right;  margin-right:10px; margin-bottom: 5px; margin-top:0px; padding-left: 0px; padding-top: 4px; display: block;').values(), 'Switch to HTML');
 
-	};
+	//   moveArrowImg = DOM.BUILDER.IMG({ src : 'https://bo.lt/app/asset/page-edit/up_icon_red_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079', style : 'display: inline-block; margin-right: 8px; vertical-align: bottom;', m4pageeditcontrol : true });
 
+	//   moveDiv = DOM.BUILDER.DIV(fontTypeAttributes.addStyle('font-weight:normal; font-size:14px; font-family: Helvetica Neue, Helvetica, Arial, Sans-serif; color: #FFF; float: left; display: inline-block; margin-left: 120px; margin-top: 5px; cursor: pointer;').values(),
+	//       moveArrowImg, 'Move Bar');
+	//   moveDiv.onclick = function moveDivOnClick() {
+	//     self.move();
+	//     return false;
+	//   };
+	//  // switchModeImage = DOM.BUILDER.IMG({ src : 'https://bo.lt/app/asset/page-edit/code_brackets_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079', style : 'display: inline; margin-right: 8px; margin-top: 5px; float:right;', m4pageeditcontrol : true });
+
+	//  // secondRowDiv = DOM.BUILDER.DIV(secondRowStyleAttributes, moveDiv, switchModeButton, switchModeImage); // Ajay
+	// }
+
+	// Ajay
+	// else {
+	//      switchModeImage = DOM.BUILDER.IMG({ src : 'https://bo.lt/app/asset/page-edit/pencil_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079', style : 'display: inline; margin-right: 8px; margin-top: 5px; float:right;', m4pageeditcontrol : true });
+	//      switchModeButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('font-weight: bold; border: none; color:#fff; background: transparent;float: right;  margin-right:10px; margin-bottom: 5px; margin-top:0px; margin-bottom: 5px; padding-left: 0px; padding-top: 4px; display: block;').values(), 'Switch to Page Editor');
+	//      secondRowDiv = DOM.BUILDER.DIV(secondRowStyleAttributes, switchModeButton, switchModeImage);
+	//    }
+
+	// switchModeButton.onclick = function switchModeButtonOnClick() {
+	//   pageEditor.saveAndClose();
+	//   if (pageEditor.hasChangesPending()) {
+	//     pageEditor.showMessage('Would you like to Save or Discard your changes?');
+	//     firstRowDiv.replaceChild(editModeChangeButtonDiv, buttonDiv);
+	//     switchModeImage.style.display = 'none';
+	//     switchModeButton.style.display = 'none';
+	//   } else {
+	//     pageEditor.commandSwitchMode(false);
+	//   }
+	//   publishOptions.hide();
+	//   return false;
+	// };
+
+	// editModeChangeSaveButton = DOM.BUILDER.BUTTON(redButtonStyleAttributes, 'Save');
+	// editModeChangeSaveButton.onclick = function editModeChangeSaveButtonOnClick() {
+	//   pageEditor.commandSwitchMode(true);
+	//   return false;
+	// };
+
+	// editModeChangeDiscardButton = DOM.BUILDER.BUTTON(redButtonStyleAttributes, 'Discard');
+	// editModeChangeDiscardButton.onclick = function editModeChangeDiscardButtonOnClick() {
+	//   pageEditor.commandSwitchMode(false);
+	//   return false;
+	// };
 
 	editModeChangeButtonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), editModeChangeSaveButton, editModeChangeDiscardButton);
+	//shalini- added cancelButton
+	buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), undoButton, publishButton //, fillUpButton
+				   );
 
-	buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), undoButton, publishButton, helpLink);
-
-	firstRowDiv = DOM.BUILDER.DIV(DOM.BUILDER.DIV(editAttributes.addStyle('width:500px; position: absolute; top: 0; left: 1%;').values(), messageDiv), buttonDiv);
+	firstRowDiv = DOM.BUILDER.DIV(// firstRowStyleAttributes,
+	    DOM.BUILDER.DIV(editAttributes.addStyle('width:500px; position: absolute; top: 0; left: 1%;').values(), messageDiv), buttonDiv);
 
 	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:0.5%; width:25px; height:25px;').values());
 
-	wrapperDiv =  DOM.BUILDER.DIV(fontTypeAttributes.addStyle('overflow: inherit; overflow-x: visible; position: fixed; z-index: 2147483645; left: 0; top: 0;min-width:800px; width: 100%; height:30px;; background-color: rgba(0, 0, 0, 0.5);').values(), image, firstRowDiv);
+	// Ajay - Changed background color, made it transparent :)
+	wrapperDiv =  DOM.BUILDER.DIV(fontTypeAttributes.addStyle('overflow: inherit; overflow-x: visible; position: fixed; z-index: 2147483645; left: 0; top: 0;min-width:800px; width: 100%; height:30px;; background-color: rgba(0, 0, 0, 0.5);').values(),
+				      //logoAnchor, //Ajay
+				      image,
+				      firstRowDiv);
 
 
 	overlayDiv = DOM.BUILDER.DIV(fontTypeAttributes.addStyle('overflow: inherit;').values(), wrapperDiv);
@@ -2987,6 +3415,25 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    }
 	}
 
+
+	// if (DOM.isQuirksMode() && DOM.isIEBrowser()) {
+	//   // We need to manually move the edit bar when the window scrolls since IE quirks mode doesn't support
+	//   // the "fixed" position value.
+	//   wrapperDiv.style.position = 'absolute';
+	//   UTIL.addEvent(window, 'scroll', function globalScrollListener(event) {
+	//     var scrollPositionY = calculateScrollPositionY();
+	//     var overlayPosition;
+	//     if (onTop) {
+	//       wrapperDiv.style.top = scrollPositionY + 'px';
+	//       overlayPosition = wrapperDiv.style.top;
+	//     } else {
+	//       wrapperDiv.style.bottom = ( - scrollPositionY) + 'px';
+	//       overlayPosition = wrapperDiv.style.bottom;
+	//     }
+	//     publishOptions.scrollToPosition(onTop, overlayPosition);
+	//   });
+	// }
+
 	this.show = function show(activate) {
 	    overlayDiv.style.display = 'block';
 	    var disabled = true;
@@ -2996,11 +3443,16 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		opacity = '1.0';
 	    }
 
-	    undoButton.disabled = false; 
-	    publishButton.disabled = false; 
+	    undoButton.disabled = false;   // Ajay - to make it always enabled i changed it from disabled to false
+	    publishButton.disabled = false; // Ajay - Same here
+	    // cancelButton.disabled = false; //shalini
+	    //      switchModeButton.disabled = disabled;
 
-	    undoButton.style.opacity = "1"; 
+	    undoButton.style.opacity = "1";  // Ajay - To make it awlays enabled i change it from opacity to 1
 	    publishButton.style.opacity = "1";
+	    // cancelButton.style.opacity = "1";//shalini
+	    //    switchModeButton.style.opacity = opacity;
+
 	    publishOptions.hide();
 	};
 
@@ -3008,6 +3460,48 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    messageDiv.innerHTML = value;
 	};
 
+	// this.move = function move() {
+	//   var position = 0;
+	//   if (DOM.isQuirksMode() && DOM.isIEBrowser()) {
+	//     position = calculateScrollPositionY();
+	//   }
+	//   if (onTop) {
+	//     DOM.deleteStyleProperty(wrapperDiv, 'top');
+	//     wrapperDiv.style.bottom = ( - position) + 'px';
+	//     // moveArrowImg.src = 'https://bo.lt/app/asset/page-edit/up_icon_red_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'; //Ajay
+	//     onTop = false;
+	//   } else {
+	//     DOM.deleteStyleProperty(wrapperDiv, 'bottom');
+	//     wrapperDiv.style.top = position + 'px';
+	//     // moveArrowImg.src = 'https://bo.lt/app/asset/page-edit/down_icon_red_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'; //Ajay
+	//     onTop = true;
+	//   }
+	//   publishOptions.hide();
+	// };
+
+	// this.enableSwitchSave = function enableSwitchSave(flag) {
+	//   if (flag) {
+	//     // enable
+	//     editModeChangeSaveButton.style.color = '#fff';
+	//     editModeChangeSaveButton.disabled = false;
+	//   } else {
+	//     // disable
+	//     editModeChangeSaveButton.style.color = '#fff';
+	//     editModeChangeSaveButton.disabled = true;
+	//   }
+	// };
+
+	// calculateScrollPositionY = function calculateScrollPositionY() {
+	//   if (window.pageYOffset) {
+	//     return parseInt(window.pageYOffset);
+	//   } else if (document.documentElement.scrollTop) {
+	//     return parseInt(document.documentElement.scrollTop);
+	//   } else if (document.body.scrollTop) {
+	//     return parseInt(document.body.scrollTop);
+	//   } else {
+	//     return 0;
+	//   }
+	// }
 
 	function PublishOptions() {
 	    var self = this, wrapperDiv, keepOriginalCheckbox, activateOptionsTimerId, cancelTimer, activatePublishOptions;
@@ -3023,8 +3517,40 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    };
 	    var backgroundImage = 'url(http://dev.a11y.in/alipi/images/container_save_new_page.png) no-repeat scroll 0 0 transparent';
 	    var position = 'fixed';
-
-	    wrapperDiv =  DOM.BUILDER.DIV(editAttributes.addStyle('font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: table; vertical-align: middle; z-index: 2147483647; margin: 0; width: 134px; height: 33px; line-height: 33px; position: '+ position+ '; right: 10px; background:'+ backgroundImage + ' ; display:none;').values(), DOM.BUILDER.SPAN(editAttributes.addStyle(('font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: table-cell; vertical-align: middle; height: 14px; hasLayout=true;')).values(), DOM.BUILDER.SPAN(editAttributes.addStyle('font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: inline; vertical-align: middle; height: 10px; width: 14px; padding: 0; margin: 1px 0 0 13px;').values(), keepOriginalCheckbox), DOM.BUILDER.LABEL(normalFontAttributes.put({'for' : checkboxId}).addStyle(('font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; display: inline; font-size: 10px; background: transparent; color: #E9E9E9; padding: 0 0 0 5px;')).values(),'Save as new page.')));
+	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
+	    //   position = 'absolute';
+	    // }
+	    wrapperDiv =  DOM.BUILDER.DIV(
+		editAttributes.addStyle(
+		    'font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: table; vertical-align: middle; z-index: 2147483647; margin: 0; width: 134px; height: 33px; line-height: 33px; position: '
+			+ position
+			+ '; right: 10px; background:'
+			+ backgroundImage + ' ; display:none;').values(),
+		DOM.BUILDER.SPAN(
+		    editAttributes.addStyle(
+			(// DOM.isQuirksMode()  && DOM.isIEBrowser()
+			    //  ?
+			    //  'font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: table-cell; vertical-align: middle; height: 14px; hasLayout=true; padding: 7px 0 0 0;'
+			    // :
+			    'font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: table-cell; vertical-align: middle; height: 14px; hasLayout=true;'
+			)
+		    ).values(),
+		    DOM.BUILDER.SPAN(
+			editAttributes.addStyle('font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: inline; vertical-align: middle; height: 10px; width: 14px; padding: 0; margin: 1px 0 0 13px;').values(),
+			keepOriginalCheckbox
+		    ),
+		    DOM.BUILDER.LABEL(normalFontAttributes.put({'for' : checkboxId}).addStyle(
+			(// DOM.isQuirksMode() && DOM.isIEBrowser()
+			    //  ?
+			    //  'font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; display: inline; font-size: 10px; background: transparent; color: #E9E9E9; padding: 9px 0 0 5px;'
+			    //  :
+			    'font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; display: inline; font-size: 10px; background: transparent; color: #E9E9E9; padding: 0 0 0 5px;'
+			)
+		    ).values(),
+				      'Save as new page.'
+				     )
+		)
+	    );
 
 	    UTIL.addEvent(wrapperDiv, 'mouseout', function publishButtonMouseOut(event) {
 		self.hide();
@@ -3128,7 +3654,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    return history.length > 0;
 	};
 	this.formUncomplete = function formUnomplete(){
-	    return (locName == '' &&  langName=='' && styleName == '' );
+	    return (locName == '' &&  langName=='' && styleName == '' ); //toto
 	};
 	
 	this.apply = function apply(command) {
@@ -3140,11 +3666,13 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		pageEditor.showMessage('Text changed');
 		break;
             case 'AUDIO_SRC_UPDATE':
+		// DOM.textContent(command.element, command.data);
 		textElementPopup.hasAudio = true;	
 		pageEditor.showMessage('Audio updated');
 		break;
 
             case 'DELETE':
+		// show "poof" animation to indicate deletion
 		poofPosition = DOM.findPosition(command.element);
 
 		poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://dev.a11y.in/alipi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
@@ -3162,6 +3690,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		pageEditor.showMessage('Section deleted');
 		break;
 
+		// Ajay
             case 'IMAGE_SRC_UPDATE':
 		imageMatcher = new RegExp("(\\d+)x(\\d+),(.+)").exec(command.data);
 		imageWidth = imageMatcher[1];
@@ -3185,6 +3714,11 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		}
 		break;
 
+		/*        case 'BACKGROUND_IMAGE_UPDATE':
+			  command.element.style.backgroundImage = 'url("' + command.data + '")';
+			  pageEditor.showMessage('Background image changed.');
+			  break;
+		*/
             case 'ANCHOR_UPDATE':
 		command.element.setAttribute('href', command.data);
 		pageEditor.showMessage('Link changed');
@@ -3209,6 +3743,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		audioElement.setAttribute('controls','controls');
 		command.element.appendChild(audioElement);
 		audioElement.play();
+		// command.previousData = audioElement;
 		pageEditor.showMessage('Audio added');
 		break;
 
@@ -3235,6 +3770,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    pageEditor.showMessage('Delete undone');
 		    break;
 
+		    //Ajay - Image changed Undone
 		case 'IMAGE_SRC_UPDATE':
 		    imageElement = new M4ImageElement(command.element);
 
@@ -3255,7 +3791,18 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    break;
 		    
 		case 'AUDIO_SRC_UPDATE':
+		    /*command.element.src = command.previousData.src;
+		      pageEditor.showMessage('Audio change undone');*/
 		    break;
+
+		    /*        case 'BACKGROUND_IMAGE_UPDATE':
+			      if (command.previousData) {
+			      command.element.style.backgroundImage = command.previousData;
+			      } else {
+			      command.element.style.backgroundImage = '';
+			      }
+			      break;
+		    */
 		case 'ANCHOR_UPDATE':
 		    command.element.setAttribute('href', command.previousData);
 		    pageEditor.showMessage('Link change undone');
@@ -3274,9 +3821,10 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    }
 	};
 
+	// Ajay - publish
 	this.publish = function publish() {
 	    var result;
-	    if(document.getElementById('ourcheck').checked == false)
+	    if(document.getElementById('defaultcheck').checked == false)
 	    {
 		localStorage.myContent = buildDataString();
 		window.location.href = "http://dev.a11y.in/test.html";
@@ -3286,6 +3834,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		
 		AJAX.post('http://dev.a11y.in/test',
 	    		  buildDataString(), function(result) {
+	    		      //alert(buildDataString());
 	    		      ajaxResultProcessor.processPublishedResponse(result);
 	    		  });
 	    }
@@ -3343,32 +3892,35 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	    history = temp_history;
 
+
 	    var command, buffer;
 	    buffer = new UTIL.StringBuffer();
 	    UTIL.forEach(history, function(index, command) {
 		buffer.append('###'); //separates the commands
-		buffer.append('about=');  //url=about    //removed '&' on purpose
+		buffer.append('url=');  //url                                                     //removed '&' on purpose
 		buffer.append(encodeURIComponent(window.location.search.split('=')[1]));
 		buffer.append('&lang=');//lang
 		buffer.append(encodeURIComponent(langName));
 		buffer.append('&location=');//location
 		buffer.append(encodeURIComponent(locName));
 		buffer.append('&style=');//style
-		buffer.append(encodeURIComponent(styleSelect.value));
+		buffer.append(encodeURIComponent(styleName));
 		buffer.append('&blog=');  //blog where to post
 		buffer.append(encodeURIComponent("blog"));
-		buffer.append('&elementtype='); // text, audio, img
+		buffer.append('&elementType='); // text, audio, img
 		buffer.append(encodeURIComponent(command.elementType));
 		buffer.append('&xpath=');//xpath
+		command.xpath = '/' + command.xpath.slice(10,command.xpath.length);
 		buffer.append(encodeURIComponent(command.xpath));
 		buffer.append('&data=');  //data
-		buffer.append(encodeURIComponent(command.data));
+		if(command.elementType == 'audio/ogg')
+		{
+		    aud = '<audio controls="controls" src="'+command.data+'"></audio>';
+		    buffer.append(encodeURIComponent(aud));
+		}else{
+		    buffer.append(encodeURIComponent(command.data));}
 		buffer.append('&author='); //author
-		if (author.value == '') {
-		    buffer.append(encodeURIComponent('Anonymous'));
-		} else {
-		    buffer.append(encodeURIComponent(author.value));
-		}
+		buffer.append(encodeURIComponent(authorValue));
 	    }); 
 	    return buffer.toString().substring(3);
 	};
@@ -3457,7 +4009,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    }, true);
 	    pageShortcuts.enable();
 	    overlayBar.show(false);
-	    overlayBar.message("Ready to Narrate");
+	    overlayBar.message("Ready to Narrate"); //Ajay
 	};
 
 
@@ -3567,6 +4119,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	this.commandPublish = function commandPublish() {
 
+	    //splashWindow.show('Saving...');
 	    overlayBar.show(false);
 	    self.saveAndClose();
 	    for (var i = 0; i < preProcessors.length; i++) {
@@ -3575,6 +4128,12 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    editCommandHistory.publish();
 	    overlayBar.show(true);
 	};
+
+	// this.commandSwitchMode = function commandSwitchMode(saveChanges) {
+	//   overlayBar.enableSwitchSave(false);
+	//   editCommandHistory.switchMode(saveChanges);
+	//   overlayBar.enableSwitchSave(true);
+	// };
 
 	this.activateEditor = function activateEditor() {
 	    overlayBar.show(true);
@@ -3678,7 +4237,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	function ImageElementSelector(pageEditor) {
 	    var self = this, imageElementPopup = new EditableElementPopup(pageEditor, true), lastSelection = null;
 	    this.highlight = function highlight(element) {
-		DOM.overrideStyleProperty(element, 'outline', '#777 solid 2px');
+		DOM.overrideStyleProperty(element, 'outline', '#777 solid 2px'); // Ajay - color
 		DOM.overrideStyleProperty(element, 'cursor', 'pointer');
 	    };
 
@@ -3716,7 +4275,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    var self = this, editableElementPopup = new EditableElementPopup(pageEditor, false), lastSelection = null;
 
 	    this.highlight = function highlight(element) {
-		DOM.overrideStyleProperty(element, 'outline', ''); 
+		DOM.overrideStyleProperty(element, 'outline', ''); // Ajay - removed '#777 solid 2px' - It selects the boundary
 		DOM.overrideStyleProperty(element, 'cursor', 'pointer');
 	    };
 
@@ -3762,7 +4321,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	    this.highlight = function highlight(element) {
 
-		internalHighlight(element, '#fff', '#bbb', 'pointer');
+		internalHighlight(element, '#fff', '#bbb', 'pointer'); // Ajay - TEXT, Onmouseover changes color
 		editor.activate(element);
 	    };
 
@@ -3770,7 +4329,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		DOM.restoreStyleProperty(element, 'borderLeft', '');
 		DOM.restoreStyleProperty(element, 'borderRight', '');
 		DOM.restoreStyleProperty(element, 'cursor', '');
-		DOM.restoreStyleProperty(element, 'backgroundColor', ''); 
+		DOM.restoreStyleProperty(element, 'backgroundColor', ''); // Ajay - on mouseout it returns back to old color
 		DOM.restoreStyleProperty(element, 'color', '');
 		editor.deactivate(element);
 	    };
@@ -3780,7 +4339,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    lastSelection = element;
 		    self.unhighlight(lastSelection);
 		    editor.activate(element);
-		    internalHighlight(lastSelection, '#333', '#fff', 'text');
+		    internalHighlight(lastSelection, '#333', '#fff', 'text'); // Ajay - TEXT, Onclick changes color
 		    textElementPopup.popupAt(lastSelection, event.pageX, event.pageY);
 		}
 		editor.startEditing(event);
@@ -3884,14 +4443,68 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    }
 		}
 	    };
+
+	    // Ajay - IE
+	    // function InternetExplorerInlineEditor () {
+	    //   var self = this, currentEditableElement = null, updateCursorPosition;
+
+	    //   this.activate = function activate(element) {
+	    //     currentEditableElement = element;
+	    //     DOM.overrideAttribute(currentEditableElement, 'contentEditable', 'true');
+	    //   };
+
+	    //   this.deactivate = function deactivate() {
+	    //     if (currentEditableElement) {
+	    //       DOM.restoreAttribute(currentEditableElement,'contentEditable');
+	    //     }
+	    //   };
+
+	    //   this.startEditing = function startEditing(event) {
+	    //     updateCursorPosition(event);
+	    //   };
+
+	    //   this.stopEditing = function stopEditing() {
+	    //     self.deactivate();
+	    //     currentEditableElement = null;
+	    //   };
+
+	    //   this.focus = function focus() {
+	    //     document.selection.createRange();
+	    //     document.selection.empty();
+	    //   };
+
+	    //   updateCursorPosition = function updateCursorPosition(event) {
+	    //     var selection = document.selection, range = selection.createRange();
+	    //     if (range.text.length == 0) {
+	    //       try {
+	    //         range.moveToPoint(event.clientX, event.clientY);
+	    //       } catch (error) {
+	    //        // IE sometimes throws an exception here without specifying any reason and is not consistent.
+	    //        // The error message is "Unspecified error"
+	    //        // try again...and it usually works
+	    //         try {
+	    //           range.moveToPoint(event.clientX, event.clientY);
+	    //         } catch (error) {
+	    //           // if this happens again, just return and let the cursor point to the begining of the element
+	    //           return false;
+	    //         }
+	    //       }
+	    //       range.select('character');
+	    //     } else {
+	    //       range.select();
+	    //     }
+
+	    //   };
+	    // };
 	};
+
     }
 
     /**
      * Main coordinator for the html editor's overlay and other functionality.
      */
     function HtmlPageEditor(editor) {
-    	var self = this, overlayBar, buildDataString, ajaxResultProcessor = new AjaxResultProcessor();
+	var self = this, overlayBar, buildDataString, ajaxResultProcessor = new AjaxResultProcessor();
 
 	overlayBar = new OverlayBar(this, false);
 
@@ -3901,7 +4514,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	this.show = function show() {
 	    overlayBar.show(false);
-	    overlayBar.message('New page created for editing');
+	    overlayBar.message('New page created for editing'); // Ajay - can use later
 	};
 
 	// this composition is necessary to avoid circular dependencies
@@ -3918,12 +4531,14 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    }
 	};
 
+	// Ajay - Saving
 	this.commandPublish = function commandPublish() {
 	    var result;
 	    splashWindow.show('Saving...');
 	    overlayBar.show(false);
 	    result = AJAX.post('/app/page-edit/publish?slug=' + pageSlug + '&uploadSlug=' + uploadSlug + '&keepOriginal=' + keepOriginal,
 			       buildDataString(), function(result) {
+				   // alert(buildDataString());
 				   ajaxResultProcessor.processPublishedResponse(result);
 			       });
 
@@ -3995,4 +4610,4 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	activateEditor();
     });
 
-}
+})('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');

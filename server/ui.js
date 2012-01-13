@@ -45,7 +45,7 @@ var a11ypi = {
 
     createMenu: function(menu_list) {
 	var xyz = document.getElementById("menu-button");
-	for(var i in menu_list)
+	for(var i=0;i<menu_list.length;i++)
 	{
 	    var newel = document.createElement("option");
 	    newel.textContent = menu_list[i];
@@ -80,7 +80,7 @@ var a11ypi = {
 		    }
 		}
 	    }
-	    xhr.open("POST","http://dev.a11y.in/menu",true);
+	    xhr.open("POST","http://localhost/menu",true);
 	    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    d = window.location.search.split('?')[1];
 	    var a =[];
@@ -110,7 +110,7 @@ var a11ypi = {
 		    }
 		}
 	    }
-	    xhr.open("POST","http://dev.a11y.in/menu",true);
+	    xhr.open("POST","http://localhost/menu",true);
 	    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    d = window.location.search.split('?')[1];
 	    var a =[];
@@ -169,15 +169,21 @@ var a11ypi = {
 	}
 	var url = a['foruri'];
 	var lang= a['lang'];
-	var data="url="+encodeURIComponent(url)+"&lang="+encodeURIComponent(lang);
+	var data="url="+url+"&lang="+encodeURIComponent(lang);
 	
-	xhr.open("POST","http://dev.a11y.in/replace",true);
+	xhr.open("POST","http://localhost/replace",true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send(data);//
     },
     evaluate: function()
     {
+	try{
 	var nodes = document.evaluate(path, document, null, XPathResult.ANY_TYPE,null);
+	}
+	catch(e)
+	{
+	    console.log(e);
+	}
         try{
             var result = nodes.iterateNext();
             while (result)
@@ -253,7 +259,7 @@ var a11ypi = {
 	var blog= a['blog'];
 	var data="url="+encodeURIComponent(url)+"&lang="+encodeURIComponent(lang)+"&blog="+encodeURIComponent(blog);
 	
-	xhr.open("POST","http://dev.a11y.in/filter",true);
+	xhr.open("POST","http://localhost/filter",true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send(data);//
     },
@@ -279,4 +285,15 @@ var a11ypi = {
 	window.location = window.location.href + "&lang=" + e.value+"&interactive=1";
 	window.reload();
      },
+
+    checkbox: function() {
+	//	alert("hi");
+	if(document.getElementById("our-check").checked == false) {
+	    document.getElementById("our-check").checked = true;
+	    document.getElementById("your-check").checked = false;
+	} else {
+	    document.getElementById("our-check").checked = false;
+	    document.getElementById("your-check").checked = true;
+	}
+    },
 };
