@@ -17,15 +17,14 @@ def application(environ, start_response):
     start_response(status, response_headers)
     try:
         recieved = environ['wsgi.input'].read(int(environ['CONTENT_LENGTH']))
-        
+        print >> environ['wsgi.errors'], recieved, 'test'
     except KeyError:
-        recieved= 'empty'
-        print >> environ['wsgi.errors'], recieved
+        print >> environ['wsgi.errors'], recieved, 'test'
         
     else:
         #connect to the DB
         connection = Connection('localhost',27017)
-        db = connection['alipi']
+        db = connection['dev_alipi']
         collection = db['post']
         
         d={}
@@ -40,10 +39,35 @@ def application(environ, start_response):
         #all re-narrations of the same xpath are grouped
         query = collection.group(
             key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
-            condition={"about" : url, "lang" : lang},
+            condition={"about" : url, "lang" : lang,"elementtype":"text"},
             initial={'narration': []},
             reduce=Code('function(doc,out){out.narration.push(doc);}') 
             )
+        
+        audio_query =collection.group(
+            key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
+            condition={"about" : url, "lang" : lang, 'elementtype':"audio/ogg"},
+            initial={'narration': []},
+            reduce=Code('function(doc,out){out.narration.push(doc);}') 
+            )
+
+        image_query =collection.group(
+            key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
+            condition={"about" : url, "lang" : lang, 'elementtype':"image"},
+            initial={'narration': []},
+            reduce=Code('function(doc,out){out.narration.push(doc);}') 
+            )
+
+        try:
+            for i in audio_query:
+                query.append(i)
+        except IndexError:
+            pass
+        try:
+            for i in image_query:
+                query.append(i)
+        except IndexError:
+            pass
         
         string=''
         if len(query)==0:
@@ -76,6 +100,6 @@ def application(environ, start_response):
                     print >> environ['wsgi.errors'], key
                     print >> environ['wsgi.errors'], 'Error Encoding request string'
                     return 'empty'
-        print >> environ['wsgi.errors'], string
+                    
         return string
     
