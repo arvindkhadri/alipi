@@ -2751,6 +2751,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	doneButton = createActionButton(doneImage, 'Editor', 'border-right: none;' + leftBorderStyle);
 	doneButton.onclick = function doneButtonOnClick(elements) {
 	    editWindow = new EditWindow(pageEditor);
+	    console.log(selectedElement.children);
 	    document.getElementById('reference').value = selectedElement.textContent;
 	    document.getElementById('editor').value = selectedElement.textContent;
 	    selectedElement.setAttribute('id', 'alipiSelectedElement');
@@ -2863,42 +2864,70 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	var moveDiv, editModeChangeOverlayDiv, buttonDiv, editModeChangeButtonDiv, editModeChangeSaveButton, editModeChangeDiscardButton;
 	var redButtonStyleAttributes, fillUpButtonStyleAttributes, firstRowDivOffset, calculateScrollPositionY, wrapperDiv,showKeepOriginalOverlay, publishOptions = new PublishOptions();
 
-	//	messageDiv = DOM.BUILDER.DIV(editAttributes.addStyle('font-weight:italic; font-size:20px; font-family: Helvetica Neue,Helvetica,Arial,Sans-serif; position:absolute; left:30%; width:100%; display:inline-block;  color:#fff;').values());
+
+	overlayDiv = document.createElement("div");
+	overlayDiv.setAttribute("id", "overlay-div");
+	overlayDiv.setAttribute("alipielements", "alipi");
+	overlayDiv.setAttribute("style", "overflow:inherit; overflow-x:visible; position:fixed; z-index:2147483645; left:0; top:0; min-width:800px; width:100%; height:30px; background-color:rgba(0, 0, 0, 0.5);");
+	document.body.appendChild(overlayDiv);
+
+
+	image = document.createElement("img");
+	image.setAttribute("id", "close-image");
+	image.setAttribute("alipielements", "alipi");
+	image.setAttribute("src", "http://dev.a11y.in/alipi/images/close_button.png");
+	image.setAttribute("style", "position:relative;width:25px;height:28px;");
+	overlayDiv.appendChild(image);
+	image.onclick=function(){
+	    answer = confirm("Do you really want to exit the editor?")
+	    if (answer !=0)
+		{
+		    window.location.reload();
+		}
+	}
+
 
 	messageDiv = document.createElement("div");
 	messageDiv.setAttribute("id", "message-div");
 	messageDiv.setAttribute("alipielements", "alipi");
-	messageDiv.setAttribute("style", "position:relative;left:150px;bottom:25px;font-size:25px;font-weight:bold;");
+	messageDiv.setAttribute("style", "position:relative;left:150px;bottom:26px;font-size:23px;font-weight:bold;color:#ffe;");
+	overlayDiv.appendChild(messageDiv);
 
-	    publishButton = document.createElement("input");
-	    publishButton.setAttribute("id", "publish");
-	    publishButton.setAttribute("alipielements", "alipi");
-	    publishButton.setAttribute("type", "submit");
-	    publishButton.setAttribute("Value", "Publish");
-	    publishButton.setAttribute("style", "position:relative;left:950px;bottom:50px;font-size:18px;font-weight:bold;");
+	helpLink = document.createElement("input");
+	helpLink.setAttribute("id", "help");
+	helpLink.setAttribute("alipielements", "alipi");
+	helpLink.setAttribute("type", "submit");
+	helpLink.setAttribute("Value", "Help");
+	helpLink.setAttribute("style", "position:relative;top:-55px;left:750px;font-size:18px;font-weight:bold;width:100px;height:30px;");
+	overlayDiv.appendChild(helpLink);
+	helpLink.onclick = function helpLinkOnClick() {
+	    helpWindow = new HelpWindow(pageEditor);
+	    helpWindow.createLabels();
+	    helpWindow.activate();
 
-	    undoButton = document.createElement("input");
-	    undoButton.setAttribute("id", "undo");
-	    undoButton.setAttribute("alipielements", "alipi");
-	    undoButton.setAttribute("type", "submit");
-	    undoButton.setAttribute("Value", "Undo");
-	    undoButton.setAttribute("style", "position:relative;left:850px;bottom:50px;font-size:18px;font-weight:bold;");
+	};
 
-	    helpLink = document.createElement("input");
-	    helpLink.setAttribute("id", "help");
-	    helpLink.setAttribute("alipielements", "alipi");
-	    helpLink.setAttribute("type", "submit");
-	    helpLink.setAttribute("Value", "Help");
-	    helpLink.setAttribute("style", "position:relative;bottom:50px;left:750px;font-size:18px;font-weight:bold;");
 
-	// redButtonStyleAttributes = panelButtonAttributes.put({id : 'publish'}).addStyle('position:absolute; top:-13px; right:04%; width:22%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
+	undoButton = document.createElement("input");
+	undoButton.setAttribute("id", "undo");
+	undoButton.setAttribute("alipielements", "alipi");
+	undoButton.setAttribute("type", "submit");
+	undoButton.setAttribute("Value", "Undo");
+	undoButton.setAttribute("style", "position:relative;top:-55px;left:825px;font-size:18px;font-weight:bold;width:100px;height:30px;");
+	overlayDiv.appendChild(undoButton);
+	undoButton.onclick = function undoButtonOnClick() {
+	    pageEditor.commandUndo();
+	    return false;
+	};
 
-	// undoButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; left:35%; top:-13px; width:15%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
 
-	// helpLinkStyleAttributes = panelButtonAttributes.addStyle('position:absolute; left:0%; top:-13px; width:15%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
-
-	//	publishButton = DOM.BUILDER.BUTTON(redButtonStyleAttributes, 'Publish'); 
-	
+	publishButton = document.createElement("input");
+	publishButton.setAttribute("id", "publish");
+	publishButton.setAttribute("alipielements", "alipi");
+	publishButton.setAttribute("type", "submit");
+	publishButton.setAttribute("Value", "Publish");
+	publishButton.setAttribute("style", "position:relative;top:-55px;left:900px;font-size:18px;font-weight:bold;width:100px;height:30px;");
+	overlayDiv.appendChild(publishButton);
 	var dialog = 0;
 	publishButton.onclick = function publishButtonOnClick() {
 	    if (pageEditor.hasChangesPending() /* && (pageEditor.formUncomplete() ==false) */ ) {
@@ -2912,62 +2941,19 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		pageEditor.showMessage("Nothing to post");
 	    }
 	};
-	
+
+		
     
 	this.blogpost = function blogpost() {
 	    if (locName.value == "" || langName.value == "" || styleSelect.value == "" || author.value == "" || (ourcheck.checked == false && yourcheck.checked == false)) {
 		alert("Please give all the details, it will be used further");
 	    } else {
-	    pageEditor.commandPublish();
-	    pageEditor.showMessage("... Please wait, your blog is being posted");
-	    $('#targetoverlay').remove();
+		pageEditor.commandPublish();
+		pageEditor.showMessage("... Please wait, your blog is being posted");
+		$('#targetoverlay').remove();
 	    }
 	};
 	// End of okButton function
-
-	//	undoButton = DOM.BUILDER.BUTTON(undoButtonStyleAttributes, 'Undo');
-	undoButton.onclick = function undoButtonOnClick() {
-	    pageEditor.commandUndo();
-	    return false;
-	};
-
-	//	helpLink = DOM.BUILDER.BUTTON(helpLinkStyleAttributes, 'Help');
-	helpLink.onclick = function helpLinkOnClick() {
-	    helpWindow = new HelpWindow(pageEditor);
-	    helpWindow.createLabels();
-	    helpWindow.activate();
-
-	};
-
-
-	// editModeChangeButtonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), editModeChangeSaveButton, editModeChangeDiscardButton);
-
-	//	buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), helpLink, undoButton, publishButton);
-
-	//	firstRowDiv = DOM.BUILDER.DIV(DOM.BUILDER.DIV(editAttributes.addStyle('width:500px; position: absolute; top: 0; left: 1%;').values(), messageDiv), buttonDiv);
-	    image = document.createElement("img");
-	    image.setAttribute("id", "close-image");
-	    image.setAttribute("alipielements", "alipi");
-	    image.setAttribute("src", "http://dev.a11y.in/alipi/images/close_button.png");
-	    image.setAttribute("style", "position:relative;width:25px;height:28px;");
-
-	    //	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:0.5%; width:25px; height:25px;').values());
-
-	wrapperDiv =  DOM.BUILDER.DIV(fontTypeAttributes.addStyle('overflow: inherit; overflow-x: visible; position: fixed; z-index: 2147483645; left: 0; top: 0;min-width:800px; width: 100%; height:30px;; background-color: rgba(0, 0, 0, 0.5);').values(), image, messageDiv, helpLink, undoButton, publishButton // firstRowDiv
-				      );
-
-
-	overlayDiv = DOM.BUILDER.DIV(fontTypeAttributes.addStyle('overflow: inherit;').values(), wrapperDiv);
-
-	document.body.appendChild(overlayDiv);
-
-	image.onclick=function(){
-	    answer = confirm("Do you really want to exit the editor?")
-	    if (answer !=0)
-		{
-		    window.location.reload();
-		}
-	}
 
 	this.show = function show(activate) {
 	    //	    overlayDiv.style.display = 'block';
