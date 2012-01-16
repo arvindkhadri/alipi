@@ -11,8 +11,12 @@ import gdata.gauth
 import gdata.blogger.client
 from flask import g
 from flask import redirect
+<<<<<<< HEAD
+import urllib
+=======
 from urllib import quote_plus
 from urllib import unquote_plus
+>>>>>>> upstream/gh-pages
 app = Flask(__name__)
 connection = pymongo.Connection('localhost',27017) #Create the object once and use it.
 db = connection['dev_alipi']
@@ -20,7 +24,7 @@ collection = db['post']
 @app.route('/')
 def start_page() :
     d = {}
-    d['foruri'] = request.args['foruri']
+    d['foruri'] = urllib.unquote(request.args['foruri'])
     myhandler1 = urllib2.Request(d['foruri'],headers={'User-Agent':"Mozilla/5.0 (X11; U; Linux i686) Gecko/20071127 Firefox/2.0.0.11"}) #A fix to send user-agents, so that sites render properly.
     try:
         a = urllib2.urlopen(myhandler1)
@@ -47,7 +51,7 @@ def start_page() :
         root.body.append(script_edit)
         script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
         script_test.set("type", "text/javascript")
-        script_edit.set("src", "http://dev.a11y.in/alipi/wsgi/page_edit.js")
+        script_edit.set("src", "http://127.0.0.1/server/wsgi/page_edit.js")
         script_edit.set("type","text/javascript")
         
         script_jq_mini = root.makeelement('script')
@@ -347,6 +351,10 @@ def show_directory():
         if i.has_key('about'):
             ren.append("http://dev.a11y.in/web?foruri="+quote_plus(i['about'])+'&lang='+i['lang'])
     return render_template('directory.html', name=ren)
+
+@app.route('/directory')
+def show_dir():
+    return render_template('directory.html')
 
 import logging,os
 from logging import FileHandler
