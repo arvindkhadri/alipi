@@ -1,4 +1,5 @@
-(function( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) {
+function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) 
+{
 
     var console, PopupControl, M4ImageElement,locName='',langName = '',styleName='',authorValue;
     var editAttributes, elementAttributes, fontTypeAttributes, normalFontAttributes, popupContainerAttributes, editButtonAttributes, editTextInputAttributes, editSubmitAttributes, editTitleAttributes, panelButtonAttributes, buttonPanelAttributes, actionPanelAttributes, closeButtonAttributes, actionButtonAttributes, redButtonAttributes, leftBorderStyle, rightBorderStyle, titleButtonImageAttributes, titleButtonDisplayTextAttributes, actionButtonImageAttributes, actionButtonDisplayTextAttributes,greyArrowAttributes, pageEditor, splashWindow, loadingTimerId, keepOriginal = false;
@@ -16,25 +17,25 @@
 	    } else if (node.attachEvent) {
 		// Simulates W3C event model in IE
 		return node.attachEvent('on' + event, function() {
-		    callback( {
-			target : window.event.srcElement,
-			pageX : window.event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft),
-			pageY : window.event.clientY  + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop),
-			clientX : window.event.clientX,
-			clientY : window.event.clientY,
-			keyCode : window.event.keyCode,
-			ctrlKey : window.event.ctrlKey,
-			altKey : window.event.altKey,
-			shiftKey : window.event.shiftKey,
-			type : window.event.type,
-			preventDefault : function() {
-			    window.event.returnValue = false;
-			},
-			stopPropagation : function() {
-			    window.event.cancelBubble = true;
-			}
+			callback( {
+				target : window.event.srcElement,
+				pageX : window.event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft),
+				pageY : window.event.clientY  + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop),
+				clientX : window.event.clientX,
+				clientY : window.event.clientY,
+				keyCode : window.event.keyCode,
+				ctrlKey : window.event.ctrlKey,
+				altKey : window.event.altKey,
+				shiftKey : window.event.shiftKey,
+				type : window.event.type,
+				preventDefault : function() {
+				    window.event.returnValue = false;
+				},
+				stopPropagation : function() {
+				    window.event.cancelBubble = true;
+				}
+			    });
 		    });
-		});
 	    }
 	    return false;
 	};
@@ -42,7 +43,6 @@
 	// String concatenation in <IE9 is really slow.
 	UTIL.StringBuffer = function StringBuffer() {
 	    var buffer = [];
-
 	    this.append = function append(string) {
 		buffer.push(string);
 		return this;
@@ -66,14 +66,14 @@
 	    var index = 1, timer;
 
 	    timer = window.setInterval(function() {
-		if (index < steps) {
-		    callback(index, false);
-		    index += 1;
-		} else {
-		    clearInterval(timer);
-		    callback(index, true);
-		}
-	    }, delay);
+		    if (index < steps) {
+			callback(index, false);
+			index += 1;
+		    } else {
+			clearInterval(timer);
+			callback(index, true);
+		    }
+		}, delay);
 	};
 
 	UTIL.hashToQueryString = function hashToQueryString(hash) {
@@ -109,31 +109,31 @@
 	     var modules = (typeof module !== 'undefined' && module.exports);
 
 	     var document = (__global__.document || {
-		 // Provide a dummy document object if we're not in a browser, to keep
-		 // interpreters happy.
-		 createElement: function(){},
-		 createDocumentFragment: function(){},
-		 createTextNode: function(){},
-		 getElementById: function(){}
-	     }),
-	     toString = Object.prototype.toString,
-	     slice = Array.prototype.slice,
-	     // Functioms and objects involved in implementing cross-crowser workarounds
-	     createElement,
-	     eventAttrs,
-	     addEvent,
-	     setInnerHTML,
-	     /** Tag names defined in the HTML 4.01 Strict and Frameset DTDs. */
-	     tagNames = ("a abbr acronym address area b bdo big blockquote body br " +
-			 "button caption cite code col colgroup dd del dfn div dl dt em fieldset " +
-			 "form frame frameset h1 h2 h3 h4 h5 h6 hr head html i iframe img input " +
-			 "ins kbd label legend li link map meta noscript " /* :) */ + "object ol " +
-			 "optgroup option p param pre q samp script select small span strong style " +
-			 "sub sup table tbody td textarea tfoot th thead title tr tt ul var").split(" "),
-	     /** Lookup for known tag names. */
-	     tagNameLookup = lookup(tagNames),
-	     /** * Lookup for tags defined as EMPTY in the HTML 4.01 Strict and Frameset DTDs. */
-	     emptyTags = lookup("area base br col frame hr input img link meta param".split(" "));
+		     // Provide a dummy document object if we're not in a browser, to keep
+		     // interpreters happy.
+		     createElement: function(){},
+		     createDocumentFragment: function(){},
+		     createTextNode: function(){},
+		     getElementById: function(){}
+		 }),
+		 toString = Object.prototype.toString,
+		 slice = Array.prototype.slice,
+		 // Functioms and objects involved in implementing cross-crowser workarounds
+		 createElement,
+		 eventAttrs,
+		 addEvent,
+		 setInnerHTML,
+		 /** Tag names defined in the HTML 4.01 Strict and Frameset DTDs. */
+		 tagNames = ("a abbr acronym address area b bdo big blockquote body br " +
+			     "button caption cite code col colgroup dd del dfn div dl dt em fieldset " +
+			     "form frame frameset h1 h2 h3 h4 h5 h6 hr head html i iframe img input " +
+			     "ins kbd label legend li link map meta noscript " /* :) */ + "object ol " +
+			     "optgroup option p param pre q samp script select small span strong style " +
+			     "sub sup table tbody td textarea tfoot th thead title tr tt ul var").split(" "),
+		 /** Lookup for known tag names. */
+		 tagNameLookup = lookup(tagNames),
+		 /** * Lookup for tags defined as EMPTY in the HTML 4.01 Strict and Frameset DTDs. */
+		 emptyTags = lookup("area base br col frame hr input img link meta param".split(" "));
 
 	     // Utility functions -----------------------------------------------------------
 
@@ -143,9 +143,9 @@
 	     function extend(dest, source)
 	     {
 		 for (var name in source)
-		 {
-		     dest[name] = source[name];
-		 }
+		     {
+			 dest[name] = source[name];
+		     }
 		 return dest;
 	     }
 
@@ -156,9 +156,9 @@
 	     {
 		 var obj = {}, i = 0, l = a.length;
 		 for (; i < l; i++)
-		 {
-		     obj[a[i]] = true;
-		 }
+		     {
+			 obj[a[i]] = true;
+		     }
 		 return obj;
 	     }
 
@@ -192,7 +192,7 @@
 		 return (!!o && toString.call(o) === "[object Object]" &&
 			 !o.nodeType &&
 			 !(o instanceof SafeString))
-	     }
+		     }
 
 	     /**
 	      * Flattens an Array in-place, replacing any Arrays it contains with their
@@ -201,19 +201,19 @@
 	     function flatten(a)
 	     {
 		 for (var i = 0, l = a.length; i < l; i++)
-		 {
-		     var c = a[i];
-		     if (isArray(c))
 		     {
-			 // Make sure we loop to the Array's new length
-			 l += c.length - 1;
-			 // Replace the current item with its contents
-			 Array.prototype.splice.apply(a, [i, 1].concat(c));
-			 // Stay on the current index so we continue looping at the first
-			 // element of the array we just spliced in or removed.
-			 i--;
+			 var c = a[i];
+			 if (isArray(c))
+			     {
+				 // Make sure we loop to the Array's new length
+				 l += c.length - 1;
+				 // Replace the current item with its contents
+				 Array.prototype.splice.apply(a, [i, 1].concat(c));
+				 // Stay on the current index so we continue looping at the first
+				 // element of the array we just spliced in or removed.
+				 i--;
+			     }
 		     }
-		 }
 	     }
 
 	     /**
@@ -230,83 +230,83 @@
 
 
 	     eventAttrs = lookup(
-		 ("blur focus focusin focusout load resize scroll unload click dblclick " +
-		  "mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
-		  "change select submit keydown keypress keyup error").split(" "));
+				 ("blur focus focusin focusout load resize scroll unload click dblclick " +
+				  "mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
+				  "change select submit keydown keypress keyup error").split(" "));
 
 	     if (!modules)
-	     {
-		 // jQuery is not available, implement the most essential workarounds
-		 var supportsStyle = (function()
-				      {
-					  var div = document.createElement("div");
-					  div.style.display = "none";
-					  div.innerHTML = '<span style="color:silver;">s<span>';
-					  return /silver/.test(div.getElementsByTagName("span")[0].getAttribute("style"));
-				      })(),
-		 specialRE = /^(?:href|src|style)$/,
-		 attributeTranslations = {
-                     cellspacing: "cellSpacing",
-                     "class": "className",
-                     colspan: "colSpan",
-                     "for": "htmlFor",
-                     frameborder: "frameBorder",
-                     maxlength: "maxLength",
-                     readonly: "readOnly",
-                     rowspan: "rowSpan",
-                     tabindex: "tabIndex",
-                     usemap: "useMap"
-		 };
-
-		 createElement = function(tagName, attributes)
 		 {
-		     var el = document.createElement(tagName); // Damn you, IE
+		     // jQuery is not available, implement the most essential workarounds
+		     var supportsStyle = (function()
+					  {
+					      var div = document.createElement("div");
+					      div.style.display = "none";
+					      div.innerHTML = '<span style="color:silver;">s<span>';
+					      return /silver/.test(div.getElementsByTagName("span")[0].getAttribute("style"));
+					  })(),
+			 specialRE = /^(?:href|src|style)$/,
+			 attributeTranslations = {
+			 cellspacing: "cellSpacing",
+			 "class": "className",
+			 colspan: "colSpan",
+			 "for": "htmlFor",
+			 frameborder: "frameBorder",
+			 maxlength: "maxLength",
+			 readonly: "readOnly",
+			 rowspan: "rowSpan",
+			 tabindex: "tabIndex",
+			 usemap: "useMap"
+		     };
 
-		     for (var name in attributes)
-		     {
-			 var value = attributes[name],
-			 name = attributeTranslations[name] || name;
-
-			 if (name in eventAttrs)
+		     createElement = function(tagName, attributes)
 			 {
-			     el["on" + name] = value;
-			     continue;
-			 }
+			     var el = document.createElement(tagName); // Damn you, IE
 
-			 var special = specialRE.test(name);
-			 //if ((name in el || el[name] !== undefined) && !special)
-			 //el[name] = value;
-			 if (!supportsStyle && name == "style")
-			     el.style.cssText = ""+value;
-			 else
-			     el.setAttribute(name, ""+value);
-		     }
+			     for (var name in attributes)
+				 {
+				     var value = attributes[name],
+					 name = attributeTranslations[name] || name;
 
-		     return el;
-		 };
+				     if (name in eventAttrs)
+					 {
+					     el["on" + name] = value;
+					     continue;
+					 }
 
-		 addEvent = function(id, event, handler)
-		 {
-		     document.getElementById(id)["on" + event] = handler;
-		 };
+				     var special = specialRE.test(name);
+				     //if ((name in el || el[name] !== undefined) && !special)
+				     //el[name] = value;
+				     if (!supportsStyle && name == "style")
+					 el.style.cssText = ""+value;
+				     else
+					 el.setAttribute(name, ""+value);
+				 }
 
-		 setInnerHTML = function(el, html)
-		 {
-		     try
-		     {
-			 el.innerHTML = html;
-		     }
-		     catch (e)
-		     {
-			 var div = document.createElement("div");
-			 div.innerHTML = html;
-			 while (el.firstChild)
-			     el.removeChild(el.firstChild);
-			 while (div.firstChild)
-			     el.appendChild(div.firstChild);
-		     }
-		 };
-	     }
+			     return el;
+			 };
+
+		     addEvent = function(id, event, handler)
+			 {
+			     document.getElementById(id)["on" + event] = handler;
+			 };
+
+		     setInnerHTML = function(el, html)
+			 {
+			     try
+				 {
+				     el.innerHTML = html;
+				 }
+			     catch (e)
+				 {
+				     var div = document.createElement("div");
+				     div.innerHTML = html;
+				     while (el.firstChild)
+					 el.removeChild(el.firstChild);
+				     while (div.firstChild)
+					 el.appendChild(div.firstChild);
+				 }
+			 };
+		 }
 
 
 	     // HTML Escaping ---------------------------------------------------------------
@@ -318,9 +318,9 @@
 	     function conditionalEscape(html)
 	     {
 		 if (html instanceof SafeString)
-		 {
-		     return html.value;
-		 }
+		     {
+			 return html.value;
+		     }
 		 return escapeHTML(""+html);
 	     }
 
@@ -336,9 +336,9 @@
 	     inheritFrom(SafeString, String);
 
 	     SafeString.prototype.toString = SafeString.prototype.valueOf = function()
-	     {
-		 return this.value;
-	     };
+		 {
+		     return this.value;
+		 };
 
 	     // Mock DOM Elements -----------------------------------------------------------
 
@@ -361,70 +361,70 @@
 	      * child nodes and empties the fragment.
 	      */
 	     HTMLNode.prototype._inlineFragments = function()
-	     {
-		 for (var i = 0, l = this.childNodes.length; i < l; i++)
 		 {
-		     var child = this.childNodes[i];
-		     if (child instanceof HTMLFragment)
-		     {
-			 this.childNodes.splice.apply(this.childNodes,
-						      [i, 1].concat(child.childNodes));
-			 // Clear the fragment on append, as per DocumentFragment
-			 child.childNodes = [];
-		     }
-		 }
-	     };
+		     for (var i = 0, l = this.childNodes.length; i < l; i++)
+			 {
+			     var child = this.childNodes[i];
+			     if (child instanceof HTMLFragment)
+				 {
+				     this.childNodes.splice.apply(this.childNodes,
+								  [i, 1].concat(child.childNodes));
+				     // Clear the fragment on append, as per DocumentFragment
+				     child.childNodes = [];
+				 }
+			 }
+		 };
 
 	     /**
 	      * Emulates ``appendChild``, inserting fragment child node contents and
 	      * emptying the fragment if one is given.
 	      */
 	     HTMLNode.prototype.appendChild = function(node)
-	     {
-		 if (node instanceof HTMLFragment)
 		 {
-		     this.childNodes = this.childNodes.concat(node.childNodes);
-		     // Clear the fragment on append, as per DocumentFragment
-		     node.childNodes = [];
-		 }
-		 else
-		 {
-		     this.childNodes.push(node);
-		 }
-	     };
+		     if (node instanceof HTMLFragment)
+			 {
+			     this.childNodes = this.childNodes.concat(node.childNodes);
+			     // Clear the fragment on append, as per DocumentFragment
+			     node.childNodes = [];
+			 }
+		     else
+			 {
+			     this.childNodes.push(node);
+			 }
+		 };
 
 	     /**
 	      * Emulates ``cloneNode`` so cloning of ``HTMLFragment`` objects works
 	      * as expected.
 	      */
 	     HTMLNode.prototype.cloneNode = function(deep)
-	     {
-		 var clone = this._clone();
-		 if (deep === true)
 		 {
-		     for (var i = 0, l = this.childNodes.length; i < l; i++)
-		     {
-			 var node = this.childNodes[i];
-			 if (node instanceof HTMLElement)
+		     var clone = this._clone();
+		     if (deep === true)
 			 {
-			     clone.childNodes.push(node.cloneNode(deep));
+			     for (var i = 0, l = this.childNodes.length; i < l; i++)
+				 {
+				     var node = this.childNodes[i];
+				     if (node instanceof HTMLElement)
+					 {
+					     clone.childNodes.push(node.cloneNode(deep));
+					 }
+				     else
+					 {
+					     clone.childNodes.push(node);
+					 }
+				 }
 			 }
-			 else
-			 {
-			     clone.childNodes.push(node);
-			 }
-		     }
-		 }
-		 return clone;
-	     };
+		     return clone;
+		 };
 
 	     /**
 	      * Creates the object to be used for deep cloning.
 	      */
 	     HTMLNode.prototype._clone = function()
-	     {
-		 return new Node();
-	     };
+		 {
+		     return new Node();
+		 };
 
 	     /**
 	      * Partially emulates a DOM ``Element ``for HTML generation.
@@ -448,11 +448,11 @@
 	     HTMLElement.prototype.nodeType = 1;
 
 	     HTMLElement.prototype._clone = function()
-	     {
-		 var clone = new HTMLElement(this.tagName, extend({}, this.attributes));
-		 clone.xhtml = this.xhtml;
-		 return clone;
-	     };
+		 {
+		     var clone = new HTMLElement(this.tagName, extend({}, this.attributes));
+		     clone.xhtml = this.xhtml;
+		     return clone;
+		 };
 
 	     /**
 	      * Creates an HTML/XHTML representation of an HTMLElement.
@@ -465,83 +465,83 @@
 	      * If necessary, a unique id will be generated.
 	      */
 	     HTMLElement.prototype.toString = function()
-	     {
-		 var trackEvents = arguments[0] || false,
-		 tagName = (tagNameLookup[this.tagName]
-			    ? this.tagName
-			    : conditionalEscape(this.tagName));
-
-		 // Opening tag
-		 var parts = ["<" + tagName];
-		 for (var attr in this.attributes)
 		 {
-		     // innerHTML is a special case, as we can use it to (perhaps
-		     // inadvisedly) to specify entire contents as a string.
-		     if (attr === "innerHTML")
-		     {
-			 continue;
-		     }
-		     // Don't create attributes which wouldn't make sense in HTML mode -
-		     // they can be dealt with afet insertion using addEvents().
-		     if (attr in eventAttrs)
-		     {
-			 if (trackEvents === true && !this.eventsFound)
+		     var trackEvents = arguments[0] || false,
+		     tagName = (tagNameLookup[this.tagName]
+				? this.tagName
+				: conditionalEscape(this.tagName));
+
+		     // Opening tag
+		     var parts = ["<" + tagName];
+		     for (var attr in this.attributes)
 			 {
-			     this.eventsFound = true;
+			     // innerHTML is a special case, as we can use it to (perhaps
+			     // inadvisedly) to specify entire contents as a string.
+			     if (attr === "innerHTML")
+				 {
+				     continue;
+				 }
+			     // Don't create attributes which wouldn't make sense in HTML mode -
+			     // they can be dealt with afet insertion using addEvents().
+			     if (attr in eventAttrs)
+				 {
+				     if (trackEvents === true && !this.eventsFound)
+					 {
+					     this.eventsFound = true;
+					 }
+				     continue;
+				 }
+			     parts.push(" " + conditionalEscape(attr.toLowerCase()) + "=\"" +
+					conditionalEscape(this.attributes[attr]) + "\"");
 			 }
-			 continue;
-		     }
-		     parts.push(" " + conditionalEscape(attr.toLowerCase()) + "=\"" +
-				conditionalEscape(this.attributes[attr]) + "\"");
-		 }
-		 if (this.eventsFound && !("id" in this.attributes))
-		 {
-		     // Ensure an id is present so we can grab this element later
-		     this.id  = "__DB" + HTMLElement.eventTrackerId++ + "__";
-		     parts.push(' id="' + this.id + '"');
-		 }
-		 parts.push(">");
+		     if (this.eventsFound && !("id" in this.attributes))
+			 {
+			     // Ensure an id is present so we can grab this element later
+			     this.id  = "__DB" + HTMLElement.eventTrackerId++ + "__";
+			     parts.push(' id="' + this.id + '"');
+			 }
+		     parts.push(">");
 
-		 if (emptyTags[tagName])
-		 {
-		     if (this.xhtml)
-		     {
-			 parts.splice(parts.length - 1, 1, " />");
-		     }
+		     if (emptyTags[tagName])
+			 {
+			     if (this.xhtml)
+				 {
+				     parts.splice(parts.length - 1, 1, " />");
+				 }
+			     return parts.join("");
+			 }
+
+		     // If innerHTML was given, use it exclusively for the contents
+		     if ("innerHTML" in this.attributes)
+			 {
+			     parts.push(this.attributes.innerHTML);
+			 }
+		     else
+			 {
+			     for (var i = 0, l = this.childNodes.length; i < l; i++)
+				 {
+				     var node = this.childNodes[i];
+				     if (node instanceof HTMLElement || node instanceof SafeString)
+					 {
+					     parts.push(node.toString(trackEvents));
+					 }
+				     else if (node === "\u00A0")
+					 {
+					     // Special case to convert these back to entities,
+					     parts.push("&nbsp;");
+					 }
+				     else
+					 {
+					     // Coerce to string and escape
+					     parts.push(escapeHTML(""+node));
+					 }
+				 }
+			 }
+
+		     // Closing tag
+		     parts.push("</" + tagName + ">");
 		     return parts.join("");
-		 }
-
-		 // If innerHTML was given, use it exclusively for the contents
-		 if ("innerHTML" in this.attributes)
-		 {
-		     parts.push(this.attributes.innerHTML);
-		 }
-		 else
-		 {
-		     for (var i = 0, l = this.childNodes.length; i < l; i++)
-		     {
-			 var node = this.childNodes[i];
-			 if (node instanceof HTMLElement || node instanceof SafeString)
-			 {
-			     parts.push(node.toString(trackEvents));
-			 }
-			 else if (node === "\u00A0")
-			 {
-			     // Special case to convert these back to entities,
-			     parts.push("&nbsp;");
-			 }
-			 else
-			 {
-			     // Coerce to string and escape
-			     parts.push(escapeHTML(""+node));
-			 }
-		     }
-		 }
-
-		 // Closing tag
-		 parts.push("</" + tagName + ">");
-		 return parts.join("");
-	     };
+		 };
 
 	     /**
 	      * If event attributes were found when ``toString(true)`` was called, this
@@ -549,39 +549,39 @@
 	      * to it and call ``addEvents`` on any HTMLElement children.
 	      */
 	     HTMLElement.prototype.addEvents = function()
-	     {
-		 if (this.eventsFound)
 		 {
-		     var id = ("id" in this.attributes
-			       ? conditionalEscape(this.attributes.id)
-			       : this.id);
-		     for (var attr in this.attributes)
-		     {
-			 if (attr in eventAttrs)
+		     if (this.eventsFound)
 			 {
-			     addEvent(id, attr, this.attributes[attr]);
+			     var id = ("id" in this.attributes
+				       ? conditionalEscape(this.attributes.id)
+				       : this.id);
+			     for (var attr in this.attributes)
+				 {
+				     if (attr in eventAttrs)
+					 {
+					     addEvent(id, attr, this.attributes[attr]);
+					 }
+				 }
+
+			     delete this.eventsFound;
+			     delete this.id;
 			 }
-		     }
 
-		     delete this.eventsFound;
-		     delete this.id;
-		 }
-
-		 for (var i = 0, l = this.childNodes.length; i < l; i++)
-		 {
-		     var node = this.childNodes[i];
-		     if (node instanceof HTMLElement)
-		     {
-			 node.addEvents();
-		     }
-		 }
-	     };
+		     for (var i = 0, l = this.childNodes.length; i < l; i++)
+			 {
+			     var node = this.childNodes[i];
+			     if (node instanceof HTMLElement)
+				 {
+				     node.addEvents();
+				 }
+			 }
+		 };
 
 	     HTMLElement.prototype.insertWithEvents = function(el)
-	     {
-		 setInnerHTML(el, this.toString(true));
-		 this.addEvents();
-	     };
+		 {
+		     setInnerHTML(el, this.toString(true));
+		     this.addEvents();
+		 };
 
 	     /**
 	      * Partially emulates a DOM ``DocumentFragment`` for HTML generation.
@@ -593,9 +593,9 @@
 	     inheritFrom(HTMLFragment, HTMLNode);
 
 	     HTMLFragment.prototype._clone = function()
-	     {
-		 return new HTMLFragment();
-	     };
+		 {
+		     return new HTMLFragment();
+		 };
 
 	     HTMLFragment.prototype.nodeType = 11;
 	     HTMLFragment.prototype.nodeName = "#document-fragment";
@@ -607,53 +607,53 @@
 	      * any child HTMLElements when their ``toString()`` is called.
 	      */
 	     HTMLFragment.prototype.toString = function()
-	     {
-		 var trackEvents = arguments[0] || false,
-		 parts = [];
-
-		 // Contents
-		 for (var i = 0, l = this.childNodes.length; i < l; i++)
 		 {
-		     var node = this.childNodes[i];
-		     if (node instanceof HTMLElement || node instanceof SafeString)
-		     {
-			 parts.push(node.toString(trackEvents));
-		     }
-		     else if (node === "\u00A0")
-		     {
-			 // Special case to convert these back to entities,
-			 parts.push("&nbsp;");
-		     }
-		     else
-		     {
-			 // Coerce to string and escape
-			 parts.push(escapeHTML(""+node));
-		     }
-		 }
+		     var trackEvents = arguments[0] || false,
+		     parts = [];
 
-		 return parts.join("");
-	     };
+		     // Contents
+		     for (var i = 0, l = this.childNodes.length; i < l; i++)
+			 {
+			     var node = this.childNodes[i];
+			     if (node instanceof HTMLElement || node instanceof SafeString)
+				 {
+				     parts.push(node.toString(trackEvents));
+				 }
+			     else if (node === "\u00A0")
+				 {
+				     // Special case to convert these back to entities,
+				     parts.push("&nbsp;");
+				 }
+			     else
+				 {
+				     // Coerce to string and escape
+				     parts.push(escapeHTML(""+node));
+				 }
+			 }
+
+		     return parts.join("");
+		 };
 
 	     /**
 	      * Calls ``addEvents()`` on any HTMLElement children.
 	      */
 	     HTMLFragment.prototype.addEvents = function()
-	     {
-		 for (var i = 0, l = this.childNodes.length; i < l; i++)
 		 {
-		     var node = this.childNodes[i];
-		     if (node instanceof HTMLElement)
-		     {
-			 node.addEvents();
-		     }
-		 }
-	     };
+		     for (var i = 0, l = this.childNodes.length; i < l; i++)
+			 {
+			     var node = this.childNodes[i];
+			     if (node instanceof HTMLElement)
+				 {
+				     node.addEvents();
+				 }
+			 }
+		 };
 
 	     HTMLFragment.prototype.insertWithEvents = function(el)
-	     {
-		 setInnerHTML(el, this.toString(true));
-		 this.addEvents();
-	     };
+		 {
+		     setInnerHTML(el, this.toString(true));
+		     this.addEvents();
+		 };
 
 	     /**
 	      * Creates a function which, when called, uses DOMBuilder to create an element
@@ -665,34 +665,34 @@
 	     function createElementFunction(tagName)
 	     {
 		 var elementFunction = function()
-		 {
-		     if (arguments.length === 0)
 		     {
-			 // Short circuit if there are no arguments, to avoid further
-			 // argument inspection.
-			 if (DOMBuilder.mode == "DOM")
-			 {
-			     return document.createElement(tagName);
-			 }
+			 if (arguments.length === 0)
+			     {
+				 // Short circuit if there are no arguments, to avoid further
+				 // argument inspection.
+				 if (DOMBuilder.mode == "DOM")
+				     {
+					 return document.createElement(tagName);
+				     }
+				 else
+				     {
+					 return new HTMLElement(tagName);
+				     }
+			     }
 			 else
-			 {
-			     return new HTMLElement(tagName);
-			 }
-		     }
-		     else
-		     {
-			 return createElementFromArguments(tagName, slice.call(arguments));
-		     }
-		 };
+			     {
+				 return createElementFromArguments(tagName, slice.call(arguments));
+			     }
+		     };
 
 		 // Add a ``map`` function which will call ``DOMBuilder.map`` with the
 		 // appropriate ``tagName``.
 		 elementFunction.map = function()
-		 {
-		     var mapArgs = slice.call(arguments);
-		     mapArgs.unshift(tagName);
-		     return DOMBuilder.map.apply(DOMBuilder, mapArgs);
-		 };
+		     {
+			 var mapArgs = slice.call(arguments);
+			 mapArgs.unshift(tagName);
+			 return DOMBuilder.map.apply(DOMBuilder, mapArgs);
+		     };
 
 		 return elementFunction;
 	     }
@@ -715,27 +715,27 @@
 	     function createElementFromArguments(tagName, args)
 	     {
 		 var attributes, children,
-		 // The short circuit in ``createElementFunction`` ensures we will
-		 // always have at least one argument when called via element creation
-		 // functions.
-		 argsLength = args.length, firstArg = args[0];
+		     // The short circuit in ``createElementFunction`` ensures we will
+		     // always have at least one argument when called via element creation
+		     // functions.
+		     argsLength = args.length, firstArg = args[0];
 
 		 if (argsLength === 1 &&
 		     isArray(firstArg))
-		 {
-		     children = firstArg; // ([child1, ...])
-		 }
+		     {
+			 children = firstArg; // ([child1, ...])
+		     }
 		 else if (isObject(firstArg))
-		 {
-		     attributes = firstArg;
-		     children = (argsLength == 2 && isArray(args[1])
-				 ? args[1]               // (attributes, [child1, ...])
-				 : slice.call(args, 1)); // (attributes, child1, ...)
-		 }
+		     {
+			 attributes = firstArg;
+			 children = (argsLength == 2 && isArray(args[1])
+				     ? args[1]               // (attributes, [child1, ...])
+				     : slice.call(args, 1)); // (attributes, child1, ...)
+		     }
 		 else
-		 {
-		     children = slice.call(args); // (child1, ...)
-		 }
+		     {
+			 children = slice.call(args); // (child1, ...)
+		     }
 
 		 return DOMBuilder.createElement(tagName, attributes, children);
 	     }
@@ -775,26 +775,26 @@
 		     var originalMode = this.mode;
 		     this.mode = mode;
 		     try
-		     {
-			 return func();
-		     }
+			 {
+			     return func();
+			 }
 		     finally
-		     {
-			 this.mode = originalMode;
-		     }
+			 {
+			     this.mode = originalMode;
+			 }
 		 },
 
 		 /**
 		  * An ``Object`` containing element creation functions.
 		  */
 		 elementFunctions: (function(obj)
-				    {
-					for (var i = 0, tagName; tagName = tagNames[i]; i++)
-					{
-					    obj[tagName.toUpperCase()] = createElementFunction(tagName);
-					}
-					return obj;
-				    })({}),
+	     {
+		 for (var i = 0, tagName; tagName = tagNames[i]; i++)
+		     {
+			 obj[tagName.toUpperCase()] = createElementFunction(tagName);
+		     }
+		 return obj;
+	     })({}),
 
 		 /**
 		  * Adds element creation functions to a given context ``Object``, or to
@@ -824,30 +824,30 @@
 		     flatten(children);
 
 		     if (this.mode != "DOM")
-		     {
-			 return new HTMLElement(tagName, attributes, children);
-		     }
+			 {
+			     return new HTMLElement(tagName, attributes, children);
+			 }
 
 		     // Create the element and set its attributes and event listeners
 		     var el = createElement(tagName, attributes);
 
 		     // If content was set via innerHTML, we're done...
 		     if (!("innerHTML" in attributes))
-		     {
-			 // ...otherwise, append children
-			 for (var i = 0, l = children.length; i < l; i++)
 			 {
-			     var child = children[i];
-			     if (child && child.nodeType)
-			     {
-				 el.appendChild(child);
-			     }
-			     else
-			     {
-				 el.appendChild(document.createTextNode(""+child));
-			     }
+			     // ...otherwise, append children
+			     for (var i = 0, l = children.length; i < l; i++)
+				 {
+				     var child = children[i];
+				     if (child && child.nodeType)
+					 {
+					     el.appendChild(child);
+					 }
+				     else
+					 {
+					     el.appendChild(document.createTextNode(""+child));
+					 }
+				 }
 			 }
-		     }
 		     return el;
 		 },
 
@@ -891,51 +891,51 @@
 		 {
 		     // Determine how the function was called
 		     if (isArray(arguments[1]))
-		     {
-			 // (tagName, items, func)
-			 var defaultAttrs = {},
-			 items = arguments[1],
-			 func = (isFunction(arguments[2]) ? arguments[2] : null);
-		     }
+			 {
+			     // (tagName, items, func)
+			     var defaultAttrs = {},
+			     items = arguments[1],
+			     func = (isFunction(arguments[2]) ? arguments[2] : null);
+			 }
 		     else
-		     {
-			 // (tagName, attrs, items, func)
-			 var defaultAttrs = arguments[1],
-			 items = arguments[2],
-			 func = (isFunction(arguments[3]) ? arguments[3] : null);
-		     }
+			 {
+			     // (tagName, attrs, items, func)
+			     var defaultAttrs = arguments[1],
+			     items = arguments[2],
+			     func = (isFunction(arguments[3]) ? arguments[3] : null);
+			 }
 
 		     var results = [];
 		     for (var i = 0, l = items.length; i < l; i++)
-		     {
-			 var attrs = extend({}, defaultAttrs);
-			 // If we were given a mapping function, call it and use the
-			 // return value as the contents, unless the function specifies
-			 // that the item shouldn't generate an element by explicity
-			 // returning null.
-			 if (func !== null)
 			 {
-			     var children = func(items[i], attrs, i);
-			     if (children === null)
-			     {
-				 continue;
-			     }
-			 }
-			 else
-			 {
-			     // If we weren't given a mapping function, use the item as the
-			     // contents.
-			     var children = items[i];
-			 }
+			     var attrs = extend({}, defaultAttrs);
+			     // If we were given a mapping function, call it and use the
+			     // return value as the contents, unless the function specifies
+			     // that the item shouldn't generate an element by explicity
+			     // returning null.
+			     if (func !== null)
+				 {
+				     var children = func(items[i], attrs, i);
+				     if (children === null)
+					 {
+					     continue;
+					 }
+				 }
+			     else
+				 {
+				     // If we weren't given a mapping function, use the item as the
+				     // contents.
+				     var children = items[i];
+				 }
 
-			 // Ensure children are in an Array, as required by createElement
-			 if (!isArray(children))
-			 {
-			     children = [children];
-			 }
+			     // Ensure children are in an Array, as required by createElement
+			     if (!isArray(children))
+				 {
+				     children = [children];
+				 }
 
-			 results.push(this.createElement(tagName, attrs, children));
-		     }
+			     results.push(this.createElement(tagName, attrs, children));
+			 }
 		     return results;
 		 },
 
@@ -961,35 +961,35 @@
 		 {
 		     if (arguments.length === 1 &&
 			 isArray(arguments[0]))
-		     {
-			 var children = arguments[0]; // ([child1, ...])
-		     }
+			 {
+			     var children = arguments[0]; // ([child1, ...])
+			 }
 		     else
-		     {
-			 var children = slice.call(arguments) // (child1, ...)
-		     }
+			 {
+			     var children = slice.call(arguments) // (child1, ...)
+			 }
 
 		     // Inline the contents of any child Arrays
 		     flatten(children);
 
 		     if (this.mode != "DOM")
-		     {
-			 return new HTMLFragment(children);
-		     }
+			 {
+			     return new HTMLFragment(children);
+			 }
 
 		     var fragment = document.createDocumentFragment();
 		     for (var i = 0, l = children.length; i < l; i++)
-		     {
-			 var child = children[i];
-			 if (child.nodeType)
 			 {
-			     fragment.appendChild(child);
+			     var child = children[i];
+			     if (child.nodeType)
+				 {
+				     fragment.appendChild(child);
+				 }
+			     else
+				 {
+				     fragment.appendChild(document.createTextNode(""+child));
+				 }
 			 }
-			 else
-			 {
-			     fragment.appendChild(document.createTextNode(""+child));
-			 }
-		     }
 
 		     return fragment;
 		 },
@@ -1039,86 +1039,87 @@
 	      *    any content for the fragment by returning ``null``.
 	      */
 	     DOMBuilder.fragment.map = function(items, func)
-	     {
-		 // If we weren't given a mapping function, the user may as well just
-		 // have created a fragment directly, as we're just wrapping content
-		 // here, not creating it.
-		 if (!isFunction(func))
 		 {
-		     return DOMBuilder.fragment(items);
-		 }
+		     // If we weren't given a mapping function, the user may as well just
+		     // have created a fragment directly, as we're just wrapping content
+		     // here, not creating it.
+		     if (!isFunction(func))
+			 {
+			     return DOMBuilder.fragment(items);
+			 }
 
-		 var results = [];
-		 for (var i = 0, l = items.length; i < l; i++)
-		 {
-		     // Call the mapping function and add the return value to the
-		     // fragment contents, unless the function specifies that the item
-		     // shouldn't generate content by explicity returning null.
-		     var children = func(items[i], i);
-		     if (children === null)
-		     {
-			 continue;
-		     }
-		     results = results.concat(children);
-		 }
-		 return DOMBuilder.fragment(results);
-	     };
+		     var results = [];
+		     for (var i = 0, l = items.length; i < l; i++)
+			 {
+			     // Call the mapping function and add the return value to the
+			     // fragment contents, unless the function specifies that the item
+			     // shouldn't generate content by explicity returning null.
+			     var children = func(items[i], i);
+			     if (children === null)
+				 {
+				     continue;
+				 }
+			     results = results.concat(children);
+			 }
+		     return DOMBuilder.fragment(results);
+		 };
 
 	     // Export DOMBuilder or expose it to the global object
 	     if (modules)
-	     {
-		 module.exports = DOMBuilder;
-	     }
+		 {
+		     module.exports = DOMBuilder;
+		 }
 	     else
-	     {
-		 __global__.DOMBuilder = DOMBuilder;
-	     }
+		 {
+		     __global__.DOMBuilder = DOMBuilder;
+		 }
 
 	 })(this);
 
 
 	DOM.BUILDER = DOMBuilder.apply();
-	////////////////////////////////Yassine
 
 	DOM.getIndex = function getIndex (currentNode)
-	{
-    	    var kids = currentNode.parentNode.childNodes;
-    	    var j = 0;
-    	    for(var i=0; i< kids.length; i++)
-    	    {
-    		if (currentNode.nodeName == kids[i].nodeName)
-    		    j++;
-    		if (currentNode == kids[i])
-    		{
-    		    return j;
-    		}
-    		else
-    		    continue;
-    	    }
-    	    return -1;
-	};
+	    {
+		var kids = currentNode.parentNode.childNodes;
+		var j = 0;
+		for(var i=0; i< kids.length; i++)
+		    {
+			if (currentNode.nodeName == kids[i].nodeName)
+			    j++;
+			if (currentNode == kids[i])
+			    {
+				return j;
+			    }
+			else
+			    continue;
+		    }
+		return -1;
+	    };
 
 	DOM.getElementIdx = function getElementIdx(elt)
-	{
-	    var count = 1;
-	    for (var sib = elt.previousSibling; sib ; sib = sib.previousSibling)
 	    {
-		if(sib.nodeType == 1 && sib.tagName == elt.tagName)count++
-	    }
+		var count = 1;
+		for (var sib = elt.previousSibling; sib ; sib = sib.previousSibling)
+		    {
+			if(sib.nodeType == 1 && sib.tagName == elt.tagName)count++
+									       }
 	    
-	    return count;
-	};
+		return count;
+	    };
 	
 	DOM.makePath = function makePath(elt){
     	    var path = '';
 	    for (; elt && elt.nodeType == 1; elt = elt.parentNode)
-	    {
-		idx = DOM.getElementIdx(elt);
-		xname = elt.tagName;
-		if (idx > 1) xname += "[" + idx + "]";
-		path = "/" + xname + path;
-	    }
-	    
+		{
+		    if (elt.attributes['m4pageedittype'] === undefined || elt.attributes['m4pageedittype'].nodeValue != 'text')
+			{
+			    idx = DOM.getElementIdx(elt);
+			    xname = elt.tagName;
+			    if (idx > 1) xname += "[" + idx + "]";
+			    path = "/" + xname + path;
+			}
+		}
 	    return path;
 	};
 
@@ -1127,54 +1128,57 @@
 	    try{
 		var result = nodes.iterateNext();
 		while (result)
-		{
-		    if (result.tagName == "img" || result.tagName =='IMG'){
-			url=newcontent.split(',')[1];
-			size = newcontent.split(',')[0].split('x');
-			width = size[0];
-			height = size[1];
-			result.setAttribute('src',url)
-			result.setAttribute('width',width);
-			result.setAttribute('height',height);
+		    {
+			if (result.tagName == "img" || result.tagName =='IMG'){
+			    url=newcontent.split(',')[1];
+			    size = newcontent.split(',')[0].split('x');
+			    width = size[0];
+			    height = size[1];
+			    result.setAttribute('src',url)
+				result.setAttribute('width',width);
+			    result.setAttribute('height',height);
 			
+			}
+			else{
+			    result.textContent = newcontent;
+			}
+			result=nodes.iterateNext();
 		    }
-		    else{
-			result.textContent = newcontent;
-		    }
-		    result=nodes.iterateNext();
-		}
 	    }
 	    catch (e)
-	    {
-		dump( 'error: Document tree modified during iteration ' + e );
-	    }
+		{
+		    dump( 'error: Document tree modified during iteration ' + e );
+		}
 	    
 	}
 	
 	DOM.getXPATH = function getXPath(element)
-	{
-    	    var doc = document;
-    	    //we get the selections
-    	    var selection =  window.getSelection();
-    	    var str = '';
-    	    //var currentNode = selection.getRangeAt(i).commonAncestorContainer;
-    	    var currentNode = element;
-    	    var path = '';
-    	    var index = -1;
+	    {
+		var doc = document;
+		//we get the selections
+		var selection =  window.getSelection();
+		var str = '';
+		//var currentNode = selection.getRangeAt(i).commonAncestorContainer;
+		var currentNode = element;
+		var path = '';
+		var index = -1;
+		if ( currentNode == undefined) {
+		    currentNode = document.getElementById("alipiSelectedElement");
+		}
 
-    	    if (currentNode.nodeName != "#text")
-    	    {
-    		path = DOM.makePath(currentNode);
-    	    }
-    	    else
-    	    {
-    		path = DOM.makePath(currentNode.parentNode);
-    	    }
+		if (currentNode.nodeName != "#text")
+		    {
+			path = DOM.makePath(currentNode);
+		    }
+		else
+		    {
+			path = DOM.makePath(currentNode.parentNode);
+		    }
 
-    	    //alert ("xpath\n"+path);
-    	    return path;
-	};
-	/////////////////////////////////Yassine
+    	   
+		return path;
+	    };
+
 	DOM.findPosition = function findPosition(element) {
 	    var currentLeft = 0, currentTop = 0;
 
@@ -1199,8 +1203,8 @@
 		position = DOM.findPosition(element);
 
 		document.body.appendChild(DOM.BUILDER.DIV( { style : 'background: transparent; z-index: 2147483644; width:'
-							     + (size.width + 'px') + '; height:' + (size.height + 'px')
-							     + '; position: absolute; left:' + (position.x + 'px') + '; top:' + (position.y + 'px') + ';' }));
+				+ (size.width + 'px') + '; height:' + (size.height + 'px')
+				+ '; position: absolute; left:' + (position.x + 'px') + '; top:' + (position.y + 'px') + ';' }));
 	    }
 	};
 
@@ -1224,18 +1228,18 @@
 	};
 
 	DOM.deleteStyleProperty = (function() {
-	    if (typeof document.createElement('div').style.removeAttribute !== 'undefined') {
-		// IE specific
-		return function deleteStyleProperty(object, property) {
-		    object.style.removeAttribute(property);
-		};
-	    } else {
-		// W3C standard
-		return function deleteStyleProperty(object, property) {
-		    object.style.removeProperty(property);
-		};
-	    }
-	})();
+		if (typeof document.createElement('div').style.removeAttribute !== 'undefined') {
+		    // IE specific
+		    return function deleteStyleProperty(object, property) {
+			object.style.removeAttribute(property);
+		    };
+		} else {
+		    // W3C standard
+		    return function deleteStyleProperty(object, property) {
+			object.style.removeProperty(property);
+		    };
+		}
+	    })();
 
 	// Not to be used for Style attributes. For style attributes use overrideStyleProperty instead
 	DOM.overrideAttribute = function overrideAttribute (object, attributeName, value) {
@@ -1264,54 +1268,56 @@
 	};
 
 	DOM.addListener = (function() {
-	    if (document.attachEvent) {
-		// Simulates W3C event model in IE
-		return function addListener(type, callback, capture) {
-		    document.attachEvent('on' + type, function() {
-			callback( {
-			    target : window.event.srcElement,
-			    pageX : window.event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft),
-			    pageY : window.event.clientY  + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop),
-			    clientX : window.event.clientX,
-			    clientY : window.event.clientY,
-			    keyCode : window.event.keyCode,
-			    ctrlKey : window.event.ctrlKey,
-			    preventDefault : function() {
-				window.event.returnValue = false;
-			    },
-			    stopPropagation : function() {
-				window.event.cancelBubble = true;
-			    }
-			});
-		    });
+		if (document.attachEvent) {
+		    // Simulates W3C event model in IE
+		    return function addListener(type, callback, capture) {
+			document.attachEvent('on' + type, function() {
+				callback( {
+					target : window.event.srcElement,
+					pageX : window.event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft),
+					pageY : window.event.clientY  + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop),
+					clientX : window.event.clientX,
+					clientY : window.event.clientY,
+					keyCode : window.event.keyCode,
+					ctrlKey : window.event.ctrlKey,
+					preventDefault : function() {
+					    window.event.returnValue = false;
+					},
+					stopPropagation : function() {
+					    window.event.cancelBubble = true;
+					}
+				    });
+			    });
+		    }
+		} else {
+		    return function addListener(type, callback, capture) {
+			document.addEventListener(type, callback, capture);
+		    };
 		}
-	    } else {
-		return function addListener(type, callback, capture) {
-		    document.addEventListener(type, callback, capture);
-		};
-	    }
-	})();
+	    })();
 
 	DOM.textContent = (function() {
-	    if (document.all) {
-		// IE specific
-		return function textContent(element, content) {
-		    if (content) {
-			element.innerText = content;
+		if (document.all) {
+		    // IE specific
+		    return function textContent(element, content) {
+			if (content) {
+			    element.innerText = content;
+			}
+			return element.innerText;
 		    }
-
-		    return element.innerText;
-		}
-	    } else {
-		return function textContent(element, content) {
-		    if (content) {
-			element.textContent = content;
+		} else {
+		    return function textContent(element, content) {
+			if (element == undefined) {
+			    element = document.getElementById("alipiSelectedElement");
+			    content = document.getElementById("alipiSelectedElement").textContent;
+			    element.textContent = content;
+			} else if (content) {
+			    element.textContent = content;
+			}
+			return element.textContent;
 		    }
-
-		    return element.textContent;
 		}
-	    }
-	})();
+	    })();
 
 	DOM.viewDimension = function viewDimension() {
 	    var width, height;
@@ -1368,7 +1374,7 @@
 	    set(initialAttributes);
 	    if (additionalAttributes) {
 		set(additionalAttributes)
-	    }
+		    }
 
 	    this.addStyle =  function(value) {
 		var style;
@@ -1448,7 +1454,6 @@
 		    http.setRequestHeader('Content-type', contentType);
 		}
 		http.send(data);
-
 		return http;
 	    }
 	};
@@ -1471,7 +1476,6 @@
 	console = window.console;
     }
 
-    // Ajay - injecting edit-control to tag elements
     editAttributes = new DOM.Attributes({ 'm4pageeditcontrol': true });
     elementAttributes = editAttributes.addStyle('margin:0; padding:0; border:none; text-indent: 0px; background: none;');
     fontTypeAttributes = elementAttributes.addStyle("font-family: Helvetica Neue, Helvetica, Arial, Sans-serif;");
@@ -1489,7 +1493,6 @@
     var closeButtonIconPath = 'http://dev.a11y.in/alipi/images/close_button.png';
     closeButtonAttributes = editButtonAttributes.addStyle('top: -8px; left: -8px; position: absolute; border:none; background: url("' + closeButtonIconPath +'") no-repeat; width: 15px; height: 15px; z-index: 2;');
 
-    // Ajay - Redarrow is not using
     var redArrowIconPath = './images/caret_red.png';
     redArrowAttributes =  elementAttributes.addStyle('width: 8px; height: 11px;position: relative;background: url(' + redArrowIconPath + ') no-repeat; float: left;margin-top: 10px;z-index:2;left: -1px;');
 
@@ -1503,7 +1506,6 @@
 
     actionButtonAttributes = editButtonAttributes.addStyle('font-size:11px; height: 50px; margin: 0; padding-left: 5px; padding-right: 5px; left: -6px; color: #747474; background-color: #DBDBDB; background: -webkit-gradient(linear, 0% 100%, 0% 0%, from(#D9D9D9), to(#F6F6F6));background: -moz-linear-gradient(bottom, #D9D9D9, #F6F6F6); text-shadow: 0px 1px 0px #FFF; -moz-text-shadow: 0px 1px 0px #FFF; -webkit-text-shadow: 0px 1px 0px #FFF;');
 
-    // Ajay - changed color - but we are not using this, not sure
     redButtonAttributes = editButtonAttributes.addStyle('font-size:11px; height: 50px; margin: 0; border:1px solid #777; -moz-border-radius-topright:3px;-moz-border-radius-bottomright:3px;-moz-border-radius-topleft:3px; -moz-border-radius-bottomleft:3px;-webkit-border-top-right-radius:3px; -webkit-border-bottom-right-radius:3px;-webkit-border-top-left-radius:3px; -webkit-border-bottom-left-radius:3px;text-shadow: 2px 1px 1px #777;-moz-text-shadow: 2px 1px 0px #777;-webkit-text-shadow: 2px 1px 0px #777;background-color: #AAA;background: -webkit-gradient(linear, 0% 100%, 0% 5%, from(#777), to(#fff));background: -moz-linear-gradient(bottom, #777, #fff);');
 
     editSubmitAttributes = redButtonAttributes.put({ type: 'submit', value : 'OK' }).addStyle('height:20px; width: 32px; padding-left: 5px; padding-right: 5px; margin-left: 5px;');
@@ -1552,11 +1554,8 @@
 	};
 
 
-	//Yass
 	this.processPublishedResponse = function processPublishedResponse(result) {
-	    // alert(result);
 	    var resultString = result.responseText;
-	    //alert(resultString);
 	    if (resultString == 'ok'){
 		alert("Re-narration successfuly posted");
 		window.location.reload();
@@ -1568,42 +1567,6 @@
 	};
     };
 
-    //   this.processPublishedResponse = function processPublishedResponse(result) {
-    //     var resultObject = eval("(" + result.responseText + ")");
-    //     var cloneRequestId = resultObject.cloneRequestId;
-    //     var newBoltSlug = resultObject.newBoltSlug;
-    //     var count = 0;
-    //     var timerId = setInterval(function() {
-    //       // check for 20 seconds and redirect to error page
-    //       if (count++ > 10) {
-    //         clearInterval(timerId);
-    //         if (hasEditPermission) {
-    //           window.location.href = 'https://bo.lt/app/bolt/' + boltSlug;
-    //         } else {
-    //           window.location.href = 'https://bo.lt/app';
-    //         }
-    //         return;
-    //       }
-    //       var response = AJAX.get('/app/ajax/grab/status?id=' + cloneRequestId);
-    //       var resultObject = eval( '(' + response.responseText + ')');
-
-    //       if (resultObject[cloneRequestId].status != 'NEW') {
-    //         clearInterval(timerId);
-    //         if (successUrl) {
-    //           var redirectUrl = successUrl;
-    //           if (redirectUrl == 'bolt') {
-    //             redirectUrl = 'http://bo.lt/' + newBoltSlug + '+admin?m4.mtime=' + resultObject[cloneRequestId].cacheBustingTime + '&m4.bolt-admin-bar-hide=true';
-    //           } else if (redirectUrl == 'bolt+admin') {
-    //             redirectUrl = 'http://bo.lt/' + newBoltSlug + '+admin?m4.mtime=' + resultObject[cloneRequestId].cacheBustingTime;
-    //           }
-    //           window.location.href = redirectUrl;
-    //         } else {
-    //           window.location.href = 'https://bo.lt/app/bolt/' + newBoltSlug;
-    //         }
-    //       }
-    //     }, 2000);
-    //   };
-    // };
 
     M4ImageElement = function M4ImageElement(element) {
 	var self = this;
@@ -1652,115 +1615,73 @@
 
 	this.isFittable = function isFittable() {
 	    return (typeof element.m4boltRawImageWidth != 'undefined' && element.m4boltRawImageWidth > element.m4boltOriginalWidth)
-		|| (typeof element.m4boltRawImageHeight != 'undefined' && element.m4boltRawImageHeight > element.m4boltOriginalHeight);
+	    || (typeof element.m4boltRawImageHeight != 'undefined' && element.m4boltRawImageHeight > element.m4boltOriginalHeight);
 	};
     };
 
     SplashWindow = function SplashWindow(pageEditor ) {
 
-	var self = this, messageOverlay, editButton, hideOverlayCheckbox, messageDescription, messageTitle, loadingImage, loadingText, loadingDiv;
-
-	// because PageEditor is activated on "onload", we show a loading panel until
-	// onload finally fires, which can be a while if any resource on the page is
-	// slow to load.
-
-	// Ajay - This is ovelay for 'Saving and Loading' - changed rgba colors
-	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'bgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; min-height: 800px; min-width: 1024px; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.87))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
-	//	loadingImage = DOM.BUILDER.IMG(normalFontAttributes.put({src: './images/loading.gif'}).addStyle('position: relative; width: 24px; height: 24px; display: inline; vertical-align: middle; ').values()); // Ajay - replaced loading.gif image
-	//	loadingText = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; font-size: 14px; font-weight: bold; margin-left: 10px; color:#ECECEC; display: inline; vertical-align: middle;').values(), 'Loading');
-	//	loadingDiv = DOM.BUILDER.DIV(normalFontAttributes.addStyle('position: relative; width: auto; height: auto; display: block; text-align: left;').values()//, loadingImage, loadingText);
-	//	backgroundDiv.appendChild(loadingDiv);
-
-	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'msgoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:20%; top:20%; bottom:20%; right:20%; background:#000; display:none;').values());
-
-	messageTitle = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:23%; left:44.5%; color:#FFF; font-size:200%; line-height:120%; font-weight:normal; text-decoration:none;').values(), 'Page Editor');
-
-	messageOverlay.appendChild(messageTitle);
-
-	messageDescription = DOM.BUILDER.P(normalFontAttributes.addStyle('position:fixed; top:32%; left:22%; right:22%; text-align:justify; color:#FFF; font-weight: normal; font-size:120%; line-height:130%;').values(), 'Click on any part of the page, and you will activate buttons that allow you to modify text, replace images and add audio. Just refresh your page to exit from editing without saving your changes. Don\'t forget to hit "Publish" when you\'re finished editing so we can save your newly-crafted page.');
-	messageOverlay.appendChild(messageDescription);
-
-	//	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'https://bo.lt/app/asset/page-edit/pencil_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'}).addStyle('position: relative; margin-right: 10px; vertical-align: middle;').values());
-	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position:fixed; bottom:24.5%; left:49%; font-size:120%;').values(), 'OK');
-
-	// Ajay - Changed lot of colors - Not using, not sure
-	editButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:46%; bottom:23%; color:#FFF; width:8%; height:5%; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
-	editButton.onclick = function loadingEditButtonOnClick() {
-	    self.hide();
-	    return false;
-	};
-
-	//    editButton.appendChild(image);
-	editButton.appendChild(text);
-	messageOverlay.appendChild(editButton);
-
-
-	hideOverlayCheckbox = DOM.BUILDER.INPUT(editAttributes.put({ id:'hideoverlay', name:'Loading Checkbox', type:'checkbox', checked:'yes'}).addStyle('position:fixed; bottom:29.5%; left:44.5%; background: transparent; display: inline-block;').values());
-
-	var checkboxLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; left:46.5%; bottom:30%; font-size:80%; font-weight:bold;  transparent; color: #FFF;display: inline-block;').values());
-	checkboxLabel.innerHTML = 'Don\'t show this again.';
-
-	//    var redHelpLink = DOM.BUILDER.A(normalFontAttributes.put({ href : 'http://bo.lt/editor'}).addStyle('z-index: 2147483647; float: right;  margin-right: 34px; display: inline-block;text-decoration: none; color: #FFF; font-size: 10px; font-weight: bold; ').values(), 'Need Help?')
-
-	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), hideOverlayCheckbox, checkboxLabel// , redHelpLink
-						  ));
-	editButton.appendChild(text);
-	messageOverlay.appendChild(editButton);
-
-	document.body.appendChild(backgroundDiv);
-	document.body.appendChild(messageOverlay);
-
-
-	this.show = function show( textToDisplay) {
-
-	    if (textToDisplay) {
-		DOM.textContent(loadingText, textToDisplay);
-	    }
-	    // var screenSize = DOM.viewDimension();
-	    // backgroundDiv.style.minWidth = screenSize[0] + 'px';
-	    // backgroundDiv.style.minHeight = screenSize[1] + 'px';
-
-	    // messageOverlay.style.left = (screenSize[0] - parseInt(messageOverlay.style.width) ) / 2 + 'px';
-	    // messageOverlay.style.top = (screenSize[1] - parseInt(messageOverlay.style.height) ) / 2 + 'px';
-	    // loadingDiv.style.left = (screenSize[0] - parseInt(loadingImage.style.width) ) / 2 + 'px';
-	    // loadingDiv.style.top = (screenSize[1] - parseInt(loadingImage.style.height) ) / 2 + 'px';
-
-	    backgroundDiv.style.display = 'block';
+	this.createLabels = function createLabels() {
 	    
-	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
-	    //   backgroundDiv.style.position = 'absolute';
-	    //   messageOverlay.style.position = 'absolute';
-	    //   backgroundDiv.style.background = '#A51414';
-	    // }
-	};
-	
-	this.hide = function hide() {
-	    if (hideOverlayCheckbox.checked) {
-		document.cookie ='m4.show.redbar.overlay=no;'
-	    } else {
-		var date = new Date();
-		document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
-	    }
+	    msg = document.createElement('div');
+	    msg.setAttribute("id", "msgoverlay");
+	    msg.setAttribute("title", "PAGE EDITOR");
+	    msg.setAttribute("alipielements", "alipi");
+	    msg.setAttribute("style", "color:#000;line-height:25px;");
+	    document.body.appendChild(msg);
 
-	    messageOverlay.style.display = 'none';
-	    backgroundDiv.style.display = 'none';
+	    msgDesc = document.createElement("label");
+	    msgDesc.setAttribute("id", "msg-desc");
+	    msgDesc.innerHTML = 'Click on any part of the page, and you will activate buttons that allow you to modify text, replace images and add audio. Don\'t forget to hit "Publish" when you\'re finished editing so we can save your newly-crafted page... And at any moment if you need help then hit a "Help" button.<br /> Don\'t show this again  ';
+	    msg.appendChild(msgDesc);
+
+	    pubLabel = document.createElement("input");
+	    pubLabel.setAttribute("id", "check-box");
+	    pubLabel.setAttribute("alipielements", "alipi");
+	    pubLabel.setAttribute("type", "checkbox");
+	    pubLabel.setAttribute("name","msgcheckbox");
+	    pubLabel.setAttribute("style", "margin-top:20px;");
+	    msg.appendChild(pubLabel);	    
+	};
+
+	
+	function display() {
+	    $(function() {
+		    $( "#msgoverlay" ).dialog({
+			    width:600,
+				height:250,
+				modal: true,
+				close: function() {
+				$("#msgoverlay").remove();
+			    },
+				buttons: {
+				OK: function() { hide();
+				    $("#msgoverlay").remove();
+				} 
+			    }
+
+			});
+		});
 	};
 
 	this.activate = function activate() {
-	    /*
-	     *  Cookie logic is temporary. This needs to be part of a user preference.
-	     *  Bug http://bugzilla.boltnet.com/bugzilla/boltnet/show_bug.cgi?id=2962
-	     *  created for this purpose.
-	     */
+
 	    var allCookies = document.cookie;
 	    if (allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
-		messageOverlay.style.display = 'block';
-		// if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
-		//   messageDescription.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(messageDescription).width )/2 + 'px';
-		//   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
-		// }
+		display();
 	    }  else {
-		self.hide();
+		hide();
+	    }
+
+	};
+
+	function hide() {
+	    if (document.getElementById("check-box").checked) {
+		document.cookie ='m4.show.redbar.overlay=no;'
+		    } else {
+		//		var date = new Date();
+		//		document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
+		$("#msgoverlay").hide();
 	    }
 	};
     } ;
@@ -1769,394 +1690,303 @@
     //------------------------------------ Target UI --------------------------------------------
     TargetWindow = function TargetWindow(pageEditor ) {
 
-	var self = this, messageOverlay, editButton, hideOverlayCheckbox, messageDescription, messageTitle, loadingImage, loadingText, loadingDiv;
-	tooltip = new DOM.Attributes({ 'title': 'Check this if you want to post to our blog. That is "http://alipi-workshop.blogspot.com/"'});
-	// because PageEditor is activated on "onload", we show a loading panel until
-	// onload finally fires, which can be a while if any resource on the page is
-	// slow to load.
+	this.createDialogBox = function createDialogBox() {
 
-	// Ajay - This is ovelay for 'Saving and Loading' - changed rgba colors
-	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'targetbgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 1))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
-	//	loadingDiv = DOM.BUILDER.DIV(normalFontAttributes.addStyle('position: relative; width: auto; height: auto; display: block; text-align: left;').values());
-	//	backgroundDiv.appendChild(loadingDiv);
+	    target = document.createElement("div");
+	    target.setAttribute("id", "targetoverlay");
+	    target.setAttribute("title", "Please choose the target");
+	    target.setAttribute("alipielements", "alipi");
+	    target.setAttribute("class", "ui-widget-header ui-corner-all");
+	    document.body.appendChild(target);
 
-	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'targetoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:20%; top:20%; bottom:20%; right:20%; background:#000; display:none; vertical-align:middle;').values());
+	    locLabel= document.createElement("label");
+	    locLabel.innerHTML = 'Select Location';
+	    locLabel.setAttribute("style", "position:absolute;top:5%;left:3%;color:#000;");
+	    target.appendChild(locLabel);
+				
+	    locName= document.createElement("input");
+	    locName.setAttribute("id","loc-select");
+	    locName.setAttribute("type","text");
+	    locName.setAttribute("alipielements", "alipi");
+	    locName.setAttribute("style","position:absolute;top:5%;left:40%;width:250px;");
+	    target.appendChild(locName);
 
-	step1 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:21%; left:40%; color:#FFF; font-size:100%; line-height: 36px; font-weight: bold; display: block; ').values(), 'Please provide all the details below');
+	    langLabel= document.createElement("label");
+	    langLabel.innerHTML = 'Select Language';
+	    langLabel.setAttribute("style", "position:absolute;top:25%;left:3%;color:#000;");
+	    target.appendChild(langLabel);
+				
+	    langName= document.createElement("input");
+	    langName.setAttribute("id","lang-select");
+	    langName.setAttribute("type","text");
+	    langName.setAttribute("alipielements", "alipi");
+	    langName.setAttribute("style","position:absolute;top:25%;left:40%;width:250px;");
+	    target.appendChild(langName);
 
-	messageOverlay.appendChild(step1);
+	    styleLabel= document.createElement("label");
+	    styleLabel.innerHTML = 'Select style';
+	    styleLabel.setAttribute("style", "position:absolute;top:45%;left:3%;color:#000;");
+	    target.appendChild(styleLabel);
+				
+	    styleSelect = document.createElement("input");
+	    styleSelect.setAttribute("id","styleSelect-select");
+	    styleSelect.setAttribute("type","text");
+	    styleSelect.setAttribute("alipielements", "alipi");
+	    styleSelect.setAttribute("style","position:absolute;top:45%;left:40%;width:250px;");
+	    target.appendChild(styleSelect);
 
-	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:19%; right:19%; width:25px; height:25px;').values());
-	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'OK');
+	    authLabel= document.createElement("label");
+	    authLabel.innerHTML = 'Author Name';
+	    authLabel.setAttribute("style", "position:absolute;top:65%;left:3%;color:#000;");
+	    target.appendChild(authLabel);
+				
+	    author= document.createElement("input");
+	    author.setAttribute("id","auth-select");
+	    author.setAttribute("type","text");
+	    author.setAttribute("alipielements", "alipi");
+	    author.setAttribute("style","position:absolute;top:65%;left:40%;width:250px;");
+	    target.appendChild(author);
 
-	image.onclick=function(){
-	    document.body.removeChild(document.getElementById('targetoverlay'));
-	    document.body.removeChild(document.getElementById('targetbgdiv'));
-	}
+	    ourcheck = document.createElement("input");
+	    ourcheck.setAttribute("id","our-check");
+	    ourcheck.setAttribute("type","radio");
+	    ourcheck.setAttribute("name", "blog");
+	    ourcheck.setAttribute("alipielements", "alipi");
+	    ourcheck.setAttribute("style","position:absolute;top:85%;left:40%;");
+	    target.appendChild(ourcheck);
 
-
-	//---------------------------- state & language target --------------------------
-	locSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:34%; left:25%; font-weight: bold; background: transparent; color: #FFF;').values());
-	locSelectLabel.innerHTML = 'Select any state from the list';
-	enterMailIdLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:34%; left:53.5%; font-weight: bold; background: transparent; color: #FFF;').values());
-	enterMailIdLabel.innerHTML = 'Select any style from the list';
-
-
-	locSelectAttributes = panelButtonAttributes.put({ id : 'loc-select'}).addStyle('position:fixed; top:35%; left:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	styleSelectAttributes = panelButtonAttributes.put({id : 'style-select'}).addStyle('position:fixed; top:35%; right:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-
-
-	langSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:50%; left:25%; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
-	langSelectLabel.innerHTML = 'Languages of selected/all state(s)';
-	authorLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:50%; left:53.5%; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
-	authorLabel.innerHTML = 'Author name';
-
-	langSelectAttributes = panelButtonAttributes.put({ id : 'lang-select'}).addStyle('position:fixed; top:51%; left:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	authorAttributes = DOM.BUILDER.INPUT(editAttributes.put({ id : 'author', placeholder:'E.g:- John Doe'}).addStyle('position:fixed; top:54%; right:26%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values());
-
-	defaultBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'defaultcheck', name : 'Loading Checkbox', type : 'checkbox'}).addStyle('position:fixed; top:70%; left:44%; background: transparent; display: inline-block;').values());
-	defaultBlogLabel = DOM.BUILDER.LABEL(tooltip.addStyle('position:fixed; top:70%; left:47%; background: transparent; color: #FFF;display: inline-block; text-align:center; font-size:80%; font-weight: bold;').values());
-	defaultBlogLabel.innerHTML = 'To our blog--[?]';
-
-	//-----------------------------End of state & language target -------------------
-
-	// Ajay - Changed lot of colors - Not using, not sure
-	okButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; right:25%; bottom:25%; color:#FFF; margin:auto; width: 100px; height: 36px; display: block; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
-
-	this.okClick = function okClick() {
-	    if(document.getElementById('loc-select').value == '--Locations--' || document.getElementById('lang-select').value == '---Languages---' || document.getElementById('style-select').value == '---Style---') {
-		alert('Please select a Location, Language & Style');
-	    }
-	    else {
-		overlayBar = new OverlayBar(pageEditor);
-		overlayBar.blogpost();
-		messageOverlay.style.display = 'none';
-		backgroundDiv.style.display = 'none';
-
-	    }
-	    // self.hide();
-	    // return false;
-	};
-	// editButton.appendChild(image);
-	okButton.appendChild(text);
-	messageOverlay.appendChild(okButton);
-	messageOverlay.appendChild(image);
-
-	
-	//---------------------------------------------start locLang, locSelect & styleSelect -----------------------
-	styleSelect = DOM.BUILDER.SELECT(styleSelectAttributes);
-
-	style_list={"stylename":[{"name":"---Style---"},{"name":"Simplication"},{"name":"Abstract"},{"name":"Translation"},{"name":"Funny"},{"name":"Children"}]}
-	for(var i=0;i<style_list.stylename.length;i++)
-	{
-	    y=DOM.BUILDER.OPTION(style_list.stylename[i].name);
-	    styleSelect.appendChild(y);
-	}
-
-	//---------------------------------------------start locLang & locSelect -----------------------
-
-	locSelect = DOM.BUILDER.SELECT(locSelectAttributes);
-	langSelect = DOM.BUILDER.SELECT(langSelectAttributes);
-	////////////////////////////////////////////////////////////////////////////attributes
-	var xhrloc = new XMLHttpRequest();
-	xhrloc.onreadystatechange = function()
-    	{
-    	    if(xhrloc.readyState == 4)
-    	    {
-		if (xhrloc.status == 200)
-    		{
-    		    json= JSON.parse(xhrloc.responseText);
-		    /* parsing json response*/ 
-		    var loc=[];
-		    var texts=[];
-		    loc.push('--Locations--');
-		    texts.push('---Languages---');
-		    var locations = json["state"];
-		    for(var i=0; i< locations.length;i++)
-		    {
-			loc.push(locations[i]["name"]);
-		    }
-		    loc.push('None of the above');
-      		    for(i=0;i<loc.length;i++)	{
-	      		x=DOM.BUILDER.OPTION(loc[i]);
-	      		locSelect.add(x,null);
-	  	    }
-		    
-		    locSelect.onchange=function(){
-                        var locindex=locSelect.selectedIndex;
-			locName=loc[locindex];
-			if(texts.length>1)
-			{
-			    for(var i=texts.length;i>1;i--){
-				texts.pop()
-			    }
-			}
-            		if(locName!='None of the above'){
-			    for(var i=0;i<locations[locindex-1]["lang"].length;i++){
-				texts.push(locations[locindex-1].lang[i]);
-			    }
-			    if(langSelect.firstChild==null){
-				for(var vp=0;vp<texts.length;vp++)
-				{	
-                		    var op = document.createElement('option');
-                		    op.text = texts[vp];
-                		    langSelect.appendChild(op);
-				}//end for
-			    }//end if
-			    else{
-				while(langSelect.firstChild!=null){
-				    langSelect.removeChild(langSelect.firstChild);
-				}//end while
-				for(var vp=0;vp<texts.length;vp++)
-				{
-				    
-                		    var op = document.createElement('option');
-                		    op.text = texts[vp];
-                		    langSelect.appendChild(op);
-				}//end for
-			    }//end else 		
-			    
-			}//end if
-			else{
-			    while(langSelect.firstChild!=null){
-				langSelect.removeChild(langSelect.firstChild);
-			    }//end while
-			    for(var i=0;i<locations.length;i++)
-			    {	for (var j=0; j<locations[i].lang.length; j++)
-				{ 
-				    texts.push(locations[i].lang[j]);
-				    texts.sort();
-				    for(var k=1;k<texts.length;k++){
-					if (texts[k] === texts[k-1]){ 
-					    texts.splice(k, 1);
-					    k--;
-					}	
-				    }
-				    
-				}//end inner for
-			    }//end main for
-			    for(var z=0; z<texts.length; z++)
-			    { 
-				var op = document.createElement('option');
-				op.text=texts[z];
-				langSelect.appendChild(op);
-			    }
-			}//end else
+	    yourcheck = document.createElement("input");
+	    yourcheck.setAttribute("id","your-check");
+	    yourcheck.setAttribute("type","radio");
+	    yourcheck.setAttribute("name", "blog");
+	    yourcheck.setAttribute("alipielements", "alipi");
+	    yourcheck.setAttribute("style","position:absolute;top:85%;left:70%;");
+	    target.appendChild(yourcheck);
 			
-		    }//end onchange
-		    langSelect.onchange=function(){
-                        var langindex=langSelect.selectedIndex;
-			langName=texts[langindex];
-		    }
-    		}
-		
-    		/* end parsing json response*/ 
-		
-    		else {
-    		    alert("couldn't get data file: error number "+xhrloc.status);
-    		}
-    	    }
-    	}
-	
-	xhrloc.open("GET","http://dev.a11y.in/getData",true);
-	xhrloc.send();//
+	    yourLabel = document.createElement('label');
+	    yourLabel.textContent = "Your blog";
+	    yourLabel.setAttribute("style","position:absolute;top:85%;left:45%;color:#000;");
+	    target.appendChild(yourLabel);
 
-
-
-	//---------------------------------------------end locLang & locSelect ------------------------
-
-	//-------------------------------------------- start blog details ---------------------------
-	defaultBlog = defaultBlogAttributes;
-	author = authorAttributes;
-	//-------------------------------------------- end blog details ------------------------------
-
-
-	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), locSelect, locSelectLabel, langSelect, langSelectLabel, defaultBlog, defaultBlogLabel, enterMailIdLabel, styleSelect, author, authorLabel));
-	okButton.appendChild(text);
-	messageOverlay.appendChild(okButton);
-
-	document.body.appendChild(backgroundDiv);
-	document.body.appendChild(messageOverlay);
-
-
-	this.show = function show( textToDisplay) {
-
-	    if (textToDisplay) {
-		DOM.textContent(textToDisplay);
-	    }
-	    // var screenSize = DOM.viewDimension();
-	    // backgroundDiv.style.minWidth = screenSize[0] + 'px';
-	    // backgroundDiv.style.minHeight = screenSize[1] + 'px';
-
-	    // messageOverlay.style.left = (screenSize[0] - parseInt(messageOverlay.style.width) ) / 2 + 'px';
-	    // messageOverlay.style.top = (screenSize[1] - parseInt(messageOverlay.style.height) ) / 2 + 'px';
-	    // loadingDiv.style.left = (screenSize[0] - parseInt(loadingImage.style.width) ) / 2 + 'px';
-	    // loadingDiv.style.top = (screenSize[1] - parseInt(loadingImage.style.height) ) / 2 + 'px';
-
-
-	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
-	    //   backgroundDiv.style.position = 'absolute';
-	    //   messageOverlay.style.position = 'absolute';
-	    //   backgroundDiv.style.background = '#fff'; // Ajay - changed color
-	    // }
-	};
-
-	// this.hide = function hide() {
-	//   if (hideOverlayCheckbox.checked) {
-	//     document.cookie ='m4.show.redbar.overlay=no;'
-	//   } else {
-	//     var date = new Date();
-	//     document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
-	//   }
-
-	//	messageOverlay.style.display = 'block';
-	//	backgroundDiv.style.display = 'block';
-	// };
+	    ourLabel = document.createElement('label');
+	    ourLabel.textContent = "Our blog";
+	    ourLabel.setAttribute("style","position:absolute;top:85%;left:75%;color:#000;");
+	    target.appendChild(ourLabel);
+	}
 
 	this.activate = function activate() {
-	    /*
-	     *  Cookie logic is temporary. This needs to be part of a user preference.
-	     *  Bug http://bugzilla.boltnet.com/bugzilla/boltnet/show_bug.cgi?id=2962
-	     *  created for this purpose.
-	     */
-	    // var allCookies = document.cookie;
-	    // if (editMode != 'HTML' && allCookies && allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
-	    backgroundDiv.style.display = 'block';
-	    messageOverlay.style.display = 'block';
-	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
-	    //   messageDescription.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(messageDescription).width )/2 + 'px';
-	    //   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
-	    // }
-	    // }  else {
-	    // 	//    self.hide();
-	    // }
-	};
+	    $(function() {
+		    $( "#targetoverlay" ).dialog({
+			    height:500,
+				width:500,
+				modal: true,
+				buttons: {
+				OK: function() {
+				    overlayBar = new OverlayBar(pageEditor);
+				    overlayBar.blogpost();
+				} 
+			    },
+				close: function() {
+				$( "#targetoverlay" ).hide();
+			    }
+			});
+		});
+	    
+		
+	    $( "#loc-select" ).autocomplete({
+		    source: function(req, add){
+				
+			//pass request to server
+			$.getJSON("http://localhost/getData?", req, function(data) {
+						    
+				//create array for response objects
+				var suggestions = [];
+						    
+				//process response
+				$.each(data, function(i, val){
+					//suggestions.push(val.country);
+					for(i=0;i<val.length;i++){
+					    suggestions.push(val[i]+', '+val[i+1]+', '+val[i+2]);
+					    i +=2;
+					}
+				    });
+						    
+				//pass array to callback
+				add(suggestions);
+			    });
+		    },
+			});				
+
+	    $( "#lang-select" ).autocomplete({
+		    source: function(req, add){
+				
+			//pass request to server
+			$.getJSON("http://localhost/getLang?", req, function(data) {
+						    
+				//create array for response objects
+				var suggestions = [];
+						    
+				//process response
+				$.each(data, function(i, val){
+					//suggestions.push(val.country);
+					for(i=0;i<val.length;i++){
+					    suggestions.push(val[i]);
+					}
+				    });
+						    
+				//pass array to callback
+				add(suggestions);
+			    });
+		    },
+			});				
+
+
+	}
+
     };
 
     // ------------------------------------ Target UI end ---------------------------------------------
 
-// ========================================== Edit Window start ======================================================
+    // ========================================== Edit Window start ======================================================
 
 
     EditWindow = function EditWindow(pageEditor) {
 
-	var self = this, messageOverlay, editButton, hideOverlayCheckbox, messageDescription, messageTitle, loadingImage, loadingText, loadingDiv, textElementPopup;
+	editor = document.createElement("div");
+	editor.setAttribute("id", "editoroverlay");
+	editor.setAttribute("title", "Edit window");
+	editor.setAttribute("alipielements", "alipi");
+	editor.setAttribute("class", "ui-widget-header ui-corner-all");
+	document.body.appendChild(editor);
 
+	refLabel= document.createElement("label");
+	refLabel.innerHTML = 'Reference';
+	refLabel.setAttribute("style", "position:absolute;top:5%;left:20%;color:#000;font-size:25px;");
+	editor.appendChild(refLabel);
+				
+	refBox= document.createElement("textarea");
+	refBox.setAttribute("id","reference");
+	refBox.setAttribute("readonly", 'yes');
+	refBox.setAttribute("style","position:absolute;top:15%;left:4%;min-width:450px;max-width:450px;min-height:370px;max-height:370px;font-size:15;text-align:justify;");
+	editor.appendChild(refBox);
 
-	// Ajay - This is ovelay for 'Saving and Loading' - changed rgba colors
-	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'editorbgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; min-height: 800px; min-width: 1024px; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.87))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
-
-
-	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'editoroverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:10%; top:15%; bottom:10%; right:10%; background:#000; display:none;').values());
-
-
-	leftEditor = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:23%; left:27%; color:#FFF; font-size:150%; line-height:120%; font-weight:normal; text-decoration:none;').values(), 'Reference');
-
-	rightEditor = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:23%; right:28%; color:#FFF; font-size:150%; line-height:120%; font-weight:normal; text-decoration:none;').values(), 'Editor');
-
-	messageOverlay.appendChild(leftEditor);
-	messageOverlay.appendChild(rightEditor);
-
-	messageDescription = DOM.BUILDER.TEXTAREA(normalFontAttributes.put({id : 'originaltext', readonly:'yes'}).addStyle('position:fixed; top:35%; left:13%; text-align:justify; color:#FFF; font-weight: normal; font-size:90%; line-height:130%; min-width:35%; min-height:43%; max-width:35%; max-height:43%; box-shadow: 0px 0px 5px #aaa; -webkit-box-shadow: 0px 0px 5px #aaa; -moz-box-shadow: 0px 0px 5px #aaa; -moz-border-radius:10px; -webkit-border-radius:10px; padding:5px;').values());
-
-	textArea = DOM.BUILDER.TEXTAREA(normalFontAttributes.put({id : 'texteditor'}).addStyle('position:fixed; top:35%; left:52%; text-align:justify; color:#a84; font-weight: normal; font-size:90%; line-height:130%; max-width:35%; max-height:43%; min-width:35%; min-height:43%; box-shadow: 0px 0px 5px #aaa; -webkit-box-shadow: 0px 0px 5px #aaa; -moz-box-shadow: 0px 0px 5px #aaa; -moz-border-radius:10px; -webkit-border-radius:10px; padding:5px;').values());
-
-	messageOverlay.appendChild(messageDescription);
-	messageOverlay.appendChild(textArea);
-
-	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position:fixed; bottom:13.7%; left:49%; font-size:120%;').values(), 'OK');
-	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:13%; right:9%; width:25px; height:25px;').values());
-
-	// Ajay - Changed lot of colors - Not using, not sure
-	okButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:46%; bottom:12%; color:#FFF; width:8%; height:5%; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
-	okButton.onclick = function loadingOkButtonOnClick() {
-	    textElement = new TextElementPopup(pageEditor);
-	    textElement.variable();
-//	    console.log(textElement.selectedElement);
-	    // document.body.removeChild(document.getElementById('editoroverlay'));
-	    // document.body.removeChild(document.getElementById('editorbgdiv'));
-//	    selectedElement.textContent = document.getElementById('texteditor').innerHTML;
-//	    self.hide();
-//	    return false;
-	};
-
-	image.onclick=function(){
-	    document.body.removeChild(document.getElementById('editoroverlay'));
-	    document.body.removeChild(document.getElementById('editorbgdiv'));
-	}
-
-	//    editButton.appendChild(image);
-	okButton.appendChild(text);
-	messageOverlay.appendChild(okButton);
-	messageOverlay.appendChild(image);
-	//    var redHelpLink = DOM.BUILDER.A(normalFontAttributes.put({ href : 'http://bo.lt/editor'}).addStyle('z-index: 2147483647; float: right;  margin-right: 34px; display: inline-block;text-decoration: none; color: #FFF; font-size: 10px; font-weight: bold; ').values(), 'Need Help?')
-
-	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values()));
-	okButton.appendChild(text);
-	messageOverlay.appendChild(okButton);
-
-	document.body.appendChild(backgroundDiv);
-	document.body.appendChild(messageOverlay);
-
-
-	this.show = function show( textToDisplay) {
-
-	    if (textToDisplay) {
-		DOM.textContent(loadingText, textToDisplay);
-	    }
-	    // var screenSize = DOM.viewDimension();
-	    // backgroundDiv.style.minWidth = screenSize[0] + 'px';
-	    // backgroundDiv.style.minHeight = screenSize[1] + 'px';
-
-	    // messageOverlay.style.left = (screenSize[0] - parseInt(messageOverlay.style.width) ) / 2 + 'px';
-	    // messageOverlay.style.top = (screenSize[1] - parseInt(messageOverlay.style.height) ) / 2 + 'px';
-	    // loadingDiv.style.left = (screenSize[0] - parseInt(loadingImage.style.width) ) / 2 + 'px';
-	    // loadingDiv.style.top = (screenSize[1] - parseInt(loadingImage.style.height) ) / 2 + 'px';
-
-	    backgroundDiv.style.display = 'block';
-	    
-	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
-	    //   backgroundDiv.style.position = 'absolute';
-	    //   messageOverlay.style.position = 'absolute';
-	    //   backgroundDiv.style.background = '#A51414';
-	    // }
-	};
-	
-	// this.hide = function hide() {
-	//     if (hideOverlayCheckbox.checked) {
-	// 	document.cookie ='m4.show.redbar.overlay=no;'
-	//     } else {
-	// 	var date = new Date();
-	// 	document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
-	//     }
-
-	//     messageOverlay.style.display = 'none';
-	//     backgroundDiv.style.display = 'none';
-	// };
-
+	editLabel= document.createElement("label");
+	editLabel.innerHTML = 'Editor';
+	editLabel.setAttribute("style", "position:absolute;top:5%;left:70%;color:#000;font-size:25px;");
+	editor.appendChild(editLabel);
+				
+	editBox= document.createElement("textarea");
+	editBox.setAttribute("id","editor");
+	editBox.setAttribute("alipielements", "alipi");
+	editBox.setAttribute("style","position:absolute;top:15%;left:51%;min-width:450px;max-width:450px;min-height:370px;max-height:370px;font-size:15;text-align:justify;");
+	editor.appendChild(editBox);
+			
+			
 	this.activate = function activate() {
-	    /*
-	     *  Cookie logic is temporary. This needs to be part of a user preference.
-	     *  Bug http://bugzilla.boltnet.com/bugzilla/boltnet/show_bug.cgi?id=2962
-	     *  created for this purpose.
-	     */
-	    var allCookies = document.cookie;
-	//    if (allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
-	    backgroundDiv.style.display = 'block';
-	    messageOverlay.style.display = 'block';
-		// if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
-		//   messageDescription.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(messageDescription).width )/2 + 'px';
-		//   editButton.style.marginLeft = (DOM.findSize(messageOverlay).width - DOM.findSize(editButton).width )/2 + 'px';
-		// }
-	  //  }  else {
-//		self.hide();
-//	    }
-	};
+	    $(function() {
+		    $( "#editoroverlay" ).dialog({
+			    width:1000,
+			    height:550,
+			    modal: true,
+			    buttons: {
+				"+": function() {
+				    if(document.getElementById('editor').style.fontSize == '30px'){
+					// passthrough
+				    } else {
+					document.getElementById('editor').style.fontSize = parseFloat(document.getElementById('editor').style.fontSize) + 1 + 'px';
+					document.getElementById('reference').style.fontSize = parseFloat(document.getElementById('reference').style.fontSize) + 1 + 'px';
+				    }
+				},
+				"-": function() {
+				    if(document.getElementById('editor').style.fontSize == '10px'){
+				    } else {
+					document.getElementById('editor').style.fontSize = parseFloat(document.getElementById('editor').style.fontSize) - 1 + 'px';
+					document.getElementById('reference').style.fontSize = parseFloat(document.getElementById('reference').style.fontSize) - 1 + 'px';
+				    }
+				},
+				OK: function() {
+				    textElement = new TextElementPopup(pageEditor, true);
+				    textElement.textButtonOnClick();
+				    $( "#editoroverlay" ).remove();
+				}				    
+			    },
+			    close: function() {
+				document.getElementById("alipiSelectedElement").removeAttribute("id", "alipiSelectedElement");
+				$( "#editoroverlay" ).remove();
+			    }
+			});
+		});
+
+	    noteLabel= document.createElement("label");
+	    noteLabel.setAttribute("id", "note-label");
+	    noteLabel.innerHTML = ' Magnify or Demagnify  ';
+	    noteLabel.setAttribute("style", "color:#000;font-size:15px;");
+	    $(noteLabel).insertAfter($(document.getElementsByClassName('ui-button-text')[0].parentNode));
+	
+	    document.getElementsByClassName('ui-button-text')[1].parentNode.style.marginRight = '635px';
+	    document.getElementsByClassName('ui-button-text')[2].parentNode.style.marginRight = '25px';
+	    document.getElementById("ui-dialog-title-editoroverlay").setAttribute("style","font-size:25px;");
+
+	}
     } ;
 
 
 
-// ===========================================Edit Window end =======================================================
+    // =========================================== Edit Window end =======================================================
+
+    // ========================================== Help Window Start =================================================
+
+    HelpWindow = function HelpWindow(pageEditor ) {
+	
+	this.createLabels = function createLabels() {
+	    
+	    help = document.createElement('div');
+	    help.setAttribute("id", "helpwindow");
+	    help.setAttribute("alipielements", "alipi");
+	    help.setAttribute("style", "color:#000;line-height:16px;");
+	    document.body.appendChild(help);
+
+	    txtLabel = document.createElement("label");
+	    txtLabel.setAttribute("id", "txtlab");
+	    txtLabel.innerHTML = 'TEXT :-<p style="margin-left:50px";>Editor - It will popup a window and allow you to modify/replace text of select element on editor(right) box.</p><p style="margin-left:100px";>To delete - Empty the editor(right) box and press "OK".</p><p style="margin-left:50px";>See narrations - If the selected element has other narrations then it will list, on click.</p><p style="margin-left:50px";>Audio - It allows you to enter audio URL.</p>';
+	    help.appendChild(txtLabel);
+
+	    imgLabel = document.createElement("label");
+	    imgLabel.setAttribute("id", "imglab");
+	    imgLabel.innerHTML = ' IMAGE:- <p style="margin-left:50px";> Replace - It allows you to enter image URL.</p><p style="margin-left:50px";> See narrations -  If the selected element has other image narration then it will show, on click.</p>';
+	    help.appendChild(imgLabel);
+
+	    undoLabel = document.createElement("label");
+	    undoLabel.setAttribute("id", "undolab");
+	    undoLabel.innerHTML = 'UNDO:- Use it when you want to revert back to previous change.<p style="margin-left:50px";> Revert deleted - Press \'Undo\' button twice. </p>';
+	    help.appendChild(undoLabel);
+
+	    pubLabel = document.createElement("label");
+	    pubLabel.setAttribute("id", "publab");
+	    pubLabel.innerHTML = 'PUBLISH:- To publish your crafted changes to database and blog (our/your).<p style="margin-left:50px";>States - To the place you are targetting.</p><p style="margin-left:50px";>Languages - In language you publishing.</p><p style="margin-left:50px";>Style - In what style you crafted?</p><p style="margin-left:50px";> Author - Who is a crafter?</p><p style="margin-left:50px";>Our blog - If you don\'t have blogspot ID then check this to post it to our blog.</p>';
+	    help.appendChild(pubLabel);
+
+	    
+	};
+	
+	this.activate = function activate() {
+	    $(function() {
+		    $( "#helpwindow" ).dialog({
+			    width:800,
+			    height:550,
+			    modal: true,
+			    close: function() {
+				$("#helpwindow").remove();
+			    }
+			});
+		});
+	};
+
+    } ;
+
+
+
+    // ========================================= Help Window end ===================================================
     /*
      * Control for displaying/hiding an action panel that appears below the popup buttons.
      */
@@ -2284,10 +2114,7 @@
 
 
 	    xpath = DOM.getXPATH(element);
-	    previousData = element.textContent; //Yass
-
-	    
-	    
+	    previousData = element.textContent; 
 
 	    var xmlhttp = new XMLHttpRequest();
 	    d = window.location.search.split('?')[1];
@@ -2300,70 +2127,56 @@
 	    xmlhttp.onreadystatechange = function()
 	    {
 		if(xmlhttp.readyState == 4 && xmlhttp.status== 200)
-		{
-		    if(xmlhttp.responseText=='')
 		    {
-			renDiv.style.display = 'none';
-			alert("Renarrations not available");
-		    }
-		    else {
-			for (i=0;i<= varray.length;i++) varray.pop(i);
-			for (i=0; i<=renInput.length;i++) renInput.remove(i,null);
-			// or = {} 
-			// or['lang']='original';
-			// or['location']=' ';
-			// or['style']=' ';
-			// or['xpath']=xpath;
-			// or['data']=previousData;
-
-			// varray.push(or);
-			
-			x=DOM.BUILDER.OPTION("please choose a Re-narration");
-			renInput.add(x,null);
-			//  x=DOM.BUILDER.OPTION("Original content");
-			// renInput.add(x,null);
-			
-			renActionControl.open(renDiv);
-			renDiv.style.display = 'block';
-			var response=xmlhttp.responseText.substring(3).split('###');
-			for (var j= 0; j< response.length ; j++){
-			    d ={}
-			    chunk = response[j].substring(1).split('&');
-			    for (var i= 0; i< chunk.length ; i++){
-				pair =chunk[i].split("::");
-				key = pair[0];
-				value = pair[1];
-				d[key] = value;
+			if(xmlhttp.responseText=='')
+			    {
+				renDiv.style.display = 'none';
+				alert("Renarrations not available");
 			    }
-			    varray.push(d);
-			}
-			for(i=0;i<varray.length;i++)	{
-			    lang_ = varray[i]['lang'];
-			    location_ = varray[i]['location']; 
-			    style_ = varray[i]['style'];  //toto
-			    x=DOM.BUILDER.OPTION(lang_+', '+location_+', '+style_);
+			else {
+			    for (i=0;i<= varray.length;i++) varray.pop(i);
+			    for (i=0; i<=renInput.length;i++) renInput.remove(i,null);
+			
+			    x=DOM.BUILDER.OPTION("please choose a Re-narration");
 			    renInput.add(x,null);
-			}
-			renInput.onchange=function(){
-			    //vnew=renInput.selectedIndex - 2; // the first option cannot be selected, it is only a label, Yass
-			    if (renInput.selectedIndex -1 < 0)  alert("please choose a Re-narration ");
-			    // else if (renInput.selectedIndex  ==0) {DOM.evaluate(xpath,previousData);}
-			    else   {
-				DOM.evaluate(varray[renInput.selectedIndex - 1]['xpath'],varray[renInput.selectedIndex - 1]['data']);};
-			    renInput.selectedIndex = 0;
-			}
 			
-			undoButton.onclick =function(){
-			    DOM.evaluate(xpath,previousData);
-			    
-			    //renInput = null;
-			    //for (i=0;i< varray.length;i++) varray.pop(i);
-			};
+			    renActionControl.open(renDiv);
+			    renDiv.style.display = 'block';
+			    var response=xmlhttp.responseText.substring(3).split('###');
+			    for (var j= 0; j< response.length ; j++){
+				d ={}
+				chunk = response[j].substring(1).split('&');
+				for (var i= 0; i< chunk.length ; i++){
+				    pair =chunk[i].split("::");
+				    key = pair[0];
+				    value = pair[1];
+				    d[key] = value;
+				}
+				varray.push(d);
+			    }
+			    for(i=0;i<varray.length;i++)	{
+				lang_ = varray[i]['lang'];
+				location_ = varray[i]['location']; 
+				style_ = varray[i]['style']; 
+				x=DOM.BUILDER.OPTION(lang_+', '+location_+', '+style_);
+				renInput.add(x,null);
+			    }
+			    renInput.onchange=function(){
+
+				if (renInput.selectedIndex -1 < 0)  alert("please choose a Re-narration ");
+				else   {
+				    DOM.evaluate(varray[renInput.selectedIndex - 1]['xpath'],varray[renInput.selectedIndex - 1]['data']);};
+				renInput.selectedIndex = 0;
+			    }
 			
+			    undoButton.onclick =function(){
+				DOM.evaluate(xpath,previousData);
+			    };
+			
+			}
 		    }
-		}
 	    }
-	    xmlhttp.open("POST","http://dev.a11y.in/narration",true);
+	    xmlhttp.open("POST","http://localhost/narration",true);
 	    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlhttp.send(data);
 	    
@@ -2372,200 +2185,123 @@
 	
 	
 	this.close = function close() {
-      	    //renActionControl.close();
-	    
       	    selectedElement = null;
-      	    //for (i=0;i< varray.length;i++){ varray.pop(i);}
-	    
-      	    //renInput = null;
-      	    // renDiv.style.display = 'none';
 	};
     }
     
     
-    /*  function LinkPopupAction(pageEditor, actionSlot) {
-	var self = this, linkInput, linkForm, popupDiv, selectedElement, anchorElement, originalHref, updateLink, findAnchorElement, linkActionControl;
-
-	var addUrlLabel = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('display: block; width: 100%; float: left; text-align: left; padding: 3px; font-size: 10px;position:relative; margin-top: 5px;margin-left: 5px; margin-right: 5px;background: transparent; color: #747474; text-shadow: 0 1px 0 #FFFFFF;').values());
-	addUrlLabel.innerHTML = 'Link to:';
-	linkInput = DOM.BUILDER.INPUT(editTextInputAttributes.addStyle('margin-left: 5px; background: #FFFFFF;').addStyle(leftBorderStyle + rightBorderStyle).values());
-
-	linkForm = DOM.BUILDER.FORM(elementAttributes.values(),
-	addUrlLabel,
-	linkInput,
-	DOM.BUILDER.INPUT(editSubmitAttributes.addStyle('vertical-align: middle; float:left;  margin-left: 5px; margin-right: auto;').values()));
-
-	linkForm.onsubmit = function linkFormOnSubmit() {
-	updateLink(linkInput.value);
-	return false;
-	};
-
-	popupDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('overflow: hidden !important; display: none;position: relative; margin-left: auto; margin-right: auto; margin-top: 5px; margin-bottom: 5px; height: auto !important; height: 60px;').values(),
-	linkForm);
-	linkActionControl = new PopupActionControl(actionSlot);
-
-	this.open = function open(element) {
-	linkActionControl.open(popupDiv);
-	popupDiv.style.display = 'block';
-	selectedElement = element;
-	anchorElement = findAnchorElement(selectedElement);
-	if (anchorElement == null) {
-        anchorElement = null;
-        linkInput.value = 'http://';
-        linkInput.focus();
-	} else {
-        originalHref = anchorElement.getAttribute('href');
-        linkInput.value = originalHref;
-        linkInput.select();
-	}
-	};
-
-	this.close = function close() {
-	linkActionControl.close();
-	selectedElement = null;
-	anchorElement = null;
-	linkInput.value = null;
-	popupDiv.style.display = 'none';
-	};
-
-	this.onComplete = function onComplete() {
-	};
-
-	this.onError = function onError() {
-	};
-
-	this.actionComplete = function actionComplete() {
-	self.onComplete();
-	};
-
-	this.handleError = function handleError() {
-	self.onError();
-	};
-
-	updateLink = function updateLink(href) {
-	var command;
-	if (anchorElement) {
-        command = {
-        command : 'ANCHOR_UPDATE',
-        element : anchorElement,
-        elementId : anchorElement.getAttribute('m4pageeditid'),
-        data : href,
-        previousData : originalHref
-        };
-	} else {
-        command = {
-        command : 'ANCHOR_CREATE',
-        element : selectedElement,
-        elementId : selectedElement.getAttribute('m4pageeditid'),
-        data : href,
-        previousData : ''
-        };
-	}
-	pageEditor.commandApply(command);
-	self.actionComplete();
-	};
-
-	findAnchorElement = function findAnchorElement(element) {
-	if (element.nodeName.toLowerCase() == 'a') {
-        return element;
-	} else if (element.parentNode) {
-        return findAnchorElement(element.parentNode);
-	} else {
-        return null;
-	}
-	}
-	}*/
-
-    /////
     //******************************** Shalini - Changed AudioupdatePopupAction from ImageUpdatePopupAction *****************
 
-    function AudioUpdateByUrl(pageEditor, actionControl) {
-	var self = this, popupDiv, audioUrlInput, randomInput, audioUrlForm, selectedElement, targetName,audioElement;
+    AudioUpdateByUrl = function AudioUpdateByUrl(pageEditor) {
+	//	var self = this, popupDiv, audioUrlInput, randomInput, audioUrlForm, selectedElement, targetName,audioElement;
+	// var addUrlLabel = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('width: 100%; display: block; float: left; font-size: 10px;position:relative; margin-top: 5px;margin-left: 0px; margin-right: 5px; margin-bottom: 5px; background: transparent; color: #747474; text-shadow: 0 1px 0 #FFFFFF; text-align: left;').values());
+	// addUrlLabel.innerHTML = 'Add URL';
 
-	var addUrlLabel = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('width: 100%; display: block; float: left; font-size: 10px;position:relative; margin-top: 5px;margin-left: 0px; margin-right: 5px; margin-bottom: 5px; background: transparent; color: #747474; text-shadow: 0 1px 0 #FFFFFF; text-align: left;').values());
-	addUrlLabel.innerHTML = 'Add URL';
-	/*	audioUrlInput = document.createElement('audio');
-		audioUrlInput.setAttribute('src','http://01audiovideo.free.fr/ogg/half_asleep_sea_shells.ogg');
-		audioUrlInput.play();*///testing the audio tag creation
-
-	audioUrlInput = DOM.BUILDER.INPUT(editTextInputAttributes.addStyle('display:block; background: #FFFFFF;').values());
-	randomInput = DOM.BUILDER.INPUT(editAttributes.put({ name : 'random', type : 'hidden', value : '1' }).values());
-    	audioUrlForm = DOM.BUILDER.FORM(elementAttributes.values(),
-					audioUrlInput,
-					DOM.BUILDER.INPUT(editSubmitAttributes.values()));
-
-	/* audioUrlForm = DOM.BUILDER.FORM(elementAttributes.put({ target : targetName, enctype : 'multipart/form-data', method : 'post', action : '/app/page-edit/upload' }).values(),
-           audioUrlInput,
-	   //   DOM.BUILDER.INPUT(editAttributes.put({ name : 'pageSlug', type : 'hidden', value : pageSlug }).values()),
-	   // randomInput,
-           DOM.BUILDER.INPUT(editSubmitAttributes.values()));*/
-
-	audioUrlForm.onsubmit = function updateFormOnSubmit() {
-            var url = audioUrlInput.value;
-	    updateAudio(url);
-            return false;
+	// audioUrlInput = DOM.BUILDER.INPUT(editTextInputAttributes.addStyle('display:block; background: #FFFFFF;').values());
+	// randomInput = DOM.BUILDER.INPUT(editAttributes.put({ name : 'random', type : 'hidden', value : '1' }).values());
+    	// audioUrlForm = DOM.BUILDER.FORM(elementAttributes.values(),
+	// 				audioUrlInput,
+	// 				DOM.BUILDER.INPUT(editSubmitAttributes.values()));
+	this.display = function display() {
+	    audioDiv = document.createElement("div");
+	    audioDiv.setAttribute("id", "audiodiv");
+	    audioDiv.setAttribute("alipielements", "alipi");
+	    audioDiv.setAttribute("title", "Enter ogg file link");
+	    document.body.appendChild(audioDiv);
+	    
+	    urlInput = document.createElement("input");
+	    urlInput.setAttribute("id", "audiourl");
+	    urlInput.setAttribute("alipielements", "alipi");
+	    urlInput.setAttribute("type", "text");
+	    urlInput.setAttribute("style", "width:300px;");
+	    audioDiv.appendChild(urlInput);
+	    
+	    $(function() {
+		    $( "#audiodiv" ).dialog({
+			    width:350,
+				height:150,
+				modal: true,
+				close: function() {
+				$("#audiodiv").remove();
+			    },
+				buttons: {
+				OK: function() {
+				    var url = urlInput.value;
+				    updateAudio(url);
+				    document.getElementById('alipiSelectedElement').removeAttribute('id', 'alipiSelectedElement');
+				    $("#audiodiv").remove();
+				} 
+			    }
+			    
+			});
+		});
 	};
+	
+	
+	// function updateFormOnSubmit() {
+        //     var url = urlInput.value;
+	//     updateAudio(url);
+        //     return false;
+	// };
 
-	audioDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('width: 100%; float:left; position: relative; margin: 0px auto auto 10px; display: block;').values(), addUrlLabel, audioUrlForm);
+	// audioDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('width: 100%; float:left; position: relative; margin: 0px auto auto 10px; display: block;').values(), addUrlLabel, audioUrlForm);
 
-	audioActionControl = new PopupActionControl(actionControl);
+	// audioActionControl = new PopupActionControl(actionControl);
 
-	this.getActionDiv = function getActionDiv() {
-            return audioDiv;
-	};
+	// this.getActionDiv = function getActionDiv() {
+        //     return audioDiv;
+	// };
 
-	this.open = function open(element) {
-	    audioActionControl.open(audioDiv);
-            audioUrlInput.value = '';
-            selectedElement = element;
-            audioDiv.style.display = 'block';
-	};
+	// this.open = function open(element) {
+	//     audioActionControl.open(audioDiv);
+        //     audioUrlInput.value = '';
+        //     selectedElement = element;
+        //     audioDiv.style.display = 'block';
+	// };
 
-	this.close = function close() {
-            selectedElement = null;
-            audioDiv.style.display = 'none';
-	};
+	// this.close = function close() {
+        //     selectedElement = null;
+        //     audioDiv.style.display = 'none';
+	// };
 
 	updateAudio = function updateAudio(src) {
 	    var command;
-	    if (audioElement) {
-		command = {
-		    command : 'AUDIO_UPDATE',
-		    element : audioElement,
-		    elementId : audioElement.getAttribute('m4pageeditid'),
-		    data : src,
-		    previousData : originalHref
-		};
-	    } else {
+	    selectedElement = document.getElementById("alipiSelectedElement");
+	    // audioElement = urlInput;
+	    // if (audioElement) {
+	    // 	command = {
+	    // 	    command : 'AUDIO_UPDATE',
+	    // 	    element : audioElement,
+	    // 	    elementId : audioElement.getAttribute('m4pageeditid'),
+	    // 	    data : src,
+	    // 	    //		    previousData : originalHref
+	    // 	};
+	    // } else {
 		command = {
 		    command : 'AUDIO_CREATE',
 		    element : selectedElement,
 		    elementType : 'audio/ogg',
-		    xpath : DOM.getXPATH(selectedElement), //Yassine
+		    xpath : DOM.getXPATH(selectedElement),
 		    url : window.location.href,
 		    elementId : selectedElement.getAttribute('m4pageeditid'),
 		    data : src,
 		    previousData : ''
 		};
-	    }
+	    //	    }
 	    pageEditor.commandApply(command);
-	    // self.actionComplete();
 	};
 
-    }
+    };
 
 
     //*******************************************************************
 
-    
-
-
     /**
-     * Action for updating an image. //Yass to be edited
+     * Action for updating an image.
      */
     function ImageUpdatePopupAction(pageEditor, actionSlot, updateType) {
 	var self = this, selectedElement, imagePopupDiv, backgroundUploadPopup, uploadPopupDiv, imageUrlPopup, imageUrlDiv,
-	imageSizeSpan, imageFitCheckbox, headerDiv, updateSize, fitElement, imageActionControl;
+	    imageSizeSpan, imageFitCheckbox, headerDiv, updateSize, fitElement, imageActionControl;
 
 	imagePopupDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('position: relative; overflow: hidden !important; display: block; margin-top:3px; height: auto !important; height: 120px; margin-bottom: 10px;').values());
 	headerDiv = DOM.BUILDER.DIV(normalFontAttributes.addStyle('position: relative;').values());
@@ -2602,7 +2338,7 @@
 		command : 'IMAGE_SRC_UPDATE',
 		element : selectedElement,
 		elementType : 'image',
-		xpath : DOM.getXPATH(selectedElement), //Yassine
+		xpath : DOM.getXPATH(selectedElement),
 		url : window.location.href,
 		data : new UTIL.StringBuffer().append(fittedSize.width).append('x').append(fittedSize.height).append(',').append(url).toString(),
 		previousData : {
@@ -2675,8 +2411,8 @@
 
 	function ImageUpdateByUpload(actionControl, uploadButtonText) {
 	    var self = this,  uploadForm, uploadingMessage, uploadIframe, fileInput, pageSlugInput,
-            uploadSlugInput, targetName, randomInput, selectedElement = null, sizingImage, showLoading, uploadButton,
-            uploadPopupDiv;
+		uploadSlugInput, targetName, randomInput, selectedElement = null, sizingImage, showLoading, uploadButton,
+		uploadPopupDiv;
 
 	    uploadPopupDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('width: 110px; overflow: none; display: block; position: relative; margin: 10px auto auto 10px; float:left;').values());
 	    uploadingMessage = DOM.BUILDER.SPAN(editTitleAttributes.addStyle("display:none").values(), "Loading...");
@@ -2713,42 +2449,40 @@
 
 	    uploadIframe = DOM.BUILDER.IFRAME( { name : targetName, src : 'https://bo.lt/app/asset/empty.html?p=622fd096a39f5c36a6e06e41a9963dafaad61079', style : 'display: none' });
 	    UTIL.addEvent(uploadIframe, 'load', function uploadIframeOnLoad() {
-		var iframeBody;
-		if (uploadIframe.contentDocument) {
-		    iframeBody = uploadIframe.contentDocument.body;
-		} else if (uploadIframe.contentWindow) {
-		    iframeBody = uploadIframe.contentWindow.document.body;
-		}
-		var upload, resultText = DOM.textContent(iframeBody);
+		    var iframeBody;
+		    if (uploadIframe.contentDocument) {
+			iframeBody = uploadIframe.contentDocument.body;
+		    } else if (uploadIframe.contentWindow) {
+			iframeBody = uploadIframe.contentWindow.document.body;
+		    }
+		    var upload, resultText = DOM.textContent(iframeBody);
 
-		// resultText is empty the first time the form is added to the DOM
-		// selectedElement can be null if the user reloads the page and resubmits the form
-		if (!/^\s*\{.*\}\s*/.test(resultText) || selectedElement == null) {
-		    return;
-		}
+		    if (!/^\s*\{.*\}\s*/.test(resultText) || selectedElement == null) {
+			return;
+		    }
 
-		try {
-		    upload = eval("(" + resultText + ")");
-		} catch (error) {
-		    console.error("Unable to interpret the upload image response", error);
-		    actionControl.handleError();
-		    return;
-		}
+		    try {
+			upload = eval("(" + resultText + ")");
+		    } catch (error) {
+			console.error("Unable to interpret the upload image response", error);
+			actionControl.handleError();
+			return;
+		    }
 
-		if (!upload.success) {
-		    console.error("Unable to upload the specified file:", upload.error);
-		    actionControl.handleError();
-		    return;
-		}
+		    if (!upload.success) {
+			console.error("Unable to upload the specified file:", upload.error);
+			actionControl.handleError();
+			return;
+		    }
 
-		sizingImage = new Image();
-		sizingImage.onload = function sizingImageOnLoad() {
-		    self.onImageLoad(selectedElement, upload.url, { width: sizingImage.width, height: sizingImage.height });
-		    actionControl.actionComplete();
-		};
-		sizingImage.src = upload.url;
-		randomInput.value = randomInput.value + 1;
-	    });
+		    sizingImage = new Image();
+		    sizingImage.onload = function sizingImageOnLoad() {
+			self.onImageLoad(selectedElement, upload.url, { width: sizingImage.width, height: sizingImage.height });
+			actionControl.actionComplete();
+		    };
+		    sizingImage.src = upload.url;
+		    randomInput.value = randomInput.value + 1;
+		});
 
 	    uploadPopupDiv.appendChild(uploadForm);
 	    uploadPopupDiv.appendChild(uploadingMessage);
@@ -2836,8 +2570,8 @@
      */
     function EditableElementPopup(pageEditor, imageElement) {
 	var self = this, popupControl, deleteElement, imagePopupDiv, deleteButton,renButton,selectedElement,
-	linkUpdateAction, linkButton,  closeButton, imageButton, backgroundButton, redArrow,imageUpdateAction,
-	imageUpdateDiv, uploadMode, backgroundButtonText, imageButtonText, buttonPanel, upArrow, actionSlot,subMenuAction,renUpdateAction;
+	    linkUpdateAction, linkButton,  closeButton, imageButton, backgroundButton, redArrow,imageUpdateAction,
+	    imageUpdateDiv, uploadMode, backgroundButtonText, imageButtonText, buttonPanel, upArrow, actionSlot,subMenuAction,renUpdateAction;
 
 	this.popupAt = function popupAt(element, popX, popY) {
 	    popupControl.openAt(element, popX, popY);
@@ -2847,16 +2581,11 @@
 	    popupControl.close();
 	};
 
-	// Ajay - "Image" name on drop down
 	if (imageElement) {
 	    uploadMode = 'IMAGE_SRC_UPDATE';
 	    backgroundButtonText = "Replace";
 	    imageButtonText = 'Image';
-	} // else {
-	//   uploadMode = 'BACKGROUND_IMAGE_UPDATE';
-	//   backgroundButtonText = "BG&nbsp;Image";
-	//   imageButtonText = 'Block';
-	// }
+	}
 
 	buttonPanel = DOM.BUILDER.DIV(buttonPanelAttributes.values());
 	upArrow = DOM.BUILDER.SPAN(greyArrowAttributes.values());
@@ -2878,15 +2607,10 @@
 		deleteButton.style.display = 'block';
 	    }
 	    actionSlot.style.width =   actionSlotWidth + 'px';
-	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
-	    //   actionSlot.style.marginTop = '-8px';
-	    //   actionSlot.style.paddingTop = '0px';
-	    // }
 	};
 
 	popupControl.onClose = function onClose() {
 	    upArrow.style.display = 'none';
-	    //deleteButton.style.display = 'block';
 	    selectedElement = null;
 	};
 
@@ -2897,14 +2621,6 @@
 	    return false;
 	};
 
-	// redArrow = DOM.BUILDER.SPAN(redArrowAttributes.values());
-
-	// imageButton = createTitleButton(imageButtonText, 'width: 45px;');
-	// imageButton.onclick = function imageButtonOnClick() {
-	//   popupControl.hideAction();
-	//   upArrow.style.display = 'none';
-	//   return false;
-	// };
 
 	imageUpdateAction = new ImageUpdatePopupAction(pageEditor, actionSlot, uploadMode);
 	imageUpdateAction.onComplete = function imageUpdateActionOnComplete() {
@@ -2918,20 +2634,7 @@
 	    displayUpArrowUnderButton(backgroundButton, upArrow);
 	    return false;
 	};
-	//shalini
-	/* linkUpdateAction = new LinkPopupAction(pageEditor, actionSlot);
-	   linkUpdateAction.onComplete = function linkUpdateActionOnComplete() {
-	   self.popdown();
-	   };
 
-	   var linkImage = 'http://dev.a11y.in/alipi/images/link.png';
-	   linkButton = createActionButton(linkImage, 'Link', rightBorderStyle);
-	   linkButton.onclick = function linkButtonOnClick() {
-	   popupControl.showAction(linkUpdateAction);
-	   displayUpArrowUnderButton(linkButton, upArrow);
-	   return false;
-	   };*/
-	//shalini
 	renUpdateAction = new renAction(pageEditor, actionSlot);
 	renUpdateAction.onComplete = function renUpdateActionOnComplete() {
 	    self.popdown(true);
@@ -2942,36 +2645,13 @@
 	renButton = createActionButton(renImage, 'See (other) narrations', 'border-right: none;');
 	renButton.onclick = function renButtonOnClick() {
 	    popupControl.showAction(renUpdateAction);
-	    //self.popdown(true);
 	    return false;
 	};
 
-	//shalini
-	/*    var deleteImage = 'http://dev.a11y.in/alipi/images/delete_trashcan.png';
-	      deleteButton = createActionButton(deleteImage, 'Delete', 'border-right: none;');
-	      deleteButton.onclick = function deleteButtonOnClick() {
-	      deleteElement();
-	      popupControl.close();
-	      return false;
-	      };
-	*/
-	//shalini
-
-	// Ajay
-	//    buttonPanel.appendChild(imageButton);
-	//    buttonPanel.appendChild(redArrow);
 	buttonPanel.appendChild(backgroundButton);
-	//shalini
-	//    buttonPanel.appendChild(deleteButton);
-	//shalini
-
-	//    buttonPanel.appendChild(linkButton);
-	//shalini
 	buttonPanel.appendChild(renButton);
-
 	imagePopupDiv.appendChild(closeButton);
 	imagePopupDiv.appendChild(buttonPanel);
-	//    imagePopupDiv.appendChild(upArrow);
 	imagePopupDiv.appendChild(actionSlot);
 
 	document.body.appendChild(imagePopupDiv);
@@ -2981,7 +2661,7 @@
 		command : 'DELETE',
 		element : selectedElement,
 		url : '',
-		xpath : '', //Yassine
+		xpath : '',
 		elementType : 'text',
 		data : '',
 		previousData : ''
@@ -2992,17 +2672,16 @@
     }
 
     /**
-     * Popup for text edit. //Yass for text
+     * Popup for text edit.
      */
     function TextElementPopup(pageEditor) {
 	var self = this, updateText, deleteElement, textPopupDiv, selectedElement, originalTextContent, deleteButton, 
-	imageUpdateAction, popupControl, linkUpdateAction, linkButton, closeButton, textButton, doneButton,
-	imageUpdateDiv, backgroundButton, redArrow, buttonPanel, upArrow, actionSlot,renButton, variablePassing;
+	    imageUpdateAction, popupControl, linkUpdateAction, linkButton, closeButton, textButton, doneButton,
+	    imageUpdateDiv, backgroundButton, redArrow, buttonPanel, upArrow, actionSlot,renButton, variablePassing;
 
 	this.popupAt = function popupAt(element, popX, popY) {
 	    popupControl.openAt(element, popX, popY);
 	};
-
 	
 	this.popdown = function popdown(saveChanges) {
 	    popupControl.close(saveChanges);
@@ -3012,7 +2691,6 @@
 	upArrow = DOM.BUILDER.SPAN(greyArrowAttributes.values());
 	actionSlot = DOM.BUILDER.DIV(actionPanelAttributes.values());
 	redArrow = DOM.BUILDER.SPAN(redArrowAttributes.values());
-
 	textPopupDiv = DOM.BUILDER.DIV(popupContainerAttributes.values());
 
 	var eatKeyboardEvents = function eatKeyboardEvents(event) {
@@ -3021,23 +2699,22 @@
 	var handleKeyDown = function handleKeyDown(event) {
 	    switch (event.keyCode) {
 	    case 13:
-		// Enter key
-		self.popdown(true);
-		event.stopPropagation();
-		event.preventDefault();
+	    // Enter key
+	    self.popdown(true);
+	    event.stopPropagation();
+	    event.preventDefault();
 
-		return false;
+	    return false;
 	    default:
-		eatKeyboardEvents(event);
+	    eatKeyboardEvents(event);
 	    }
 	};
 
 	popupControl = new PopupControl(pageEditor, textPopupDiv, false);
 	popupControl.onOpen = function onOpen(element) {
 	    selectedElement = element;
-	    originalTextContent = DOM.textContent(selectedElement);
-	    // actionSlot.style.width = (textPopupDiv.offsetWidth - textButton.offsetWidth - 10) + 'px';
-	    actionSlot.style.marginLeft = (textButton.offsetWidth) + 'px';
+	    originalTextContent = DOM.textContent(selectedElement);       
+	    //	    actionSlot.style.marginLeft = (textButton.offsetWidth) + 'px';
 	    UTIL.addEvent(selectedElement, 'keydown', handleKeyDown);
 	    UTIL.addEvent(selectedElement, 'keyup', eatKeyboardEvents);
 	    UTIL.addEvent(selectedElement, 'keypress', eatKeyboardEvents);
@@ -3049,11 +2726,11 @@
 	};
 
 	popupControl.onClose = function onClose(saveChanges) {
-	    upArrow.style.display = 'none';
+ 	    upArrow.style.display = 'none';
 	    if (saveChanges && (DOM.textContent(selectedElement) != originalTextContent)) // || (saveChanges && hasAudio==true)
-	    {
-		updateText();
-	    } else {
+		{
+		    updateText();
+		} else { 
 		DOM.textContent(selectedElement, originalTextContent);
 	    }
 	    selectedElement = null;
@@ -3074,25 +2751,24 @@
 	doneButton = createActionButton(doneImage, 'Editor', 'border-right: none;' + leftBorderStyle);
 	doneButton.onclick = function doneButtonOnClick(elements) {
 	    editWindow = new EditWindow(pageEditor);
- 	    editWindow.activate();
-	    document.getElementById('originaltext').value = selectedElement.textContent;
-	    document.getElementById('texteditor').value = selectedElement.textContent;
-	    document.getElementById('editoroverlay').appendChild(textButton);
+	    console.log(selectedElement.children);
+	    document.getElementById('reference').value = selectedElement.textContent;
+	    document.getElementById('editor').value = selectedElement.textContent;
 	    selectedElement.setAttribute('id', 'alipiSelectedElement');
-//	    self.popdown(true);
-//	    return false;
+	    document.getElementById("editor").removeAttribute("readonly");
+	    // 	    DOM.textContent(selectedElement, originalTextContent);
+	    editWindow.activate();	    
+	    self.popdown(false);
+	    //	    upArrow.style.display = 'none';
+	    return false;
+
 	};
 
-	textButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:46%; bottom:12%; color:#FFF; width:8%; height:5%; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values(), 'OK');
-	textButton.onclick = function textButtonOnClick() {
-	    document.getElementById('alipiSelectedElement').textContent = document.getElementById('texteditor').value;
-	    document.body.removeChild(document.getElementById('editoroverlay'));
-	    document.body.removeChild(document.getElementById('editorbgdiv'));
-	    handleKeyDown;
-//	    UTIL.addEvent(document.getElementById('alipiSelectedElement'), 'keydown', handleKeyDown);
-	    document.getElementById('alipiSelectedElement').removeAttribute('id', 'alipiSelectedElement');
+
+	this.textButtonOnClick = function textButtonOnClick() {
 	    self.popdown(true);
-//	    popupControl.hideAction();
+	    document.getElementById('alipiSelectedElement').textContent = document.getElementById('editor').value;
+	    document.getElementById('alipiSelectedElement').removeAttribute('id', 'alipiSelectedElement');
 	    return false;
 	};
 
@@ -3101,7 +2777,6 @@
 	renButton = createActionButton(renImage, 'See (other) narrations', 'border-right: none;');
 	renButton.onclick = function renButtonOnClick() {
 	    popupControl.showAction(renUpdateAction);
-	    //self.popdown(true);
 	    return false;
 	};
 
@@ -3112,24 +2787,19 @@
 
 	audioUpdateAction = new AudioUpdateByUrl(pageEditor, actionSlot);
 	audioUpdateAction.onComplete = function audioUpdateActionOnComplete() {
-	    self.popdown();
+	    self.popdown(false);
 	};
 	
 	var audioImage = 'http://dev.a11y.in/alipi/images/audio.png';
 	audioButton = createActionButton(audioImage,'Audio','border-right:none;');
 	audioButton.onclick = function audioButtonOnClick() {
-	    popupControl.showAction(audioUpdateAction);
-	    return false;
+	    selectedElement.setAttribute('id', 'alipiSelectedElement');
+	    audioUpdateAction = new AudioUpdateByUrl(pageEditor);
+	    audioUpdateAction.display();
+	    self.popdown(true);
+ 	    return false;
 	};
 
-	//shalini
-	/*    var deleteImage = 'http://dev.a11y.in/alipi/images/delete_trashcan.png';
-	      deleteButton = createActionButton(deleteImage, 'Delete', 'border-right: none;');
-	      deleteButton.onclick = function deleteButtonOnClick() {
-	      deleteElement();
-	      self.popdown(true);
-	      return false;
-	      };*/
 
 	imageUpdateAction = new ImageUpdatePopupAction(pageEditor, actionSlot, 'BACKGROUND_IMAGE_UPDATE');
 	imageUpdateAction.onComplete = function imageUpdateActionOnComplete() {
@@ -3144,43 +2814,13 @@
 	    displayUpArrowUnderButton(backgroundButton, upArrow);
 	    return false;
 	};
-	//shalini
 
-	/*    linkUpdateAction = new LinkPopupAction(pageEditor, actionSlot);
-	      linkUpdateAction.onComplete = function linkUpdateActionOnComplete() {
-	      self.popdown(true);
-	      };
-
-
-	      var linkImage = 'http://dev.a11y.in/alipi/images/link.png';
-	      linkButton = createActionButton(linkImage, 'Link', rightBorderStyle);
-	      linkButton.onclick = function linkButtonOnClick() {
-	      popupControl.showAction(linkUpdateAction);
-	      displayUpArrowUnderButton(linkButton, upArrow);
-	      return false;
-	      };*/
-	//shalini
-
-//	mm = new EditWindow(pageEditor);
-//	console.log(EditWindow.msgg);
-	//    buttonPanel.appendChild(redArrow);
 	buttonPanel.appendChild(doneButton);
-	//shalini
-	//    buttonPanel.appendChild(deleteButton);
-	//shalini
 	buttonPanel.appendChild(renButton);
 	buttonPanel.appendChild(audioButton);
-	
-	//    buttonPanel.appendChild(backgroundButton);
-	//shalini
-	//    buttonPanel.appendChild(linkButton);
-	//shalini
-
 	textPopupDiv.appendChild(closeButton);
 	textPopupDiv.appendChild(buttonPanel);
-	//    textPopupDiv.appendChild(upArrow);
 	textPopupDiv.appendChild(actionSlot);
-
 	document.body.appendChild(textPopupDiv);
 
 	updateText = function updateText() {
@@ -3188,12 +2828,12 @@
 		command : 'TEXT_UPDATE',
 		element : selectedElement,
 		url : window.location.href,
-		xpath : DOM.getXPATH(selectedElement), //Yassine
+		xpath : DOM.getXPATH(selectedElement),
 		elementType : 'text',
 		data : DOM.textContent(selectedElement),
 		previousData : originalTextContent
-            };
-	    pageEditor.commandApply(command);;
+            }; 
+	    pageEditor.commandApply(command); 
 	    if (DOM.textContent(selectedElement).length == 0) {
 		deleteElement();
 	    }
@@ -3204,7 +2844,7 @@
 		command : 'DELETE',
 		element : selectedElement,
 		url : '',
-		elementType : 'text', //Yass
+		elementType : 'text',
 		data : '',
 		xpath : '',
 		data : '',
@@ -3220,222 +2860,103 @@
      * Overlay bar which can function in either visual editor or html editor mode.
      */
     function OverlayBar(pageEditor, isVisualEditor) {
-	//shalini-added cancelbutton
 	var self = this, overlayDiv, firstRowDiv, firstRowStyleAttributes, messageDiv, publishButton, undoButton,fillUpButton;
 	var moveDiv, editModeChangeOverlayDiv, buttonDiv, editModeChangeButtonDiv, editModeChangeSaveButton, editModeChangeDiscardButton;
 	var redButtonStyleAttributes, fillUpButtonStyleAttributes, firstRowDivOffset, calculateScrollPositionY, wrapperDiv,showKeepOriginalOverlay, publishOptions = new PublishOptions();
 
-	// -webkit-gradient is for chrome, safari, etc.
-	// -moz-linear-gradient is for firefox
-	// -ms-filter is for ie8+
-	// filter is for ie quirks mode (5.5)
-	//firstRowDivOffset = 32; //Ajay
-	// firstRowStyleAttributes = editAttributes.addStyle('color: #FFF;'
-	//   + ' background-color: rgba(0, 0, 0, 0.589844);'
-	//   + ' min-width: 800px; height: 20px; width: 100%; position: relative; left: 0;'
-	//   + ' overflow-x: visible;'
-	//   + ' font-weight:normal; font-size:20px; font-family: Helvetica Neue, Helvetica, Arial, Sans-serif; text-align: left; border-top: 1px solid rgba(0, 0, 0, 0.14); display: block;').values();
 
-	/*    secondRowStyleAttributes = fontTypeAttributes.addStyle('color: #FFF; background-color: transparent;'
-	      + ' background: -webkit-gradient(linear, 0% 100%, 0% 0%, from(rgba(0, 0, 0, 0.05)), to(rgba(0, 0, 0, 0.589844)));'
-	      + ' background: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.05),rgba(0, 0, 0, 0.589844));'
-	      + ' -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr=\'#6A2222\',EndColorStr=\'#653535\')";'
-	      + ' filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = \'#6A2222\', EndColorStr = \'#653535\');'
-	      + ' min-width: 800px; height: 33px; width: 100%; position: relative; left: 0; overflow-x: visible;'
-	      + ' z-index: 2147483646; font-weight:normal; font-size:14px; font-family: Helvetica Neue, Helvetica, Arial, Sans-serif; text-align: left;'
-	      + ' padding-top: 5px; border:1px transparent; vertical-align: middle; border-top: 1px solid transparent; display:block;').values();
-	*/  // Ajay
-
-	/*    logoAnchor = DOM.BUILDER.A(editAttributes.put({ href : 'https://bo.lt/app/'}).addStyle('z-index: 2147483647; position: absolute; left: 0; margin-bottom: 19px; display: inline-block;').values(),
-	      DOM.BUILDER.IMG(editAttributes.put({ src : 'https://bo.lt/app/asset/page-edit/bo_square.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079' }).addStyle('border: 0 none; margin-left: 16px; display:inline; box-shadow: 0 3px 1px rgba(0, 0, 0, 0.24); -webkit-box-shadow: 0 3px 1px rgba(0, 0, 0, 0.24); -moz-box-shadow:0 3px 1px rgba(0, 0, 0, 0.24);').values())); */ //Ajay
-
-	// Ajay - Below message display bar
-	messageDiv = DOM.BUILDER.DIV(editAttributes.addStyle('font-weight:italic; font-size:20px; font-family: Helvetica Neue,Helvetica,Arial,Sans-serif; position:absolute; left:30%; width:100%; display:inline-block;  color:#fff;').values());
-
-	// Ajay - background-color & rgba changed
-	redButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; top:-13px; right:04%; width:22%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
-
-	//Ajay - button for filling up the target and other detail
-	//	fillUpButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; top:-13px; right:30%; width:20%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
-
-	// Ajay - created
-	undoButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; left:35%; top:-13px; width:15%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
-
-	// locSelectAttributes = panelButtonAttributes.addStyle('width:23%; color:#FFF; float:left; font-weight:bold; font-size:18px; text-align:center; margin-top:8px; margin-left:-43%; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
-
-	// langSelectAttributes = panelButtonAttributes.addStyle('width:25%; color:#FFF; float:left; font-weight:bold; font-size:18px; text-align:center; margin-top:8px; margin-left:-70%; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
-
-	styleSelectAttributes = normalFontAttributes.addStyle('width:20%; color:#FFF; float:left; font-weight:bold; font-size:18px; text-align:center; margin-top:8px; margin-left:-92%; background: #AAA; border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
-
-	authorInputAttributes = panelButtonAttributes.addStyle('width:28%; color:#FFF; float:left; font-weight:bold; font-size:18px; text-align:center; margin-top:8px; margin-left:-125%; background: #AAA;  border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;border-radius:2px; -moz-border-radius:2px; -webkit-border-radius:2px; border:5px solid #2f6270; font-size:14px; height:35px;').values();
+	overlayDiv = document.createElement("div");
+	overlayDiv.setAttribute("id", "overlay-div");
+	overlayDiv.setAttribute("alipielements", "alipi");
+	overlayDiv.setAttribute("style", "overflow:inherit; overflow-x:visible; position:fixed; z-index:2147483645; left:0; top:0; min-width:800px; width:100%; height:30px; background-color:rgba(0, 0, 0, 0.5);");
+	document.body.appendChild(overlayDiv);
 
 
-	//shalini
-	/*  cancelButtonStyleAttributes = panelButtonAttributes.addStyle('width:15%; color:#FFF; float:left; height: 36px; font-weight:bold; font-size:18px; text-align:center; margin-top: 8px; margin-left:-130%; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values();*/
-
- 	// fillUpButton = DOM.BUILDER.BUTTON(fillUpButtonStyleAttributes, 'Fill up'); 
-	// fillUpButton.onclick = function fillUpButtonOnLoad() {
-
-	//     }
-	//     else {
-	//     messageOverlay.style.display = 'none';
-	//     backgroundDiv.style.display = 'none';
-	//     }
- 	// };
-
-	publishButton = DOM.BUILDER.BUTTON(redButtonStyleAttributes, 'Publish'); // Ajay - Done to Save Yass
-	//pageEditor.saveAndClose();
-
-	publishButton.onclick = function publishButtonOnClick() {
-	    if (pageEditor.hasChangesPending() /* && (pageEditor.formUncomplete() ==false) */ ) {
- 		targetWindow = new TargetWindow(pageEditor);
- 		targetWindow.activate();
-	
-		okButton.onclick = function okButtonOnClick() {  // Ajay
-		    targetWindow.okClick();
+	image = document.createElement("img");
+	image.setAttribute("id", "close-image");
+	image.setAttribute("alipielements", "alipi");
+	image.setAttribute("src", "http://dev.a11y.in/alipi/images/close_button.png");
+	image.setAttribute("style", "position:relative;width:25px;height:28px;");
+	overlayDiv.appendChild(image);
+	image.onclick=function(){
+	    answer = confirm("Do you really want to exit the editor?")
+	    if (answer !=0)
+		{
+		    window.location.reload();
 		}
-	    }
-	    //	    else if ((pageEditor.hasChangesPending() ==false)&& (pageEditor.formUncomplete() == false)){
-	    //		pageEditor.showMessage(" Nothing to publish !");
-	    //	    }
-	    //	    else if (pageEditor.hasChangesPending()&& (pageEditor.formUncomplete() ==true)){
-	    //		pageEditor.showMessage("you need to choose at least a language, a location or a style before you can save & publish !");
-	    //            }
-	    else{
-		pageEditor.showMessage("Nothing to publish");
-	    }
-	    return false;
+	}
+
+
+	messageDiv = document.createElement("div");
+	messageDiv.setAttribute("id", "message-div");
+	messageDiv.setAttribute("alipielements", "alipi");
+	messageDiv.setAttribute("style", "position:relative;left:150px;bottom:26px;font-size:23px;font-weight:bold;color:#ffe;");
+	overlayDiv.appendChild(messageDiv);
+
+	helpLink = document.createElement("input");
+	helpLink.setAttribute("id", "help");
+	helpLink.setAttribute("alipielements", "alipi");
+	helpLink.setAttribute("type", "submit");
+	helpLink.setAttribute("Value", "Help");
+	helpLink.setAttribute("style", "position:relative;top:-55px;left:750px;font-size:18px;font-weight:bold;width:100px;height:30px;");
+	overlayDiv.appendChild(helpLink);
+	helpLink.onclick = function helpLinkOnClick() {
+	    helpWindow = new HelpWindow(pageEditor);
+	    helpWindow.createLabels();
+	    helpWindow.activate();
+
 	};
 
-	this.blogpost = function blogpost() {
-	    pageEditor.commandPublish();
-	    this.disabled=true;
-	    pageEditor.showMessage("... Please wait, your blog is being posted");
-	};
-	// End of okButton function
 
-	//shalini-Yass
-	/* cancelButton = DOM.BUILDER.BUTTON(cancelButtonStyleAttributes, 'Cancel');
-	   cancelButton.onclick = function cancelButtonOnClick(){
- 	   if(confirm("Do you want to cancel?"))
-	   {
-	   overlayBar.show(true);
-	   }
-	   };*/
-	// Ajay - If the bar on top
-	// UTIL.addEvent(publishButton, 'mouseover', function publishButtonMouseOver(event) {
-	//   var height = DOM.findSize(wrapperDiv).height;
-	//   if (onTop) {
-	//     height = height - DOM.findSize(secondRowDiv).height;
-	//   }
-	//   publishOptions.show(onTop, height);
-	// });
-
-	undoButton = DOM.BUILDER.BUTTON(undoButtonStyleAttributes, 'Undo');
+	undoButton = document.createElement("input");
+	undoButton.setAttribute("id", "undo");
+	undoButton.setAttribute("alipielements", "alipi");
+	undoButton.setAttribute("type", "submit");
+	undoButton.setAttribute("Value", "Undo");
+	undoButton.setAttribute("style", "position:relative;top:-55px;left:825px;font-size:18px;font-weight:bold;width:100px;height:30px;");
+	overlayDiv.appendChild(undoButton);
 	undoButton.onclick = function undoButtonOnClick() {
 	    pageEditor.commandUndo();
 	    return false;
 	};
 
-	// if (isVisualEditor) {
-	//   switchModeButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('opacity: 0.4;font-weight: bold; border: none; color:#fff; background: transparent; float: right;  margin-right:10px; margin-bottom: 5px; margin-top:0px; padding-left: 0px; padding-top: 4px; display: block;').values(), 'Switch to HTML');
 
-	//   moveArrowImg = DOM.BUILDER.IMG({ src : 'https://bo.lt/app/asset/page-edit/up_icon_red_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079', style : 'display: inline-block; margin-right: 8px; vertical-align: bottom;', m4pageeditcontrol : true });
-
-	//   moveDiv = DOM.BUILDER.DIV(fontTypeAttributes.addStyle('font-weight:normal; font-size:14px; font-family: Helvetica Neue, Helvetica, Arial, Sans-serif; color: #FFF; float: left; display: inline-block; margin-left: 120px; margin-top: 5px; cursor: pointer;').values(),
-	//       moveArrowImg, 'Move Bar');
-	//   moveDiv.onclick = function moveDivOnClick() {
-	//     self.move();
-	//     return false;
-	//   };
-	//  // switchModeImage = DOM.BUILDER.IMG({ src : 'https://bo.lt/app/asset/page-edit/code_brackets_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079', style : 'display: inline; margin-right: 8px; margin-top: 5px; float:right;', m4pageeditcontrol : true });
-
-	//  // secondRowDiv = DOM.BUILDER.DIV(secondRowStyleAttributes, moveDiv, switchModeButton, switchModeImage); // Ajay
-	// }
-
-	// Ajay
-	// else {
-	//      switchModeImage = DOM.BUILDER.IMG({ src : 'https://bo.lt/app/asset/page-edit/pencil_white_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079', style : 'display: inline; margin-right: 8px; margin-top: 5px; float:right;', m4pageeditcontrol : true });
-	//      switchModeButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('font-weight: bold; border: none; color:#fff; background: transparent;float: right;  margin-right:10px; margin-bottom: 5px; margin-top:0px; margin-bottom: 5px; padding-left: 0px; padding-top: 4px; display: block;').values(), 'Switch to Page Editor');
-	//      secondRowDiv = DOM.BUILDER.DIV(secondRowStyleAttributes, switchModeButton, switchModeImage);
-	//    }
-
-	// switchModeButton.onclick = function switchModeButtonOnClick() {
-	//   pageEditor.saveAndClose();
-	//   if (pageEditor.hasChangesPending()) {
-	//     pageEditor.showMessage('Would you like to Save or Discard your changes?');
-	//     firstRowDiv.replaceChild(editModeChangeButtonDiv, buttonDiv);
-	//     switchModeImage.style.display = 'none';
-	//     switchModeButton.style.display = 'none';
-	//   } else {
-	//     pageEditor.commandSwitchMode(false);
-	//   }
-	//   publishOptions.hide();
-	//   return false;
-	// };
-
-	// editModeChangeSaveButton = DOM.BUILDER.BUTTON(redButtonStyleAttributes, 'Save');
-	// editModeChangeSaveButton.onclick = function editModeChangeSaveButtonOnClick() {
-	//   pageEditor.commandSwitchMode(true);
-	//   return false;
-	// };
-
-	// editModeChangeDiscardButton = DOM.BUILDER.BUTTON(redButtonStyleAttributes, 'Discard');
-	// editModeChangeDiscardButton.onclick = function editModeChangeDiscardButtonOnClick() {
-	//   pageEditor.commandSwitchMode(false);
-	//   return false;
-	// };
-
-	editModeChangeButtonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), editModeChangeSaveButton, editModeChangeDiscardButton);
-	//shalini- added cancelButton
-	buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), undoButton, publishButton //, fillUpButton
-				   );
-
-	firstRowDiv = DOM.BUILDER.DIV(// firstRowStyleAttributes,
-	    DOM.BUILDER.DIV(editAttributes.addStyle('width:500px; position: absolute; top: 0; left: 1%;').values(), messageDiv), buttonDiv);
-
-	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:0.5%; width:25px; height:25px;').values());
-
-	// Ajay - Changed background color, made it transparent :)
-	wrapperDiv =  DOM.BUILDER.DIV(fontTypeAttributes.addStyle('overflow: inherit; overflow-x: visible; position: fixed; z-index: 2147483645; left: 0; top: 0;min-width:800px; width: 100%; height:30px;; background-color: rgba(0, 0, 0, 0.5);').values(),
-				      //logoAnchor, //Ajay
-				      image,
-				      firstRowDiv);
-
-
-	overlayDiv = DOM.BUILDER.DIV(fontTypeAttributes.addStyle('overflow: inherit;').values(), wrapperDiv);
-
-	document.body.appendChild(overlayDiv);
-
-	image.onclick=function(){
-	    answer = confirm("Do you really want to exit the editor?")
-	    if (answer !=0)
-	    {
-		window.location.reload();
+	publishButton = document.createElement("input");
+	publishButton.setAttribute("id", "publish");
+	publishButton.setAttribute("alipielements", "alipi");
+	publishButton.setAttribute("type", "submit");
+	publishButton.setAttribute("Value", "Publish");
+	publishButton.setAttribute("style", "position:relative;top:-55px;left:900px;font-size:18px;font-weight:bold;width:100px;height:30px;");
+	overlayDiv.appendChild(publishButton);
+	var dialog = 0;
+	publishButton.onclick = function publishButtonOnClick() {
+	    if (pageEditor.hasChangesPending() /* && (pageEditor.formUncomplete() ==false) */ ) {
+		targetWindow = new TargetWindow(pageEditor);
+		if (dialog == 0) {
+		    targetWindow.createDialogBox();
+		    dialog = 1;
+		}
+		targetWindow.activate();
+	    } else {
+		pageEditor.showMessage("Nothing to post");
 	    }
-	}
+	};
 
-
-	// if (DOM.isQuirksMode() && DOM.isIEBrowser()) {
-	//   // We need to manually move the edit bar when the window scrolls since IE quirks mode doesn't support
-	//   // the "fixed" position value.
-	//   wrapperDiv.style.position = 'absolute';
-	//   UTIL.addEvent(window, 'scroll', function globalScrollListener(event) {
-	//     var scrollPositionY = calculateScrollPositionY();
-	//     var overlayPosition;
-	//     if (onTop) {
-	//       wrapperDiv.style.top = scrollPositionY + 'px';
-	//       overlayPosition = wrapperDiv.style.top;
-	//     } else {
-	//       wrapperDiv.style.bottom = ( - scrollPositionY) + 'px';
-	//       overlayPosition = wrapperDiv.style.bottom;
-	//     }
-	//     publishOptions.scrollToPosition(onTop, overlayPosition);
-	//   });
-	// }
+		
+    
+	this.blogpost = function blogpost() {
+	    if (locName.value == "" || langName.value == "" || styleSelect.value == "" || author.value == "" || (ourcheck.checked == false && yourcheck.checked == false)) {
+		alert("Please give all the details, it will be used further");
+	    } else {
+		pageEditor.commandPublish();
+		pageEditor.showMessage("... Please wait, your blog is being posted");
+		$('#targetoverlay').remove();
+	    }
+	};
+	// End of okButton function
 
 	this.show = function show(activate) {
-	    overlayDiv.style.display = 'block';
+	    //	    overlayDiv.style.display = 'block';
 	    var disabled = true;
 	    var opacity = '0.4';
 	    if (activate) {
@@ -3443,16 +2964,11 @@
 		opacity = '1.0';
 	    }
 
-	    undoButton.disabled = false;   // Ajay - to make it always enabled i changed it from disabled to false
-	    publishButton.disabled = false; // Ajay - Same here
-	    // cancelButton.disabled = false; //shalini
-	    //      switchModeButton.disabled = disabled;
+	    undoButton.disabled = false; 
+	    publishButton.disabled = false; 
 
-	    undoButton.style.opacity = "1";  // Ajay - To make it awlays enabled i change it from opacity to 1
+	    undoButton.style.opacity = "1"; 
 	    publishButton.style.opacity = "1";
-	    // cancelButton.style.opacity = "1";//shalini
-	    //    switchModeButton.style.opacity = opacity;
-
 	    publishOptions.hide();
 	};
 
@@ -3460,106 +2976,32 @@
 	    messageDiv.innerHTML = value;
 	};
 
-	// this.move = function move() {
-	//   var position = 0;
-	//   if (DOM.isQuirksMode() && DOM.isIEBrowser()) {
-	//     position = calculateScrollPositionY();
-	//   }
-	//   if (onTop) {
-	//     DOM.deleteStyleProperty(wrapperDiv, 'top');
-	//     wrapperDiv.style.bottom = ( - position) + 'px';
-	//     // moveArrowImg.src = 'https://bo.lt/app/asset/page-edit/up_icon_red_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'; //Ajay
-	//     onTop = false;
-	//   } else {
-	//     DOM.deleteStyleProperty(wrapperDiv, 'bottom');
-	//     wrapperDiv.style.top = position + 'px';
-	//     // moveArrowImg.src = 'https://bo.lt/app/asset/page-edit/down_icon_red_16.png?p=622fd096a39f5c36a6e06e41a9963dafaad61079'; //Ajay
-	//     onTop = true;
-	//   }
-	//   publishOptions.hide();
-	// };
-
-	// this.enableSwitchSave = function enableSwitchSave(flag) {
-	//   if (flag) {
-	//     // enable
-	//     editModeChangeSaveButton.style.color = '#fff';
-	//     editModeChangeSaveButton.disabled = false;
-	//   } else {
-	//     // disable
-	//     editModeChangeSaveButton.style.color = '#fff';
-	//     editModeChangeSaveButton.disabled = true;
-	//   }
-	// };
-
-	// calculateScrollPositionY = function calculateScrollPositionY() {
-	//   if (window.pageYOffset) {
-	//     return parseInt(window.pageYOffset);
-	//   } else if (document.documentElement.scrollTop) {
-	//     return parseInt(document.documentElement.scrollTop);
-	//   } else if (document.body.scrollTop) {
-	//     return parseInt(document.body.scrollTop);
-	//   } else {
-	//     return 0;
-	//   }
-	// }
 
 	function PublishOptions() {
 	    var self = this, wrapperDiv, keepOriginalCheckbox, activateOptionsTimerId, cancelTimer, activatePublishOptions;
 	    var checkboxId = 'm4PublishOptionsCheckbox-' +  new Date().getTime();
 	    keepOriginalCheckbox = DOM.BUILDER.INPUT(
-		editAttributes.put({
-		    name : 'Publish Options',
-		    type : 'checkbox', id: checkboxId}).addStyle(
-			'font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; width: 14px; height: 14px; margin: 0; padding: 0; position: relative; background: transparent;').values()
-            );
+						     editAttributes.put({
+							     name : 'Publish Options',
+							     type : 'checkbox', id: checkboxId}).addStyle(
+													  'font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; width: 14px; height: 14px; margin: 0; padding: 0; position: relative; background: transparent;').values()
+						     );
 	    keepOriginalCheckbox.onclick = function() {
 		keepOriginal = keepOriginalCheckbox.checked;
 	    };
 	    var backgroundImage = 'url(http://dev.a11y.in/alipi/images/container_save_new_page.png) no-repeat scroll 0 0 transparent';
 	    var position = 'fixed';
-	    // if (DOM.isIEBrowser() && DOM.isQuirksMode()) {
-	    //   position = 'absolute';
-	    // }
-	    wrapperDiv =  DOM.BUILDER.DIV(
-		editAttributes.addStyle(
-		    'font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: table; vertical-align: middle; z-index: 2147483647; margin: 0; width: 134px; height: 33px; line-height: 33px; position: '
-			+ position
-			+ '; right: 10px; background:'
-			+ backgroundImage + ' ; display:none;').values(),
-		DOM.BUILDER.SPAN(
-		    editAttributes.addStyle(
-			(// DOM.isQuirksMode()  && DOM.isIEBrowser()
-			    //  ?
-			    //  'font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: table-cell; vertical-align: middle; height: 14px; hasLayout=true; padding: 7px 0 0 0;'
-			    // :
-			    'font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: table-cell; vertical-align: middle; height: 14px; hasLayout=true;'
-			)
-		    ).values(),
-		    DOM.BUILDER.SPAN(
-			editAttributes.addStyle('font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: inline; vertical-align: middle; height: 10px; width: 14px; padding: 0; margin: 1px 0 0 13px;').values(),
-			keepOriginalCheckbox
-		    ),
-		    DOM.BUILDER.LABEL(normalFontAttributes.put({'for' : checkboxId}).addStyle(
-			(// DOM.isQuirksMode() && DOM.isIEBrowser()
-			    //  ?
-			    //  'font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; display: inline; font-size: 10px; background: transparent; color: #E9E9E9; padding: 9px 0 0 5px;'
-			    //  :
-			    'font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; display: inline; font-size: 10px; background: transparent; color: #E9E9E9; padding: 0 0 0 5px;'
-			)
-		    ).values(),
-				      'Save as new page.'
-				     )
-		)
-	    );
+
+	    wrapperDiv =  DOM.BUILDER.DIV(editAttributes.addStyle('font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: table; vertical-align: middle; z-index: 2147483647; margin: 0; width: 134px; height: 33px; line-height: 33px; position: '+ position+ '; right: 10px; background:'+ backgroundImage + ' ; display:none;').values(), DOM.BUILDER.SPAN(editAttributes.addStyle(('font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: table-cell; vertical-align: middle; height: 14px; hasLayout=true;')).values(), DOM.BUILDER.SPAN(editAttributes.addStyle('font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: inline; vertical-align: middle; height: 10px; width: 14px; padding: 0; margin: 1px 0 0 13px;').values(), keepOriginalCheckbox), DOM.BUILDER.LABEL(normalFontAttributes.put({'for' : checkboxId}).addStyle(('font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; display: inline; font-size: 10px; background: transparent; color: #E9E9E9; padding: 0 0 0 5px;')).values(),'Save as new page.')));
 
 	    UTIL.addEvent(wrapperDiv, 'mouseout', function publishButtonMouseOut(event) {
-		self.hide();
-	    });
+		    self.hide();
+		});
 
 	    UTIL.addEvent(wrapperDiv, 'mouseover', function publishButtonMouseOver(event) {
-		cancelTimer();
-		activatePublishOptions(true);
-	    });
+		    cancelTimer();
+		    activatePublishOptions(true);
+		});
 
 	    document.body.appendChild(wrapperDiv);
 
@@ -3576,8 +3018,8 @@
 		activatePublishOptions(true);
 		cancelTimer();
 		activateOptionsTimerId = setTimeout(function() {
-		    activatePublishOptions(false);
-		}, 5000);
+			activatePublishOptions(false);
+		    }, 5000);
 	    };
 
 	    this.hide = function hide() {
@@ -3615,8 +3057,8 @@
     function PageShortcuts(pageEditor) {
 	this.enable = function enable() {
 	    DOM.addListener('keydown', function keydownHandler(event) {
-		switch (event.keyCode) {
-		case 27:
+		    switch (event.keyCode) {
+		    case 27:
 		    // ESC
 		    event.preventDefault();
 		    event.stopPropagation();
@@ -3639,8 +3081,8 @@
 		    //     pageEditor.commandUndo();
 		    //   }
 		    return false;
-		}
-	    }, true);
+		    }
+		}, true);
 	}
     }
 
@@ -3654,7 +3096,7 @@
 	    return history.length > 0;
 	};
 	this.formUncomplete = function formUnomplete(){
-	    return (locName == '' &&  langName=='' && styleName == '' ); //toto
+	    return (locName == '' &&  langName=='' && styleName == '' );
 	};
 	
 	this.apply = function apply(command) {
@@ -3662,35 +3104,36 @@
 
 	    switch (command.command) {
             case 'TEXT_UPDATE':
+		command.element = document.getElementById("alipiSelectedElement");
+		command.previousData = document.getElementById("alipiSelectedElement").textContent;
+		command.data = document.getElementById("editor").value;
 		DOM.textContent(command.element, command.data);
 		pageEditor.showMessage('Text changed');
 		break;
             case 'AUDIO_SRC_UPDATE':
-		// DOM.textContent(command.element, command.data);
 		textElementPopup.hasAudio = true;	
+		command.previousData = "";
 		pageEditor.showMessage('Audio updated');
 		break;
 
             case 'DELETE':
-		// show "poof" animation to indicate deletion
 		poofPosition = DOM.findPosition(command.element);
 
 		poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://dev.a11y.in/alipi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
 		document.body.appendChild(poofDiv);
 
 		UTIL.animate(function(index, last) {
-		    if (last) {
-			document.body.removeChild(poofDiv);
-		    } else {
-			poofDiv.style.backgroundPosition = '0 -' + (index * 32) + 'px';
-		    }
-		}, 5, 100);
+			if (last) {
+			    document.body.removeChild(poofDiv);
+			} else {
+			    poofDiv.style.backgroundPosition = '0 -' + (index * 32) + 'px';
+			}
+		    }, 5, 100);
 
 		DOM.overrideStyleProperty(command.element, 'display', 'none');
 		pageEditor.showMessage('Section deleted');
 		break;
 
-		// Ajay
             case 'IMAGE_SRC_UPDATE':
 		imageMatcher = new RegExp("(\\d+)x(\\d+),(.+)").exec(command.data);
 		imageWidth = imageMatcher[1];
@@ -3714,11 +3157,6 @@
 		}
 		break;
 
-		/*        case 'BACKGROUND_IMAGE_UPDATE':
-			  command.element.style.backgroundImage = 'url("' + command.data + '")';
-			  pageEditor.showMessage('Background image changed.');
-			  break;
-		*/
             case 'ANCHOR_UPDATE':
 		command.element.setAttribute('href', command.data);
 		pageEditor.showMessage('Link changed');
@@ -3739,11 +3177,11 @@
 		
             case 'AUDIO_CREATE':
 		audioElement = document.createElement('audio');
+		audioElement.setAttribute("id", "audiotag");
 		audioElement.setAttribute('src',command.data);
 		audioElement.setAttribute('controls','controls');
-		command.element.appendChild(audioElement);
-		audioElement.play();
-		// command.previousData = audioElement;
+		audioElement.setAttribute('style', 'display:table;');
+		$(audioElement).insertBefore($(selectedElement));		
 		pageEditor.showMessage('Audio added');
 		break;
 
@@ -3770,7 +3208,6 @@
 		    pageEditor.showMessage('Delete undone');
 		    break;
 
-		    //Ajay - Image changed Undone
 		case 'IMAGE_SRC_UPDATE':
 		    imageElement = new M4ImageElement(command.element);
 
@@ -3787,22 +3224,13 @@
 		    }
 		    imageElement.setRawImageSize(command.previousData.rawImageSize)
 
-		    pageEditor.showMessage('Image change undone');
+			pageEditor.showMessage('Image change undone');
 		    break;
 		    
 		case 'AUDIO_SRC_UPDATE':
-		    /*command.element.src = command.previousData.src;
-		      pageEditor.showMessage('Audio change undone');*/
+		    command.element.remove();
+		    pageEditor.showMessage('Link removed');
 		    break;
-
-		    /*        case 'BACKGROUND_IMAGE_UPDATE':
-			      if (command.previousData) {
-			      command.element.style.backgroundImage = command.previousData;
-			      } else {
-			      command.element.style.backgroundImage = '';
-			      }
-			      break;
-		    */
 		case 'ANCHOR_UPDATE':
 		    command.element.setAttribute('href', command.previousData);
 		    pageEditor.showMessage('Link change undone');
@@ -3821,109 +3249,94 @@
 	    }
 	};
 
-	// Ajay - publish
 	this.publish = function publish() {
 	    var result;
-	    if(document.getElementById('defaultcheck').checked == false)
-	    {
-		localStorage.myContent = buildDataString();
-		window.location.href = "http://dev.a11y.in/test.html";
-		window.reload();
-	    }
+	    if(document.getElementById('our-check').checked)
+		{
+		    localStorage.myContent = buildDataString();
+		    window.location.href = "http://localhost/test.html";
+		    window.reload();
+		}
 	    else{
 		
-		AJAX.post('http://dev.a11y.in/test',
-	    		  buildDataString(), function(result) {
-	    		      //alert(buildDataString());
+		AJAX.post('http://localhost/test',  buildDataString(), function(result) {
 	    		      ajaxResultProcessor.processPublishedResponse(result);
 	    		  });
 	    }
 	};
 
-	this.switchMode = function switchMode(saveChanges) {
-	    var result, requestParameters;
+	// this.switchMode = function switchMode(saveChanges) {
+	//     var result, requestParameters;
 
-	    requestParameters = '?slug=' + pageSlug + '&uploadSlug=' + uploadSlug;
-	    if (successUrl) {
-		requestParameters = requestParameters + '&successUrl=' + encodeURIComponent(successUrl);
-	    }
+	//     requestParameters = '?slug=' + pageSlug + '&uploadSlug=' + uploadSlug;
+	//     if (successUrl) {
+	// 	requestParameters = requestParameters + '&successUrl=' + encodeURIComponent(successUrl);
+	//     }
 
-	    if (saveChanges) {
-		result = AJAX.post('/app/page-edit/switch-edit-mode' + requestParameters,
-				   buildDataString());
-		ajaxResultProcessor.processSwitchModeResponse(result);
-	    } else {
-		window.location.href = 'https://bo.lt/app/page-edit/html' + requestParameters;
-	    }
-	};
-
+	//     if (saveChanges) {
+	// 	result = AJAX.post('/app/page-edit/switch-edit-mode' + requestParameters,
+	// 			   buildDataString());
+	// 	ajaxResultProcessor.processSwitchModeResponse(result);
+	//     } else {
+	// 	window.location.href = 'https://bo.lt/app/page-edit/html' + requestParameters;
+	//     }
+	// };
+	
 	buildDataString = function buildDataString() {
-	    
 	    var check_xpath = [], temp_history = [], index = [];
-	    for(x=0; x<history.length; x++) 
-	    {
+	    for(x=0; x<history.length; x++) {
 		check_xpath.push(history[x].xpath);
 	    }
-	    for(i=0; i<check_xpath.length-1; i++) 
-	    {
-		for(j=i+1; j<check_xpath.length; j++) 
-		{
-		    if (check_xpath[i] == check_xpath[j]) 
-		    {
-			index.push(i);  
-		    } 
+	    for(i=0; i<check_xpath.length-1; i++) {
+		for(j=i+1; j<check_xpath.length; j++) {
+		    if ((check_xpath[i] == check_xpath[j]) && (history[i].elementType == history[j].elementType)) {
+			    index.push(i);
+			} 
 		}
 	    }
-	    if (index.length > 0) 
-	    {
-		for (var z=0; z<index.length; z++) 
-		{
+	    if (index.length > 0) {
+		for (var z=0; z<index.length; z++) {
 		    delete history[index[z]];
 		}
 	    }
-
-	    for (var x=0; x<history.length; x++)
-	    {
-		if (history[x] != undefined)
-		{
+	    
+	    for (var x=0; x<history.length; x++) {
+		if (history[x] != undefined) {
 		    temp_history.push(history[x]);
 		}
 	    }
 
 	    history = temp_history;
 
-
 	    var command, buffer;
 	    buffer = new UTIL.StringBuffer();
 	    UTIL.forEach(history, function(index, command) {
-		buffer.append('###'); //separates the commands
-		buffer.append('url=');  //url                                                     //removed '&' on purpose
-		buffer.append(encodeURIComponent(window.location.search.split('=')[1]));
-		buffer.append('&lang=');//lang
-		buffer.append(encodeURIComponent(langName));
-		buffer.append('&location=');//location
-		buffer.append(encodeURIComponent(locName));
-		buffer.append('&style=');//style
-		buffer.append(encodeURIComponent(styleName));
-		buffer.append('&blog=');  //blog where to post
-		buffer.append(encodeURIComponent("blog"));
-		buffer.append('&elementType='); // text, audio, img
-		buffer.append(encodeURIComponent(command.elementType));
-		buffer.append('&xpath=');//xpath
-		command.xpath = '/' + command.xpath.slice(10,command.xpath.length);
-		buffer.append(encodeURIComponent(command.xpath));
-		buffer.append('&data=');  //data
-		if(command.elementType == 'audio/ogg')
-		{
-		    aud = '<audio controls="controls" src="'+command.data+'"></audio>';
-		    buffer.append(encodeURIComponent(aud));
-		}else{
-		    buffer.append(encodeURIComponent(command.data));}
-		buffer.append('&author='); //author
-		buffer.append(encodeURIComponent(authorValue));
-	    }); 
+		    buffer.append('###'); //separates the commands
+		    buffer.append('about=');  //url=about    //removed '&' on purpose
+		    buffer.append(window.location.search.split('=')[1]);
+		    buffer.append('&lang=');//lang
+		    buffer.append(encodeURIComponent(langName.value));
+		    buffer.append('&location=');//location
+		    buffer.append(encodeURIComponent(locName.value));
+		    buffer.append('&style=');//style
+		    buffer.append(encodeURIComponent(styleSelect.value));
+		    buffer.append('&blog=');  //blog where to post
+		    buffer.append(encodeURIComponent("blog"));
+		    buffer.append('&elementtype='); // text, audio, img
+		    buffer.append(encodeURIComponent(command.elementType));
+		    buffer.append('&xpath=');//xpath
+		    buffer.append(encodeURIComponent(command.xpath));
+		    buffer.append('&data=');  //data
+		    buffer.append(encodeURIComponent(command.data));
+		    buffer.append('&author='); //author
+		    if (author.value == '') {
+		        buffer.append(encodeURIComponent('Anonymous'));
+		    } else {
+		        buffer.append(encodeURIComponent(author.value));
+		    }
+		});  	    console.log(buffer.toString());	    
 	    return buffer.toString().substring(3);
-	};
+	}; 
     }
 
     /**
@@ -3931,8 +3344,8 @@
      */
     function VisualPageEditor() {
 	var self = this, overlayBar, pageShortcuts, editCommandHistory, editorHasFocus = true, listeners = new Array(),
-	textElementSelector, imageElementSelector, editableElementSelector, preProcessors = new Array(),
-	currentSelector = null, updateSelection, getSelectorForType, focus, closePopup;
+	    textElementSelector, imageElementSelector, editableElementSelector, preProcessors = new Array(),
+	    currentSelector = null, updateSelection, getSelectorForType, focus, closePopup;
 	var ACTION = {
 	    MOUSE_OVER : 0, MOUSE_OUT: 1, MOUSE_CLICK: 2
 	};
@@ -3959,57 +3372,65 @@
 	};
 
 	this.show = function show() {
+
 	    DOM.addListener('mouseover', function globalMouseOverListener(event) {
-		var type = event.target.getAttribute('m4pageedittype');
-		if (type) {
-		    event.preventDefault();
-		    event.stopPropagation();
-		    updateSelection(ACTION.MOUSE_OVER, event);
-		}
-	    }, true);
+		    if(event.target.id != 'ok-button'){
+			var type = event.target.getAttribute('m4pageedittype');
+			if (type) {
+			    event.preventDefault();
+			    event.stopPropagation();
+			    updateSelection(ACTION.MOUSE_OVER, event);
+			}}
+		}, true);
 
 	    DOM.addListener('mouseout', function globalMouseOutListener(event) {
-		var type = event.target.getAttribute('m4pageedittype');
-		if (type) {
-		    event.preventDefault();
-		    event.stopPropagation();
-		    updateSelection(ACTION.MOUSE_OUT, event);
-		}
-	    }, true);
+		    var type = event.target.getAttribute('m4pageedittype');
+		    if (type) {
+			event.preventDefault();
+			event.stopPropagation();
+			updateSelection(ACTION.MOUSE_OUT, event);
+		    }
+		}, true);
 
 	    DOM.addListener('click', function globalClickListener(event) {
-		var type = event.target.getAttribute('m4pageedittype');
-		if (event.target.getAttribute('m4pageeditcontrol')) {
-		    // click is passthrough for our controls
-		} else if (type) {
-		    event.preventDefault();
-		    event.stopPropagation();
-		    updateSelection(ACTION.MOUSE_CLICK, event);
-		} else {
-		    // normal page elements
-		    event.preventDefault();
-		    event.stopPropagation();
-		    self.saveAndClose();
-		}
-	    }, true);
+		    var type = event.target.getAttribute('m4pageedittype');
+		    var alipiElements = event.target.getAttribute('alipiElements');
+		    if (event.target.getAttribute('m4pageeditcontrol')) {
+			// click is passthrough for our controls
+		    } else if (type) {
+			event.preventDefault();
+			event.stopPropagation();
+			updateSelection(ACTION.MOUSE_CLICK, event);
+		    } else if (event.target.id == "" || alipiElements || event.target.parentNode.attributes['class'].value == "ui-menu-item") {  // click is passthrough for our controls
+		    } else {
+			// normal page elements
+			event.preventDefault();
+			event.stopPropagation();
+			self.saveAndClose();
+		    }
+		}, true);
 
 	    // We intercept mousedown so things like drop down box won't work during edit mode.
 	    DOM.addListener('mousedown', function globalMouseDownListener(event) {
-		if (event.target.getAttribute('m4pageeditcontrol')) {
-		    // passthrough
-		} else if (event.target.getAttribute('m4pageedittype')) {
-		    // passthrough
-		} else if (event.clientX > document.body.clientWidth || event.clientY > document.body.clientHeight) {
-		    // passthrough if this click was outside of the html page, meaning on a scrollbar
-		} else {
-		    // normal page elements
-		    event.preventDefault();
-		    event.stopPropagation();
-		}
-	    }, true);
+
+		    var alipiElements = event.target.getAttribute('alipiElements');
+		    if (event.target.getAttribute('m4pageeditcontrol')) {
+			// passthrough
+		    } else if (event.target.getAttribute('m4pageedittype')) {
+			// passthrough
+		    } else if (event.target.id == "lang-select" || event.target.id == "loc-select" || alipiElements) {
+			// passthrough
+		    } else if (event.clientX > document.body.clientWidth || event.clientY > document.body.clientHeight) {
+			// passthrough if this click was outside of the html page, meaning on a scrollbar
+		    } else {
+			// normal page elements
+			event.preventDefault();
+			event.stopPropagation();
+		    }
+		}, true);
 	    pageShortcuts.enable();
 	    overlayBar.show(false);
-	    overlayBar.message("Ready to Narrate"); //Ajay
+	    overlayBar.message("Ready to Narrate");
 	};
 
 
@@ -4048,11 +3469,11 @@
 
 	    switch (type) {
             case 'text':
-		return textElementSelector;
+	    return textElementSelector;
             case 'image':
-		return imageElementSelector;
+	    return imageElementSelector;
             case 'edit':
-		return editableElementSelector;
+	    return editableElementSelector;
 	    }
 	    return null;
 	};
@@ -4061,7 +3482,7 @@
 	    editorHasFocus = true;
 	    for (var i = 0; i < listeners.length; i++) {
 		listeners[i](saveChanges)
-	    }
+		    }
 	};
 
 	closePopup = function closePopup(saveChanges) {
@@ -4119,7 +3540,6 @@
 
 	this.commandPublish = function commandPublish() {
 
-	    //splashWindow.show('Saving...');
 	    overlayBar.show(false);
 	    self.saveAndClose();
 	    for (var i = 0; i < preProcessors.length; i++) {
@@ -4128,12 +3548,6 @@
 	    editCommandHistory.publish();
 	    overlayBar.show(true);
 	};
-
-	// this.commandSwitchMode = function commandSwitchMode(saveChanges) {
-	//   overlayBar.enableSwitchSave(false);
-	//   editCommandHistory.switchMode(saveChanges);
-	//   overlayBar.enableSwitchSave(true);
-	// };
 
 	this.activateEditor = function activateEditor() {
 	    overlayBar.show(true);
@@ -4146,30 +3560,30 @@
 	    this.process = function process() {
 		// make iframes unclickable by overlaying transparent div over it.
 		UTIL.forEach(document.getElementsByTagName('iframe'), function(index, iframe) {
-		    var displayStyle = null;
-		    if (document.defaultView && document.defaultView.getComputedStyle) {
-			displayStyle = document.defaultView.getComputedStyle(iframe, null).getPropertyValue('display');
-		    } else if (iframe.currentStyle) {
-			displayStyle = iframe.currentStyle['display'];
-		    }
-		    if(displayStyle != 'none') {
-			DOM.clickBlocker(iframe);
-		    }
-		    var iframeSourceUrl = iframe.src;
-		    var isYouTubeIFrame = iframeSourceUrl.toLowerCase().indexOf('youtube') != -1;
-		    if (isYouTubeIFrame) {
-			// If the flash object is visible when the wmode property is set, then the state doesn't get updated.
-			// So first set the parent node's display property to 'none, then add the wmode property and finally
-			// restore the original display proeprty back on the parent.
-			DOM.overrideStyleProperty(iframe.parentNode, 'display', 'none');
-			if(iframeSourceUrl.indexOf('?') != -1) {
-			    iframe.src = iframeSourceUrl + '&wmode=opaque';
-			} else {
-			    iframe.src = iframeSourceUrl + '?wmode=opaque';
+			var displayStyle = null;
+			if (document.defaultView && document.defaultView.getComputedStyle) {
+			    displayStyle = document.defaultView.getComputedStyle(iframe, null).getPropertyValue('display');
+			} else if (iframe.currentStyle) {
+			    displayStyle = iframe.currentStyle['display'];
 			}
-			DOM.restoreStyleProperty(iframe.parentNode, 'display');
-		    }
-		});
+			if(displayStyle != 'none') {
+			    DOM.clickBlocker(iframe);
+			}
+			var iframeSourceUrl = iframe.src;
+			var isYouTubeIFrame = iframeSourceUrl.toLowerCase().indexOf('youtube') != -1;
+			if (isYouTubeIFrame) {
+			    // If the flash object is visible when the wmode property is set, then the state doesn't get updated.
+			    // So first set the parent node's display property to 'none, then add the wmode property and finally
+			    // restore the original display proeprty back on the parent.
+			    DOM.overrideStylePropert(iframe.parentNode, 'display', 'none');
+			    if(iframeSourceUrl.indexOf('?') != -1) {
+				iframe.src = iframeSourceUrl + '&wmode=opaque';
+			    } else {
+				iframe.src = iframeSourceUrl + '?wmode=opaque';
+			    }
+			    DOM.restoreStyleProperty(iframe.parentNode, 'display');
+			}
+		    });
 	    };
 
 	    this.restore = function restore() {
@@ -4183,21 +3597,21 @@
 		// So first set the parent node's display property to 'none, then add the wmode property and finally
 		// restore the original display proeprty back on the parent.
 		UTIL.forEach(document.getElementsByTagName('object'), function(index, value) {
-		    DOM.overrideStyleProperty(value.parentNode, 'display', 'none');
-		    DOM.clickBlocker(value);
-		    var param = document.createElement('param');
-		    param.setAttribute('name', 'wmode');
-		    param.setAttribute('value', 'opaque');
-		    value.appendChild(param);
-		    DOM.restoreStyleProperty(value.parentNode, 'display');
-		});
+			DOM.overrideStyleProperty(value.parentNode, 'display', 'none');
+			DOM.clickBlocker(value);
+			var param = document.createElement('param');
+			param.setAttribute('name', 'wmode');
+			param.setAttribute('value', 'opaque');
+			value.appendChild(param);
+			DOM.restoreStyleProperty(value.parentNode, 'display');
+		    });
 
 		UTIL.forEach(document.getElementsByTagName('embed'), function(index, value) {
-		    DOM.overrideStyleProperty(value.parentNode, 'display', 'none');
-		    DOM.clickBlocker(value);
-		    value.setAttribute('wmode', 'opaque');
-		    DOM.restoreStyleProperty(value.parentNode, 'display');
-		});
+			DOM.overrideStyleProperty(value.parentNode, 'display', 'none');
+			DOM.clickBlocker(value);
+			value.setAttribute('wmode', 'opaque');
+			DOM.restoreStyleProperty(value.parentNode, 'display');
+		    });
 	    };
 
 	    this.restore = function restore() {
@@ -4207,20 +3621,20 @@
 	function FormPreProcessor () {
 	    var overrideElementAttribute = function overrideElementAttribute(nodeName, attributeName, attributeValue) {
 		UTIL.forEach(document.getElementsByTagName(nodeName), function(index, inputElement) {
-		    var type = inputElement.getAttribute('m4pageeditcontrol');
-		    if (!type) {
-			DOM.overrideAttribute(inputElement, attributeName, attributeValue);
-		    }
-		});
+			var type = inputElement.getAttribute('m4pageeditcontrol');
+			if (!type) {
+			    DOM.overrideAttribute(inputElement, attributeName, attributeValue);
+			}
+		    });
 	    };
 
 	    var restoreElementAttribute = function restoreElementAttribute(nodeName, attributeName) {
 		UTIL.forEach(document.getElementsByTagName(nodeName), function(index, inputElement) {
-		    var type = inputElement.getAttribute('m4pageeditcontrol');
-		    if (!type) {
-			DOM.restoreAttribute(inputElement, attributeName);
-		    }
-		});
+			var type = inputElement.getAttribute('m4pageeditcontrol');
+			if (!type) {
+			    DOM.restoreAttribute(inputElement, attributeName);
+			}
+		    });
 	    };
 
 	    this.process = function process() {
@@ -4237,7 +3651,7 @@
 	function ImageElementSelector(pageEditor) {
 	    var self = this, imageElementPopup = new EditableElementPopup(pageEditor, true), lastSelection = null;
 	    this.highlight = function highlight(element) {
-		DOM.overrideStyleProperty(element, 'outline', '#777 solid 2px'); // Ajay - color
+		DOM.overrideStyleProperty(element, 'outline', '#777 solid 2px');
 		DOM.overrideStyleProperty(element, 'cursor', 'pointer');
 	    };
 
@@ -4275,7 +3689,7 @@
 	    var self = this, editableElementPopup = new EditableElementPopup(pageEditor, false), lastSelection = null;
 
 	    this.highlight = function highlight(element) {
-		DOM.overrideStyleProperty(element, 'outline', ''); // Ajay - removed '#777 solid 2px' - It selects the boundary
+		DOM.overrideStyleProperty(element, 'outline', ''); 
 		DOM.overrideStyleProperty(element, 'cursor', 'pointer');
 	    };
 
@@ -4311,7 +3725,7 @@
 
 	function TextElementSelector(pageEditor) {
 	    var self = this, lastSelection = null, textElementPopup = new TextElementPopup(pageEditor), editor,
-            findAnchorAncestor, internalHighlight;
+		findAnchorAncestor, internalHighlight;
 
 	    if(DOM.isIEBrowser()) {
 		editor = new InternetExplorerInlineEditor();
@@ -4321,7 +3735,7 @@
 
 	    this.highlight = function highlight(element) {
 
-		internalHighlight(element, '#fff', '#bbb', 'pointer'); // Ajay - TEXT, Onmouseover changes color
+		internalHighlight(element, '#fff', '#bbb', 'pointer');
 		editor.activate(element);
 	    };
 
@@ -4329,7 +3743,7 @@
 		DOM.restoreStyleProperty(element, 'borderLeft', '');
 		DOM.restoreStyleProperty(element, 'borderRight', '');
 		DOM.restoreStyleProperty(element, 'cursor', '');
-		DOM.restoreStyleProperty(element, 'backgroundColor', ''); // Ajay - on mouseout it returns back to old color
+		DOM.restoreStyleProperty(element, 'backgroundColor', ''); 
 		DOM.restoreStyleProperty(element, 'color', '');
 		editor.deactivate(element);
 	    };
@@ -4339,7 +3753,7 @@
 		    lastSelection = element;
 		    self.unhighlight(lastSelection);
 		    editor.activate(element);
-		    internalHighlight(lastSelection, '#333', '#fff', 'text'); // Ajay - TEXT, Onclick changes color
+		    internalHighlight(lastSelection, '#333', '#fff', 'text');
 		    textElementPopup.popupAt(lastSelection, event.pageX, event.pageY);
 		}
 		editor.startEditing(event);
@@ -4443,68 +3857,14 @@
 		    }
 		}
 	    };
-
-	    // Ajay - IE
-	    // function InternetExplorerInlineEditor () {
-	    //   var self = this, currentEditableElement = null, updateCursorPosition;
-
-	    //   this.activate = function activate(element) {
-	    //     currentEditableElement = element;
-	    //     DOM.overrideAttribute(currentEditableElement, 'contentEditable', 'true');
-	    //   };
-
-	    //   this.deactivate = function deactivate() {
-	    //     if (currentEditableElement) {
-	    //       DOM.restoreAttribute(currentEditableElement,'contentEditable');
-	    //     }
-	    //   };
-
-	    //   this.startEditing = function startEditing(event) {
-	    //     updateCursorPosition(event);
-	    //   };
-
-	    //   this.stopEditing = function stopEditing() {
-	    //     self.deactivate();
-	    //     currentEditableElement = null;
-	    //   };
-
-	    //   this.focus = function focus() {
-	    //     document.selection.createRange();
-	    //     document.selection.empty();
-	    //   };
-
-	    //   updateCursorPosition = function updateCursorPosition(event) {
-	    //     var selection = document.selection, range = selection.createRange();
-	    //     if (range.text.length == 0) {
-	    //       try {
-	    //         range.moveToPoint(event.clientX, event.clientY);
-	    //       } catch (error) {
-	    //        // IE sometimes throws an exception here without specifying any reason and is not consistent.
-	    //        // The error message is "Unspecified error"
-	    //        // try again...and it usually works
-	    //         try {
-	    //           range.moveToPoint(event.clientX, event.clientY);
-	    //         } catch (error) {
-	    //           // if this happens again, just return and let the cursor point to the begining of the element
-	    //           return false;
-	    //         }
-	    //       }
-	    //       range.select('character');
-	    //     } else {
-	    //       range.select();
-	    //     }
-
-	    //   };
-	    // };
 	};
-
     }
 
     /**
      * Main coordinator for the html editor's overlay and other functionality.
      */
     function HtmlPageEditor(editor) {
-	var self = this, overlayBar, buildDataString, ajaxResultProcessor = new AjaxResultProcessor();
+    	var self = this, overlayBar, buildDataString, ajaxResultProcessor = new AjaxResultProcessor();
 
 	overlayBar = new OverlayBar(this, false);
 
@@ -4514,7 +3874,7 @@
 
 	this.show = function show() {
 	    overlayBar.show(false);
-	    overlayBar.message('New page created for editing'); // Ajay - can use later
+	    overlayBar.message('New page created for editing');
 	};
 
 	// this composition is necessary to avoid circular dependencies
@@ -4531,14 +3891,12 @@
 	    }
 	};
 
-	// Ajay - Saving
 	this.commandPublish = function commandPublish() {
 	    var result;
 	    splashWindow.show('Saving...');
 	    overlayBar.show(false);
 	    result = AJAX.post('/app/page-edit/publish?slug=' + pageSlug + '&uploadSlug=' + uploadSlug + '&keepOriginal=' + keepOriginal,
 			       buildDataString(), function(result) {
-				   // alert(buildDataString());
 				   ajaxResultProcessor.processPublishedResponse(result);
 			       });
 
@@ -4582,10 +3940,11 @@
 
     }
     splashWindow = new SplashWindow(pageEditor);
-    splashWindow.show();
+    splashWindow.createLabels();
+    splashWindow.activate();
     if (editMode != 'HTML') {
-	pageEditor = new VisualPageEditor();
-	pageEditor.show();
+    	pageEditor = new VisualPageEditor();
+    	pageEditor.show();
     }
 
     var activateEditor = function activateEditor() {
@@ -4606,8 +3965,8 @@
     }
     loadingTimerId = setTimeout(activateEditor, 000);
     UTIL.addEvent(window, 'load', function() {
-	clearTimeout(loadingTimerId);
-	activateEditor();
-    });
+	    clearTimeout(loadingTimerId);
+	    activateEditor();
+	});
 
-})('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');
+}
