@@ -2863,28 +2863,33 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	var moveDiv, editModeChangeOverlayDiv, buttonDiv, editModeChangeButtonDiv, editModeChangeSaveButton, editModeChangeDiscardButton;
 	var redButtonStyleAttributes, fillUpButtonStyleAttributes, firstRowDivOffset, calculateScrollPositionY, wrapperDiv,showKeepOriginalOverlay, publishOptions = new PublishOptions();
 
-	messageDiv = DOM.BUILDER.DIV(editAttributes.addStyle('font-weight:italic; font-size:20px; font-family: Helvetica Neue,Helvetica,Arial,Sans-serif; position:absolute; left:30%; width:100%; display:inline-block;  color:#fff;').values());
+	//	messageDiv = DOM.BUILDER.DIV(editAttributes.addStyle('font-weight:italic; font-size:20px; font-family: Helvetica Neue,Helvetica,Arial,Sans-serif; position:absolute; left:30%; width:100%; display:inline-block;  color:#fff;').values());
+
+	messageDiv = document.createElement("div");
+	messageDiv.setAttribute("id", "message-div");
+	messageDiv.setAttribute("alipielements", "alipi");
+	messageDiv.setAttribute("style", "position:relative;left:150px;bottom:25px;font-size:25px;font-weight:bold;");
 
 	    publishButton = document.createElement("input");
 	    publishButton.setAttribute("id", "publish");
 	    publishButton.setAttribute("alipielements", "alipi");
 	    publishButton.setAttribute("type", "submit");
 	    publishButton.setAttribute("Value", "Publish");
-	    publishButton.setAttribute("style", "margin-left:100px;font-size:18px;font-weight:bold;");
+	    publishButton.setAttribute("style", "position:relative;left:950px;bottom:50px;font-size:18px;font-weight:bold;");
 
 	    undoButton = document.createElement("input");
 	    undoButton.setAttribute("id", "undo");
 	    undoButton.setAttribute("alipielements", "alipi");
 	    undoButton.setAttribute("type", "submit");
 	    undoButton.setAttribute("Value", "Undo");
-	    undoButton.setAttribute("style", "margin-left:100px;font-size:18px;font-weight:bold;");
+	    undoButton.setAttribute("style", "position:relative;left:850px;bottom:50px;font-size:18px;font-weight:bold;");
 
 	    helpLink = document.createElement("input");
 	    helpLink.setAttribute("id", "help");
 	    helpLink.setAttribute("alipielements", "alipi");
 	    helpLink.setAttribute("type", "submit");
 	    helpLink.setAttribute("Value", "Help");
-	    helpLink.setAttribute("style", "margin-left:00px;font-size:18px;font-weight:bold;");
+	    helpLink.setAttribute("style", "position:relative;bottom:50px;left:750px;font-size:18px;font-weight:bold;");
 
 	// redButtonStyleAttributes = panelButtonAttributes.put({id : 'publish'}).addStyle('position:absolute; top:-13px; right:04%; width:22%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
 
@@ -2935,15 +2940,21 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	};
 
 
-	editModeChangeButtonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), editModeChangeSaveButton, editModeChangeDiscardButton);
+	// editModeChangeButtonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), editModeChangeSaveButton, editModeChangeDiscardButton);
 
-	buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), helpLink, undoButton, publishButton);
+	//	buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), helpLink, undoButton, publishButton);
 
-	firstRowDiv = DOM.BUILDER.DIV(DOM.BUILDER.DIV(editAttributes.addStyle('width:500px; position: absolute; top: 0; left: 1%;').values(), messageDiv), buttonDiv);
+	//	firstRowDiv = DOM.BUILDER.DIV(DOM.BUILDER.DIV(editAttributes.addStyle('width:500px; position: absolute; top: 0; left: 1%;').values(), messageDiv), buttonDiv);
+	    image = document.createElement("img");
+	    image.setAttribute("id", "close-image");
+	    image.setAttribute("alipielements", "alipi");
+	    image.setAttribute("src", "http://dev.a11y.in/alipi/images/close_button.png");
+	    image.setAttribute("style", "position:relative;width:25px;height:28px;");
 
-	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:0.5%; width:25px; height:25px;').values());
+	    //	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:0.5%; width:25px; height:25px;').values());
 
-	wrapperDiv =  DOM.BUILDER.DIV(fontTypeAttributes.addStyle('overflow: inherit; overflow-x: visible; position: fixed; z-index: 2147483645; left: 0; top: 0;min-width:800px; width: 100%; height:30px;; background-color: rgba(0, 0, 0, 0.5);').values(), image, firstRowDiv);
+	wrapperDiv =  DOM.BUILDER.DIV(fontTypeAttributes.addStyle('overflow: inherit; overflow-x: visible; position: fixed; z-index: 2147483645; left: 0; top: 0;min-width:800px; width: 100%; height:30px;; background-color: rgba(0, 0, 0, 0.5);').values(), image, messageDiv, helpLink, undoButton, publishButton // firstRowDiv
+				      );
 
 
 	overlayDiv = DOM.BUILDER.DIV(fontTypeAttributes.addStyle('overflow: inherit;').values(), wrapperDiv);
@@ -3268,22 +3279,22 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    }
 	};
 
-	this.switchMode = function switchMode(saveChanges) {
-	    var result, requestParameters;
+	// this.switchMode = function switchMode(saveChanges) {
+	//     var result, requestParameters;
 
-	    requestParameters = '?slug=' + pageSlug + '&uploadSlug=' + uploadSlug;
-	    if (successUrl) {
-		requestParameters = requestParameters + '&successUrl=' + encodeURIComponent(successUrl);
-	    }
+	//     requestParameters = '?slug=' + pageSlug + '&uploadSlug=' + uploadSlug;
+	//     if (successUrl) {
+	// 	requestParameters = requestParameters + '&successUrl=' + encodeURIComponent(successUrl);
+	//     }
 
-	    if (saveChanges) {
-		result = AJAX.post('/app/page-edit/switch-edit-mode' + requestParameters,
-				   buildDataString());
-		ajaxResultProcessor.processSwitchModeResponse(result);
-	    } else {
-		window.location.href = 'https://bo.lt/app/page-edit/html' + requestParameters;
-	    }
-	};
+	//     if (saveChanges) {
+	// 	result = AJAX.post('/app/page-edit/switch-edit-mode' + requestParameters,
+	// 			   buildDataString());
+	// 	ajaxResultProcessor.processSwitchModeResponse(result);
+	//     } else {
+	// 	window.location.href = 'https://bo.lt/app/page-edit/html' + requestParameters;
+	//     }
+	// };
 	
 	buildDataString = function buildDataString() {
 	    var check_xpath = [], temp_history = [], index = [];
