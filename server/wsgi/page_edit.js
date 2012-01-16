@@ -1797,7 +1797,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    source: function(req, add){
 				
 			//pass request to server
-			$.getJSON("http://dev.a11y.in/getData?", req, function(data) {
+			$.getJSON("http://localhost/getData?", req, function(data) {
 						    
 				//create array for response objects
 				var suggestions = [];
@@ -1821,7 +1821,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    source: function(req, add){
 				
 			//pass request to server
-			$.getJSON("http://dev.a11y.in/getLang?", req, function(data) {
+			$.getJSON("http://localhost/getLang?", req, function(data) {
 						    
 				//create array for response objects
 				var suggestions = [];
@@ -2176,7 +2176,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 			}
 		    }
 	    }
-	    xmlhttp.open("POST","http://dev.a11y.in/narration",true);
+	    xmlhttp.open("POST","http://localhost/narration",true);
 	    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlhttp.send(data);
 	    
@@ -2865,13 +2865,34 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	messageDiv = DOM.BUILDER.DIV(editAttributes.addStyle('font-weight:italic; font-size:20px; font-family: Helvetica Neue,Helvetica,Arial,Sans-serif; position:absolute; left:30%; width:100%; display:inline-block;  color:#fff;').values());
 
-	redButtonStyleAttributes = panelButtonAttributes.put({id : 'publish'}).addStyle('position:absolute; top:-13px; right:04%; width:22%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
+	    publishButton = document.createElement("input");
+	    publishButton.setAttribute("id", "publish");
+	    publishButton.setAttribute("alipielements", "alipi");
+	    publishButton.setAttribute("type", "submit");
+	    publishButton.setAttribute("Value", "Publish");
+	    publishButton.setAttribute("style", "margin-left:100px;font-size:18px;font-weight:bold;");
 
-	undoButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; left:35%; top:-13px; width:15%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
+	    undoButton = document.createElement("input");
+	    undoButton.setAttribute("id", "undo");
+	    undoButton.setAttribute("alipielements", "alipi");
+	    undoButton.setAttribute("type", "submit");
+	    undoButton.setAttribute("Value", "Undo");
+	    undoButton.setAttribute("style", "margin-left:100px;font-size:18px;font-weight:bold;");
 
-	helpLinkStyleAttributes = panelButtonAttributes.addStyle('position:absolute; left:0%; top:-13px; width:15%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
+	    helpLink = document.createElement("input");
+	    helpLink.setAttribute("id", "help");
+	    helpLink.setAttribute("alipielements", "alipi");
+	    helpLink.setAttribute("type", "submit");
+	    helpLink.setAttribute("Value", "Help");
+	    helpLink.setAttribute("style", "margin-left:00px;font-size:18px;font-weight:bold;");
 
-	publishButton = DOM.BUILDER.BUTTON(redButtonStyleAttributes, 'Publish'); 
+	// redButtonStyleAttributes = panelButtonAttributes.put({id : 'publish'}).addStyle('position:absolute; top:-13px; right:04%; width:22%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
+
+	// undoButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; left:35%; top:-13px; width:15%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
+
+	// helpLinkStyleAttributes = panelButtonAttributes.addStyle('position:absolute; left:0%; top:-13px; width:15%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
+
+	//	publishButton = DOM.BUILDER.BUTTON(redButtonStyleAttributes, 'Publish'); 
 	
 	var dialog = 0;
 	publishButton.onclick = function publishButtonOnClick() {
@@ -2893,19 +2914,19 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		alert("Please give all the details, it will be used further");
 	    } else {
 	    pageEditor.commandPublish();
-	    $('#targetoverlay').remove();
 	    pageEditor.showMessage("... Please wait, your blog is being posted");
+	    $('#targetoverlay').remove();
 	    }
 	};
 	// End of okButton function
 
-	undoButton = DOM.BUILDER.BUTTON(undoButtonStyleAttributes, 'Undo');
+	//	undoButton = DOM.BUILDER.BUTTON(undoButtonStyleAttributes, 'Undo');
 	undoButton.onclick = function undoButtonOnClick() {
 	    pageEditor.commandUndo();
 	    return false;
 	};
 
-	helpLink = DOM.BUILDER.BUTTON(helpLinkStyleAttributes, 'Help');
+	//	helpLink = DOM.BUILDER.BUTTON(helpLinkStyleAttributes, 'Help');
 	helpLink.onclick = function helpLinkOnClick() {
 	    helpWindow = new HelpWindow(pageEditor);
 	    helpWindow.createLabels();
@@ -2916,7 +2937,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	editModeChangeButtonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), editModeChangeSaveButton, editModeChangeDiscardButton);
 
-	buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), undoButton, publishButton, helpLink);
+	buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), helpLink, undoButton, publishButton);
 
 	firstRowDiv = DOM.BUILDER.DIV(DOM.BUILDER.DIV(editAttributes.addStyle('width:500px; position: absolute; top: 0; left: 1%;').values(), messageDiv), buttonDiv);
 
@@ -3158,13 +3179,12 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		break;
 		
             case 'AUDIO_CREATE':
-		brk = document.createElement("br");		
 		audioElement = document.createElement('audio');
 		audioElement.setAttribute("id", "audiotag");
 		audioElement.setAttribute('src',command.data);
 		audioElement.setAttribute('controls','controls');
-		$(brk).insertBefore("#alipiSelectedElement");
-		$(audioElement).insertBefore($(brk));		
+		audioElement.setAttribute('style', 'display:table;');
+		$(audioElement).insertBefore($(selectedElement));		
 		pageEditor.showMessage('Audio added');
 		break;
 
@@ -3237,12 +3257,12 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    if(document.getElementById('our-check').checked)
 		{
 		    localStorage.myContent = buildDataString();
-		    window.location.href = "http://dev.a11y.in/test.html";
+		    window.location.href = "http://localhost/test.html";
 		    window.reload();
 		}
 	    else{
 		
-		AJAX.post('http://dev.a11y.in/test',  buildDataString(), function(result) {
+		AJAX.post('http://localhost/test',  buildDataString(), function(result) {
 	    		      ajaxResultProcessor.processPublishedResponse(result);
 	    		  });
 	    }
