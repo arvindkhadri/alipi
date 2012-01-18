@@ -2863,7 +2863,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
     }
 
 
-
     /**
      * Overlay bar which can function in either visual editor or html editor mode.
      */
@@ -2983,6 +2982,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	this.message = function message(value) {
 	    messageDiv.innerHTML = value;
 	};
+
 
 
 	function PublishOptions() {
