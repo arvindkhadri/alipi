@@ -1906,7 +1906,11 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 				},
 				OK: function() {
 				    textElement = new TextElementPopup(pageEditor, true);
+				    if(editBox.value == refBox.value){
+					pageEditor.showMessage("Text unchanged");
+					} else {
 				    textElement.textButtonOnClick();
+					}
 				    $( "#editoroverlay" ).remove();
 				}				    
 			    },
@@ -2193,7 +2197,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
     //******************************** Shalini - Changed AudioupdatePopupAction from ImageUpdatePopupAction *****************
 
     AudioUpdateByUrl = function AudioUpdateByUrl(pageEditor) {
-	//	var self = this, popupDiv, audioUrlInput, randomInput, audioUrlForm, selectedElement, targetName,audioElement;
+	var self = this, popupDiv, audioUrlInput, randomInput, audioUrlForm, selectedElement, targetName,audioElement;
 	// var addUrlLabel = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('width: 100%; display: block; float: left; font-size: 10px;position:relative; margin-top: 5px;margin-left: 0px; margin-right: 5px; margin-bottom: 5px; background: transparent; color: #747474; text-shadow: 0 1px 0 #FFFFFF; text-align: left;').values());
 	// addUrlLabel.innerHTML = 'Add URL';
 
@@ -2227,7 +2231,12 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 				buttons: {
 				OK: function() {
 				    var url = urlInput.value;
-				    updateAudio(url);
+				    n = url.length;
+				    if(url.substring(n-4) == '.ogg'){
+				    	updateAudio(url);
+					} else {
+					alert("Invalid input! please provide .ogg audio file");
+					}
 				    document.getElementById('alipiSelectedElement').removeAttribute('id', 'alipiSelectedElement');
 				    $("#audiodiv").remove();
 				} 
@@ -2268,14 +2277,14 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    var command;
 	    selectedElement = document.getElementById("alipiSelectedElement");
 	    // audioElement = urlInput;
-	    // if (audioElement) {
-	    // 	command = {
-	    // 	    command : 'AUDIO_UPDATE',
-	    // 	    element : audioElement,
-	    // 	    elementId : audioElement.getAttribute('m4pageeditid'),
-	    // 	    data : src,
-	    // 	    //		    previousData : originalHref
-	    // 	};
+	    //if (audioElement) {
+	     //	command = {
+	     //	    command : 'AUDIO_UPDATE',
+	     //	    element : audioElement,
+	     //	    elementId : audioElement.getAttribute('m4pageeditid'),
+	     //	    data : src,
+	    //	    previousData : originalHref
+	     //	};
 	    // } else {
 		command = {
 		    command : 'AUDIO_CREATE',
@@ -2751,7 +2760,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	doneButton = createActionButton(doneImage, 'Editor', 'border-right: none;' + leftBorderStyle);
 	doneButton.onclick = function doneButtonOnClick(elements) {
 	    editWindow = new EditWindow(pageEditor);
-	    console.log(selectedElement.children);
 	    document.getElementById('reference').value = selectedElement.textContent;
 	    document.getElementById('editor').value = selectedElement.textContent;
 	    selectedElement.setAttribute('id', 'alipiSelectedElement');
@@ -3101,7 +3109,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	
 	this.apply = function apply(command) {
 	    var poofPosition, poofDiv;
-
 	    switch (command.command) {
             case 'TEXT_UPDATE':
 		command.element = document.getElementById("alipiSelectedElement");
@@ -3176,6 +3183,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		break;
 		
             case 'AUDIO_CREATE':
+	        selectedElement = document.getElementById("alipiSelectedElement");
 		audioElement = document.createElement('audio');
 		audioElement.setAttribute("id", "audiotag");
 		audioElement.setAttribute('src',command.data);
@@ -3231,6 +3239,13 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    command.element.remove();
 		    pageEditor.showMessage('Link removed');
 		    break;
+
+		case 'AUDIO_CREATE':
+		    audio_remove=command.element.previousSibling;
+		    command.element.parentNode.removeChild(audio_remove);
+		    pageEditor.showMessage('Audio change undone');
+		    break;
+
 		case 'ANCHOR_UPDATE':
 		    command.element.setAttribute('href', command.previousData);
 		    pageEditor.showMessage('Link change undone');
