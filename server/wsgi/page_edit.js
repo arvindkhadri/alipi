@@ -1711,6 +1711,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    locName.setAttribute("style","position:absolute;top:5%;left:40%;width:250px;");
 	    target.appendChild(locName);
 
+
 	    langLabel= document.createElement("label");
 	    langLabel.innerHTML = 'Select Language';
 	    langLabel.setAttribute("style", "position:absolute;top:25%;left:3%;color:#000;");
@@ -1772,8 +1773,28 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    ourLabel.textContent = "Our blog";
 	    ourLabel.setAttribute("style","position:absolute;top:85%;left:75%;color:#000;");
 	    target.appendChild(ourLabel);
-	}
 
+	    locButton = document.createElement("input");
+	    locButton.setAttribute("id","loc-bt");
+	    locButton.setAttribute("title","Set your preferred location");
+	    locButton.value="+";
+	    locButton.setAttribute("type","button");
+	    locButton.setAttribute("style","position:absolute;top:5%;left:90%;width:20px;");
+	    locButton.setAttribute("alipielements", "alipi");
+	    //locButton.setAttribute("type","button");
+	    target.appendChild(locButton);
+
+	    langButton = document.createElement("input");
+            langButton.setAttribute("id","lang-bt");
+            langButton.setAttribute("title","Set your preferred location");
+            langButton.value="+";
+            langButton.setAttribute("type","button");
+            langButton.setAttribute("style","position:absolute;top:25%;left:90%;width:20px;");
+            langButton.setAttribute("alipielements", "alipi");
+            //locButton.setAttribute("type","button");
+            target.appendChild(langButton);
+
+	}
 	this.activate = function activate() {
 	    $(function() {
 		    $( "#targetoverlay" ).dialog({
@@ -1784,21 +1805,91 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 				OK: function() {
 				    overlayBar = new OverlayBar(pageEditor);
 				    overlayBar.blogpost();
-				} 
+				}
 			    },
 				close: function() {
 				$( "#targetoverlay" ).hide();
-			    }
+			    },
 			});
+		     //$('.ui-dialog').hover(function() {
+    		//		$(this).animate({
+        	//			width: '700px'
+    		//		}, 300);
+		//		},function() {
+    		//			$(this).animate({
+        	//			width: '500px'
+    		//		}, 300);
+		//	});
 		});
-	    
+
+	    $("#loc-bt").click(function () { 
+                if(document.getElementById('loc-bt').value == '+'){
+               		//remove input field and create a combo box
+			$('#loc-select').hide(); 
+			//var suggst = ['Srilanka','su','sa'];			
+ 	    		locSel= document.createElement("select");
+	    		locSel.setAttribute("id","loct-select");
+	    		locSel.setAttribute("type","text");
+	    		locSel.setAttribute("alipielements", "alipi");
+	    		locSel.setAttribute("style","position:absolute;top:5%;left:40%;width:250px;");
+			for(i=0;i<client_json.def_loc.length;i++){
+			locopt = document.createElement("option");
+			theText=document.createTextNode(suggst[i]);
+			locopt.appendChild(theText);
+			locSel.appendChild(locopt);
+			}
+	    		target.appendChild(locSel);
+
+                	document.getElementById('loc-bt').value = '-';
+		}
+		else if(document.getElementById('loc-bt').value == '-'){
+			//show the input field and remove combo box
+			$('#loc-select').show(); 
+			var inpt = document.getElementById("loct-select");
+			inpt.parentNode.removeChild(inpt);
+                	document.getElementById('loc-bt').value = '+';
+ 		}	
+
+
+    	    });
+	   
+	     $("#lang-bt").click(function () {
+                if(document.getElementById('lang-bt').value == '+'){
+                        //remove input field and create a combo box
+                        $('#lang-select').hide();
+                        //var suggst = ['Srilanka','su','sa'];                  
+                        langSel= document.createElement("select");
+                        langSel.setAttribute("id","langs-select");
+                        langSel.setAttribute("type","text");
+                        langSel.setAttribute("alipielements", "alipi");
+                        langSel.setAttribute("style","position:absolute;top:25%;left:40%;width:250px;");
+                        for(i=0;i<client_json.def_lang.length;i++){
+                        langopt = document.createElement("option");
+                        theText=document.createTextNode(client_json.def_lang[i]);
+                        langopt.appendChild(theText);
+                        langSel.appendChild(langopt);
+                        }
+                        target.appendChild(langSel);
+
+                        document.getElementById('lang-bt').value = '-';
+                }
+                else if(document.getElementById('lang-bt').value == '-'){
+                        //show the input field and remove combo box
+                        $('#lang-select').show();
+                        var inpt = document.getElementById("langs-select");
+                        inpt.parentNode.removeChild(inpt);
+                        document.getElementById('lang-bt').value = '+';
+                }
+
+
+            });
+ 
 		
 	    $( "#loc-select" ).autocomplete({
 		    source: function(req, add){
 				
 			//pass request to server
 			$.getJSON("http://localhost/getData?", req, function(data) {
-						    
 				//create array for response objects
 				var suggestions = [];
 						    
@@ -1838,7 +1929,9 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 				add(suggestions);
 			    });
 		    },
-			});				
+			});
+
+				
 
 
 	}
