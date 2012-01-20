@@ -1,7 +1,7 @@
 function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) 
 {
 
-    var console, PopupControl, M4ImageElement,locName='',langName = '',styleName='',authorValue;
+    var console, PopupControl, M4ImageElement,locName='',langName = '',styleName='',authorValue,locSel='',langSel='';
     var editAttributes, elementAttributes, fontTypeAttributes, normalFontAttributes, popupContainerAttributes, editButtonAttributes, editTextInputAttributes, editSubmitAttributes, editTitleAttributes, panelButtonAttributes, buttonPanelAttributes, actionPanelAttributes, closeButtonAttributes, actionButtonAttributes, redButtonAttributes, leftBorderStyle, rightBorderStyle, titleButtonImageAttributes, titleButtonDisplayTextAttributes, actionButtonImageAttributes, actionButtonDisplayTextAttributes,greyArrowAttributes, pageEditor, splashWindow, loadingTimerId, keepOriginal = false;
 
     /**
@@ -47,7 +47,8 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		buffer.push(string);
 		return this;
 	    };
-
+            console.log("inside buffer");
+	    console.log(buffer);
 	    this.toString = function toString() {
 		return buffer.join('');
 	    };
@@ -1807,34 +1808,25 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 				    overlayBar.blogpost();
 				}
 			    },
-				close: function() {
+			    close: function() {
 				$( "#targetoverlay" ).hide();
 			    },
 			});
-		     //$('.ui-dialog').hover(function() {
-    		//		$(this).animate({
-        	//			width: '700px'
-    		//		}, 300);
-		//		},function() {
-    		//			$(this).animate({
-        	//			width: '500px'
-    		//		}, 300);
-		//	});
 		});
-
+	    
 	    $("#loc-bt").click(function () { 
                 if(document.getElementById('loc-bt').value == '+'){
                		//remove input field and create a combo box
 			$('#loc-select').hide(); 
-			//var suggst = ['Srilanka','su','sa'];			
+			var def_loc = ['Srilanka','Colombo','Moratuwa'];			
  	    		locSel= document.createElement("select");
 	    		locSel.setAttribute("id","loct-select");
 	    		locSel.setAttribute("type","text");
 	    		locSel.setAttribute("alipielements", "alipi");
 	    		locSel.setAttribute("style","position:absolute;top:5%;left:40%;width:250px;");
-			for(i=0;i<client_json.def_loc.length;i++){
+			for(i=0;i<def_loc.length;i++){
 			locopt = document.createElement("option");
-			theText=document.createTextNode(suggst[i]);
+			theText=document.createTextNode(def_loc[i]);
 			locopt.appendChild(theText);
 			locSel.appendChild(locopt);
 			}
@@ -1857,15 +1849,15 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
                 if(document.getElementById('lang-bt').value == '+'){
                         //remove input field and create a combo box
                         $('#lang-select').hide();
-                        //var suggst = ['Srilanka','su','sa'];                  
+                        var def_lang = ['Sinhala','Tamil','English'];                  
                         langSel= document.createElement("select");
                         langSel.setAttribute("id","langs-select");
                         langSel.setAttribute("type","text");
                         langSel.setAttribute("alipielements", "alipi");
                         langSel.setAttribute("style","position:absolute;top:25%;left:40%;width:250px;");
-                        for(i=0;i<client_json.def_lang.length;i++){
+                        for(i=0;i<def_lang.length;i++){
                         langopt = document.createElement("option");
-                        theText=document.createTextNode(client_json.def_lang[i]);
+                        theText=document.createTextNode(def_lang[i]);
                         langopt.appendChild(theText);
                         langSel.appendChild(langopt);
                         }
@@ -2968,7 +2960,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	overlayDiv = document.createElement("div");
 	overlayDiv.setAttribute("id", "overlay-div");
 	overlayDiv.setAttribute("alipielements", "alipi");
-	overlayDiv.setAttribute("style", "overflow:inherit; overflow-x:visible; position:fixed; z-index:2147483645; left:0; top:0; min-width:800px; width:100%; height:30px; background-color:rgba(0, 0, 0, 0.5);");
+	overlayDiv.setAttribute("style", "position:fixed; z-index:1001; left:0; top:0; min-width:800px; width:100%; height:30px; background-color:rgba(0, 0, 0, 0.5);");
 	document.body.appendChild(overlayDiv);
 
 
@@ -2976,7 +2968,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	image.setAttribute("id", "close-image");
 	image.setAttribute("alipielements", "alipi");
 	image.setAttribute("src", "http://dev.a11y.in/alipi/images/close_button.png");
-	image.setAttribute("style", "position:relative;width:25px;height:28px;");
+	image.setAttribute("style", "position:fixed;left:1px;width:25px;height:28px;");
 	overlayDiv.appendChild(image);
 	image.onclick=function(){
 	    answer = confirm("Do you really want to exit the editor?")
@@ -2990,7 +2982,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	messageDiv = document.createElement("div");
 	messageDiv.setAttribute("id", "message-div");
 	messageDiv.setAttribute("alipielements", "alipi");
-	messageDiv.setAttribute("style", "position:relative;left:150px;bottom:26px;font-size:23px;font-weight:bold;color:#ffe;");
+	messageDiv.setAttribute("style", "position:fixed;left:10%;top:0;font-size:23px;font-weight:bold;color:#ffe;");
 	overlayDiv.appendChild(messageDiv);
 
 	helpLink = document.createElement("input");
@@ -2998,7 +2990,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	helpLink.setAttribute("alipielements", "alipi");
 	helpLink.setAttribute("type", "submit");
 	helpLink.setAttribute("Value", "Help");
-	helpLink.setAttribute("style", "position:relative;top:-55px;left:750px;font-size:18px;font-weight:bold;width:100px;height:30px;");
+	helpLink.setAttribute("style", "position:fixed;top:0;right:35%;font-size:18px;font-weight:bold;width:100px;height:30px;");
 	overlayDiv.appendChild(helpLink);
 	helpLink.onclick = function helpLinkOnClick() {
 	    helpWindow = new HelpWindow(pageEditor);
@@ -3013,7 +3005,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	undoButton.setAttribute("alipielements", "alipi");
 	undoButton.setAttribute("type", "submit");
 	undoButton.setAttribute("Value", "Undo");
-	undoButton.setAttribute("style", "position:relative;top:-55px;left:825px;font-size:18px;font-weight:bold;width:100px;height:30px;");
+	undoButton.setAttribute("style", "position:fixed;top:0;right:20%;font-size:18px;font-weight:bold;width:100px;height:30px;");
 	overlayDiv.appendChild(undoButton);
 	undoButton.onclick = function undoButtonOnClick() {
 	    pageEditor.commandUndo();
@@ -3026,7 +3018,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	publishButton.setAttribute("alipielements", "alipi");
 	publishButton.setAttribute("type", "submit");
 	publishButton.setAttribute("Value", "Publish");
-	publishButton.setAttribute("style", "position:relative;top:-55px;left:900px;font-size:18px;font-weight:bold;width:100px;height:30px;");
+	publishButton.setAttribute("style", "position:fixed;top:0;right:5%;font-size:18px;font-weight:bold;width:100px;height:30px;");
 	overlayDiv.appendChild(publishButton);
 	var dialog = 0;
 	publishButton.onclick = function publishButtonOnClick() {
@@ -3045,9 +3037,13 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		
     
 	this.blogpost = function blogpost() {
-	    if (locName.value == "" || langName.value == "" || styleSelect.value == "" || author.value == "" || (ourcheck.checked == false && yourcheck.checked == false)) {
+	    console.log("locSel.value");
+	    console.log(locSel.value);
+	    console.log("langSel.value");
+	    console.log(langSel.value);
+	    if (styleSelect.value == "" || author.value == "" ||(ourcheck.checked == false && yourcheck.checked == false) || locName.value == "" && document.getElementById('loct-select') === null || langName.value == "" && document.getElementById('langs-select') === null){
 		alert("Please give all the details, it will be used further");
-	    } else {
+	      } else {
 		pageEditor.commandPublish();
 		pageEditor.showMessage("... Please wait, your blog is being posted");
 		$('#targetoverlay').remove();
@@ -3056,7 +3052,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	// End of okButton function
 
 	this.show = function show(activate) {
-	    //	    overlayDiv.style.display = 'block';
 	    var disabled = true;
 	    var opacity = '0.4';
 	    if (activate) {
@@ -3161,10 +3156,10 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    switch (event.keyCode) {
 		    case 27:
 		    // ESC
-		    event.preventDefault();
-		    event.stopPropagation();
-		    pageEditor.close();
-		    return false;
+		    // event.preventDefault();
+		    // event.stopPropagation();
+		    // pageEditor.close();
+		    // return false;
 		    // case 77:
 		    //   // "m"
 		    //   if (pageEditor.hasFocus()) {
@@ -3359,7 +3354,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	this.publish = function publish() {
 	    var result;
-	    if(document.getElementById('our-check').checked)
+	    if(document.getElementById('your-check').checked && window.location.hostname !='y.a11y.in')
 		{
 		    localStorage.myContent = buildDataString();
 		    window.location.href = "http://localhost/test.html";
@@ -3423,9 +3418,15 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    buffer.append('about=');  //url=about    //removed '&' on purpose
 		    buffer.append(window.location.search.split('=')[1]);
 		    buffer.append('&lang=');//lang
-		    buffer.append(encodeURIComponent(langName.value));
+		    if (langName.value != "") 
+			buffer.append(encodeURIComponent(langName.value));
+		    else 
+			buffer.append(encodeURIComponent(langSel.value));
 		    buffer.append('&location=');//location
-		    buffer.append(encodeURIComponent(locName.value));
+		    if (locName.value != "") 
+			buffer.append(encodeURIComponent(locName.value));
+		    else
+			buffer.append(encodeURIComponent(locSel.value));
 		    buffer.append('&style=');//style
 		    buffer.append(encodeURIComponent(styleSelect.value));
 		    buffer.append('&blog=');  //blog where to post
@@ -3526,7 +3527,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 			// passthrough
 		    } else if (event.target.getAttribute('m4pageedittype')) {
 			// passthrough
-		    } else if (event.target.id == "lang-select" || event.target.id == "loc-select" || alipiElements) {
+		    } else if (event.target.id == "lang-select" || event.target.id == "loc-select" || event.target.id == "loc-bt" || event.target.id == "lang-bt" || alipiElements) {
 			// passthrough
 		    } else if (event.clientX > document.body.clientWidth || event.clientY > document.body.clientHeight) {
 			// passthrough if this click was outside of the html page, meaning on a scrollbar
