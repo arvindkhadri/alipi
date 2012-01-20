@@ -1,7 +1,7 @@
 function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) 
 {
 
-    var console, PopupControl, M4ImageElement,locName='',langName = '',styleName='',authorValue,locSel='',langSel='';
+    var console, PopupControl, M4ImageElement,locName='',langName = '',styleName='',authorValue;
     var editAttributes, elementAttributes, fontTypeAttributes, normalFontAttributes, popupContainerAttributes, editButtonAttributes, editTextInputAttributes, editSubmitAttributes, editTitleAttributes, panelButtonAttributes, buttonPanelAttributes, actionPanelAttributes, closeButtonAttributes, actionButtonAttributes, redButtonAttributes, leftBorderStyle, rightBorderStyle, titleButtonImageAttributes, titleButtonDisplayTextAttributes, actionButtonImageAttributes, actionButtonDisplayTextAttributes,greyArrowAttributes, pageEditor, splashWindow, loadingTimerId, keepOriginal = false;
 
     /**
@@ -47,8 +47,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		buffer.push(string);
 		return this;
 	    };
-            console.log("inside buffer");
-	    console.log(buffer);
+
 	    this.toString = function toString() {
 		return buffer.join('');
 	    };
@@ -1750,7 +1749,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    target.appendChild(author);
 
 	    ourcheck = document.createElement("input");
-	    ourcheck.setAttribute("id","our-check");
+	    ourcheck.setAttribute("id","your-check");
 	    ourcheck.setAttribute("type","radio");
 	    ourcheck.setAttribute("name", "blog");
 	    ourcheck.setAttribute("alipielements", "alipi");
@@ -1758,7 +1757,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    target.appendChild(ourcheck);
 
 	    yourcheck = document.createElement("input");
-	    yourcheck.setAttribute("id","your-check");
+	    yourcheck.setAttribute("id","our-check");
 	    yourcheck.setAttribute("type","radio");
 	    yourcheck.setAttribute("name", "blog");
 	    yourcheck.setAttribute("alipielements", "alipi");
@@ -1783,8 +1782,10 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    locButton.setAttribute("style","position:absolute;top:5%;left:90%;width:20px;");
 	    locButton.setAttribute("alipielements", "alipi");
 	    //locButton.setAttribute("type","button");
-	    target.appendChild(locButton);
-
+	    if (window.location.hostname != '127.0.0.1') {
+		target.appendChild(locButton);
+	    }
+	    
 	    langButton = document.createElement("input");
             langButton.setAttribute("id","lang-bt");
             langButton.setAttribute("title","Set your preferred location");
@@ -1793,9 +1794,11 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
             langButton.setAttribute("style","position:absolute;top:25%;left:90%;width:20px;");
             langButton.setAttribute("alipielements", "alipi");
             //locButton.setAttribute("type","button");
-            target.appendChild(langButton);
-
+	    if (window.location.hostname != '127.0.0.1') {
+		target.appendChild(langButton);
+	    }
 	}
+
 	this.activate = function activate() {
 	    $(function() {
 		    $( "#targetoverlay" ).dialog({
@@ -1809,7 +1812,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 				}
 			    },
 			    close: function() {
-				$( "#targetoverlay" ).hide();
+				$( "#targetoverlay" ).remove();
 			    },
 			});
 		});
@@ -1818,61 +1821,58 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
                 if(document.getElementById('loc-bt').value == '+'){
                		//remove input field and create a combo box
 			$('#loc-select').hide(); 
-			var def_loc = ['Srilanka','Colombo','Moratuwa'];			
- 	    		locSel= document.createElement("select");
+			var def_loc = ['Srilanka','su','sa'];			
+ 	    		locSel = document.createElement("select");
 	    		locSel.setAttribute("id","loct-select");
 	    		locSel.setAttribute("type","text");
 	    		locSel.setAttribute("alipielements", "alipi");
 	    		locSel.setAttribute("style","position:absolute;top:5%;left:40%;width:250px;");
 			for(i=0;i<def_loc.length;i++){
-			locopt = document.createElement("option");
-			theText=document.createTextNode(def_loc[i]);
-			locopt.appendChild(theText);
-			locSel.appendChild(locopt);
+			    locopt = document.createElement("option");
+			    theText=document.createTextNode(def_loc[i]);
+			    locopt.appendChild(theText);
+			    locSel.appendChild(locopt);
 			}
 	    		target.appendChild(locSel);
-
-                	document.getElementById('loc-bt').value = '-';
+                	locButton.value = '-';
 		}
 		else if(document.getElementById('loc-bt').value == '-'){
-			//show the input field and remove combo box
-			$('#loc-select').show(); 
-			var inpt = document.getElementById("loct-select");
-			inpt.parentNode.removeChild(inpt);
-                	document.getElementById('loc-bt').value = '+';
+		    //show the input field and remove combo box
+		    target.removeChild(locSel);
+		    $('#loc-select').show(); 
+		    locButton.value = '+';
  		}	
-
-
+		
+		
     	    });
 	   
 	     $("#lang-bt").click(function () {
                 if(document.getElementById('lang-bt').value == '+'){
                         //remove input field and create a combo box
                         $('#lang-select').hide();
-                        var def_lang = ['Sinhala','Tamil','English'];                  
+                        var def_lang = ['Srilanka','su','sa'];                  
                         langSel= document.createElement("select");
                         langSel.setAttribute("id","langs-select");
                         langSel.setAttribute("type","text");
                         langSel.setAttribute("alipielements", "alipi");
                         langSel.setAttribute("style","position:absolute;top:25%;left:40%;width:250px;");
                         for(i=0;i<def_lang.length;i++){
-                        langopt = document.createElement("option");
-                        theText=document.createTextNode(def_lang[i]);
-                        langopt.appendChild(theText);
-                        langSel.appendChild(langopt);
+			    langopt = document.createElement("option");
+			    theText=document.createTextNode(def_lang[i]);
+			    langopt.appendChild(theText);
+			    langSel.appendChild(langopt);
                         }
                         target.appendChild(langSel);
-
-                        document.getElementById('lang-bt').value = '-';
+			
+                        langButton.value = '-';
                 }
                 else if(document.getElementById('lang-bt').value == '-'){
-                        //show the input field and remove combo box
-                        $('#lang-select').show();
-                        var inpt = document.getElementById("langs-select");
-                        inpt.parentNode.removeChild(inpt);
-                        document.getElementById('lang-bt').value = '+';
+		    //show the input field and remove combo box
+		    $('#lang-select').show();
+		    target.removeChild(langSel);
+		    langButton.value = '+';
                 }
-
+		
 
             });
  
@@ -3020,14 +3020,14 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	publishButton.setAttribute("Value", "Publish");
 	publishButton.setAttribute("style", "position:fixed;top:0;right:5%;font-size:18px;font-weight:bold;width:100px;height:30px;");
 	overlayDiv.appendChild(publishButton);
-	var dialog = 0;
+	//	var dialog = 0;
 	publishButton.onclick = function publishButtonOnClick() {
-	    if (pageEditor.hasChangesPending() /* && (pageEditor.formUncomplete() ==false) */ ) {
+	    if (pageEditor.hasChangesPending()) {
 		targetWindow = new TargetWindow(pageEditor);
-		if (dialog == 0) {
+		//	if (dialog == 0) {
 		    targetWindow.createDialogBox();
-		    dialog = 1;
-		}
+		//   dialog = 1;
+		//	}
 		targetWindow.activate();
 	    } else {
 		pageEditor.showMessage("Nothing to post");
@@ -3035,22 +3035,19 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	};
 
 		
-    
+	
 	this.blogpost = function blogpost() {
-	    console.log("locSel.value");
-	    console.log(locSel.value);
-	    console.log("langSel.value");
-	    console.log(langSel.value);
-	    if (styleSelect.value == "" || author.value == "" ||(ourcheck.checked == false && yourcheck.checked == false) || locName.value == "" && document.getElementById('loct-select') === null || langName.value == "" && document.getElementById('langs-select') === null){
-		alert("Please give all the details, it will be used further");
-	      } else {
+	    if((locName.value == "" && document.getElementById("loct-select") === null) || (langName.value == "" && document.getElementById("langs-select") === null) || styleSelect.value == "" || author.value == "" || (ourcheck.checked == false && yourcheck.checked == false)) {
+		    alert("Please give all the details, it will be used further");
+		}
+	    else {
 		pageEditor.commandPublish();
 		pageEditor.showMessage("... Please wait, your blog is being posted");
 		$('#targetoverlay').remove();
 	    }
 	};
 	// End of okButton function
-
+	
 	this.show = function show(activate) {
 	    var disabled = true;
 	    var opacity = '0.4';
@@ -3190,9 +3187,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	this.hasChangesPending = function hasChangesPending() {
 	    return history.length > 0;
-	};
-	this.formUncomplete = function formUnomplete(){
-	    return (locName == '' &&  langName=='' && styleName == '' );
 	};
 	
 	this.apply = function apply(command) {
@@ -3354,20 +3348,20 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	this.publish = function publish() {
 	    var result;
-	    if(document.getElementById('your-check').checked && window.location.hostname !='y.a11y.in')
+	    if(document.getElementById('our-check').checked) 
+		    {
+			localStorage.myContent = buildDataString();
+			window.location.href = "http://localhost/test.html";
+			window.reload();
+		    }
+	    else 
 		{
-		    localStorage.myContent = buildDataString();
-		    window.location.href = "http://localhost/test.html";
-		    window.reload();
+		    AJAX.post('http://localhost/test',  buildDataString(), function(result) {
+			    ajaxResultProcessor.processPublishedResponse(result);
+			});
 		}
-	    else{
-		
-		AJAX.post('http://localhost/test',  buildDataString(), function(result) {
-	    		      ajaxResultProcessor.processPublishedResponse(result);
-	    		  });
-	    }
 	};
-
+	
 	// this.switchMode = function switchMode(saveChanges) {
 	//     var result, requestParameters;
 
@@ -3418,15 +3412,15 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    buffer.append('about=');  //url=about    //removed '&' on purpose
 		    buffer.append(window.location.search.split('=')[1]);
 		    buffer.append('&lang=');//lang
-		    if (langName.value != "") 
+		    if (langName.value != "" ) 
 			buffer.append(encodeURIComponent(langName.value));
-		    else 
-			buffer.append(encodeURIComponent(langSel.value));
+		    else
+			buffer.append(encodeURIComponent(document.getElementById('langs-select').value));
 		    buffer.append('&location=');//location
-		    if (locName.value != "") 
+		    if (locName.value != '') 
 			buffer.append(encodeURIComponent(locName.value));
 		    else
-			buffer.append(encodeURIComponent(locSel.value));
+			buffer.append(encodeURIComponent(document.getElementById('loct-select').value));
 		    buffer.append('&style=');//style
 		    buffer.append(encodeURIComponent(styleSelect.value));
 		    buffer.append('&blog=');  //blog where to post
@@ -3476,10 +3470,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	};
 
 
-	this.formUncomplete = function fromUncomplete() {
-	    return editCommandHistory.formUncomplete();
-	};
-
 	this.show = function show() {
 
 	    DOM.addListener('mouseover', function globalMouseOverListener(event) {
@@ -3527,7 +3517,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 			// passthrough
 		    } else if (event.target.getAttribute('m4pageedittype')) {
 			// passthrough
-		    } else if (event.target.id == "lang-select" || event.target.id == "loc-select" || event.target.id == "loc-bt" || event.target.id == "lang-bt" || alipiElements) {
+		    } else if (event.target.id == "lang-select" || event.target.id == "loc-select" || alipiElements) {
 			// passthrough
 		    } else if (event.clientX > document.body.clientWidth || event.clientY > document.body.clientHeight) {
 			// passthrough if this click was outside of the html page, meaning on a scrollbar
