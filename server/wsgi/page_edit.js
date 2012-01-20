@@ -1711,6 +1711,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    locName.setAttribute("style","position:absolute;top:5%;left:40%;width:250px;");
 	    target.appendChild(locName);
 
+
 	    langLabel= document.createElement("label");
 	    langLabel.innerHTML = 'Select Language';
 	    langLabel.setAttribute("style", "position:absolute;top:25%;left:3%;color:#000;");
@@ -1772,8 +1773,28 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    ourLabel.textContent = "Our blog";
 	    ourLabel.setAttribute("style","position:absolute;top:85%;left:75%;color:#000;");
 	    target.appendChild(ourLabel);
-	}
 
+	    locButton = document.createElement("input");
+	    locButton.setAttribute("id","loc-bt");
+	    locButton.setAttribute("title","Set your preferred location");
+	    locButton.value="+";
+	    locButton.setAttribute("type","button");
+	    locButton.setAttribute("style","position:absolute;top:5%;left:90%;width:20px;");
+	    locButton.setAttribute("alipielements", "alipi");
+	    //locButton.setAttribute("type","button");
+	    target.appendChild(locButton);
+
+	    langButton = document.createElement("input");
+            langButton.setAttribute("id","lang-bt");
+            langButton.setAttribute("title","Set your preferred location");
+            langButton.value="+";
+            langButton.setAttribute("type","button");
+            langButton.setAttribute("style","position:absolute;top:25%;left:90%;width:20px;");
+            langButton.setAttribute("alipielements", "alipi");
+            //locButton.setAttribute("type","button");
+            target.appendChild(langButton);
+
+	}
 	this.activate = function activate() {
 	    $(function() {
 		    $( "#targetoverlay" ).dialog({
@@ -1784,21 +1805,91 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 				OK: function() {
 				    overlayBar = new OverlayBar(pageEditor);
 				    overlayBar.blogpost();
-				} 
+				}
 			    },
 				close: function() {
 				$( "#targetoverlay" ).hide();
-			    }
+			    },
 			});
+		     //$('.ui-dialog').hover(function() {
+    		//		$(this).animate({
+        	//			width: '700px'
+    		//		}, 300);
+		//		},function() {
+    		//			$(this).animate({
+        	//			width: '500px'
+    		//		}, 300);
+		//	});
 		});
-	    
+
+	    $("#loc-bt").click(function () { 
+                if(document.getElementById('loc-bt').value == '+'){
+               		//remove input field and create a combo box
+			$('#loc-select').hide(); 
+			//var suggst = ['Srilanka','su','sa'];			
+ 	    		locSel= document.createElement("select");
+	    		locSel.setAttribute("id","loct-select");
+	    		locSel.setAttribute("type","text");
+	    		locSel.setAttribute("alipielements", "alipi");
+	    		locSel.setAttribute("style","position:absolute;top:5%;left:40%;width:250px;");
+			for(i=0;i<client_json.def_loc.length;i++){
+			locopt = document.createElement("option");
+			theText=document.createTextNode(suggst[i]);
+			locopt.appendChild(theText);
+			locSel.appendChild(locopt);
+			}
+	    		target.appendChild(locSel);
+
+                	document.getElementById('loc-bt').value = '-';
+		}
+		else if(document.getElementById('loc-bt').value == '-'){
+			//show the input field and remove combo box
+			$('#loc-select').show(); 
+			var inpt = document.getElementById("loct-select");
+			inpt.parentNode.removeChild(inpt);
+                	document.getElementById('loc-bt').value = '+';
+ 		}	
+
+
+    	    });
+	   
+	     $("#lang-bt").click(function () {
+                if(document.getElementById('lang-bt').value == '+'){
+                        //remove input field and create a combo box
+                        $('#lang-select').hide();
+                        //var suggst = ['Srilanka','su','sa'];                  
+                        langSel= document.createElement("select");
+                        langSel.setAttribute("id","langs-select");
+                        langSel.setAttribute("type","text");
+                        langSel.setAttribute("alipielements", "alipi");
+                        langSel.setAttribute("style","position:absolute;top:25%;left:40%;width:250px;");
+                        for(i=0;i<client_json.def_lang.length;i++){
+                        langopt = document.createElement("option");
+                        theText=document.createTextNode(client_json.def_lang[i]);
+                        langopt.appendChild(theText);
+                        langSel.appendChild(langopt);
+                        }
+                        target.appendChild(langSel);
+
+                        document.getElementById('lang-bt').value = '-';
+                }
+                else if(document.getElementById('lang-bt').value == '-'){
+                        //show the input field and remove combo box
+                        $('#lang-select').show();
+                        var inpt = document.getElementById("langs-select");
+                        inpt.parentNode.removeChild(inpt);
+                        document.getElementById('lang-bt').value = '+';
+                }
+
+
+            });
+ 
 		
 	    $( "#loc-select" ).autocomplete({
 		    source: function(req, add){
 				
 			//pass request to server
 			$.getJSON("http://localhost/getData?", req, function(data) {
-						    
 				//create array for response objects
 				var suggestions = [];
 						    
@@ -1838,7 +1929,9 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 				add(suggestions);
 			    });
 		    },
-			});				
+			});
+
+				
 
 
 	}
@@ -1906,7 +1999,11 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 				},
 				OK: function() {
 				    textElement = new TextElementPopup(pageEditor, true);
+				    if(editBox.value == refBox.value){
+					pageEditor.showMessage("Text unchanged");
+					} else {
 				    textElement.textButtonOnClick();
+					}
 				    $( "#editoroverlay" ).remove();
 				}				    
 			    },
@@ -2193,7 +2290,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
     //******************************** Shalini - Changed AudioupdatePopupAction from ImageUpdatePopupAction *****************
 
     AudioUpdateByUrl = function AudioUpdateByUrl(pageEditor) {
-	//	var self = this, popupDiv, audioUrlInput, randomInput, audioUrlForm, selectedElement, targetName,audioElement;
+	var self = this, popupDiv, audioUrlInput, randomInput, audioUrlForm, selectedElement, targetName,audioElement;
 	// var addUrlLabel = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('width: 100%; display: block; float: left; font-size: 10px;position:relative; margin-top: 5px;margin-left: 0px; margin-right: 5px; margin-bottom: 5px; background: transparent; color: #747474; text-shadow: 0 1px 0 #FFFFFF; text-align: left;').values());
 	// addUrlLabel.innerHTML = 'Add URL';
 
@@ -2227,7 +2324,12 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 				buttons: {
 				OK: function() {
 				    var url = urlInput.value;
-				    updateAudio(url);
+				    n = url.length;
+				    if(url.substring(n-4) == '.ogg'){
+				    	updateAudio(url);
+					} else {
+					alert("Invalid input! please provide .ogg audio file");
+					}
 				    document.getElementById('alipiSelectedElement').removeAttribute('id', 'alipiSelectedElement');
 				    $("#audiodiv").remove();
 				} 
@@ -2268,14 +2370,14 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    var command;
 	    selectedElement = document.getElementById("alipiSelectedElement");
 	    // audioElement = urlInput;
-	    // if (audioElement) {
-	    // 	command = {
-	    // 	    command : 'AUDIO_UPDATE',
-	    // 	    element : audioElement,
-	    // 	    elementId : audioElement.getAttribute('m4pageeditid'),
-	    // 	    data : src,
-	    // 	    //		    previousData : originalHref
-	    // 	};
+	    //if (audioElement) {
+	     //	command = {
+	     //	    command : 'AUDIO_UPDATE',
+	     //	    element : audioElement,
+	     //	    elementId : audioElement.getAttribute('m4pageeditid'),
+	     //	    data : src,
+	    //	    previousData : originalHref
+	     //	};
 	    // } else {
 		command = {
 		    command : 'AUDIO_CREATE',
@@ -2751,7 +2853,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	doneButton = createActionButton(doneImage, 'Editor', 'border-right: none;' + leftBorderStyle);
 	doneButton.onclick = function doneButtonOnClick(elements) {
 	    editWindow = new EditWindow(pageEditor);
-	    console.log(selectedElement.children);
 	    document.getElementById('reference').value = selectedElement.textContent;
 	    document.getElementById('editor').value = selectedElement.textContent;
 	    selectedElement.setAttribute('id', 'alipiSelectedElement');
@@ -2853,7 +2954,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    pageEditor.commandApply(command);
 	};
     }
-
 
 
     /**
@@ -2975,6 +3075,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	this.message = function message(value) {
 	    messageDiv.innerHTML = value;
 	};
+
 
 
 	function PublishOptions() {
@@ -3101,7 +3202,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	
 	this.apply = function apply(command) {
 	    var poofPosition, poofDiv;
-
 	    switch (command.command) {
             case 'TEXT_UPDATE':
 		command.element = document.getElementById("alipiSelectedElement");
@@ -3176,6 +3276,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		break;
 		
             case 'AUDIO_CREATE':
+	        selectedElement = document.getElementById("alipiSelectedElement");
 		audioElement = document.createElement('audio');
 		audioElement.setAttribute("id", "audiotag");
 		audioElement.setAttribute('src',command.data);
@@ -3231,6 +3332,13 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    command.element.remove();
 		    pageEditor.showMessage('Link removed');
 		    break;
+
+		case 'AUDIO_CREATE':
+		    audio_remove=command.element.previousSibling;
+		    command.element.parentNode.removeChild(audio_remove);
+		    pageEditor.showMessage('Audio change undone');
+		    break;
+
 		case 'ANCHOR_UPDATE':
 		    command.element.setAttribute('href', command.previousData);
 		    pageEditor.showMessage('Link change undone');
