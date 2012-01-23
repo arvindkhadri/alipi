@@ -7,16 +7,11 @@ import pymongo
 from bson import Code
 import urllib2
 import StringIO
-import gdata.gauth
-import gdata.blogger.client
 from flask import g
 from flask import redirect
-<<<<<<< HEAD
 import urllib
-=======
 from urllib import quote_plus
 from urllib import unquote_plus
->>>>>>> upstream/gh-pages
 app = Flask(__name__)
 connection = pymongo.Connection('localhost',27017) #Create the object once and use it.
 db = connection['dev_alipi']
