@@ -1,4 +1,4 @@
-function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) 
+function page_edit_client( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) 
 {
 
     var console, PopupControl, M4ImageElement,locName='',langName = '',styleName='',authorValue;
@@ -1120,6 +1120,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 			    path = "/" + xname + path;
 			}
 		}
+	    console.log(path);
 	    return path;
 	};
 
@@ -1175,7 +1176,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 			path = DOM.makePath(currentNode.parentNode);
 		    }
 
-    	   
+    		console.log(path);
 		return path;
 	    };
 
@@ -1748,21 +1749,22 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    author.setAttribute("style","position:absolute;top:65%;left:40%;width:250px;");
 	    target.appendChild(author);
 
-	    ourcheck = document.createElement("input");
-	    ourcheck.setAttribute("id","your-check");
-	    ourcheck.setAttribute("type","radio");
-	    ourcheck.setAttribute("name", "blog");
-	    ourcheck.setAttribute("alipielements", "alipi");
-	    ourcheck.setAttribute("style","position:absolute;top:85%;left:40%;");
-	    target.appendChild(ourcheck);
-
 	    yourcheck = document.createElement("input");
-	    yourcheck.setAttribute("id","our-check");
+	    yourcheck.setAttribute("id","your-check");
 	    yourcheck.setAttribute("type","radio");
 	    yourcheck.setAttribute("name", "blog");
 	    yourcheck.setAttribute("alipielements", "alipi");
-	    yourcheck.setAttribute("style","position:absolute;top:85%;left:70%;");
+	    yourcheck.setAttribute("style","position:absolute;top:85%;left:40%;");
 	    target.appendChild(yourcheck);
+	    yourcheck.disabled = true; 
+	    
+	    ourcheck = document.createElement("input");
+	    ourcheck.setAttribute("id","our-check");
+	    ourcheck.setAttribute("type","radio");
+	    ourcheck.setAttribute("name", "blog");
+	    ourcheck.setAttribute("alipielements", "alipi");
+	    ourcheck.setAttribute("style","position:absolute;top:85%;left:70%;");
+	    target.appendChild(ourcheck);
 			
 	    yourLabel = document.createElement('label');
 	    yourLabel.textContent = "Your blog";
@@ -1779,7 +1781,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    locButton.setAttribute("title","Set your preferred location");
 	    locButton.value="+";
 	    locButton.setAttribute("type","button");
-	    locButton.setAttribute("style","position:absolute;top:5%;left:90%;width:20px;");
+	    locButton.setAttribute("style","position:absolute;top:6%;right:4%;width:20px;");
 	    locButton.setAttribute("alipielements", "alipi");
 	    //locButton.setAttribute("type","button");
 	    if (window.location.hostname != '127.0.0.1') {
@@ -1791,7 +1793,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
             langButton.setAttribute("title","Set your preferred location");
             langButton.value="+";
             langButton.setAttribute("type","button");
-            langButton.setAttribute("style","position:absolute;top:25%;left:90%;width:20px;");
+            langButton.setAttribute("style","position:absolute;top:26%;right:4%;width:20px;");
             langButton.setAttribute("alipielements", "alipi");
             //locButton.setAttribute("type","button");
 	    if (window.location.hostname != '127.0.0.1') {
@@ -1821,15 +1823,14 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
                 if(document.getElementById('loc-bt').value == '+'){
                		//remove input field and create a combo box
 			$('#loc-select').hide(); 
-			var def_loc = ['Srilanka','su','sa'];			
- 	    		locSel = document.createElement("select");
+		    locSel = document.createElement("select");
 	    		locSel.setAttribute("id","loct-select");
 	    		locSel.setAttribute("type","text");
 	    		locSel.setAttribute("alipielements", "alipi");
 	    		locSel.setAttribute("style","position:absolute;top:5%;left:40%;width:250px;");
-			for(i=0;i<def_loc.length;i++){
+			for(i=0;i<client_json.def_loc.length;i++){
 			    locopt = document.createElement("option");
-			    theText=document.createTextNode(def_loc[i]);
+			    theText=document.createTextNode(client_json.def_loc[i]);
 			    locopt.appendChild(theText);
 			    locSel.appendChild(locopt);
 			}
@@ -1850,15 +1851,14 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
                 if(document.getElementById('lang-bt').value == '+'){
                         //remove input field and create a combo box
                         $('#lang-select').hide();
-                        var def_lang = ['Srilanka','su','sa'];                  
                         langSel= document.createElement("select");
                         langSel.setAttribute("id","langs-select");
                         langSel.setAttribute("type","text");
                         langSel.setAttribute("alipielements", "alipi");
                         langSel.setAttribute("style","position:absolute;top:25%;left:40%;width:250px;");
-                        for(i=0;i<def_lang.length;i++){
+                        for(i=0;i<client_json.def_lang.length;i++){
 			    langopt = document.createElement("option");
-			    theText=document.createTextNode(def_lang[i]);
+			    theText=document.createTextNode(client_json.def_lang[i]);
 			    langopt.appendChild(theText);
 			    langSel.appendChild(langopt);
                         }
@@ -1878,50 +1878,48 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
  
 		
 	    $( "#loc-select" ).autocomplete({
-		    source: function(req, add){
+	    	    source: function(req, add){
 				
-			//pass request to server
-			$.getJSON("http://localhost/getData?", req, function(data) {
-				//create array for response objects
-				var suggestions = [];
+	    		//pass request to server
+	    		$.getJSON("http://y.a11y.in/loc?", req, function(data) {
+	    			//create array for response objects
+	    			var suggestions = [];
 						    
-				//process response
-				$.each(data, function(i, val){
-					//suggestions.push(val.country);
-					for(i=0;i<val.length;i++){
-					    suggestions.push(val[i]+', '+val[i+1]+', '+val[i+2]);
-					    i +=2;
-					}
-				    });
+	    			//process response
+	    			$.each(data, function(i, val){
+	    			    for(i=0;i<val.length;i++){
+	    				   suggestions.push(val[i]);
+	    				}
+	    			    });
 						    
-				//pass array to callback
-				add(suggestions);
-			    });
-		    },
-			});				
+	    			//pass array to callback
+	    			add(suggestions);
+	    		    });
+	    	    },
+	    		});				
 
 	    $( "#lang-select" ).autocomplete({
-		    source: function(req, add){
+	    	    source: function(req, add){
 				
-			//pass request to server
-			$.getJSON("http://localhost/getLang?", req, function(data) {
+	    		//pass request to server
+	    		$.getJSON("http://y.a11y.in/lang?", req, function(data) {
 						    
-				//create array for response objects
-				var suggestions = [];
+	    			//create array for response objects
+	    			var suggestions = [];
 						    
-				//process response
-				$.each(data, function(i, val){
-					//suggestions.push(val.country);
-					for(i=0;i<val.length;i++){
-					    suggestions.push(val[i]);
-					}
-				    });
+	    			//process response
+	    			$.each(data, function(i, val){
+	    				//suggestions.push(val.country);
+	    				for(i=0;i<val.length;i++){
+	    				    suggestions.push(val[i]);
+	    				}
+	    			    });
 						    
-				//pass array to callback
-				add(suggestions);
-			    });
-		    },
-			});
+	    			//pass array to callback
+	    			add(suggestions);
+	    		    });
+	    	    },
+	    		});
 
 				
 
@@ -2265,7 +2263,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 			}
 		    }
 	    }
-	    xmlhttp.open("POST","http://localhost/narration",true);
+	    xmlhttp.open("POST","http://y.a11y.in/narration",true);
 	    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlhttp.send(data);
 	    
@@ -3348,15 +3346,15 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	this.publish = function publish() {
 	    var result;
-	    if(document.getElementById('our-check').checked) 
+	    if(document.getElementById('your-check').checked) 
 		    {
 			localStorage.myContent = buildDataString();
-			window.location.href = "http://localhost/test.html";
+			window.location.href = "http://y.a11y.in/test.html";
 			window.reload();
 		    }
 	    else 
 		{
-		    AJAX.post('http://localhost/test',  buildDataString(), function(result) {
+		    AJAX.post('http://y.a11y.in/test',  buildDataString(), function(result) {
 			    ajaxResultProcessor.processPublishedResponse(result);
 			});
 		}
@@ -3410,7 +3408,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    UTIL.forEach(history, function(index, command) {
 		    buffer.append('###'); //separates the commands
 		    buffer.append('about=');  //url=about    //removed '&' on purpose
-		    buffer.append(window.location.search.split('=')[1]);
+		    buffer.append(window.location.href);
 		    buffer.append('&lang=');//lang
 		    if (langName.value != "" ) 
 			buffer.append(encodeURIComponent(langName.value));
