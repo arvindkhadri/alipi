@@ -1,4 +1,4 @@
-function page_edit_client( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) 
+function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) 
 {
 
     var console, PopupControl, M4ImageElement,locName='',langName = '',styleName='',authorValue;
