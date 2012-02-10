@@ -7,9 +7,10 @@ import pymongo
 from bson import Code
 import urllib2
 import StringIO
+import gdata.gauth
+import gdata.blogger.client
 from flask import g
 from flask import redirect
-import urllib
 from urllib import quote_plus
 from urllib import unquote_plus
 app = Flask(__name__)
@@ -19,7 +20,7 @@ collection = db['post']
 @app.route('/')
 def start_page() :
     d = {}
-    d['foruri'] = urllib.unquote(request.args['foruri'])
+    d['foruri'] = request.args['foruri']
     myhandler1 = urllib2.Request(d['foruri'],headers={'User-Agent':"Mozilla/5.0 (X11; U; Linux i686) Gecko/20071127 Firefox/2.0.0.11"}) #A fix to send user-agents, so that sites render properly.
     try:
         a = urllib2.urlopen(myhandler1)
@@ -46,7 +47,7 @@ def start_page() :
         root.body.append(script_edit)
         script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
         script_test.set("type", "text/javascript")
-        script_edit.set("src", "http://127.0.0.1/server/wsgi/page_edit.js")
+        script_edit.set("src", "http://dev.a11y.in/alipi/wsgi/page_edit.js")
         script_edit.set("type","text/javascript")
         
         script_jq_mini = root.makeelement('script')
@@ -60,6 +61,14 @@ def start_page() :
         style.set("type", "text/css")
         style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
 
+        # if collection.find_one({"about" : request.args['foruri']}) is not None:
+        #     overlay1 = root.makeelement('div')
+        #     root.body.append(overlay1)
+        #     overlay1.set("id", "overlay1")
+
+        #     opt = root.makeelement('option')
+        #     opt.text = "Choose a narration"
+
         script_jq_cust = root.makeelement('script')
         root.body.append(script_jq_cust)
         script_jq_cust.set("src", "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js")
@@ -71,36 +80,11 @@ def start_page() :
         style_cust.set("href", "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css")
         root.body.append(style_cust)
 
-        if collection.find_one({"about" : request.args['foruri']}) is not None:
-            overlay1 = root.makeelement('div')
-            root.body.append(overlay1)
-            overlay1.set("id", "overlay1")
-
-            opt = root.makeelement('option')
-            opt.text = "Choose a narration"
-
-            rpl = root.makeelement('select')
-            overlay1.append(rpl)
-            rpl.append(opt)
-            rpl.set("id", "menu-button")
-            rpl.set("onclick", "a11ypi.ajax();")
-        
-        overlay2 = root.makeelement('div')
-        root.body.append(overlay2)
-        overlay2.set("id", "overlay2")
-        
-        btn = root.makeelement('input')
-        overlay2.append(btn)
-        btn.set("id", "edit-button")
-        btn.set("type", "submit")
-        btn.set("onClick", "a11ypi.testContext();page_edit('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');")
-        btn.set("value", "EDIT")
+        root.body.set("onload","a11ypi.loadOverlay();")
         return lxml.html.tostring(root)
 
     elif request.args.has_key('lang') == True and request.args.has_key('interactive') == True and request.args.has_key('blog') == False:
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
-        script_jqui = root.makeelement('script')
-        root.body.append(script_jqui)
         script_test = root.makeelement('script')
         script_edit = root.makeelement('script')
         root.body.append(script_test)
@@ -108,15 +92,18 @@ def start_page() :
         
         script_jq_mini = root.makeelement('script')
         root.body.append(script_jq_mini)
-        script_jq_mini.set("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
+        script_jq_mini.set("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js")
         script_jq_mini.set("type", "text/javascript")
 
-        script_test.set("src", "http://y.a11y.in/alipi/ui.js")
+        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
         script_test.set("type", "text/javascript")
         script_edit.set("src", "http://dev.a11y.in/alipi/wsgi/page_edit.js")
         script_edit.set("type","text/javascript")
+        script_jqui = root.makeelement('script')
         script_jqui.set("type","text/javascript")
         script_jqui.set("src","https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js")
+        root.body.append(script_jqui)
+
         
         ui_css = root.makeelement("link")
         ui_css.set("rel", "stylesheet");
@@ -135,17 +122,6 @@ def start_page() :
         see_orig.set("onClick", "a11ypi.showOriginal();")
         see_orig.set("value", "See original page")
         see_orig.set("style","position:fixed;left:5px;top:6px;")
-
-        script_jq_cust = root.makeelement('script')
-        root.body.append(script_jq_cust)
-        script_jq_cust.set("src", "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js")
-        script_jq_cust.set("type", "text/javascript")
-
-        style_cust = root.makeelement('link')
-        style_cust.set("rel","stylesheet")
-        style_cust.set("type", "text/css")
-        style_cust.set("href", "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css")
-        root.body.append(style_cust)
 
         tweet = root.makeelement("a")
         tweet.set("id", "tweet")
@@ -170,11 +146,6 @@ def start_page() :
         fblike.set("data-show-faces", "true")
         fblike.set("data-font", "arial")
         ren_overlay.append(fblike)
-
-        script_jq_mini = root.makeelement('script')
-        root.body.append(script_jq_mini)
-        script_jq_mini.set("src", "http://code.jquery.com/jquery-1.7.min.js")
-        script_jq_mini.set("type", "text/javascript")
         
         style = root.makeelement('link')
         root.body.append(style)
@@ -182,23 +153,23 @@ def start_page() :
         style.set("type", "text/css")
         style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
         
-        overlay2 = root.makeelement('div')
-        root.body.append(overlay2)
-        overlay2.set("id", "overlay2")
+        # overlay2 = root.makeelement('div')
+        # root.body.append(overlay2)
+        # overlay2.set("id", "overlay2")
         
-        btn = root.makeelement('input')
-        overlay2.append(btn)
-        btn.set("id", "edit-button")
-        btn.set("type", "submit")
-        btn.set("onClick", "a11ypi.testContext();page_edit('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');")
-        btn.set("value", "EDIT")
-        root.body.set("onload","a11ypi.ren();a11ypi.tweet(); a11ypi.facebook();")
+        # btn = root.makeelement('input')
+        # overlay2.append(btn)
+        # btn.set("id", "edit-button")
+        # btn.set("type", "submit")
+        # btn.set("onClick", "a11ypi.testContext();page_edit('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');")
+        # btn.set("value", "EDIT")
+        root.body.set("onload","a11ypi.ren();a11ypi.tweet(); a11ypi.facebook();a11ypi.loadOverlay();")
         return lxml.html.tostring(root)
         
     elif request.args.has_key('lang') == True and request.args.has_key('blog') == False:
         script_jq_mini = root.makeelement('script')
         root.body.append(script_jq_mini)
-        script_jq_mini.set("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
+        script_jq_mini.set("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js")
         script_jq_mini.set("type", "text/javascript")
         d['lang'] = request.args['lang']
         script_test = root.makeelement('script')
@@ -211,16 +182,25 @@ def start_page() :
 
     elif request.args.has_key('interactive') == True and request.args.has_key('blog') == True and request.args.has_key('lang') == True:
         script_jqui = root.makeelement('script')
-        root.body.append(script_jqui)
+
         script_test = root.makeelement('script')
-        root.body.append(script_test)
         script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
         script_test.set("type", "text/javascript")
+        root.body.append(script_test)
+        
+        script_jq_mini = root.makeelement('script')
+        script_jq_mini.set("src", "http://code.jquery.com/jquery-1.7.min.js")
+        script_jq_mini.set("type", "text/javascript")
+        root.body.append(script_jq_mini)
+
+        script_edit = root.makeelement('script')
         script_edit.set("src", "http://dev.a11y.in/alipi/wsgi/page_edit.js")
         script_edit.set("type","text/javascript")
+        root.body.append(script_edit)
+        
         script_jqui.set("type","text/javascript")
         script_jqui.set("src","https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js")
-        
+        root.body.append(script_jqui)        
         ui_css = root.makeelement("link")
         ui_css.set("rel", "stylesheet");
         ui_css.set("type", "text/css");
@@ -263,11 +243,6 @@ def start_page() :
         fblike.set("data-font", "arial")
         ren_overlay.append(fblike)
 
-        script_jq_mini = root.makeelement('script')
-        root.body.append(script_jq_mini)
-        script_jq_mini.set("src", "http://code.jquery.com/jquery-1.7.min.js")
-        #script_jq_mini.set("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
-        script_jq_mini.set("type", "text/javascript")
         
         style = root.makeelement('link')
         root.body.append(style)
@@ -285,7 +260,6 @@ def start_page() :
         btn.set("type", "submit")
         btn.set("onClick", "a11ypi.testContext();page_edit('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');")
         btn.set("value", "EDIT")
-        root.body.set("onload","a11ypi.ren();a11ypi.tweet(); a11ypi.facebook();")
 
         script_test = root.makeelement('script')
         root.body.append(script_test)
@@ -303,7 +277,7 @@ def start_page() :
         
         script_jq_mini = root.makeelement('script')
         root.body.append(script_jq_mini)
-        script_jq_mini.set("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js")
+        script_jq_mini.set("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js")
         script_jq_mini.set("type", "text/javascript")
 
         script_jq_cust = root.makeelement('script')
@@ -341,15 +315,35 @@ def start_page() :
 
 @app.route('/directory')
 def show_directory():
-    ren = []
-    for i in collection.find():
-        if i.has_key('about'):
-            ren.append("http://dev.a11y.in/web?foruri="+quote_plus(i['about'])+'&lang='+i['lang'])
-    return render_template('directory.html', name=ren)
+    # for i in collection.find():
+    #     if i.has_key('about'):
+    #         if i['about'] != 'undefined' and i['about'] != '':
+    #             ren.append("http://y.a11y.in/web?foruri="+quote_plus(i['about'])+'&lang='+i['lang'])
+    query = collection.group(
+        key = Code('function(doc){return {"about" : doc.about,"lang":doc.lang}}'),
+        condition={"about":{'$regex':'^[/\S/]'}},
+        initial={'na': []},
+        reduce=Code('function(doc,out){out.na.push(doc.blog)}')
+        )
+    return render_template('directory.html', name=query, mymodule = quote_plus, myset=set, mylist= list)
 
-@app.route('/directory')
-def show_dir():
-    return render_template('directory.html')
+@app.route('/getLang')
+def get_lang():
+    collection = db['alipi_lang']
+    term = '^{0}.*'.format(request.args['term'][0])
+    query = collection.group(
+        key = Code('function(doc){return {"name" : doc.name}}'),
+        condition={"name":{'$regex':term, '$options':'i'}},
+        initial={'na': []},
+        reduce=Code('function(doc,out){out.na.push(doc);}')
+        )
+    string = {'name':[]}
+    if len(query) != 0:
+        for i in query:
+            for x in i['na']:
+                if x != '_id':
+                    string['name'].append((x['name']))
+    return jsonify(string)
 
 import logging,os
 from logging import FileHandler
