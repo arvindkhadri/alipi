@@ -24,7 +24,7 @@ def application(environ, start_response):
     else:
         #connect to the DB
         connection = Connection('localhost',27017)
-        db = connection['dev_alipi']
+        db = connection['alipi']
         collection = db['post']
         
         d={}
@@ -57,7 +57,7 @@ def application(environ, start_response):
             initial={'narration': []},
             reduce=Code('function(doc,out){out.narration.push(doc);}') 
             )
-
+        connection.disconnect()
         try:
             for i in audio_query:
                 query.append(i)
@@ -68,6 +68,7 @@ def application(environ, start_response):
                 query.append(i)
         except IndexError:
             pass
+
         
         string=''
         if len(query)==0:

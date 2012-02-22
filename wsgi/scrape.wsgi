@@ -16,7 +16,7 @@ def application(environ, start_response):
         d[unquote_plus(parameter_pair[0])]  = unquote_plus(parameter_pair[1])
     url = d['url']
     connection = pymongo.Connection('localhost', 27017)
-    db = connection['alipi']
+    db = connection['dev_alipi']
     collection = db['post']
     root = lxml.html.parse(url).getroot()
     elements = root.xpath('//@alipius/..')
@@ -49,5 +49,6 @@ def application(environ, start_response):
             store_list.append(temp)
     for z in store_list:
         collection.insert(z)
+        connection.disconnect()
         print >> environ['wsgi.errors'], z
     return ['ok']

@@ -68,10 +68,11 @@ def application(environ, start_response):
                 query.append(i)
         except IndexError:
             pass
-        
+
         string=''
         if len(query)==0:
             print >> environ['wsgi.errors'], 'empty'
+            connection.disconnect()
             return 'empty'
         else:
             for key in query:
@@ -90,16 +91,19 @@ def application(environ, start_response):
                                     else:
                                         string+="&"+str(key)+"::"+ post[key]
                                 except TypeError:
+                                    connection.disconnect()
                                     print >> environ['wsgi.errors'], key
                             else:
                                 try:
                                     string+="&"+str(key)+"::"+ str(post[key])
                                 except TypeError:
+                                    connection.disconnect()
                                     print >> environ['wsgi.errors'], key
                 except UnicodeEncodeError:
+                    connection.disconnect()
                     print >> environ['wsgi.errors'], key
                     print >> environ['wsgi.errors'], 'Error Encoding request string'
                     return 'empty'
-                    
+        connection.disconnect()
         return string
     

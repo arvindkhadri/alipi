@@ -25,11 +25,11 @@ def application(environ, start_response):
         #connect to the DB
         if d.has_key('option') == False:
             connection = Connection('localhost',27017)
-            db = connection['alipi']
+            db = connection['dev_alipi']
             collection = db['post']
         #get the ren languages for the received url
             langForUrl = collection.group(
-                key = Code('function(doc){return {"about" : doc.url}}'),
+                key = Code('function(doc){return {"about" : doc.about}}'),
                 condition={"about" : d['url']},
                 initial={'lang': []},
                 reduce=Code('function(doc, out){if (out.lang.indexOf(doc.lang) == -1) out.lang.push(doc.lang)}') #here xpath for test
@@ -37,16 +37,18 @@ def application(environ, start_response):
         
         #send the response
             if (langForUrl):
+                # print >> environ['wsgi.errors'], d['url']
+                # print >> environ['wsgi.errors'], json.dumps(langForUrl[0]['lang'])
                 return json.dumps(langForUrl[0]['lang'])
             else:
                 return "empty"
         else:
             connection = Connection('localhost',27017)
-            db = connection['alipi']
+            db = connection['dev_alipi']
             collection = db['post']
         #get the ren languages for the received url
             langForUrl = collection.group(
-                key = Code('function(doc){return {"about" : doc.url}}'),
+                key = Code('function(doc){return {"about" : doc.about}}'),
                 condition={"about" : d['url'],"blog":{'$regex':'/'+d['option']+'.*/'}},
                 initial={'lang': []},
                 reduce=Code('function(doc, out){if (out.lang.indexOf(doc.lang) == -1) out.lang.push(doc.lang)}') #here xpath for test
@@ -54,7 +56,10 @@ def application(environ, start_response):
         
         #send the response
             if (langForUrl):
+                connection.disconnect()
                 return json.dumps(langForUrl[0]['lang'])
+            
             else:
+                connection.disconnect()
                 return "empty"
 

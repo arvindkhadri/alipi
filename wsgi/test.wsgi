@@ -25,7 +25,7 @@ def application(environ, start_response):
         #connect to DB
         MONGODB_SERVER = 'localhost'
         MONGODB_PORT = 27017
-        MONGODB_DB = 'alipi'
+        MONGODB_DB = 'dev_alipi'
         MONGODB_COLLECTION = 'post'
         #MONGODB_UNIQ_KEY = 'url'
         
@@ -93,7 +93,7 @@ def application(environ, start_response):
             j+=1
             
         #commands.getoutput(cmd)
-        
+        connection.disconnect()
         return 'ok'
         #return ["Blog successfuly posted!!"]
 

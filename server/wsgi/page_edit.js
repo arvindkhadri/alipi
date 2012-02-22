@@ -1120,7 +1120,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 			    path = "/" + xname + path;
 			}
 		}
-	    console.log(path);
 	    return path;
 	};
 
@@ -1176,7 +1175,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 			path = DOM.makePath(currentNode.parentNode);
 		    }
 
-    		console.log(path);
+    	   
 		return path;
 	    };
 
@@ -1712,7 +1711,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    locName.setAttribute("style","position:absolute;top:5%;left:40%;width:250px;");
 	    target.appendChild(locName);
 
-
 	    langLabel= document.createElement("label");
 	    langLabel.innerHTML = 'Select Language';
 	    langLabel.setAttribute("style", "position:absolute;top:25%;left:3%;color:#000;");
@@ -1749,22 +1747,21 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    author.setAttribute("style","position:absolute;top:65%;left:40%;width:250px;");
 	    target.appendChild(author);
 
-	    yourcheck = document.createElement("input");
-	    yourcheck.setAttribute("id","your-check");
-	    yourcheck.setAttribute("type","radio");
-	    yourcheck.setAttribute("name", "blog");
-	    yourcheck.setAttribute("alipielements", "alipi");
-	    yourcheck.setAttribute("style","position:absolute;top:85%;left:40%;");
-	    target.appendChild(yourcheck);
-	    yourcheck.disabled = true; 
-	    
 	    ourcheck = document.createElement("input");
 	    ourcheck.setAttribute("id","our-check");
 	    ourcheck.setAttribute("type","radio");
 	    ourcheck.setAttribute("name", "blog");
 	    ourcheck.setAttribute("alipielements", "alipi");
-	    ourcheck.setAttribute("style","position:absolute;top:85%;left:70%;");
+	    ourcheck.setAttribute("style","position:absolute;top:85%;left:40%;");
 	    target.appendChild(ourcheck);
+
+	    yourcheck = document.createElement("input");
+	    yourcheck.setAttribute("id","your-check");
+	    yourcheck.setAttribute("type","radio");
+	    yourcheck.setAttribute("name", "blog");
+	    yourcheck.setAttribute("alipielements", "alipi");
+	    yourcheck.setAttribute("style","position:absolute;top:85%;left:70%;");
+	    target.appendChild(yourcheck);
 			
 	    yourLabel = document.createElement('label');
 	    yourLabel.textContent = "Your blog";
@@ -1775,153 +1772,73 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    ourLabel.textContent = "Our blog";
 	    ourLabel.setAttribute("style","position:absolute;top:85%;left:75%;color:#000;");
 	    target.appendChild(ourLabel);
-
-	    locButton = document.createElement("input");
-	    locButton.setAttribute("id","loc-bt");
-	    locButton.setAttribute("title","Set your preferred location");
-	    locButton.value="+";
-	    locButton.setAttribute("type","button");
-	    locButton.setAttribute("style","position:absolute;top:6%;right:4%;width:20px;");
-	    locButton.setAttribute("alipielements", "alipi");
-	    //locButton.setAttribute("type","button");
-	    if (window.location.hostname != '127.0.0.1') {
-		target.appendChild(locButton);
-	    }
-	    
-	    langButton = document.createElement("input");
-            langButton.setAttribute("id","lang-bt");
-            langButton.setAttribute("title","Set your preferred location");
-            langButton.value="+";
-            langButton.setAttribute("type","button");
-            langButton.setAttribute("style","position:absolute;top:26%;right:4%;width:20px;");
-            langButton.setAttribute("alipielements", "alipi");
-            //locButton.setAttribute("type","button");
-	    if (window.location.hostname != '127.0.0.1') {
-		target.appendChild(langButton);
-	    }
 	}
 
 	this.activate = function activate() {
 	    $(function() {
-		    $( "#targetoverlay" ).dialog({
-			    height:500,
-				width:500,
-				modal: true,
-				buttons: {
-				OK: function() {
-				    overlayBar = new OverlayBar(pageEditor);
-				    overlayBar.blogpost();
-				}
-			    },
-			    close: function() {
-				$( "#targetoverlay" ).remove();
-			    },
-			});
+		$( "#targetoverlay" ).dialog({
+		    height:500,
+		    width:500,
+		    modal: true,
+		    buttons: {
+			OK: function() {
+			    overlayBar = new OverlayBar(pageEditor);
+			    overlayBar.blogpost();
+			} 
+		    },
+		    close: function() {
+			$( "#targetoverlay" ).hide();
+		    }
 		});
+	    });
 	    
-	    $("#loc-bt").click(function () { 
-                if(document.getElementById('loc-bt').value == '+'){
-               		//remove input field and create a combo box
-			$('#loc-select').hide(); 
-		    locSel = document.createElement("select");
-	    		locSel.setAttribute("id","loct-select");
-	    		locSel.setAttribute("type","text");
-	    		locSel.setAttribute("alipielements", "alipi");
-	    		locSel.setAttribute("style","position:absolute;top:5%;left:40%;width:250px;");
-			for(i=0;i<client_json.def_loc.length;i++){
-			    locopt = document.createElement("option");
-			    theText=document.createTextNode(client_json.def_loc[i]);
-			    locopt.appendChild(theText);
-			    locSel.appendChild(locopt);
-			}
-	    		target.appendChild(locSel);
-                	locButton.value = '-';
-		}
-		else if(document.getElementById('loc-bt').value == '-'){
-		    //show the input field and remove combo box
-		    target.removeChild(locSel);
-		    $('#loc-select').show(); 
-		    locButton.value = '+';
- 		}	
-		
-		
-    	    });
-	   
-	     $("#lang-bt").click(function () {
-                if(document.getElementById('lang-bt').value == '+'){
-                        //remove input field and create a combo box
-                        $('#lang-select').hide();
-                        langSel= document.createElement("select");
-                        langSel.setAttribute("id","langs-select");
-                        langSel.setAttribute("type","text");
-                        langSel.setAttribute("alipielements", "alipi");
-                        langSel.setAttribute("style","position:absolute;top:25%;left:40%;width:250px;");
-                        for(i=0;i<client_json.def_lang.length;i++){
-			    langopt = document.createElement("option");
-			    theText=document.createTextNode(client_json.def_lang[i]);
-			    langopt.appendChild(theText);
-			    langSel.appendChild(langopt);
-                        }
-                        target.appendChild(langSel);
-			
-                        langButton.value = '-';
-                }
-                else if(document.getElementById('lang-bt').value == '-'){
-		    //show the input field and remove combo box
-		    $('#lang-select').show();
-		    target.removeChild(langSel);
-		    langButton.value = '+';
-                }
-		
-
-            });
- 
+	    
 		
 	    $( "#loc-select" ).autocomplete({
-	    	    source: function(req, add){
-				
-	    		//pass request to server
-	    		$.getJSON("http://y.a11y.in/loc?", req, function(data) {
-	    			//create array for response objects
-	    			var suggestions = [];
+		source: function(req, add){
+		    
+		    //pass request to server
+		    $.getJSON("http://y.a11y.in/loc?", req, function(data) {
+			
+			//create array for response objects
+			var suggestions = [];
+			
+			//process response
+			$.each(data, function(i, val){
+			    //suggestions.push(val.country);
+			    for(i=0;i<val.length;i++){
+				suggestions.push(val[i]);
+			    }
+				    });
 						    
-	    			//process response
-	    			$.each(data, function(i, val){
-	    			    for(i=0;i<val.length;i++){
-	    				   suggestions.push(val[i]);
-	    				}
-	    			    });
-						    
-	    			//pass array to callback
-	    			add(suggestions);
-	    		    });
-	    	    },
-	    		});				
+				//pass array to callback
+				add(suggestions);
+			    });
+		    },
+			});				
 
 	    $( "#lang-select" ).autocomplete({
-	    	    source: function(req, add){
-				
-	    		//pass request to server
-	    		$.getJSON("http://y.a11y.in/lang?", req, function(data) {
+		source: function(req, add){
+		    
+		    //pass request to server
+		    $.getJSON("http://y.a11y.in/lang?", req, function(data) {
+			
+			//create array for response objects
+			var suggestions = [];
+			
+			//process response
+			$.each(data, function(i, val){
+			    //suggestions.push(val.country);
+			    for(i=0;i<val.length;i++){
+				suggestions.push(val[i]);
+					}
+				    });
 						    
-	    			//create array for response objects
-	    			var suggestions = [];
-						    
-	    			//process response
-	    			$.each(data, function(i, val){
-	    				//suggestions.push(val.country);
-	    				for(i=0;i<val.length;i++){
-	    				    suggestions.push(val[i]);
-	    				}
-	    			    });
-						    
-	    			//pass array to callback
-	    			add(suggestions);
-	    		    });
-	    	    },
-	    		});
-
-				
+				//pass array to callback
+				add(suggestions);
+			    });
+		    },
+			});				
 
 
 	}
@@ -1967,43 +1884,39 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 			
 	this.activate = function activate() {
 	    $(function() {
-		    $( "#editoroverlay" ).dialog({
-			    width:1000,
-			    height:550,
-			    modal: true,
-			    buttons: {
-				"+": function() {
-				    if(document.getElementById('editor').style.fontSize == '30px'){
-					// passthrough
-				    } else {
-					document.getElementById('editor').style.fontSize = parseFloat(document.getElementById('editor').style.fontSize) + 1 + 'px';
-					document.getElementById('reference').style.fontSize = parseFloat(document.getElementById('reference').style.fontSize) + 1 + 'px';
-				    }
-				},
-				"-": function() {
-				    if(document.getElementById('editor').style.fontSize == '10px'){
-				    } else {
-					document.getElementById('editor').style.fontSize = parseFloat(document.getElementById('editor').style.fontSize) - 1 + 'px';
-					document.getElementById('reference').style.fontSize = parseFloat(document.getElementById('reference').style.fontSize) - 1 + 'px';
-				    }
-				},
-				OK: function() {
-				    textElement = new TextElementPopup(pageEditor, true);
-				    if(editBox.value == refBox.value){
-					pageEditor.showMessage("Text unchanged");
-					} else {
-				    textElement.textButtonOnClick();
-					}
-				    $( "#editoroverlay" ).remove();
-				}				    
-			    },
-			    close: function() {
-				document.getElementById("alipiSelectedElement").removeAttribute("id", "alipiSelectedElement");
-				$( "#editoroverlay" ).remove();
+		$( "#editoroverlay" ).dialog({
+		    width:1000,
+		    height:550,
+		    modal: true,
+		    buttons: {
+			"+": function() {
+			    if(document.getElementById('editor').style.fontSize == '30px'){
+				// passthrough
+			    } else {
+				document.getElementById('editor').style.fontSize = parseFloat(document.getElementById('editor').style.fontSize) + 1 + 'px';
+				document.getElementById('reference').style.fontSize = parseFloat(document.getElementById('reference').style.fontSize) + 1 + 'px';
 			    }
-			});
+			},
+			"-": function() {
+			    if(document.getElementById('editor').style.fontSize == '10px'){
+			    } else {
+				document.getElementById('editor').style.fontSize = parseFloat(document.getElementById('editor').style.fontSize) - 1 + 'px';
+				document.getElementById('reference').style.fontSize = parseFloat(document.getElementById('reference').style.fontSize) - 1 + 'px';
+			    }
+			},
+			OK: function() {
+			    textElement = new TextElementPopup(pageEditor, true);
+			    textElement.textButtonOnClick();
+			    $( "#editoroverlay" ).remove();
+			}				    
+		    },
+		    close: function() {
+			document.getElementById("alipiSelectedElement").removeAttribute("id", "alipiSelectedElement");
+			$( "#editoroverlay" ).remove();
+		    }
 		});
-
+	    });
+	    
 	    noteLabel= document.createElement("label");
 	    noteLabel.setAttribute("id", "note-label");
 	    noteLabel.innerHTML = ' Magnify or Demagnify  ';
@@ -2030,7 +1943,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    help = document.createElement('div');
 	    help.setAttribute("id", "helpwindow");
 	    help.setAttribute("alipielements", "alipi");
-	    help.setAttribute("style", "color:#000;line-height:16px;");
+	    help.setAttribute("style", "color:#000;line-height:16px;top:50px;");
 	    document.body.appendChild(help);
 
 	    txtLabel = document.createElement("label");
@@ -2058,15 +1971,15 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	
 	this.activate = function activate() {
 	    $(function() {
-		    $( "#helpwindow" ).dialog({
-			    width:800,
-			    height:550,
-			    modal: true,
-			    close: function() {
-				$("#helpwindow").remove();
-			    }
-			});
+		$( "#helpwindow" ).dialog({
+		    width:800,
+		    height:550,
+		    modal: true,
+		    close: function() {
+			$("#helpwindow").remove();
+		    }
 		});
+	    });
 	};
 
     } ;
@@ -2263,7 +2176,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 			}
 		    }
 	    }
-	    xmlhttp.open("POST","http://y.a11y.in/narration",true);
+	    xmlhttp.open("POST","http://dev.a11y.in/narration",true);
 	    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlhttp.send(data);
 	    
@@ -2280,7 +2193,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
     //******************************** Shalini - Changed AudioupdatePopupAction from ImageUpdatePopupAction *****************
 
     AudioUpdateByUrl = function AudioUpdateByUrl(pageEditor) {
-	var self = this, popupDiv, audioUrlInput, randomInput, audioUrlForm, selectedElement, targetName,audioElement;
+	//	var self = this, popupDiv, audioUrlInput, randomInput, audioUrlForm, selectedElement, targetName,audioElement;
 	// var addUrlLabel = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('width: 100%; display: block; float: left; font-size: 10px;position:relative; margin-top: 5px;margin-left: 0px; margin-right: 5px; margin-bottom: 5px; background: transparent; color: #747474; text-shadow: 0 1px 0 #FFFFFF; text-align: left;').values());
 	// addUrlLabel.innerHTML = 'Add URL';
 
@@ -2314,19 +2227,14 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 				buttons: {
 				OK: function() {
 				    var url = urlInput.value;
-				    n = url.length;
-				    if(url.substring(n-4) == '.ogg'){
-				    	updateAudio(url);
-					} else {
-					alert("Invalid input! please provide .ogg audio file");
-					}
+				    updateAudio(url);
 				    document.getElementById('alipiSelectedElement').removeAttribute('id', 'alipiSelectedElement');
-				    $("#audiodiv").remove();
-				} 
-			    }
-			    
-			});
+			    $("#audiodiv").remove();
+			} 
+		    }
+		    
 		});
+	    });
 	};
 	
 	
@@ -2360,14 +2268,14 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    var command;
 	    selectedElement = document.getElementById("alipiSelectedElement");
 	    // audioElement = urlInput;
-	    //if (audioElement) {
-	     //	command = {
-	     //	    command : 'AUDIO_UPDATE',
-	     //	    element : audioElement,
-	     //	    elementId : audioElement.getAttribute('m4pageeditid'),
-	     //	    data : src,
-	    //	    previousData : originalHref
-	     //	};
+	    // if (audioElement) {
+	    // 	command = {
+	    // 	    command : 'AUDIO_UPDATE',
+	    // 	    element : audioElement,
+	    // 	    elementId : audioElement.getAttribute('m4pageeditid'),
+	    // 	    data : src,
+	    // 	    //		    previousData : originalHref
+	    // 	};
 	    // } else {
 		command = {
 		    command : 'AUDIO_CREATE',
@@ -2839,8 +2747,8 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 
 
-	var doneImage = 'http://dev.a11y.in/alipi/images/done.png';
-	doneButton = createActionButton(doneImage, 'Editor', 'border-right: none;' + leftBorderStyle);
+	var doneImage = 'http://y.a11y.in/alipi/images/done.png';
+	doneButton = createActionButton(doneImage, 'Edit ', 'border-right: none;' + leftBorderStyle);
 	doneButton.onclick = function doneButtonOnClick(elements) {
 	    editWindow = new EditWindow(pageEditor);
 	    document.getElementById('reference').value = selectedElement.textContent;
@@ -2946,6 +2854,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
     }
 
 
+
     /**
      * Overlay bar which can function in either visual editor or html editor mode.
      */
@@ -2958,7 +2867,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	overlayDiv = document.createElement("div");
 	overlayDiv.setAttribute("id", "overlay-div");
 	overlayDiv.setAttribute("alipielements", "alipi");
-	overlayDiv.setAttribute("style", "position:fixed; z-index:1001; left:0; top:0; min-width:800px; width:100%; height:30px; background-color:rgba(0, 0, 0, 0.5);");
+	overlayDiv.setAttribute("style", "overflow-x:visible; position:fixed; z-index:2147483645; left:0; top:0; width:100%; height:30px; background-color:rgba(0, 0, 0, 0.5);");
 	document.body.appendChild(overlayDiv);
 
 
@@ -2966,7 +2875,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	image.setAttribute("id", "close-image");
 	image.setAttribute("alipielements", "alipi");
 	image.setAttribute("src", "http://dev.a11y.in/alipi/images/close_button.png");
-	image.setAttribute("style", "position:fixed;left:1px;width:25px;height:28px;");
+	image.setAttribute("style", "position:relative;width:25px;height:28px;");
 	overlayDiv.appendChild(image);
 	image.onclick=function(){
 	    answer = confirm("Do you really want to exit the editor?")
@@ -2980,7 +2889,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	messageDiv = document.createElement("div");
 	messageDiv.setAttribute("id", "message-div");
 	messageDiv.setAttribute("alipielements", "alipi");
-	messageDiv.setAttribute("style", "position:fixed;left:10%;top:0;font-size:23px;font-weight:bold;color:#ffe;");
+	messageDiv.setAttribute("style", "position:relative;left:150px;bottom:26px;font-size:23px;font-weight:bold;color:#ffe;");
 	overlayDiv.appendChild(messageDiv);
 
 	helpLink = document.createElement("input");
@@ -2988,7 +2897,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	helpLink.setAttribute("alipielements", "alipi");
 	helpLink.setAttribute("type", "submit");
 	helpLink.setAttribute("Value", "Help");
-	helpLink.setAttribute("style", "position:fixed;top:0;right:35%;font-size:18px;font-weight:bold;width:100px;height:30px;");
+	helpLink.setAttribute("style", "position:relative;top:-55px;left:750px;font-size:18px;font-weight:bold;width:100px;height:30px;");
 	overlayDiv.appendChild(helpLink);
 	helpLink.onclick = function helpLinkOnClick() {
 	    helpWindow = new HelpWindow(pageEditor);
@@ -3003,7 +2912,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	undoButton.setAttribute("alipielements", "alipi");
 	undoButton.setAttribute("type", "submit");
 	undoButton.setAttribute("Value", "Undo");
-	undoButton.setAttribute("style", "position:fixed;top:0;right:20%;font-size:18px;font-weight:bold;width:100px;height:30px;");
+	undoButton.setAttribute("style", "position:relative;top:-55px;left:825px;font-size:18px;font-weight:bold;width:100px;height:30px;");
 	overlayDiv.appendChild(undoButton);
 	undoButton.onclick = function undoButtonOnClick() {
 	    pageEditor.commandUndo();
@@ -3016,37 +2925,36 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	publishButton.setAttribute("alipielements", "alipi");
 	publishButton.setAttribute("type", "submit");
 	publishButton.setAttribute("Value", "Publish");
-	publishButton.setAttribute("style", "position:fixed;top:0;right:5%;font-size:18px;font-weight:bold;width:100px;height:30px;");
+	publishButton.setAttribute("style", "position:relative;top:-55px;left:900px;font-size:18px;font-weight:bold;width:100px;height:30px;");
 	overlayDiv.appendChild(publishButton);
-	//	var dialog = 0;
+	var dialog = 0;
 	publishButton.onclick = function publishButtonOnClick() {
-	    if (pageEditor.hasChangesPending()) {
+	    if (pageEditor.hasChangesPending() /* && (pageEditor.formUncomplete() ==false) */ ) {
 		targetWindow = new TargetWindow(pageEditor);
-		//	if (dialog == 0) {
+		if (dialog == 0) {
 		    targetWindow.createDialogBox();
-		//   dialog = 1;
-		//	}
+		    dialog = 1;
+		}
 		targetWindow.activate();
 	    } else {
 		pageEditor.showMessage("Nothing to post");
 	    }
 	};
-
-		
 	
+    
 	this.blogpost = function blogpost() {
-	    if((locName.value == "" && document.getElementById("loct-select") === null) || (langName.value == "" && document.getElementById("langs-select") === null) || styleSelect.value == "" || author.value == "" || (ourcheck.checked == false && yourcheck.checked == false)) {
-		    alert("Please give all the details, it will be used further");
-		}
-	    else {
-		pageEditor.commandPublish();
-		pageEditor.showMessage("... Please wait, your blog is being posted");
-		$('#targetoverlay').remove();
+	    if (locName.value == "" || langName.value == "" || styleSelect.value == "" || author.value == "" || (ourcheck.checked == false && yourcheck.checked == false)) {
+		alert("Please give all the details, it will be used further");
+	    } else {
+	    pageEditor.commandPublish();
+	    pageEditor.showMessage("... Please wait, your blog is being posted");
+	    $('#targetoverlay').remove();
 	    }
 	};
 	// End of okButton function
-	
+
 	this.show = function show(activate) {
+	    //	    overlayDiv.style.display = 'block';
 	    var disabled = true;
 	    var opacity = '0.4';
 	    if (activate) {
@@ -3065,7 +2973,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	this.message = function message(value) {
 	    messageDiv.innerHTML = value;
 	};
-
 
 
 	function PublishOptions() {
@@ -3151,10 +3058,10 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    switch (event.keyCode) {
 		    case 27:
 		    // ESC
-		    // event.preventDefault();
-		    // event.stopPropagation();
-		    // pageEditor.close();
-		    // return false;
+//		    event.preventDefault();
+//		    event.stopPropagation();
+//		    pageEditor.close();
+//		    return false;
 		    // case 77:
 		    //   // "m"
 		    //   if (pageEditor.hasFocus()) {
@@ -3186,9 +3093,13 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	this.hasChangesPending = function hasChangesPending() {
 	    return history.length > 0;
 	};
+	this.formUncomplete = function formUnomplete(){
+	    return (locName == '' &&  langName=='' && styleName == '' );
+	};
 	
 	this.apply = function apply(command) {
 	    var poofPosition, poofDiv;
+
 	    switch (command.command) {
             case 'TEXT_UPDATE':
 		command.element = document.getElementById("alipiSelectedElement");
@@ -3206,7 +3117,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
             case 'DELETE':
 		poofPosition = DOM.findPosition(command.element);
 
-		poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://dev.a11y.in/alipi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
+		poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://y.a11y.in/alipi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
 		document.body.appendChild(poofDiv);
 
 		UTIL.animate(function(index, last) {
@@ -3263,7 +3174,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		break;
 		
             case 'AUDIO_CREATE':
-	        selectedElement = document.getElementById("alipiSelectedElement");
 		audioElement = document.createElement('audio');
 		audioElement.setAttribute("id", "audiotag");
 		audioElement.setAttribute('src',command.data);
@@ -3319,13 +3229,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    command.element.remove();
 		    pageEditor.showMessage('Link removed');
 		    break;
-
-		case 'AUDIO_CREATE':
-		    audio_remove=command.element.previousSibling;
-		    command.element.parentNode.removeChild(audio_remove);
-		    pageEditor.showMessage('Audio change undone');
-		    break;
-
 		case 'ANCHOR_UPDATE':
 		    command.element.setAttribute('href', command.previousData);
 		    pageEditor.showMessage('Link change undone');
@@ -3346,20 +3249,20 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	this.publish = function publish() {
 	    var result;
-	    if(document.getElementById('your-check').checked) 
-		    {
-			localStorage.myContent = buildDataString();
-			window.location.href = "http://y.a11y.in/test.html";
-			window.reload();
-		    }
-	    else 
+	    if(document.getElementById('our-check').checked)
 		{
-		    AJAX.post('http://y.a11y.in/test',  buildDataString(), function(result) {
-			    ajaxResultProcessor.processPublishedResponse(result);
-			});
+		    localStorage.myContent = buildDataString();
+		    window.location.href = "http://dev.a11y.in/test.html";
+		    window.reload();
 		}
+	    else{
+		
+		AJAX.post('http://dev.a11y.in/test',  buildDataString(), function(result) {
+	    		      ajaxResultProcessor.processPublishedResponse(result);
+	    		  });
+	    }
 	};
-	
+
 	// this.switchMode = function switchMode(saveChanges) {
 	//     var result, requestParameters;
 
@@ -3408,17 +3311,11 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    UTIL.forEach(history, function(index, command) {
 		    buffer.append('###'); //separates the commands
 		    buffer.append('about=');  //url=about    //removed '&' on purpose
-		    buffer.append(window.location.href);
+		    buffer.append(window.location.search.split('=')[1]);
 		    buffer.append('&lang=');//lang
-		    if (langName.value != "" ) 
-			buffer.append(encodeURIComponent(langName.value));
-		    else
-			buffer.append(encodeURIComponent(document.getElementById('langs-select').value));
+		    buffer.append(encodeURIComponent(langName.value));
 		    buffer.append('&location=');//location
-		    if (locName.value != '') 
-			buffer.append(encodeURIComponent(locName.value));
-		    else
-			buffer.append(encodeURIComponent(document.getElementById('loct-select').value));
+		    buffer.append(encodeURIComponent(locName.value));
 		    buffer.append('&style=');//style
 		    buffer.append(encodeURIComponent(styleSelect.value));
 		    buffer.append('&blog=');  //blog where to post
@@ -3467,6 +3364,10 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    return editCommandHistory.hasChangesPending();
 	};
 
+
+	this.formUncomplete = function fromUncomplete() {
+	    return editCommandHistory.formUncomplete();
+	};
 
 	this.show = function show() {
 
