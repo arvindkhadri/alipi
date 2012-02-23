@@ -82,7 +82,7 @@ def application(environ, start_response):
         feed = blogger_service.Get(query.ToUri())
         blog_id = " "
         for entry in feed.entry:
-            if "http://alipi123.blogspot.com/" == entry.GetHtmlLink().href:
+            if "http://testalipi.blogspot.com/" == entry.GetHtmlLink().href:
                 blog_id = entry.GetSelfLink().href.split("/")[-1]
                 blogEntry = CreatePublicPost(blogger_service, blog_id, title="Re-narration", content=string + "<blockquote><p>Re-narration by "+author+' in '+lang+' targeting '+target+' for this web <a href="'+about+'">page</a></p></blockquote>')
 
