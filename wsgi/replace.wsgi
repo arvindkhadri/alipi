@@ -24,7 +24,7 @@ def application(environ, start_response):
     else:
         #connect to the DB
         connection = Connection('localhost',27017)
-        db = connection['alipi']
+        db = connection['dev_alipi']
         collection = db['post']
         
         d={}

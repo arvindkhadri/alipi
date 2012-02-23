@@ -1109,17 +1109,38 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    };
 	
 	DOM.makePath = function makePath(elt){
+	    elt = elt.parentNode;
     	    var path = '';
 	    for (; elt && elt.nodeType == 1; elt = elt.parentNode)
+	    {
+		if(elt.id == "")
 		{
-		    if (elt.attributes['m4pageedittype'] === undefined || elt.attributes['m4pageedittype'].nodeValue != 'text')
-			{
-			    idx = DOM.getElementIdx(elt);
-			    xname = elt.tagName;
-			    if (idx > 1) xname += "[" + idx + "]";
-			    path = "/" + xname + path;
-			}
+		    idx = DOM.getElementIdx(elt);
+		    xname = elt.tagName;
+		    if (idx > 1) 
+			xname += "[" + idx + "]";
+		    path = "/" + xname + path;
 		}
+		else
+		{
+		    path = "//*[@id='"+elt.id+"']"+path;
+		    break;
+		}
+	    }
+	    // var path = '';
+	    // for (; elt && elt.nodeType == 1; elt = elt.parentNode)
+	    // 	{
+	    // 	    if (elt.attributes['m4pageedittype'] === undefined || elt.attributes['m4pageedittype'].nodeValue != 'text')
+	    // 		{
+	    // 		    idx = DOM.getElementIdx(elt);
+	    // 		    xname = elt.tagName;
+	    // 		    if (idx > 1) xname += "[" + idx + "]";
+	    // 		    path = "/" + xname + path;
+	    // 		}
+	    // 	}
+//	    console.log(elt.parentNode); 
+	    console.log(elt);
+	    console.log(path);
 	    return path;
 	};
 
