@@ -1109,7 +1109,8 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    };
 	
 	DOM.makePath = function makePath(elt){
-	    elt = elt.parentNode;
+	    if(elt.tagName != 'IMG')
+		elt = elt.parentNode;
     	    var path = '';
 	    for (; elt && elt.nodeType == 1; elt = elt.parentNode)
 	    {
