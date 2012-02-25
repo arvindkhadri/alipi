@@ -13,16 +13,15 @@ var a11ypi = {
 	    document.body.removeChild(document.getElementById('social_overlay'));
  	$(document).ready(function(){$('body *').contents().filter(function() 
 								   {
-								       //console.log(this.nodeName);
 								       try{
-									   if(this.nodeType == 3)
+									   if(this.nodeType == 1)
 									   {
-									       return (this.nodeType == 3) && this.nodeValue.match(/\S/);}}
+									       return (this.parentNode) && this.firstChild.nodeValue.match(/\S/);}}
 								       catch(err)
 								       {
-									   //									       console.log(err.message);
-									   //									       console.log(this);
-								       }}).wrap('<span m4pageedittype=text/>')}); 
+//									       console.log(err.message);
+//									       console.log(this);
+								       }}).attr('m4pageedittype','text')}); 
 
 
 	vimg = document.getElementsByTagName('img');
@@ -562,8 +561,8 @@ $('html').bind('keypress', function(e)
 			   if(e.keyCode == 118)
 			   {
 			       e.preventDefault();
-			       $('.blink').delay(400).fadeOut(400).delay(200).fadeIn(400).delay(400).fadeOut(400).delay(200).fadeIn(400);
-			       //setTimeout("$('.nav').addClass('blink')", 800);
-			       //setTimeout("$('.nav').removeClass('blink')", 2400);
+			       //			       $('.blink').delay(400).fadeOut(400).delay(200).fadeIn(400).delay(400).fadeOut(400).delay(200).fadeIn(400);
+			       setTimeout("$('.nav').addClass('blink')", 800);
+			       setTimeout("$('.nav').removeClass('blink')", 2400);
 			   }
 		       });
