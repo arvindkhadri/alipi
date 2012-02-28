@@ -2,21 +2,22 @@ from flask import Flask
 from flask import request
 from flask import render_template
 import lxml.html
-import cgi
 import pymongo
 from bson import Code
 import urllib2
 import StringIO
-import gdata.gauth
-import gdata.blogger.client
 from flask import g
 from flask import redirect
 from urllib import quote_plus
 from urllib import unquote_plus
 app = Flask(__name__)
-connection = pymongo.Connection('localhost',27017) #Create the object once and use it.
-db = connection['dev_alipi']
-collection = db['post']
+@app.before_request()
+def first():
+    g.connection = pymongo.Connection('localhost',27017) #Create the object once and use it.
+    g.db = g.connection['dev_alipi']
+@app.do_teardown_request()
+def close():
+    g.connection.close()
 @app.route('/')
 def start_page() :
     d = {}
@@ -60,15 +61,6 @@ def start_page() :
         style.set("rel","stylesheet")
         style.set("type", "text/css")
         style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
-
-        # if collection.find_one({"about" : request.args['foruri']}) is not None:
-        #     overlay1 = root.makeelement('div')
-        #     root.body.append(overlay1)
-        #     overlay1.set("id", "overlay1")
-
-        #     opt = root.makeelement('option')
-        #     opt.text = "Choose a narration"
-
         script_jq_cust = root.makeelement('script')
         root.body.append(script_jq_cust)
         script_jq_cust.set("src", "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js")
@@ -152,17 +144,6 @@ def start_page() :
         style.set("rel","stylesheet")
         style.set("type", "text/css")
         style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
-        
-        # overlay2 = root.makeelement('div')
-        # root.body.append(overlay2)
-        # overlay2.set("id", "overlay2")
-        
-        # btn = root.makeelement('input')
-        # overlay2.append(btn)
-        # btn.set("id", "edit-button")
-        # btn.set("type", "submit")
-        # btn.set("onClick", "a11ypi.testContext();page_edit('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');")
-        # btn.set("value", "EDIT")
         root.body.set("onload","a11ypi.ren();a11ypi.tweet(); a11ypi.facebook();a11ypi.loadOverlay();")
         return lxml.html.tostring(root)
         
@@ -297,6 +278,7 @@ def start_page() :
         style.set("type", "text/css")
         style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
 
+        collection = g.db['post']
         if collection.find_one({"about" : request.args['foruri']}) is not None:
             overlay1 = root.makeelement('div')
             root.body.append(overlay1)
@@ -315,21 +297,19 @@ def start_page() :
 
 @app.route('/directory')
 def show_directory():
-    # for i in collection.find():
-    #     if i.has_key('about'):
-    #         if i['about'] != 'undefined' and i['about'] != '':
-    #             ren.append("http://y.a11y.in/web?foruri="+quote_plus(i['about'])+'&lang='+i['lang'])
+    collection = g.db['post']
     query = collection.group(
         key = Code('function(doc){return {"about" : doc.about,"lang":doc.lang}}'),
         condition={"about":{'$regex':'^[/\S/]'}},
         initial={'na': []},
         reduce=Code('function(doc,out){out.na.push(doc.blog)}')
         )
+    query.reverse()
     return render_template('directory.html', name=query, mymodule = quote_plus, myset=set, mylist= list)
 
 @app.route('/getLang')
 def get_lang():
-    collection = db['alipi_lang']
+    collection = g.db['alipi_lang']
     term = '^{0}.*'.format(request.args['term'][0])
     query = collection.group(
         key = Code('function(doc){return {"name" : doc.name}}'),
