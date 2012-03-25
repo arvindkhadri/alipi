@@ -1711,9 +1711,9 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
     //------------------------------------ Target UI --------------------------------------------
     TargetWindow = function TargetWindow(pageEditor ) {
-
-	this.createDialogBox = function createDialogBox() {
-
+	
+	this.createDialogBox = function createDialogBox() 
+	{
 	    target = document.createElement("div");
 	    target.setAttribute("id", "targetoverlay");
 	    target.setAttribute("title", "Please choose the target");
@@ -1721,86 +1721,104 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    target.setAttribute("class", "ui-widget-header ui-corner-all");
 	    document.body.appendChild(target);
 
+	    info_vis = document.createElement('div');
+	    info_vis.id = 'infovis';
+	    info_vis.setAttribute('alipielements', 'alipi');
+	    target.appendChild(info_vis);
+
+	    document.addEventListener("DOMActivate", init, false);
+
+	    TargetLabel= document.createElement("label");
+	    TargetLabel.innerHTML = 'TARGET';
+	    TargetLabel.setAttribute("alipielements", "alipi");
+	    TargetLabel.setAttribute("style", "position:absolute;top:12%;left:72%;color:#000;");
+	    target.appendChild(TargetLabel);
+//-- Location start--
 	    locLabel= document.createElement("label");
-	    locLabel.innerHTML = 'Select Location';
-	    locLabel.setAttribute("style", "position:absolute;top:5%;left:3%;color:#000;");
+	    locLabel.innerHTML = 'Location ';
+	    locLabel.setAttribute("alipielements", "alipi");
+	    locLabel.setAttribute("style", "position:absolute;top:25%;left:62%;color:#000;");
 	    target.appendChild(locLabel);
-				
-	    locName= document.createElement("input");
+
+	    locName= document.createElement("label");
 	    locName.setAttribute("id","loc-select");
-	    locName.setAttribute("type","text");
+	    locName.innerHTML = "";
 	    locName.setAttribute("alipielements", "alipi");
-	    locName.setAttribute("style","position:absolute;top:5%;left:40%;width:250px;");
+	    locName.setAttribute("style","position:absolute;top:25%;left:75%;color:#000;");
 	    target.appendChild(locName);
-
+// -- Language start --
 	    langLabel= document.createElement("label");
-	    langLabel.innerHTML = 'Select Language';
-	    langLabel.setAttribute("style", "position:absolute;top:25%;left:3%;color:#000;");
+	    langLabel.innerHTML = 'Language ';
+	    langLabel.setAttribute("alipielements", "alipi");
+	    langLabel.setAttribute("style", "position:absolute;top:40%;left:62%;color:#000;");
 	    target.appendChild(langLabel);
-				
-	    langName= document.createElement("input");
+
+	    langName= document.createElement("label");
 	    langName.setAttribute("id","lang-select");
-	    langName.setAttribute("type","text");
+	    langName.innerHTML = "";
 	    langName.setAttribute("alipielements", "alipi");
-	    langName.setAttribute("style","position:absolute;top:25%;left:40%;width:250px;");
+	    langName.setAttribute("style","position:absolute;top:40%;left:75%;color:#000");
 	    target.appendChild(langName);
-
+//-- Style start --
 	    styleLabel= document.createElement("label");
-	    styleLabel.innerHTML = 'Select style';
-	    styleLabel.setAttribute("style", "position:absolute;top:45%;left:3%;color:#000;");
+	    styleLabel.innerHTML = 'Style ';
+	    styleLabel.setAttribute("alipielements", "alipi");
+	    styleLabel.setAttribute("style", "position:absolute;top:55%;left:62%;color:#000;");
 	    target.appendChild(styleLabel);
-				
-	    styleSelect = document.createElement("input");
-	    styleSelect.setAttribute("id","styleSelect-select");
-	    styleSelect.setAttribute("type","text");
-	    styleSelect.setAttribute("alipielements", "alipi");
-	    styleSelect.setAttribute("style","position:absolute;top:45%;left:40%;width:250px;");
-	    target.appendChild(styleSelect);
 
+	    styleSelect = document.createElement("label");
+	    styleSelect.setAttribute("id","style-select");
+	    styleSelect.innerHTML = "";
+	    styleSelect.setAttribute("alipielements", "alipi");
+	    styleSelect.setAttribute("style","position:absolute;top:55%;left:75%;color:#000");
+	    target.appendChild(styleSelect);
+//-- Author start --
 	    authLabel= document.createElement("label");
-	    authLabel.innerHTML = 'Author Name';
-	    authLabel.setAttribute("style", "position:absolute;top:65%;left:3%;color:#000;");
+	    authLabel.innerHTML = 'Author ';
+	    authLabel.setAttribute("alipielements", "alipi");
+	    authLabel.setAttribute("style", "position:absolute;top:70%;left:62%;color:#000;");
 	    target.appendChild(authLabel);
-				
+
 	    author= document.createElement("input");
 	    author.setAttribute("id","auth-select");
 	    author.setAttribute("type","text");
 	    author.setAttribute("alipielements", "alipi");
-	    author.setAttribute("style","position:absolute;top:65%;left:40%;width:250px;");
+	    author.setAttribute("style","position:absolute;top:70%;left:75%;width:160px;");
 	    target.appendChild(author);
-
+// Checkbox start --
 	    ourcheck = document.createElement("input");
 	    ourcheck.setAttribute("id","our-check");
 	    ourcheck.setAttribute("type","radio");
 	    ourcheck.setAttribute("name", "blog");
 	    ourcheck.setAttribute("alipielements", "alipi");
-	    ourcheck.setAttribute("style","position:absolute;top:85%;left:40%;");
+	    ourcheck.setAttribute("style","position:absolute;top:85%;left:61%;");
 	    target.appendChild(ourcheck);
 
+	    ourLabel = document.createElement('label');
+	    ourLabel.textContent = "Our blog";
+	    ourLabel.setAttribute("style","position:absolute;top:85%;left:64%;color:#000;");
+	    target.appendChild(ourLabel);
+			
 	    yourcheck = document.createElement("input");
 	    yourcheck.setAttribute("id","your-check");
 	    yourcheck.setAttribute("type","radio");
 	    yourcheck.setAttribute("name", "blog");
 	    yourcheck.setAttribute("alipielements", "alipi");
-	    yourcheck.setAttribute("style","position:absolute;top:85%;left:70%;");
+	    yourcheck.setAttribute("style","position:absolute;top:85%;left:75%;");
 	    target.appendChild(yourcheck);
-			
+
 	    yourLabel = document.createElement('label');
 	    yourLabel.textContent = "Your blog";
-	    yourLabel.setAttribute("style","position:absolute;top:85%;left:45%;color:#000;");
+	    yourLabel.setAttribute("style","position:absolute;top:85%;left:78%;color:#000;");
 	    target.appendChild(yourLabel);
 
-	    ourLabel = document.createElement('label');
-	    ourLabel.textContent = "Our blog";
-	    ourLabel.setAttribute("style","position:absolute;top:85%;left:75%;color:#000;");
-	    target.appendChild(ourLabel);
-	}
+	};
 
 	this.activate = function activate() {
 	    $(function() {
 		$( "#targetoverlay" ).dialog({
 		    height:500,
-		    width:500,
+		    width:800,
 		    modal: true,
 		    buttons: {
 			OK: function() {
@@ -1810,57 +1828,58 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    },
 		    close: function() {
 			$( "#targetoverlay" ).hide();
+			document.removeEventListener("DOMActivate", init, false);
 		    }
 		});
 	    });
 	    
 	    
 		
-	    $( "#loc-select" ).autocomplete({
-		source: function(req, add){
+	    // $( "#loc-select" ).autocomplete({
+	    // 	source: function(req, add){
 		    
-		    //pass request to server
-		    $.getJSON("http://y.a11y.in/loc?", req, function(data) {
+	    // 	    //pass request to server
+	    // 	    $.getJSON("http://y.a11y.in/loc?", req, function(data) {
 			
-			//create array for response objects
-			var suggestions = [];
+	    // 		//create array for response objects
+	    // 		var suggestions = [];
 			
-			//process response
-			$.each(data, function(i, val){
-			    //suggestions.push(val.country);
-			    for(i=0;i<val.length;i++){
-				suggestions.push(val[i]);
-			    }
-				    });
+	    // 		//process response
+	    // 		$.each(data, function(i, val){
+	    // 		    //suggestions.push(val.country);
+	    // 		    for(i=0;i<val.length;i++){
+	    // 			suggestions.push(val[i]);
+	    // 		    }
+	    // 			    });
 						    
-				//pass array to callback
-				add(suggestions);
-			    });
-		    },
-			});				
+	    // 			//pass array to callback
+	    // 			add(suggestions);
+	    // 		    });
+	    // 	    },
+	    // 		});				
 
-	    $( "#lang-select" ).autocomplete({
-		source: function(req, add){
+	    // $( "#lang-select" ).autocomplete({
+	    // 	source: function(req, add){
 		    
-		    //pass request to server
-		    $.getJSON("http://y.a11y.in/lang?", req, function(data) {
+	    // 	    //pass request to server
+	    // 	    $.getJSON("http://y.a11y.in/lang?", req, function(data) {
 			
-			//create array for response objects
-			var suggestions = [];
+	    // 		//create array for response objects
+	    // 		var suggestions = [];
 			
-			//process response
-			$.each(data, function(i, val){
-			    //suggestions.push(val.country);
-			    for(i=0;i<val.length;i++){
-				suggestions.push(val[i]);
-					}
-				    });
+	    // 		//process response
+	    // 		$.each(data, function(i, val){
+	    // 		    //suggestions.push(val.country);
+	    // 		    for(i=0;i<val.length;i++){
+	    // 			suggestions.push(val[i]);
+	    // 				}
+	    // 			    });
 						    
-				//pass array to callback
-				add(suggestions);
-			    });
-		    },
-			});				
+	    // 			//pass array to callback
+	    // 			add(suggestions);
+	    // 		    });
+	    // 	    },
+	    // 		});				
 
 
 	}
@@ -2949,13 +2968,13 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	publishButton.setAttribute("Value", "Publish");
 	publishButton.setAttribute("style", "position:relative;top:-55px;left:900px;font-size:18px;font-weight:bold;width:100px;height:30px;");
 	overlayDiv.appendChild(publishButton);
-	var dialog = 0;
+	var dialog = false;
 	publishButton.onclick = function publishButtonOnClick() {
-	    if (pageEditor.hasChangesPending() /* && (pageEditor.formUncomplete() ==false) */ ) {
+	    if ( 1==1/* pageEditor.hasChangesPending()*/ /* && (pageEditor.formUncomplete() ==false) */ ) {
 		targetWindow = new TargetWindow(pageEditor);
-		if (dialog == 0) {
+		if (dialog == false) {
 		    targetWindow.createDialogBox();
-		    dialog = 1;
+		    dialog = true;
 		}
 		targetWindow.activate();
 	    } else {
