@@ -46,9 +46,9 @@ def start_page() :
         script_edit = root.makeelement('script')
         root.body.append(script_test)
         root.body.append(script_edit)
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("src", "http://dev.a11y.in/server/ui.js")
         script_test.set("type", "text/javascript")
-        script_edit.set("src", "http://dev.a11y.in/alipi/wsgi/page_edit.js")
+        script_edit.set("src", "http://dev.a11y.in/server/wsgi/page_edit.js")
         script_edit.set("type","text/javascript")
         
         script_jq_mini = root.makeelement('script')
@@ -60,7 +60,16 @@ def start_page() :
         root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
+        style.set("href", "http://dev.a11y.in/server/stylesheet.css")
+
+        # if collection.find_one({"about" : request.args['foruri']}) is not None:
+        #     overlay1 = root.makeelement('div')
+        #     root.body.append(overlay1)
+        #     overlay1.set("id", "overlay1")
+
+        #     opt = root.makeelement('option')
+        #     opt.text = "Choose a narration"
+
         script_jq_cust = root.makeelement('script')
         root.body.append(script_jq_cust)
         script_jq_cust.set("src", "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js")
@@ -87,9 +96,9 @@ def start_page() :
         script_jq_mini.set("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js")
         script_jq_mini.set("type", "text/javascript")
 
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("src", "http://dev.a11y.in/server/ui.js")
         script_test.set("type", "text/javascript")
-        script_edit.set("src", "http://dev.a11y.in/alipi/wsgi/page_edit.js")
+        script_edit.set("src", "http://dev.a11y.in/server/wsgi/page_edit.js")
         script_edit.set("type","text/javascript")
         script_jqui = root.makeelement('script')
         script_jqui.set("type","text/javascript")
@@ -143,7 +152,18 @@ def start_page() :
         root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
+        style.set("href", "http://dev.a11y.in/server/stylesheet.css")
+        
+        # overlay2 = root.makeelement('div')
+        # root.body.append(overlay2)
+        # overlay2.set("id", "overlay2")
+        
+        # btn = root.makeelement('input')
+        # overlay2.append(btn)
+        # btn.set("id", "edit-button")
+        # btn.set("type", "submit")
+        # btn.set("onClick", "a11ypi.testContext();page_edit('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');")
+        # btn.set("value", "EDIT")
         root.body.set("onload","a11ypi.ren();a11ypi.tweet(); a11ypi.facebook();a11ypi.loadOverlay();")
         return lxml.html.tostring(root)
         
@@ -155,7 +175,7 @@ def start_page() :
         d['lang'] = request.args['lang']
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("src", "http://dev.a11y.in/server/ui.js")
         script_test.set("type", "text/javascript")
         root.body.set("onload","a11ypi.ren()");
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
@@ -165,7 +185,7 @@ def start_page() :
         script_jqui = root.makeelement('script')
 
         script_test = root.makeelement('script')
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("src", "http://dev.a11y.in/server/ui.js")
         script_test.set("type", "text/javascript")
         root.body.append(script_test)
         
@@ -175,7 +195,7 @@ def start_page() :
         root.body.append(script_jq_mini)
 
         script_edit = root.makeelement('script')
-        script_edit.set("src", "http://dev.a11y.in/alipi/wsgi/page_edit.js")
+        script_edit.set("src", "http://dev.a11y.in/server/wsgi/page_edit.js")
         script_edit.set("type","text/javascript")
         root.body.append(script_edit)
         
@@ -229,7 +249,7 @@ def start_page() :
         root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
+        style.set("href", "http://dev.a11y.in/server/stylesheet.css")
         
         overlay2 = root.makeelement('div')
         root.body.append(overlay2)
@@ -244,7 +264,7 @@ def start_page() :
 
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("src", "http://dev.a11y.in/server/ui.js")
         script_test.set("type", "text/javascript")
         root.body.set("onload","a11ypi.filter(); a11ypi.tweet(); a11ypi.facebook();");
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
@@ -253,7 +273,7 @@ def start_page() :
     elif request.args.has_key('interactive') == False and request.args.has_key('blog') == True:    
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        script_test.set("src", "http://dev.a11y.in/alipi/ui.js")
+        script_test.set("src", "http://dev.a11y.in/server/ui.js")
         script_test.set("type", "text/javascript")
         
         script_jq_mini = root.makeelement('script')
@@ -276,7 +296,7 @@ def start_page() :
         root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://dev.a11y.in/alipi/stylesheet.css")
+        style.set("href", "http://dev.a11y.in/server/stylesheet.css")
 
         collection = g.db['post']
         if collection.find_one({"about" : request.args['foruri']}) is not None:
