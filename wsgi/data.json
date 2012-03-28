@@ -1,0 +1,39 @@
+{"Languages":[
+		{"name": "Kannada",
+		"alt" : [],
+		"dialects" : [ {"name":"Mysore-Kannada", "alt": [] }, { "name":"Dharwad-Kannada", "alt" : [] }]
+		},
+		{"name": "Tamil",
+		"alt" : [],
+		"dialects" : []
+		},
+		{
+		"name" :"English",
+		"alt" : [],
+		"dialects" : [{"name":"Indian-English", "alt": [] }]	
+		}
+	     ],
+
+"Locations": [
+		{"name": "India",
+		"alt" : [],	    
+	     	"states":[
+				{		
+	    	     		"name" :"Karnataka",
+				"alt" : [],
+				"towns": [ {"name":"Bangalore", "alt": []},  {"name":"Mysore", "alt":[]},  {"name":"Tumkur", "alt":[]}   ]
+				},
+				{
+				"name" : "TamilNadu",
+				"alt" : [],
+				"towns" : [{"name":"Chennai", "alt":[]}]
+				}
+			]
+		}
+	],
+
+"Style" : [{"name":"Summary", "alt":[]},{ "name":"Simplification", "alt":[]},{"name":"Funny","alt":[]},{"name":"Children","alt":[]},{"name":"Translation","alt":[]},{"name":"Annotation","alt":[]}]
+			
+} 	
+	
+
