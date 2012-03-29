@@ -1139,9 +1139,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    // 		    path = "/" + xname + path;
 	    // 		}
 	    // 	}
-//	    console.log(elt.parentNode); 
-	    console.log(elt);
-	    console.log(path);
 	    return path;
 	};
 
@@ -1331,12 +1328,12 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    return function textContent(element, content) {
 			if (element == undefined) {
 			    element = document.getElementById("alipiSelectedElement");
-			    content = document.getElementById("alipiSelectedElement").textContent;
-			    element.textContent = content;
+			    content = document.getElementById("alipiSelectedElement").innerHTML;
+			    element.innerHTML = content;
 			} else if (content) {
-			    element.textContent = content;
+			    element.innerHTML = content;
 			}
-			return element.textContent;
+			return element.innerHTML;
 		    }
 		}
 	    })();
@@ -1742,7 +1739,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	    locName= document.createElement("label");
 	    locName.setAttribute("id","loc-select");
-	    locName.innerHTML = "";
+	    locName.innerHTML = "Mysore";
 	    locName.setAttribute("alipielements", "alipi");
 	    locName.setAttribute("style","position:absolute;top:25%;left:75%;color:#000;");
 	    target.appendChild(locName);
@@ -1755,7 +1752,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	    langName= document.createElement("label");
 	    langName.setAttribute("id","lang-select");
-	    langName.innerHTML = "";
+	    langName.innerHTML = "Kannada";
 	    langName.setAttribute("alipielements", "alipi");
 	    langName.setAttribute("style","position:absolute;top:40%;left:75%;color:#000");
 	    target.appendChild(langName);
@@ -1768,7 +1765,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	    styleSelect = document.createElement("label");
 	    styleSelect.setAttribute("id","style-select");
-	    styleSelect.innerHTML = "";
+	    styleSelect.innerHTML = "Funny";
 	    styleSelect.setAttribute("alipielements", "alipi");
 	    styleSelect.setAttribute("style","position:absolute;top:55%;left:75%;color:#000");
 	    target.appendChild(styleSelect);
@@ -1905,10 +1902,10 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	refLabel.setAttribute("style", "position:absolute;top:5%;left:20%;color:#000;font-size:25px;");
 	editor.appendChild(refLabel);
 				
-	refBox= document.createElement("textarea");
+	refBox= document.createElement("div");
 	refBox.setAttribute("id","reference");
 	refBox.setAttribute("readonly", 'yes');
-	refBox.setAttribute("style","position:absolute;top:15%;left:4%;min-width:450px;max-width:450px;min-height:370px;max-height:370px;font-size:15;text-align:justify;");
+	refBox.setAttribute("style","position:absolute;top:15%;left:4%;min-width:450px;max-width:450px;min-height:370px;max-height:370px;text-align:justify;color:#000;font-weight:normal;");
 	editor.appendChild(refBox);
 
 	editLabel= document.createElement("label");
@@ -1916,12 +1913,18 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	editLabel.setAttribute("style", "position:absolute;top:5%;left:70%;color:#000;font-size:25px;");
 	editor.appendChild(editLabel);
 				
-	editBox= document.createElement("textarea");
+	editBox= document.createElement("div");
 	editBox.setAttribute("id","editor");
 	editBox.setAttribute("alipielements", "alipi");
-	editBox.setAttribute("style","position:absolute;top:15%;left:51%;min-width:450px;max-width:450px;min-height:370px;max-height:370px;font-size:15;text-align:justify;");
+	editBox.setAttribute("contenteditable", true);
+	editBox.setAttribute("style","position:absolute;top:15%;left:51%;min-width:450px;max-width:450px;min-height:370px;max-height:370px;font-size:15;text-align:justify;color:#000;font-weight:normal;");
 	editor.appendChild(editBox);
-			
+	
+	forPrevData = document.createElement("div");
+	forPrevData.setAttribute("id","forPrevData");
+	forPrevData.setAttribute("style","display:none;height:1px;width:1px;");
+	editor.appendChild(forPrevData);
+	
 			
 	this.activate = function activate() {
 	    $(function() {
@@ -2028,6 +2031,44 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 
     // ========================================= Help Window end ===================================================
+
+    // ========================================= See narrations window start ======================================
+    NarrationsWindow = function NarrationsWindow(pageEditor ) {
+	
+	this.createDialogBox = function createDialogBox() 
+	{
+	    narrations = document.createElement("div");
+	    narrations.setAttribute("id", "narrationsoverlay");
+	    narrations.setAttribute("title", "Choose any narration");
+	    narrations.setAttribute("alipielements", "alipi");
+	    narrations.setAttribute("class", "ui-widget-header ui-corner-all");
+	    document.body.appendChild(narrations);
+
+	    info_nar = document.createElement('div');
+	    info_nar.id = 'infonar';
+	    info_nar.setAttribute('alipielements', 'alipi');
+	    narrations.appendChild(info_nar);
+
+	    document.addEventListener("DOMActivate", inits, false);
+
+	};
+
+	this.activate = function activate() {
+	    $(function() {
+		$( "#narrationsoverlay" ).dialog({
+		    height:500,
+		    width:1100,
+		    modal: true,
+		    close: function() {
+			$( "#narrationsoverlay" ).remove();
+			document.removeEventListener("DOMActivate", inits, false);
+		    }
+		});
+	    });
+	}
+    };
+
+    // ========================================= See narrations window end =======================================
     /*
      * Control for displaying/hiding an action panel that appears below the popup buttons.
      */
@@ -2230,7 +2271,109 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	};
     }
     
-    
+// ============================================= Ajay - Adding Link =========================================
+    function LinkPopupAction(pageEditor, actionSlot) {
+	var self = this, linkInput, linkForm, popupDiv, selectedElement, anchorElement, originalHref, updateLink, findAnchorElement, linkActionControl;
+	
+	var addUrlLabel = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('display: block; width: 100%; float: left; text-align: left; padding: 3px; font-size: 10px;position:relative; margin-top: 5px;margin-left: 5px; margin-right: 5px;background: transparent; color: #747474; text-shadow: 0 1px 0 #FFFFFF;').values());
+	addUrlLabel.innerHTML = 'Link to:';
+	linkInput = DOM.BUILDER.INPUT(editTextInputAttributes.addStyle('margin-left: 5px; background: #FFFFFF;').addStyle(leftBorderStyle + rightBorderStyle).values());
+	
+	linkForm = DOM.BUILDER.FORM(elementAttributes.values(),
+				    addUrlLabel,
+				    linkInput,
+				    DOM.BUILDER.INPUT(editSubmitAttributes.addStyle('vertical-align: middle; float:left; margin-left: 5px; margin-right: auto;').values()));
+	
+	linkForm.onsubmit = function linkFormOnSubmit() {
+	    updateLink(linkInput.value);
+	    return false;
+	};
+	
+	popupDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('overflow: hidden !important; display: none;position: relative; margin-left: auto; margin-right: auto; margin-top: 5px; margin-bottom: 5px; height: auto !important; height: 60px;').values(),
+				   linkForm);
+	linkActionControl = new PopupActionControl(actionSlot);
+	
+	this.open = function open(element) {
+	    linkActionControl.open(popupDiv);
+	    popupDiv.style.display = 'block';
+	    selectedElement = element;
+	    anchorElement = findAnchorElement(selectedElement);
+	    if (anchorElement == null) {
+		anchorElement = null;
+		linkInput.value = 'http://';
+		linkInput.focus();
+	    } else {
+		originalHref = anchorElement.getAttribute('href');
+		linkInput.value = originalHref;
+		linkInput.select();
+	    }
+	};
+	
+	this.close = function close() {
+	    linkActionControl.close();
+	    selectedElement = null;
+	    anchorElement = null;
+	    linkInput.value = null;
+	    popupDiv.style.display = 'none';
+	};
+	
+	this.onComplete = function onComplete() {
+	};
+	
+	this.onError = function onError() {
+	};
+	
+	this.actionComplete = function actionComplete() {
+	    self.onComplete();
+	};
+	
+	this.handleError = function handleError() {
+	    self.onError();
+	};
+	
+	updateLink = function updateLink(href) {
+	    var command;
+	    if (anchorElement) {
+		command = {
+		    command : 'ANCHOR_UPDATE',
+		    element : anchorElement,
+		    elementType : 'text',
+		    xpath : DOM.getXPATH(selectedElement),
+		    url : window.location.href,
+		    elementId : anchorElement.getAttribute('m4pageeditid'),
+		    data : href,
+		    previousData : originalHref
+		};
+	    } else {
+		command = {
+		    command : 'ANCHOR_CREATE',
+		    element : selectedElement,
+		    elementType : 'text',
+		    xpath : DOM.getXPATH(selectedElement),
+		    url : window.location.href,
+		    elementId : selectedElement.getAttribute('m4pageeditid'),
+		    data : href,
+		    previousData : ''
+		};
+	    }
+	    pageEditor.commandApply(command);
+	    self.actionComplete();
+	};
+	
+	findAnchorElement = function findAnchorElement(element) {
+	    if (element.nodeName.toLowerCase() == 'a') {
+		return element;
+	    } else if (element.parentNode) {
+		return findAnchorElement(element.parentNode);
+	    } else {
+		return null;
+	    }
+	}
+    }
+
+// ============================================= Ajay - Adding Link End ====================================    
+
+
     //******************************** Shalini - Changed AudioupdatePopupAction from ImageUpdatePopupAction *****************
 
     AudioUpdateByUrl = function AudioUpdateByUrl(pageEditor) {
@@ -2658,7 +2801,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	closeButton = DOM.BUILDER.BUTTON(closeButtonAttributes.values());
 	closeButton.onclick = function closeButtonOnClick() {
 	    popupControl.close();
-	    upArrow.style.display = 'none';
+//	    upArrow.style.display = 'none';
 	    return false;
 	};
 
@@ -2676,14 +2819,9 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    return false;
 	};
 
-	renUpdateAction = new renAction(pageEditor, actionSlot);
-	renUpdateAction.onComplete = function renUpdateActionOnComplete() {
-	    self.popdown(true);
-	};
-
 
 	var renImage = 'http://dev.a11y.in/alipi/images/renarration.png';
-	renButton = createActionButton(renImage, 'See (other) narrations', 'border-right: none;');
+	renButton = createActionButton(renImage, 'See narrations', 'border-right: none;');
 	renButton.onclick = function renButtonOnClick() {
 	    popupControl.showAction(renUpdateAction);
 	    return false;
@@ -2721,7 +2859,12 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    imageUpdateDiv, backgroundButton, redArrow, buttonPanel, upArrow, actionSlot,renButton, variablePassing;
 
 	this.popupAt = function popupAt(element, popX, popY) {
-	    popupControl.openAt(element, popX, popY);
+	    edity = element.parentNode;
+	    if(edity.id == 'editor' || edity.parentNode.id == 'editor') {
+	    } else {
+		element.parentNode.id = 'a11ypi';
+		popupControl.openAt(element, popX, popY);
+	    }
 	};
 	
 	this.popdown = function popdown(saveChanges) {
@@ -2780,9 +2923,11 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	closeButton = DOM.BUILDER.BUTTON(closeButtonAttributes.values());
 	closeButton.onclick = function closeButtonOnClick() {
+//	    document.getElementById('a11ypi').removeAttribute('id', 'a11ypi');
+	    console.log(originalTextContent);
 	    DOM.textContent(selectedElement, originalTextContent);
 	    self.popdown(false);
-	    upArrow.style.display = 'none';
+//	    upArrow.style.display = 'none';
 	    return false;
 	};
 
@@ -2791,10 +2936,23 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	var doneImage = 'http://y.a11y.in/alipi/images/done.png';
 	doneButton = createActionButton(doneImage, 'Edit ', 'border-right: none;' + leftBorderStyle);
 	doneButton.onclick = function doneButtonOnClick(elements) {
+	    document.getElementById('a11ypi').setAttribute('id', 'alipiSelectedElement');
 	    editWindow = new EditWindow(pageEditor);
-	    document.getElementById('reference').value = selectedElement.textContent;
-	    document.getElementById('editor').value = selectedElement.textContent;
-	    selectedElement.setAttribute('id', 'alipiSelectedElement');
+	    document.getElementById('forPrevData').innerHTML = selectedElement.parentNode.innerHTML;
+	    ref = document.getElementById('reference');
+	    children = selectedElement.childNodes;
+	    for (var i=0; i<children.length; i++) {
+		if(i == 0 ) {
+		    ref.innerHTML = '&lt' + selectedElement.parentNode.tagName + '&gt' + children[i].textContent;
+		} else if(children[i].tagName === undefined && i != children.length-1) {
+		    ref.innerHTML += children[i].textContent;
+		} else if (i == children.length-1 && children[i].tagName === undefined) {
+		    ref.innerHTML += children[i].textContent + '&lt/' + selectedElement.parentNode.tagName + '&gt';
+		} else {
+		    ref.innerHTML += '<br>&lt' + children[i].tagName + '&gt' + children[i].textContent +  '&lt/' + children[i].tagName + '&gt<br>';
+		}
+	    }
+	    document.getElementById('editor').innerHTML = selectedElement.parentNode.innerHTML;
 	    document.getElementById("editor").removeAttribute("readonly");
 	    // 	    DOM.textContent(selectedElement, originalTextContent);
 	    editWindow.activate();	    
@@ -2807,17 +2965,24 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	this.textButtonOnClick = function textButtonOnClick() {
 	    self.popdown(true);
-	    document.getElementById('alipiSelectedElement').textContent = document.getElementById('editor').value;
+	    document.getElementById('alipiSelectedElement').innerHTML = document.getElementById('editor').innerHTML;
 	    document.getElementById('alipiSelectedElement').removeAttribute('id', 'alipiSelectedElement');
 	    return false;
 	};
 
 
 	var renImage = 'http://dev.a11y.in/alipi/images/renarration.png';
-	renButton = createActionButton(renImage, 'See (other) narrations', 'border-right: none;');
+	renButton = createActionButton(renImage, 'See narrations', 'border-right: none;');
 	renButton.onclick = function renButtonOnClick() {
-	    popupControl.showAction(renUpdateAction);
-	    return false;
+	    // popupControl.showAction(renUpdateAction);
+	    // return false;
+	    narrationsWindow = new NarrationsWindow(pageEditor);
+//	    if (dialogs == false) {
+		narrationsWindow.createDialogBox();
+//		dialogs = true;
+//	    }
+	    narrationsWindow.activate();
+	    self.popdown(true);
 	};
 
 	renUpdateAction = new renAction(pageEditor, actionSlot);
@@ -2855,13 +3020,34 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    return false;
 	};
 
+	// =============== Ajay - LinkUpdateAction ===========
+	linkUpdateAction = new LinkPopupAction(pageEditor, actionSlot);
+	linkUpdateAction.onComplete = function linkUpdateActionOnComplete() {
+	    self.popdown();
+	};
+	var linkImage = 'http://x.a11y.in/alipi/wsgi/images/link.png';
+	linkButton = createActionButton(linkImage, 'Link', rightBorderStyle);
+	linkButton.onclick = function linkButtonOnClick() {
+	    popupControl.showAction(linkUpdateAction);
+	    displayUpArrowUnderButton(linkButton, upArrow);
+	    return false;
+	};
+	
+	renUpdateAction = new renAction(pageEditor, actionSlot);
+	renUpdateAction.onComplete = function renUpdateActionOnComplete() {
+	    self.popdown(true);
+	};
+// ==================================================
+
 	buttonPanel.appendChild(doneButton);
 	buttonPanel.appendChild(renButton);
-	buttonPanel.appendChild(audioButton);
+	buttonPanel.appendChild(audioButton); // Ajay
+ 	buttonPanel.appendChild(linkButton);
 	textPopupDiv.appendChild(closeButton);
 	textPopupDiv.appendChild(buttonPanel);
 	textPopupDiv.appendChild(actionSlot);
 	document.body.appendChild(textPopupDiv);
+
 
 	updateText = function updateText() {
 	    var command = {
@@ -2908,7 +3094,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	overlayDiv = document.createElement("div");
 	overlayDiv.setAttribute("id", "overlay-div");
 	overlayDiv.setAttribute("alipielements", "alipi");
-	overlayDiv.setAttribute("style", "overflow-x:visible; position:fixed; z-index:2147483645; left:0; top:0; width:100%; height:30px; background-color:rgba(0, 0, 0, 0.5);");
+	overlayDiv.setAttribute("style", "position:fixed;z-index:2147483645;left:0%;top:0%;min-width:600px;width:100%;height:30px;background-color:rgba(0, 0, 0, 0.5);");
 	document.body.appendChild(overlayDiv);
 
 
@@ -2916,7 +3102,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	image.setAttribute("id", "close-image");
 	image.setAttribute("alipielements", "alipi");
 	image.setAttribute("src", "http://dev.a11y.in/alipi/images/close_button.png");
-	image.setAttribute("style", "position:relative;width:25px;height:28px;");
+	image.setAttribute("style", "position:fixed;width:25px;height:28px;");
 	overlayDiv.appendChild(image);
 	image.onclick=function(){
 	    answer = confirm("Do you really want to exit the editor?")
@@ -2930,7 +3116,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	messageDiv = document.createElement("div");
 	messageDiv.setAttribute("id", "message-div");
 	messageDiv.setAttribute("alipielements", "alipi");
-	messageDiv.setAttribute("style", "position:relative;left:150px;bottom:26px;font-size:23px;font-weight:bold;color:#ffe;");
+	messageDiv.setAttribute("style", "position:fixed;top:0px;left:12%;width:40%;height:28px;bottom:26px;font-size:23px;font-weight:bold;color:#ffe;");
 	overlayDiv.appendChild(messageDiv);
 
 	helpLink = document.createElement("input");
@@ -2938,7 +3124,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	helpLink.setAttribute("alipielements", "alipi");
 	helpLink.setAttribute("type", "submit");
 	helpLink.setAttribute("Value", "Help");
-	helpLink.setAttribute("style", "position:relative;top:-55px;left:750px;font-size:18px;font-weight:bold;width:100px;height:30px;");
+	helpLink.setAttribute("style", "position:fixed;top:0px;left:55%;font-size:18px;font-weight:bold;width:100px;height:30px;");
 	overlayDiv.appendChild(helpLink);
 	helpLink.onclick = function helpLinkOnClick() {
 	    helpWindow = new HelpWindow(pageEditor);
@@ -2953,7 +3139,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	undoButton.setAttribute("alipielements", "alipi");
 	undoButton.setAttribute("type", "submit");
 	undoButton.setAttribute("Value", "Undo");
-	undoButton.setAttribute("style", "position:relative;top:-55px;left:825px;font-size:18px;font-weight:bold;width:100px;height:30px;");
+	undoButton.setAttribute("style", "position:relative;top:0px;left:70%;font-size:18px;font-weight:bold;width:100px;height:30px;");
 	overlayDiv.appendChild(undoButton);
 	undoButton.onclick = function undoButtonOnClick() {
 	    pageEditor.commandUndo();
@@ -2966,7 +3152,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	publishButton.setAttribute("alipielements", "alipi");
 	publishButton.setAttribute("type", "submit");
 	publishButton.setAttribute("Value", "Publish");
-	publishButton.setAttribute("style", "position:relative;top:-55px;left:900px;font-size:18px;font-weight:bold;width:100px;height:30px;");
+	publishButton.setAttribute("style", "position:fixed;top:0px;left:85%;font-size:18px;font-weight:bold;width:100px;height:30px;");
 	overlayDiv.appendChild(publishButton);
 	var dialog = false;
 	publishButton.onclick = function publishButtonOnClick() {
@@ -2984,7 +3170,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	
     
 	this.blogpost = function blogpost() {
-	    if (locName.value == "" || langName.value == "" || styleSelect.value == "" || author.value == "" || (ourcheck.checked == false && yourcheck.checked == false)) {
+	    if (locName.innerHTML == "" || langName.innerHTML == "" || styleSelect.innerHTML == "" || author.value == "" || (ourcheck.checked == false && yourcheck.checked == false)) {
 		alert("Please give all the details, it will be used further");
 	    } else {
 	    pageEditor.commandPublish();
@@ -3144,8 +3330,8 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    switch (command.command) {
             case 'TEXT_UPDATE':
 		command.element = document.getElementById("alipiSelectedElement");
-		command.previousData = document.getElementById("alipiSelectedElement").textContent;
-		command.data = document.getElementById("editor").value;
+		command.previousData = document.getElementById("forPrevData").innerHTML;
+		command.data = document.getElementById("editor").innerHTML;
 		DOM.textContent(command.element, command.data);
 		pageEditor.showMessage('Text changed');
 		break;
@@ -3203,6 +3389,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
             case 'ANCHOR_CREATE':
 		anchorElement = DOM.BUILDER.A({ 'href' : command.data });
+		console.log(command.element);
 		command.element.parentNode.replaceChild(anchorElement, command.element);
 		anchorElement.appendChild(command.element);
 		command.previousData = anchorElement;
@@ -3238,6 +3425,8 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		command = history.pop();
 		switch (command.command) {
 		case 'TEXT_UPDATE':
+		    console.log(command.element.innerHTML);
+		    console.log(command.previousData.innerHTML);
 		    command.element.innerHTML = command.previousData;
 		    pageEditor.showMessage('Text change undone');
 		    break;
@@ -3290,7 +3479,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	this.publish = function publish() {
 	    var result;
-	    if(document.getElementById('our-check').checked)
+	    if(document.getElementById('your-check').checked)
 		{
 		    localStorage.myContent = buildDataString();
 		    window.location.href = "http://dev.a11y.in/test.html";
@@ -3346,7 +3535,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    }
 
 	    history = temp_history;
-
+	    console.log("hello" + styleSelect.innerHTML);
 	    var command, buffer;
 	    buffer = new UTIL.StringBuffer();
 	    UTIL.forEach(history, function(index, command) {
@@ -3354,11 +3543,11 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    buffer.append('about=');  //url=about    //removed '&' on purpose
 		    buffer.append(window.location.search.split('=')[1]);
 		    buffer.append('&lang=');//lang
-		    buffer.append(encodeURIComponent(langName.value));
+		    buffer.append(encodeURIComponent(langName.innerHTML));
 		    buffer.append('&location=');//location
-		    buffer.append(encodeURIComponent(locName.value));
+		    buffer.append(encodeURIComponent(locName.innerHTML));
 		    buffer.append('&style=');//style
-		    buffer.append(encodeURIComponent(styleSelect.value));
+		    buffer.append(encodeURIComponent(styleSelect.innerHTML));
 		    buffer.append('&blog=');  //blog where to post
 		    buffer.append(encodeURIComponent("blog"));
 		    buffer.append('&elementtype='); // text, audio, img
@@ -3774,7 +3963,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	    this.highlight = function highlight(element) {
 
-		internalHighlight(element, '#fff', '#bbb', 'pointer');
+		internalHighlight(element, '#eee', '#444', 'pointer');
 		editor.activate(element);
 	    };
 
@@ -3792,8 +3981,11 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    lastSelection = element;
 		    self.unhighlight(lastSelection);
 		    editor.activate(element);
-		    internalHighlight(lastSelection, '#333', '#fff', 'text');
+		    internalHighlight(lastSelection, '', '', 'text');
 		    textElementPopup.popupAt(lastSelection, event.pageX, event.pageY);
+		    DOM.restoreStyleProperty(element, 'borderLeft', '');
+		    DOM.restoreStyleProperty(element, 'borderRight', '');
+		    
 		}
 		editor.startEditing(event);
 	    };
