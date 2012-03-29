@@ -1509,7 +1509,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
     panelButtonAttributes = fontTypeAttributes.addStyle('height:auto; cursor:pointer; float:right; font-weight:normal; font-size:14px; background-image:none; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px; margin: 16px 16px 0 0; padding: 0 0 4px 0;-khtml-box-sizing: none;-webkit-box-sizing: none;-moz-box-sizing: none;box-sizing: none;text-shadow:none;');
     editButtonAttributes = normalFontAttributes.addStyle(" height:45px;float:left;  position:relative; cursor:pointer;border-top:1px solid #BDBDBD;border-left:1px solid #BDBDBD;border-right:1px solid #BDBDBD;border-bottom:1px solid #BDBDBD;color:#000;background-color:#FFF;margin: 0px;padding: 0px;");
 
-    var closeButtonIconPath = 'http://dev.a11y.in/alipi/images/close_button.png';
+    var closeButtonIconPath = 'http://dev.a11y.in/server/images/close_button.png';
     closeButtonAttributes = editButtonAttributes.addStyle('top: -8px; left: -8px; position: absolute; border:none; background: url("' + closeButtonIconPath +'") no-repeat; width: 15px; height: 15px; z-index: 2;');
 
     var redArrowIconPath = './images/caret_red.png';
@@ -2811,7 +2811,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    self.popdown();
 	};
 
-	var backgroundImage = 'http://dev.a11y.in/alipi/images/replace_image.png';
+	var backgroundImage = 'http://dev.a11y.in/server/images/replace_image.png';
 	backgroundButton = createActionButton(backgroundImage, backgroundButtonText, 'border-right: none;' + leftBorderStyle);
 	backgroundButton.onclick = function backgroundButtonOnClick() {
 	    popupControl.showAction(imageUpdateAction);
@@ -2820,7 +2820,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	};
 
 
-	var renImage = 'http://dev.a11y.in/alipi/images/renarration.png';
+	var renImage = 'http://dev.a11y.in/server/images/renarration.png';
 	renButton = createActionButton(renImage, 'See narrations', 'border-right: none;');
 	renButton.onclick = function renButtonOnClick() {
 	    popupControl.showAction(renUpdateAction);
@@ -2971,7 +2971,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	};
 
 
-	var renImage = 'http://dev.a11y.in/alipi/images/renarration.png';
+	var renImage = 'http://dev.a11y.in/server/images/renarration.png';
 	renButton = createActionButton(renImage, 'See narrations', 'border-right: none;');
 	renButton.onclick = function renButtonOnClick() {
 	    // popupControl.showAction(renUpdateAction);
@@ -2995,7 +2995,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    self.popdown(false);
 	};
 	
-	var audioImage = 'http://dev.a11y.in/alipi/images/audio.png';
+	var audioImage = 'http://dev.a11y.in/server/images/audio.png';
 	audioButton = createActionButton(audioImage,'Audio','border-right:none;');
 	audioButton.onclick = function audioButtonOnClick() {
 	    selectedElement.setAttribute('id', 'alipiSelectedElement');
@@ -3011,7 +3011,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    self.popdown(true);
 	};
 
-	var backgroundImage = 'http://dev.a11y.in/alipi/images/replace_image.png';
+	var backgroundImage = 'http://dev.a11y.in/server/images/replace_image.png';
 	backgroundButton = createActionButton(backgroundImage, 'BG&nbsp;Image', 'border-right: none;');
 	backgroundButton.onclick = function backgroundButtonOnClick() {
 	    popupControl.showAction(imageUpdateAction);
@@ -3101,7 +3101,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	image = document.createElement("img");
 	image.setAttribute("id", "close-image");
 	image.setAttribute("alipielements", "alipi");
-	image.setAttribute("src", "http://dev.a11y.in/alipi/images/close_button.png");
+	image.setAttribute("src", "http://dev.a11y.in/server/images/close_button.png");
 	image.setAttribute("style", "position:fixed;width:25px;height:28px;");
 	overlayDiv.appendChild(image);
 	image.onclick=function(){
@@ -3214,7 +3214,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    keepOriginalCheckbox.onclick = function() {
 		keepOriginal = keepOriginalCheckbox.checked;
 	    };
-	    var backgroundImage = 'url(http://dev.a11y.in/alipi/images/container_save_new_page.png) no-repeat scroll 0 0 transparent';
+	    var backgroundImage = 'url(http://dev.a11y.in/server/images/container_save_new_page.png) no-repeat scroll 0 0 transparent';
 	    var position = 'fixed';
 
 	    wrapperDiv =  DOM.BUILDER.DIV(editAttributes.addStyle('font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: table; vertical-align: middle; z-index: 2147483647; margin: 0; width: 134px; height: 33px; line-height: 33px; position: '+ position+ '; right: 10px; background:'+ backgroundImage + ' ; display:none;').values(), DOM.BUILDER.SPAN(editAttributes.addStyle(('font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: table-cell; vertical-align: middle; height: 14px; hasLayout=true;')).values(), DOM.BUILDER.SPAN(editAttributes.addStyle('font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: inline; vertical-align: middle; height: 10px; width: 14px; padding: 0; margin: 1px 0 0 13px;').values(), keepOriginalCheckbox), DOM.BUILDER.LABEL(normalFontAttributes.put({'for' : checkboxId}).addStyle(('font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; display: inline; font-size: 10px; background: transparent; color: #E9E9E9; padding: 0 0 0 5px;')).values(),'Save as new page.')));

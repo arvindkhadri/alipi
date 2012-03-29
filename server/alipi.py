@@ -11,13 +11,13 @@ from flask import redirect
 from urllib import quote_plus
 from urllib import unquote_plus
 app = Flask(__name__)
-@app.before_request()
+@app.before_request
 def first():
     g.connection = pymongo.Connection('localhost',27017) #Create the object once and use it.
     g.db = g.connection['dev_alipi']
-@app.do_teardown_request()
-def close():
-    g.connection.close()
+@app.teardown_request
+def close(exception):
+    g.connection.disconnect()
 @app.route('/')
 def start_page() :
     d = {}

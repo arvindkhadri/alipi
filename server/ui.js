@@ -14,14 +14,14 @@ var a11ypi = {
  	$(document).ready(function(){$('body *').contents().filter(function() 
 								   {
 								       try{
-									   if(this.nodeType == 1)
+									   if(this.nodeType == 3)
 									   {
-									       return (this.parentNode) && this.firstChild.nodeValue.match(/\S/);}}
+									       return (this.nodeType == 3) && this.nodeValue.match(/\S/);}}
 								       catch(err)
 								       {
 //									       console.log(err.message);
 //									       console.log(this);
-								       }}).attr('m4pageedittype','text')}); 
+								       }}).wrap('<span m4pageedittype = text />')}); 
 
 
 	vimg = document.getElementsByTagName('img');
@@ -223,7 +223,7 @@ var a11ypi = {
 		    result.setAttribute('class','blink');
 		}
                 else{
-                    result.textContent = newContent;
+                    result.innerHTML = newContent;
 		    result.setAttribute('class','blink');
                 }
                 result=nodes.iterateNext();
