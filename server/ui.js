@@ -1,4 +1,4 @@
-var a11ypi = {
+	var a11ypi = {
     auth : " ",
     loc:" ",
     elementTagName: " ",
@@ -21,7 +21,7 @@ var a11ypi = {
 								       {
 //									       console.log(err.message);
 //									       console.log(this);
-								       }}).wrap('<span m4pageedittype = text />')}); 
+								       }}).parent().attr('m4pageedittype','text')}); 
 
 
 	vimg = document.getElementsByTagName('img');
@@ -47,6 +47,19 @@ var a11ypi = {
 	}
 	if(document.getElementById('overlay2') != null)
 	    v[0].removeChild(document.getElementById('overlay2'));
+	
+	
+	
+	// noteLabel= document.createElement("label");
+	// noteLabel.setAttribute("id", "note-label");
+	// noteLabel.innerHTML = ' Magnify or Demagnify  ';
+	// noteLabel.setAttribute("style", "color:#000;font-size:15px;");
+	// $(noteLabel).insertAfter($(document.getElementsByClassName('ui-button-text')[0].parentNode));
+	
+//	document.getElementsByClassName('ui-button-text')[1].parentNode.style.marginRight = '635px';
+//	document.getElementsByClassName('ui-button-text')[2].parentNode.style.marginRight = '25px';
+//	document.getElementById("ui-dialog-title-editoroverlay").setAttribute("style","font-size:25px;");
+
     },
 
     createMenu: function(menu_list) {
@@ -554,18 +567,19 @@ var a11ypi = {
 	    window.open("http://dev.a11y.in/web?foruri=" + a['foruri'] + "&blog=" + document.getElementById("blog-filter").value);
 	}},
     editPage: function() {
-	a11ypi.testContext(); page_edit('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');
+	a11ypi.testContext(); document.addEventListener('click',pageEditor.startEdit, false);
+	//page_edit('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');
 	document.getElementById("renarrated_overlay").style.display = "none";
     },
 };
 
-$('html').bind('keypress', function(e)
-	       {
-			   if(e.keyCode == 118)
-			   {
-			       e.preventDefault();
-			  //     $('.blink').delay(400).fadeOut(400).delay(200).fadeIn(400).delay(400).fadeOut(400).delay(200).fadeIn(400);
-			       setTimeout("$('.blink').addClass('blinks')", 800);
-			       setTimeout("$('.blink').removeClass('blinks')", 2400);
-			   }
-		       });
+// $('html').bind('keypress', function(e)
+// 	       {
+// 			   if(e.keyCode == 118)
+// 			   {
+// 			       e.preventDefault();
+// 			  //     $('.blink').delay(400).fadeOut(400).delay(200).fadeIn(400).delay(400).fadeOut(400).delay(200).fadeIn(400);
+// 			       setTimeout("$('.blink').addClass('blinks')", 800);
+// 			       setTimeout("$('.blink').removeClass('blinks')", 2400);
+// 			   }
+// 		       });
