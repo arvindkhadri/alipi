@@ -1,11 +1,21 @@
 
 var pageEditor = {
+    template : '<div id="editoroverlay" title="Editor" alipielements="alipi" class="ui-widget-header ui-corner-all">'+
+                '<label style="left: 20%;">Reference</label>'+
+                '<div id="reference" readonly="yes"></div>'+
+                '<label style="left: 70%;">Editor</label>'+
+                '<div id="editor" alipielements="alipi" contenteditable="true"></div>'+
+                '<div id="forPrevData"></div>'+
+               '</div>', 
     startEdit: function(event)
     {
 	if($(event.target).attr('m4pageedittype') == 'text')
 	{
-	    event.target.removeAttribute('m4pageedittype');
-	    editor = document.createElement("div");
+      _this = pageEditor;
+	    //event.target.removeAttribute('m4pageedittype');
+      $(event.target).removeAttr('m4pageedittype');
+      $(body).append(_this.template);
+	    /*editor = document.createElement("div");
 	    editor.setAttribute("id", "editoroverlay");
 	    editor.setAttribute("title", "Edit window");
 	    editor.setAttribute("alipielements", "alipi");
@@ -21,10 +31,12 @@ var pageEditor = {
 	    refBox.setAttribute("id","reference");
 	    refBox.setAttribute("readonly", 'yes');
 	    refBox.setAttribute("style","position:absolute;top:15%;left:4%;min-width:450px;max-width:450px;min-height:370px;max-height:370px;text-align:justify;color:#000;font-weight:normal;");
-	    editor.appendChild(refBox);
-	    refBox.textContent = '<'+event.target.tagName+'>'+event.target.innerHTML+'</'+event.target.tagName+'>';
+	    editor.appendChild(refBox);*/
+	    //refBox.textContent = '<'+event.target.tagName+'>'+event.target.innerHTML+'</'+event.target.tagName+'>';
+      var tag = event.target.nodeName;
+      $('#reference').append('<'+tag+'>'+$(event.target).html()+'</'+tag+'>');
 
-	    editLabel= document.createElement("label");
+	    /*editLabel= document.createElement("label");
 	    editLabel.innerHTML = 'Editor';
 	    editLabel.setAttribute("style", "position:absolute;top:5%;left:70%;color:#000;font-size:25px;");
 	    editor.appendChild(editLabel);
@@ -34,45 +46,57 @@ var pageEditor = {
 	    editBox.setAttribute("alipielements", "alipi");
 	    editBox.setAttribute("contenteditable", true);
 	    editBox.setAttribute("style","position:absolute;top:15%;left:51%;min-width:450px;max-width:450px;min-height:370px;max-height:370px;font-size:15;text-align:justify;color:#000;font-weight:normal;");
-	    editor.appendChild(editBox);
-	    editBox.innerHTML = event.target.innerHTML;
+	    editor.appendChild(editBox);*/
+	    //editBox.innerHTML = event.target.innerHTML;
+      $('#editor').html($(event.target).html());
 
-	    forPrevData = document.createElement("div");
+	    /*forPrevData = document.createElement("div");
 	    forPrevData.setAttribute("id","forPrevData");
 	    forPrevData.setAttribute("style","display:none;height:1px;width:1px;");
-	    editor.appendChild(forPrevData);
+	    editor.appendChild(forPrevData);*/
 	    $( "#editoroverlay" ).dialog({
-		width:1000,
-		height:550,
-		modal: true,
-		buttons: {
-		    "+": function() {
-			if(document.getElementById('editor').style.fontSize == '30px'){
+		    width:1000,
+		    height:550,
+		    modal: true,
+		    buttons: {
+		      "+": function() {
+			//if(document.getElementById('editor').style.fontSize == '30px'){
+      if($('#editor').css('font-size') >= '30px') {
 			    // passthrough
-			} else {
-			    document.getElementById('editor').style.fontSize = parseFloat(document.getElementById('editor').style.fontSize) + 1 + 'px';
-			    document.getElementById('reference').style.fontSize = parseFloat(document.getElementById('reference').style.fontSize) + 1 + 'px';
+			} 
+      else {
+			    //document.getElementById('editor').style.fontSize = parseFloat(document.getElementById('editor').style.fontSize) + 1 + 'px';
+			    //document.getElementById('reference').style.fontSize = parseFloat(document.getElementById('reference').style.fontSize) + 1 + 'px';
+          var font = parseFloat($('#editor').css('font-size')) + 1;
+          $('#editor').css('font-size', font+'px');
+          font = parseFloat($('#reference').css('font-size')) + 1;
+          $('#reference').css('font-size', font+'px');
 			}
 		    },
 		    "-": function() {
-			if(document.getElementById('editor').style.fontSize == '10px'){
-			} else {
-			    document.getElementById('editor').style.fontSize = parseFloat(document.getElementById('editor').style.fontSize) - 1 + 'px';
-			    document.getElementById('reference').style.fontSize = parseFloat(document.getElementById('reference').style.fontSize) - 1 + 'px';
+			//if(document.getElementById('editor').style.fontSize == '10px'){
+      if($('#editor').css('font-size') <= '10px') {
+			} 
+      else {
+			    //document.getElementById('editor').style.fontSize = parseFloat(document.getElementById('editor').style.fontSize) - 1 + 'px';
+			    //document.getElementById('reference').style.fontSize = parseFloat(document.getElementById('reference').style.fontSize) - 1 + 'px';
+          var font = parseFloat($('#editor').css('font-size')) - 1;
+          $('#editor').css('font-size', font+'px');
+          font = parseFloat($('#reference').css('font-size')) - 1;
+          $('#reference').css('font-size', font+'px');
+
 			}
 		    },
 		    OK: function() {
-			//textElement = new TextElementPopup(pageEditor, true);
-			//textElement.textButtonOnClick();
 			event.target.innerHTML = document.getElementById('editor').innerHTML;
-			event.target.setAttribute('m4pageedittype','text');
+      $(event.target).html($('#editor').html());
+			$(event.target).attr('m4pageedittype','text');
 			$( "#editoroverlay" ).remove();
-			
-		    }				    
+		  }
 		},
 		close: function() {
-		    //		    document.getElementById("alipiSelectedElement").removeAttribute("id", "alipiSelectedElement");
-		    $( "#editoroverlay" ).remove();
+		    //document.getElementById("alipiSelectedElement").removeAttribute("id", "alipiSelectedElement");
+		    $("#editoroverlay" ).remove();
 		}
 	    });
 	}

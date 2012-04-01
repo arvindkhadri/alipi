@@ -67,3 +67,44 @@
     font-size:20px;
     font-weight:bold;
 }
+
+#editoroverlay {
+  display: none;
+}
+#editoroverlay label {
+  position: absolute;
+  top: 5%;
+  color: #000;
+  font-size: 25px;
+}
+
+#reference {
+  position: absolute;
+  top: 15%;
+  left:4%;
+  min-width:450px;
+  max-width:450px;
+  min-height:370px;
+  max-height:370px;
+  text-align:justify;
+  color:#000;
+  font-weight:normal;
+}
+#editor {
+  position:absolute;
+  top:15%;
+  left:51%;
+  min-width:450px;
+  max-width:450px;
+  min-height:370px;
+  max-height:370px;
+  font-size:15;
+  text-align:justify;
+  color:#000;
+  font-weight:normal;
+}
+#forprevData {
+  display:none;
+  height:1px;
+  width:1px;
+}
