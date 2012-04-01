@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<title>Directory of Alipi</title>
+<body>
+<div>
+<p>List of links narrated</p>
+{% if name %}
+{% for i in name %}
+{% if i['about'] != 'undefined' %}
+<p><a href="{{i['about']}}">{{ i['about'] }}</a> in <a href="http://y.a11y.in/web?foruri={{ mymodule(i['about']) }}&lang={{i['lang']}}&interactive=1">{{i['lang']}}</a></p>
+<p style="padding:5px">Narrations contributed at:</p>
+{% for x in mylist(myset(i['na'])) %}
+<p><a href="{{x}}" style="padding:5px">{{x}}</a></p>
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% else %}
+<p>Hello world</p>
+{% endif %}
+</div>
+</body>
+</html>

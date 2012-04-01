@@ -1,0 +1,135 @@
+#ren_overlay {
+    height:25px;
+    width:100%;
+    position:fixed;
+    top:0%;
+    left:0%;
+    background-color:rgba(0, 0, 0, 0.4);
+    display:block;
+    text-align:center;
+    font-size:20px;
+    color:#fff;
+}
+
+#close-button {
+    height:20px;
+    margin-right:1px;
+    text-align:center;
+    width:50px;
+    font-size:14px;
+    font-weight:bold;
+    background-color:#2f6270;
+    float:right;
+}
+
+#overlay1 {
+    height:50px;
+    border:2px solid #7b7b7b;
+    margin: 0px auto;
+    z-index:200;
+    width:230px;
+    position:fixed;
+    float:left;
+    top:35px;
+    left:20px;
+    background-color:rgba(0, 0, 0, 0.4);
+}
+
+#overlay2 {
+    height:50px;
+    border:2px solid #7b7b7b;
+    margin: 0px auto;
+    z-index:200;
+    width:140px;
+    position:fixed;
+    float:right;
+    top:35px;
+    right:20px;
+    background-color:rgba(0, 0, 0, 0.4);
+}
+
+#menu-button {
+    text-align:center;
+    font-size:14px;
+    float:left;
+    width:200px;
+    height:30px;
+    margin-top:10px;
+    margin-left:15px;
+}
+
+#edit-button {
+    text-align:center;
+    margin-top:10px;
+    margin-left:20px;
+    width:100px;
+    height:30px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+#editoroverlay {
+  display: none;
+}
+#editoroverlay label {
+  position: absolute;
+  top: 5%;
+  color: #000;
+  font-size: 25px;
+}
+
+#reference {
+  position: absolute;
+  top: 15%;
+  left:4%;
+  min-width:450px;
+  max-width:450px;
+  min-height:370px;
+  max-height:370px;
+  text-align:justify;
+  color:#000;
+  font-weight:normal;
+}
+#editor {
+  position:absolute;
+  top:15%;
+  left:51%;
+  min-width:450px;
+  max-width:450px;
+  min-height:370px;
+  max-height:370px;
+  font-size:15;
+  text-align:justify;
+  color:#000;
+  font-weight:normal;
+}
+#forprevData {
+  display:none;
+  height:1px;
+  width:1px;
+}
+
+#renarrated_overlay {
+  position:fixed;
+  top:0;
+  width:80%;
+  align:center;
+  text-align:center;
+  left:10%;
+  z-index:2147483645;
+}
+
+#pub_overlay {
+  display:none;
+  position:fixed;
+  top:0;
+  width:80%;
+  align:center;
+  text-align:center;
+  left:10%;
+  z-index:2147483645;
+}
+
+#blog-filter {
+  min-width:200px;max-width:200px;
+}

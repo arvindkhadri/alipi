@@ -1,0 +1,42 @@
+<!doctype>
+<head>
+  <style type="text/css" rel="stylesheet">
+  #inputurl {
+  width:85%;
+  height:35px;
+  background-color:#efd;
+  }
+  button {
+  width:12%;
+  background-color:#4d9;
+  height:36px;
+  font-size:20px;
+  font-style:italic;
+}
+</style>
+  <title> Alipi </title>
+  <script type="text/javascript">
+    function wget()
+    {
+    foruri = document.getElementById("inputurl").value;
+    if(foruri.substring(0,7) == "http://") {
+    window.open("http://127.0.0.1:5000/?foruri=" + encodeURIComponent(foruri));
+    }
+    else if (foruri.substring(0,8) == "https://") {
+        window.open("http://127.0.0.1:5000/?foruri=" + encodeURIComponent(foruri));
+    }
+    else {
+    alert("Please enter 'HTTP' protocoled URL");
+    }
+    }
+</script>
+    
+</head>
+<body>
+  <fieldset>
+    <legend> Enter a URL  </legend>
+  <input id="inputurl" placeholder="http://a11y.in/" />
+  <button type="submit" onClick="wget()"> Get</button>
+  </fieldset>
+</body>
+</html>

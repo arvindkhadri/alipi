@@ -240,7 +240,8 @@ function init(){
 
 	// On hover
 	Tips: {  
-	    enable: false,  
+	    enable: true,  
+
 	    onShow: function(tip, node) {
 		ht.tips.config.offsetX = "10";
 		ht.tips.config.offsetY = "10";

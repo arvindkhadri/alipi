@@ -1,0 +1,142 @@
+{"state":[
+	{
+		"name":"Andaman and Nicobar Islands",	
+		"lang":["Hindi", "English", "Bengali", "Malayalam", "Tamil", "Telugu"]	
+	},
+	{
+		"name":"Andhra Pradesh",
+		"lang":["Telugu", "Urdu", "Hindi"]
+	},
+	{
+		"name":"Arunachal Pradesh",
+		"lang":["Assamese", "Axomiya", "Hindi", "English"]
+	},
+	{
+		"name":"Assam",
+		"lang":["Assamese", "Axomiya", "Bengali", "Bodo", "Nepali"]
+	},
+	{
+		"name":"Bihar",
+		"lang":["Maithili", "Hindi", "Urdu", "Santali",	"Bhojpuri"]
+	},
+	{
+		"name":"Chandigarh",
+		"lang": ["Punjabi", "Hindi", "English"]
+	},
+	{
+		"name":"Chhattisgarh",
+		"lang":["Chhattisgarhi", "Hindi", "Santali"]
+	},
+	{
+		"name":"Dadra and Nagar Haveli",
+		"lang": ["Marathi", "Gujarati"]
+	},
+	{ 	
+		"name":"Daman and Diu",
+		"lang":["Gujarati", "English", "Marathi"]
+	},
+	{
+		"name":"Delhi",
+		"lang":["Hindi", "English","Urdu", "Punjabi"]
+	},
+	{
+		"name":"Goa",
+		"lang":["Konkani", "Marathi"]
+	},
+	{ 	
+		"name":"Gujarat",
+		"lang":["Gujarati", "Hindi"]
+	},
+	{ 	
+		"name":"Haryana",
+		"lang":["Hindi", "Punjabi"]
+	},
+	{
+		"name":"Himachal Pradesh",
+		"lang":["Hindi"]
+	},
+	{
+		"name":"Jammu and Kashmir",
+		"lang":["Kashmiri", "Urdu", "Dogri"]
+	},
+	{
+		"name":"Jharkhand",
+		"lang":["Hindi", "Santali"]
+	},
+	{
+		"name":"Karnataka",
+		"lang":["Kannada", "Konkani", "Marathi"]
+	},
+	{
+		"name":"Kerala",
+		"lang":["Malayalam", "English", "Konkani"]
+	},
+	{
+		"name":"Lakshadweep",
+		"lang":["Malayalam"] 
+	},
+	{
+		"name":"Madhya Pradesh",
+		"lang":["Hindi", "Marathi"]
+	},
+	{	
+		"name":"Maharashtra",
+		"lang":["Marathi", "Konkani"]
+	},
+	{
+		"name":"Manipur",
+		"lang":["Meiteilon", "Manipuri"]
+	},
+	{
+		"name":"Meghalaya",
+		"lang":["English", "Khasi", "Garo"]
+	},
+	{
+		"name":"Mizoram",
+		"lang":["Mizo"]
+	},
+	{
+		"name":"Nagaland",
+		"lang":["English"]
+	},
+	{
+		"name":"Orissa",
+		"lang":["Odia","Santali"]
+	},
+	{
+		"name":"Pondicherry",
+		"lang":["French", "Tamil", "English","Malayalam", "Telugu"]
+	},
+	{
+		"name":"Punjab",
+		"lang":["Punjabi"]
+	},
+	{
+		"name":"Rajasthan",
+		"lang":["Hindi", "Rajasthani"]
+	},
+	{
+		"name":"Sikkim",
+		"lang":["Nepali"]
+	},
+	{
+		"name":"Tamil Nadu",
+		"lang":["Tamil"]
+	},
+	{
+		"name":"Tripura",
+		"lang":["Bengali", "Kokborok", "English"]
+	},
+	{
+		"name":"Uttarakhand",
+		"lang":["English", "Hindi", "Urdu", "Sanskrit"]
+	},
+	{
+		"name":"Uttar Pradesh",
+		"lang":["Hindi", "Urdu"]
+	},
+	{
+		"name":"West Bengal",
+		"lang":["Bengali", "English", "Urdu", "Punjabi", "Nepali", "Santali", "Oriya", "Hindi"]
+	}]
+}

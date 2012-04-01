@@ -6780,24 +6780,14 @@ THE SOFTWARE.
 	 onClick:function(y,w){
 // Ajay - Visual target selection
 	     if (this.graph.getNode(y)._angularWidth == 0.5) {
+		 console.log(this.graph.getNode(y).data.band);
 		 if (this.graph.getNode(y).data.band == "Location") {
-		     document.getElementById("loc-select").innerHTML = this.graph.getNode(y).name;
+		     document.getElementById("loc-select").innerHTML = ': ' + this.graph.getNode(y).name;
 		 } else if (this.graph.getNode(y).data.band == "Languages") {
-		     document.getElementById("lang-select").innerHTML = this.graph.getNode(y).name;
+		     document.getElementById("lang-select").innerHTML = ': ' + this.graph.getNode(y).name;
 		 } else	if (this.graph.getNode(y).data.band == "Style") {
-		     document.getElementById("style-select").innerHTML = this.graph.getNode(y).name;
+		     document.getElementById("style-select").innerHTML = ': ' + this.graph.getNode(y).name;
 		 }
-	     }
-	     if (this.graph.getNode(y)._angularWidth == 1 && this.graph.getNode(y).data.band == "Narrations") {
-		 // $( "#narrationsoverlay" ).remove();
-		 // document.removeEventListener("DOMActivate", inits, false);
-		 narrations_div = document.createElement("div");
-		 narrations_div.setAttribute("id", "narrations-div");
-		 narrations_div.setAttribute("alipielements", "alipi");
-		 narrations_div.setAttribute("style", "position:absolute;left:45%;top:5%;width:50%;height:85%;");
-		 document.getElementById('narrationsoverlay').appendChild(narrations_div);
-		 
-		 
 	     }
 // Ajay - end of visual target  selection
 	     var x=this.graph.getNode(y).pos.getc(true);

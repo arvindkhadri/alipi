@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+<body>
+  <input type="text" id="blog" placeholder="Please enter the full url of your blog"></input>
+  <input type="button" id="button" value="Crawl" onclick="crawl();"></input>
+  <script type="text/javascript">
+    function crawl()
+    {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST','http://dev.a11y.in/scrape',true)
+    xhr.send('url='+ document.getElementById('blog').value);
+    document.getElementById('button').disabled = true;
+    }
+  </script>
+</body>
+</html>
