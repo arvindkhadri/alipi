@@ -108,3 +108,28 @@
   height:1px;
   width:1px;
 }
+
+#renarrated_overlay {
+  position:fixed;
+  top:0;
+  width:80%;
+  align:center;
+  text-align:center;
+  left:10%;
+  z-index:2147483645;
+}
+
+#pub_overlay {
+  display:none;
+  position:fixed;
+  top:0;
+  width:80%;
+  align:center;
+  text-align:center;
+  left:10%;
+  z-index:2147483645;
+}
+
+#blog-filter {
+  min-width:200px;max-width:200px;
+}
