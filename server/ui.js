@@ -1,4 +1,4 @@
-	var a11ypi = {
+var a11ypi = {
     auth : " ",
     loc:" ",
     elementTagName: " ",
@@ -19,8 +19,8 @@
 									       return (this.nodeType == 3) && this.nodeValue.match(/\S/);}}
 								       catch(err)
 								       {
-//									       console.log(err.message);
-//									       console.log(this);
+									   //									       console.log(err.message);
+									   //									       console.log(this);
 								       }}).parent().attr('m4pageedittype','text')}); 
 
 
@@ -56,9 +56,9 @@
 	// noteLabel.setAttribute("style", "color:#000;font-size:15px;");
 	// $(noteLabel).insertAfter($(document.getElementsByClassName('ui-button-text')[0].parentNode));
 	
-//	document.getElementsByClassName('ui-button-text')[1].parentNode.style.marginRight = '635px';
-//	document.getElementsByClassName('ui-button-text')[2].parentNode.style.marginRight = '25px';
-//	document.getElementById("ui-dialog-title-editoroverlay").setAttribute("style","font-size:25px;");
+	//	document.getElementsByClassName('ui-button-text')[1].parentNode.style.marginRight = '635px';
+	//	document.getElementsByClassName('ui-button-text')[2].parentNode.style.marginRight = '25px';
+	//	document.getElementById("ui-dialog-title-editoroverlay").setAttribute("style","font-size:25px;");
 
     },
 
@@ -353,162 +353,162 @@
     },
     loadOverlay: function()
     {
-	body = document.body;
-	overlay = document.createElement("div");
-	overlay.setAttribute("id", "renarrated_overlay");
-	overlay.setAttribute("class", "ui-widget-header ui-corner-all");
-	overlay.setAttribute("style", "position:fixed;top:0;width:80%;align:center;text-align:center;left:10%;z-index:2147483645;");
-	body.appendChild(overlay);
-
-	show_box = document.createElement("div");
-	show_box.setAttribute("id", "show-box");
-	show_box.title = "Please choose one of the languages";
-	body.appendChild(show_box);
-
-	show_links = document.createElement("div");
-	show_links.setAttribute("id", "show-links");
-	show_links.title = "Please choose one of the links";
-	body.appendChild(show_links);
-
-	edit_current = document.createElement("input");
-        edit_current.setAttribute("id", "edit-current");
-	edit_current.setAttribute("type", "submit");
-	edit_current.setAttribute("onclick", "a11ypi.editPage();");
-	edit_current.setAttribute("value", "Re-narrate this page");
-	overlay.appendChild(edit_current);
-
-	see_narration = document.createElement("input");
-	see_narration.setAttribute("id", "see-narration");
-	see_narration.setAttribute("type", "submit");
-	see_narration.setAttribute("onclick", "a11ypi.showBox();");
-	see_narration.setAttribute("value", "See narrations");
-	see_narration.disabled = true;
-	overlay.appendChild(see_narration);
+	var overlay_template = '<div id="renarrated_overlay" class="ui-widget-header ui-corner-all">'+
+            '<input id="edit-current" type="submit" onclick="a11ypi.editPage();" value="Renarrate this page">'+
+            '<input id="see-narration" type="submit" onclick="a11ypi.showBox();" value="See Narrations">'+
+            '<input id="see-links" type="submit" onclick="a11ypi.showBox1();" value="List of Pages Narrated">'+
+            '<select id="blog-filter" onclick="a11ypi.blogFilter();"><option>Choose a blog</option></select>'+
+            '<input id="go" type="submit" onclick="a11ypi.go();" value="Go">'+
+            '</div><div id="show-box"></div><div id="show-links"></div>';
+	
+	var pub_overlay_template = '<div id="pub_overlay" class="ui-widget-header ui-corner-all">'+
+	    '<input id="back" type="submit" onclick="a11ypi.back;" value="Back">'+
+            '<input id="edit-current" type="submit" onclick="a11ypi.help_window();" value="Help">'+
+            '<input id="see-narration" type="submit" onclick="a11ypi.showBox();" value="Undo">'+
+            '<input id="see-links" type="submit" onclick="a11ypi.publish();" value="Publish">';	
+	
+	$('body').append(overlay_template);
+	$('body').append(pub_overlay_template);
 	a11ypi.ajax();
-
-	see_links = document.createElement("input");
-	see_links.setAttribute("id", "see-links");
-	see_links.setAttribute("type", "submit");
-	see_links.setAttribute("onclick", "a11ypi.showBox1();");
-	see_links.setAttribute("value", "List of pages narrated");
-	see_links.disabled = true;
-	overlay.appendChild(see_links);
 	a11ypi.ajaxLinks1();
-
-	blog_filter = document.createElement("select");
-	blog_filter.setAttribute("id", "blog-filter");
-	blog_filter.setAttribute("style", "min-width:200px;max-width:200px;");
-	blog_filter.setAttribute("onclick", "a11ypi.blogFilter();");
-	blog_option = document.createElement("option");
-	blog_option.textContent = "Choose a blog name";
-	blog_filter.appendChild(blog_option);
-	blog_filter.disabled = true;
-	overlay.appendChild(blog_filter);
-
-	go = document.createElement("input");
-	go.setAttribute("id", "go");
-	go.setAttribute("type", "submit");
-	go.setAttribute("onclick", "a11ypi.go();");
-	go.setAttribute("value", "Go");
 	go.disabled = true;
-	overlay.appendChild(go);
     },
+    
+    help_window: function() {
+	var help_template = '<div id="helpwindow" class="ui-widget-header ui-corner-all">'+
+            '<label id="txtlab" style="color:#000;font-weight:normal;">TEXT :- It will popup a window and allow you to'+
+	    'modify/replace text of select element on editor(right) box.'+
+	    '<p>To delete - Empty the editor(right) box and press "OK".'+
+	    '</p><p style="margin-left:50px";>See narrations - If the selected element has other narrations then it will list, on click.'+
+	    '</p><p style="margin-left:50px";>Audio - It allows you to enter audio URL.</p>'+
+	    'IMAGE:- <p style="margin-left:50px";> Replace - It allows you to enter image URL.'+
+	    '</p><p style="margin-left:50px";> See narrations - If the selected element has other image narration then it will show, on click.</p>'+
+	    'UNDO:- Use it when you want to revert back to previous change.<p style="margin-left:50px";>'+
+	    'Revert deleted - Press \'Undo\' button twice. </p>'+
+	    'PUBLISH:- To publish your crafted changes to database and blog (our/your).'+
+	    '<p style="margin-left:50px";>States - To the place you are targetting.</p><p style="margin-left:50px";>'+
+	    'Languages - In language you publishing.</p><p style="margin-left:50px";>Style - In what style you crafted?'+
+	    '</p><p style="margin-left:50px";> Author - Who is a crafter?</p><p style="margin-left:50px";>'+
+	    'Our blog - If you don\'t have blogspot ID then check this to post it to our blog.</p>';
+
+	$('body').append(help_template);
+    
+	$(function() {
+	    $( "#helpwindow" ).dialog({
+		width:800,
+		height:550,
+		modal: true,
+		close: function() {
+		    $("#helpwindow").remove();
+		}
+	    });
+	});
+    },  
+    
+    publish: function() {
+
+	var publish_template = '<div id="targetoverlay" class="ui-widget-header ui-corner-all">Target'+
+	    '<span id="infovis"></span><label style="position:absolute;top:12%;left:72%;color:#000;">TARGET</label> '+
+	    '<label style="position:absolute;top:25%;left:62%;color:#000;">Location :</label> '+
+	    '<label id="location" style="position:absolute;top:25%;left:75%;color:#000;"</label>'+
+	    '<label style="position:absolute;top:40%;left:62%;color:#000;">Language :</label> '+
+	    '<label id="language" style="position:absolute;top:40%;left:75%;color:#000;"</label>'+
+	    '<label style="position:absolute;top:55%;left:62%;color:#000;">Style :</label> '+
+	    '<label id="style" style="position:absolute;top:55%;left:75%;color:#000;'+
+	    '<label style="position:absolute;top:70%;left:62%;color:#000;">Style :</label> '+
+	    '<input id="auth-select" type="text" style="position:absolute;top:70%;left:75%;width:160px;"></input>'+
+	    '<input id="our-check" type="radio" name="blog" style="position:absolute;top:85%;left:61%;width:160px;"></input>'+
+	    '<label style="position:absolute;top:85%;left:64%;color:#000;">Our Blog</label>'+
+	    '<input id="your-check" type="radio" name="blog" style="position:absolute;top:85%;left:75%;"></input>'+
+	    '<label style="position:absolute;top:85%;left:78%;color:#000;">Your Blog</label>'+
+	    '</div>';
+
+	$('body').append(publish_template);
+	document.addEventListener("DOMActivate", init, false);
+	
+	    $(function() {
+		$( "#targetoverlay" ).dialog({
+		    height:500,
+		    width:800,
+		    modal: true,
+		    buttons: {
+			OK: function() {
+	   overlayBar = new OverlayBar(pageEditor);
+			    overlayBar.blogpost();
+			} 
+		    },
+		    close: function() {
+			$( "#targetoverlay" ).hide();
+			document.removeEventListener("DOMActivate", init, false);
+		    }
+		});
+	    });
+    },
+    
     showBox: function() {
 	$(function() {
 	    $( "#show-box" ).dialog( "destroy" );
 	    
-	    $( "#show-box" ).dialog({
-		width: 300,
-		height: 300,
-		modal: true
-	    });
+	$( "#show-box" ).dialog({
+	    width: 300,
+	    height: 300,
+	    modal: true
 	});
-	a11ypi.createMenu(a11ypi.showbox);
-    },
-    ajaxLinks1: function() {
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function()
+    });
+    a11ypi.createMenu(a11ypi.showbox);
+},
+ajaxLinks1: function() {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function()
+    {
+	if(xhr.readyState == 4)
 	{
-	    if(xhr.readyState == 4)
+	    if(xhr.responseText == "empty")
+	    { }
+	    else
 	    {
-		if(xhr.responseText == "empty")
-		{ }
-		    else
-		{
-		    document.getElementById("see-links").disabled = false;
-		    a11ypi.showlinks = JSON.parse(xhr.responseText);
-		}
+		document.getElementById("see-links").disabled = false;
+		a11ypi.showlinks = JSON.parse(xhr.responseText);
 	    }
 	}
-	xhr.open("POST","http://dev.a11y.in/domain",true);
-	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	d = window.location.search.split('?')[1];
-	var a =[];
-	for (var i = 0;i<d.split('&').length;i++){ 
-	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
-	}
-	xhr.send('url='+a['foruri'])
-    },
-    showBox1: function() {
-	$(function() {
-	    $( "#show-links" ).dialog( "destroy" );
-	    
-	    $( "#show-links" ).dialog({
-		width: 500,
-		height: 300,
-		modal: true
-	    });
+    }
+    xhr.open("POST","http://dev.a11y.in/domain",true);
+    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    d = window.location.search.split('?')[1];
+    var a =[];
+    for (var i = 0;i<d.split('&').length;i++){ 
+	a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
+    }
+    xhr.send('url='+a['foruri'])
+},
+showBox1: function() {
+    $(function() {
+	$( "#show-links" ).dialog( "destroy" );
+	
+	$( "#show-links" ).dialog({
+	    width: 500,
+	    height: 300,
+	    modal: true
 	});
-	a11ypi.createDomainMenu();
-    },
-    createDomainMenu: function() {
-	var xyz = document.getElementById("show-links");
-	xyz.innerHTML = "";
-	menu_list = a11ypi.showlinks;
-	for(var i=0; i<menu_list.length;i++)
-	{
-	    var para = document.createElement("p");
-	    var newel = document.createElement("a");
-	    newel.textContent = menu_list[i];
-	    newel.setAttribute("href", "http://dev.a11y.in/web?foruri="+encodeURIComponent(menu_list[i]));
-	    newel.setAttribute("class","alipiShowLink");
-	    para.appendChild(newel);
-	    xyz.appendChild(para);
-	}
-	$('.alipiShowLink').hover(
-	    function() {
-		var xhr = new XMLHttpRequest();
-		xhr.onreadystatechange = function()
-		{
-		    if(xhr.readyState == 4)
-		    {
-			if(xhr.responseText == "empty")
-			{ }
-			     else
-			{
-			    menu_list = JSON.parse(xhr.responseText);
-			    x = '';
-			    for(i=0; i<menu_list.length; i++) {
-				if (i == menu_list.length-1) {
-				    x += menu_list[i];
-				} else {
-				    x += menu_list[i] + ", ";
-				}
-			    }
-			    document.getElementById('show-links').title = x;
-			}
-		    }
-		}
-		xhr.open("POST","http://dev.a11y.in/menu",true);
-		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-		xhr.send('url='+encodeURIComponent($(this).attr('href'))) ;
-	    },
-	    function () {document.getElementById('show-links').title= '';}
-	);
-    },
-    blogFilter: function() {
-	if (a11ypi.blog_flag == false) {
-	    a11ypi.blog_flag = true;
+    });
+    a11ypi.createDomainMenu();
+},
+createDomainMenu: function() {
+    var xyz = document.getElementById("show-links");
+    xyz.innerHTML = "";
+    menu_list = a11ypi.showlinks;
+    for(var i=0; i<menu_list.length;i++)
+    {
+	var para = document.createElement("p");
+	var newel = document.createElement("a");
+	newel.textContent = menu_list[i];
+	newel.setAttribute("href", "http://dev.a11y.in/web?foruri="+encodeURIComponent(menu_list[i]));
+	newel.setAttribute("class","alipiShowLink");
+	para.appendChild(newel);
+	xyz.appendChild(para);
+    }
+    $('.alipiShowLink').hover(
+	function() {
 	    var xhr = new XMLHttpRequest();
 	    xhr.onreadystatechange = function()
 	    {
@@ -516,61 +516,100 @@
 		{
 		    if(xhr.responseText == "empty")
 		    { }
-		        else
+		    else
 		    {
-			var sel = document.getElementById("blog-filter");
-			var menu_list = JSON.parse(xhr.responseText);
-	//		blogArray = [];
-			// for (var i=0; i< menu_list.length; i++)
-			// {
-			//     blogArray[i] = menu_list[i].split("http://")[1].split(".com")[0] + ".com";
-			// }
-			// blogArray.sort();
-			for (var i=0; i < menu_list.length; i++)
-			{
-			    // if ( i == 0 )
-			    // {
-				opt = document.createElement("option");
-				opt.textContent = menu_list[i];
-				sel.appendChild(opt);
+			menu_list = JSON.parse(xhr.responseText);
+			x = '';
+			for(i=0; i<menu_list.length; i++) {
+			    if (i == menu_list.length-1) {
+				x += menu_list[i];
+			    } else {
+				x += menu_list[i] + ", ";
+			    }
 			}
-			    // else if(blogArray[i] == blogArray[i-1])
-			    // { }
-			    //     else 
-			    // {
-			    // 	opt = document.createElement("option");
-			    // 	opt.textContent = blogArray[i];
-			    // 	sel.appendChild(opt);
-			    // }
-		    
+			document.getElementById('show-links').title = x;
 		    }
 		}
 	    }
-	    xhr.open("POST","http://dev.a11y.in/blog",true);
+	    xhr.open("POST","http://dev.a11y.in/menu",true);
 	    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	    d = window.location.search.split('?')[1];
-	    var a =[];
-	    for (var i = 0;i<d.split('&').length;i++){ 
-		a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
+	    xhr.send('url='+encodeURIComponent($(this).attr('href'))) ;
+	},
+	function () {document.getElementById('show-links').title= '';}
+    );
+},
+blogFilter: function() {
+    if (a11ypi.blog_flag == false) {
+	a11ypi.blog_flag = true;
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function()
+	{
+	    if(xhr.readyState == 4)
+	    {
+		if(xhr.responseText == "empty")
+		{ }
+		else
+		{
+		    var sel = document.getElementById("blog-filter");
+		    var menu_list = JSON.parse(xhr.responseText);
+		    //		blogArray = [];
+		    // for (var i=0; i< menu_list.length; i++)
+		    // {
+		    //     blogArray[i] = menu_list[i].split("http://")[1].split(".com")[0] + ".com";
+		    // }
+		    // blogArray.sort();
+		    for (var i=0; i < menu_list.length; i++)
+		    {
+			// if ( i == 0 )
+			// {
+			opt = document.createElement("option");
+			opt.textContent = menu_list[i];
+			sel.appendChild(opt);
+		    }
+		    // else if(blogArray[i] == blogArray[i-1])
+		    // { }
+		    //     else 
+		    // {
+		    // 	opt = document.createElement("option");
+		    // 	opt.textContent = blogArray[i];
+		    // 	sel.appendChild(opt);
+		    // }
+		    
+		}
 	    }
-	    xhr.send('url='+a['foruri']);
 	}
-    },
-    go: function() {
+	xhr.open("POST","http://dev.a11y.in/blog",true);
+	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	d = window.location.search.split('?')[1];
 	var a =[];
 	for (var i = 0;i<d.split('&').length;i++){ 
 	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
 	}
-	if (document.getElementById("blog-filter").value == "Choose a blog name")
-	{    }
-	else {
-	    window.open("http://dev.a11y.in/web?foruri=" + a['foruri'] + "&blog=" + document.getElementById("blog-filter").value);
-	}},
-    editPage: function() {
-	a11ypi.testContext(); document.addEventListener('click',pageEditor.startEdit, false);
-	//page_edit('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');
-	document.getElementById("renarrated_overlay").style.display = "none";
-    },
+	xhr.send('url='+a['foruri']);
+    }
+},
+go: function() {
+    var a =[];
+    for (var i = 0;i<d.split('&').length;i++){ 
+	a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
+    }
+    if (document.getElementById("blog-filter").value == "Choose a blog name")
+    {    }
+    else {
+	window.open("http://dev.a11y.in/web?foruri=" + a['foruri'] + "&blog=" + document.getElementById("blog-filter").value);
+    }},
+editPage: function() {
+    a11ypi.testContext();
+    $('#renarrated_overlay').hide();
+    $('#pub_overlay').show();
+    // document.addEventListener('click',pageEditor.startEdit, false);
+    $(document).click(pageEditor.startEdit);
+    //page_edit('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');
+    document.getElementById("renarrated_overlay").style.display = "none";
+},
+showTopBar: function() {
+    
+}
 };
 
 // $('html').bind('keypress', function(e)

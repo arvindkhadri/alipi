@@ -14,7 +14,7 @@ var pageEditor = {
       _this = pageEditor;
 	    //event.target.removeAttribute('m4pageedittype');
       $(event.target).removeAttr('m4pageedittype');
-      $(body).append(_this.template);
+      $('body').append(_this.template);
 	    /*editor = document.createElement("div");
 	    editor.setAttribute("id", "editoroverlay");
 	    editor.setAttribute("title", "Edit window");
