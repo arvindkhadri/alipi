@@ -49,9 +49,9 @@ def start_page() :
         script_edit = root.makeelement('script')
         root.body.append(script_test)
         root.body.append(script_edit)
-        script_test.set("src", "http://localhost:60/alipi/server/ui.js")
+        script_test.set("src", "http://localhost/Github/alipi/server/ui.js")
         script_test.set("type", "text/javascript")
-        script_edit.set("src", "http://localhost:60/alipi/server/wsgi/pageEditor.js")
+        script_edit.set("src", "http://localhost/Github/alipi/server/wsgi/pageEditor.js")
         script_edit.set("type","text/javascript")
         
         script_jq_mini = root.makeelement('script')
@@ -63,16 +63,16 @@ def start_page() :
         root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://localhost:60/alipi/server/stylesheet.css")
+        style.set("href", "http://localhost/Github/alipi/server/stylesheet.css")
 
         jit_script = root.makeelement('script')
         root.body.append(jit_script)
-        jit_script.set("src", "http://localhost:60/alipi/server/jit.js")
+        jit_script.set("src", "http://localhost/Github/alipi/server/jit.js")
         jit_script.set("type", "text/javascript")
 
         tree_script = root.makeelement('script')
         root.body.append(tree_script)
-        tree_script.set("src", "http://localhost:60/alipi/server/tree.js")
+        tree_script.set("src", "http://localhost/Github/alipi/server/tree.js")
         tree_script.set("type", "text/javascript")
 
         script_jq_cust = root.makeelement('script')
@@ -101,9 +101,9 @@ def start_page() :
         script_jq_mini.set("src", "http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js")
         script_jq_mini.set("type", "text/javascript")
 
-        script_test.set("src", "http://localhost:60/alipi/server/ui.js")
+        script_test.set("src", "http://localhost/Github/alipi/server/ui.js")
         script_test.set("type", "text/javascript")
-        script_edit.set("src", "http://localhost:60/alipi/server/wsgi/page_edit.js")
+        script_edit.set("src", "http://localhost/Github/alipi/server/wsgi/page_edit.js")
         script_edit.set("type","text/javascript")
         script_jqui = root.makeelement('script')
         script_jqui.set("type","text/javascript")
@@ -180,7 +180,7 @@ def start_page() :
         d['lang'] = request.args['lang']
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        script_test.set("src", "http://localhost:60/alipi/server/ui.js")
+        script_test.set("src", "http://localhost/Github/alipi/server/ui.js")
         script_test.set("type", "text/javascript")
         root.body.set("onload","a11ypi.ren()");
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
@@ -190,7 +190,7 @@ def start_page() :
         script_jqui = root.makeelement('script')
 
         script_test = root.makeelement('script')
-        script_test.set("src", "http://localhost:60/alipi/server/ui.js")
+        script_test.set("src", "http://localhost/Github/alipi/server/ui.js")
         script_test.set("type", "text/javascript")
         root.body.append(script_test)
         
@@ -200,7 +200,7 @@ def start_page() :
         root.body.append(script_jq_mini)
 
         script_edit = root.makeelement('script')
-        script_edit.set("src", "http://localhost:60/alipi/server/wsgi/page_edit.js")
+        script_edit.set("src", "http://localhost/Github/alipi/server/wsgi/page_edit.js")
         script_edit.set("type","text/javascript")
         root.body.append(script_edit)
         
@@ -231,7 +231,7 @@ def start_page() :
         tweet.set("class", "twitter-share-button")
         tweet.set("data-via", "a11ypi")
         tweet.set("data-lang", "en")
-        tweet.set("data-url", "http://localhost:60/alipi/web?foruri={0}&lang={1}&interactive=1".format(quote_plus(d['foruri']),request.args['lang']))
+        tweet.set("data-url", "http://localhost/Github/alipi/web?foruri={0}&lang={1}&interactive=1".format(quote_plus(d['foruri']),request.args['lang']))
         tweet.textContent = "Tweet"
         ren_overlay.append(tweet)
 
@@ -241,7 +241,7 @@ def start_page() :
 
         fblike = root.makeelement("div")
         fblike.set("class", "fb-like")
-        fblike.set("data-href", "http://localhost:60/alipi/web?foruri={0}&lang={1}&interactive=1".format(quote_plus(d['foruri']),request.args['lang']))
+        fblike.set("data-href", "http://localhost/Github/alipi/web?foruri={0}&lang={1}&interactive=1".format(quote_plus(d['foruri']),request.args['lang']))
         fblike.set("data-send", "true")
         fblike.set("data-layout", "button_count")
         fblike.set("data-width", "50")
@@ -254,7 +254,7 @@ def start_page() :
         root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://localhost:60/alipi/server/stylesheet.css")
+        style.set("href", "http://localhost/Github/alipi/server/stylesheet.css")
         
         overlay2 = root.makeelement('div')
         root.body.append(overlay2)
@@ -269,7 +269,7 @@ def start_page() :
 
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        script_test.set("src", "http://localhost:60/alipi/server/ui.js")
+        script_test.set("src", "http://localhost/Github/alipi/server/ui.js")
         script_test.set("type", "text/javascript")
         root.body.set("onload","a11ypi.filter(); a11ypi.tweet(); a11ypi.facebook();");
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
@@ -278,7 +278,7 @@ def start_page() :
     elif request.args.has_key('interactive') == False and request.args.has_key('blog') == True:    
         script_test = root.makeelement('script')
         root.body.append(script_test)
-        script_test.set("src", "http://localhost:60/alipi/server/ui.js")
+        script_test.set("src", "http://localhost/Github/alipi/server/ui.js")
         script_test.set("type", "text/javascript")
         
         script_jq_mini = root.makeelement('script')
@@ -301,7 +301,7 @@ def start_page() :
         root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
-        style.set("href", "http://localhost:60/alipi/server/stylesheet.css")
+        style.set("href", "http://localhost/Github/alipi/server/stylesheet.css")
 
         collection = g.db['post']
         if collection.find_one({"about" : request.args['foruri']}) is not None:

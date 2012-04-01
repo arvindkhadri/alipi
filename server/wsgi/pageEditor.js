@@ -10,64 +10,31 @@ var pageEditor = {
     {
 	if($(event.target).attr('m4pageedittype') == 'text')
 	{
+	    $('#pub_overlay').slideDown();
+	    $('#element_edit_overlay').slideDown();
+
 	    _this = pageEditor;
 	    $(event.target).removeAttr('m4pageedittype');
 	    $(event.target).children().removeAttr('m4pageedittype');
-	    $(body).append(_this.template);
+	    $('body').append(_this.template);
 	    var tag = event.target.nodeName;
+//	    $(event.target).css('border-style', 'dotted');
+
 	    $('#reference').text('<'+tag+'>'+$(event.target).html()+'</'+tag+'>');
 
 	    $('#editor').html($(event.target).html());
-
-	    $( "#editoroverlay" ).dialog({
-		width:1000,
-		height:550,
-		modal: true,
-		buttons: {
-		    "+": function() {
-
-			if($('#editor').css('font-size') >= '30px') {
-			    // passthrough
-			} 
-			else {
-
-			    var font = parseFloat($('#editor').css('font-size')) + 1;
-			    $('#editor').css('font-size', font+'px');
-			    font = parseFloat($('#reference').css('font-size')) + 1;
-			    $('#reference').css('font-size', font+'px');
-			}
-		    },
-		    "-": function() {
-
-			if($('#editor').css('font-size') <= '10px') {
-			} 
-			else {
-
-			    var font = parseFloat($('#editor').css('font-size')) - 1;
-			    $('#editor').css('font-size', font+'px');
-			    font = parseFloat($('#reference').css('font-size')) - 1;
-			    $('#reference').css('font-size', font+'px');
-
-			}
-		    },
-		    OK: function() {
-			event.target.innerHTML = document.getElementById('editor').innerHTML;
-			$(event.target).html($('#editor').html());
-			$(event.target).attr('m4pageedittype','text');
-			$(event.target).children().attr('m4pageedittype','text');
-			$( "#editoroverlay" ).remove();
-		    }
-		},
-		close: function() {
-		    $("#editoroverlay" ).remove();
-		}
-	    });
+	    
+	    $('#edit-text').attr('disabled', false);
+	    $('#add-audio').attr('disabled', false);
+	    $('#add-link').attr('disabled', false);
+	    $('#replace-image').attr('disabled', true);
 	}
 	else if($(event.target).attr('m4pageedittype') == 'image')
 	{
-	    var src = prompt("Enter the url");
-	    $(event.target).attr('src',src);
-	    console.log(DOM.getXpath(event.target));
+	    $('#replace-image').attr('disabled', false);
+	    $('#add-audio').attr('disabled', false);
+	    $('#add-link').attr('disabled', false);
+	    $('#edit-text').attr('disabled', true);
 	}
 	
     },
