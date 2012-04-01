@@ -38,10 +38,15 @@ var pageEditor = {
 	}
 	
     },
+    cleanUp: function(element)
+    {
+	$(element).attr('m4pageedittype','text');
+	$(element).children().attr('m4pageedittype','text');
+    },
 };
 
 var DOM = {
-    getXpath : function getXPath(element)
+    getXpath : function (element)
     {
 	var str = '';
 	var currentNode = element;
@@ -93,34 +98,73 @@ var DOM = {
 	}
 	return path;
     },
+    settextContent : function(element, content){
+	$(element).html(content);
+    },
+    gettextContent:function(element)
+    {
+	return $(element).html();
+    },
+
+// (function() {  Re-wrote this portion in simpler terms.  TO BE CLEANED.
+// 	if (document.all) {
+// 	    // IE specific
+// 	    return function textContent(element, content) {
+// 		if (content) {
+// 		    element.innerText = content;
+// 		}
+// 		return element.innerText;
+// 	    }
+// 	} else {
+// 	    return function textContent(element, content) {
+// 		if (element == undefined) {
+// 		    element = document.getElementById("alipiSelectedElement");
+// 		    content = document.getElementById("alipiSelectedElement").innerHTML;
+// 		    element.innerHTML = content;
+// 		} else if (content) {
+// 		    element.innerHTML = content;
+// 		}
+// 		return element.innerHTML;
+// 	    }
+// 	}
+//     })(),
 };
 
 var util = {
-    historyObj : function EditCommandHistory(pageEditor) {
-	var self = this, history = [], imageSrc, imageMatcher, imageHeight, imageWidth, buildDataString, anchorElement, anchorElementId, ajaxResultProcessor = new AjaxResultProcessor();
+    // historyObj : function (pageEditor) {
+    // 	var self = this, history = [], imageSrc, imageMatcher, imageHeight, imageWidth, buildDataString, anchorElement, anchorElementId, ajaxResultProcessor = new AjaxResultProcessor();
+    history: [],
 
-	this.hasChangesPending = function hasChangesPending() {
-	    return history.length > 0;
-	};
-	this.formUncomplete = function formUnomplete(){
+    forEach : function(array, callback) {
+	    var i = 0, length = array.length, value;
+
+	    if (length) {
+		for (value = array[0]; i < length && callback.call(value, i, value) !== false; value = array[++i]) {
+		}
+	    }
+    },
+    hasChangesPending : function(){
+	    return util.history.length > 0;
+	},
+	formUncomplete : function formUnomplete(){
 	    return (locName == '' &&  langName=='' && styleName == '' );
-	};
+	},
 	
-	this.apply = function apply(command) {
+    recordHistory: function (command, selectedElement) {
 	    var poofPosition, poofDiv;
 
 	    switch (command.command) {
             case 'TEXT_UPDATE':
-		command.element = document.getElementById("alipiSelectedElement");
-		command.previousData = document.getElementById("forPrevData").innerHTML;
-		command.data = document.getElementById("editor").innerHTML;
-		DOM.textContent(command.element, command.data);
-		pageEditor.showMessage('Text changed');
+		command.element = selectedElement;
+		command.previousData = $(selectedElement).html();
+		command.data = $("#editor").html();
+		DOM.settextContent(command.element, command.data);
+		//pageEditor.showMessage('Text changed');
 		break;
             case 'AUDIO_SRC_UPDATE':
 		textElementPopup.hasAudio = true;	
 		command.previousData = "";
-		pageEditor.showMessage('Audio updated');
+		//pageEditor.showMessage('Audio updated');
 		break;
 
             // case 'DELETE':
@@ -197,14 +241,14 @@ var util = {
 		console.error('Unknown command:', command);
 	    }
 
-	    history.push(command);
-	};
+	    util.history.push(command);
+	},
 
-	this.undo = function undo() {
+    undoChanges:function (command) {
 	    var imageElement, command;
 
 	    if (self.hasChangesPending()) {
-		command = history.pop();
+		command = util.history.pop();
 		switch (command.command) {
 		case 'TEXT_UPDATE':
 		    console.log(command.element.innerHTML);
@@ -257,9 +301,9 @@ var util = {
 	    } else {
 		pageEditor.showMessage('Nothing to undo');
 	    }
-	};
+	},
 
-	this.publish = function publish() {
+    publish:function (){
 	    var result;
 	    if(document.getElementById('your-check').checked)
 		{
@@ -273,37 +317,37 @@ var util = {
 	    		      ajaxResultProcessor.processPublishedResponse(result);
 	    		  });
 	    }
-	};
+	},
 	
-	buildDataString = function buildDataString() {
+    buildDataString : function (){
 	    var check_xpath = [], temp_history = [], index = [];
-	    for(x=0; x<history.length; x++) {
-		check_xpath.push(history[x].xpath);
+	    for(x=0; x<util.history.length; x++) {
+		check_xpath.push(util.history[x].xpath);
 	    }
 	    for(i=0; i<check_xpath.length-1; i++) {
 		for(j=i+1; j<check_xpath.length; j++) {
-		    if ((check_xpath[i] == check_xpath[j]) && (history[i].elementType == history[j].elementType)) {
+		    if ((check_xpath[i] == check_xpath[j]) && (util.history[i].elementType == util.history[j].elementType)) {
 			    index.push(i);
 			} 
 		}
 	    }
 	    if (index.length > 0) {
 		for (var z=0; z<index.length; z++) {
-		    delete history[index[z]];
+		    delete util.history[index[z]];
 		}
 	    }
 	    
-	    for (var x=0; x<history.length; x++) {
-		if (history[x] != undefined) {
-		    temp_history.push(history[x]);
+	    for (var x=0; x<util.history.length; x++) {
+		if (util.history[x] != undefined) {
+		    temp_history.push(util.history[x]);
 		}
 	    }
 
-	    history = temp_history;
+	    util.history = temp_history;
 	    console.log("hello" + styleSelect.innerHTML);
 	    var command, buffer;
 	    buffer = new UTIL.StringBuffer();
-	    UTIL.forEach(history, function(index, command) {
+	    util.forEach(util.history, function(index, command) {
 		    buffer.append('###'); //separates the commands
 		    buffer.append('about=');  //url=about    //removed '&' on purpose
 		    buffer.append(window.location.search.split('=')[1]);
@@ -329,6 +373,36 @@ var util = {
 		    }
 		});  	    console.log(buffer.toString());	    
 	    return buffer.toString().substring(3);
-	}; 
+	},
+};
+
+var manager = {
+    updateText:function (selectedElement) {
+	    var command = {
+		command : 'TEXT_UPDATE',
+		element : selectedElement,
+		url : window.location.href,
+		xpath : DOM.getXpath(selectedElement),
+		elementType : 'text',
+		data : DOM.gettextContent(selectedElement),
+		previousData : $("editor").html()
+            }; 
+	util.recordHistory(command, selectedElement); 
+	    if (DOM.gettextContent(selectedElement).length == 0) {
+		manager.deleteElement(selectedElement);
+	    }
     },
-}
+    deleteElement : function(selectedElement) {
+	    var command = {
+		command : 'DELETE',
+		element : selectedElement,
+		url : '',
+		elementType : 'text',
+		data : '',
+		xpath : '',
+		data : '',
+		previousData : ''
+	    };
+	util.recordHistory(command, selectedElement); 
+    },
+};

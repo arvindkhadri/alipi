@@ -634,50 +634,49 @@ var a11ypi = {
     },
 
     displayEditor: function() {
-	$( "#editoroverlay" ).dialog({
-	    width:1000,
-	    height:550,
-	    modal: true,
-	    buttons: {
-		"+": function() {
+	    $( "#editoroverlay" ).dialog({
+		width:1000,
+		height:550,
+		modal: true,
+		buttons: {
+		    "+": function() {
 
-		    if($('#editor').css('font-size') >= '30px') {
-			// passthrough
-		    } 
-		    else {
+			if($('#editor').css('font-size') >= '30px') {
+			    // passthrough
+			} 
+			else {
 
-			var font = parseFloat($('#editor').css('font-size')) + 1;
-			$('#editor').css('font-size', font+'px');
-			font = parseFloat($('#reference').css('font-size')) + 1;
-			$('#reference').css('font-size', font+'px');
+			    var font = parseFloat($('#editor').css('font-size')) + 1;
+			    $('#editor').css('font-size', font+'px');
+			    font = parseFloat($('#reference').css('font-size')) + 1;
+			    $('#reference').css('font-size', font+'px');
+			}
+		    },
+		    "-": function() {
+
+			if($('#editor').css('font-size') <= '10px') {
+			} 
+			else {
+
+			    var font = parseFloat($('#editor').css('font-size')) - 1;
+			    $('#editor').css('font-size', font+'px');
+			    font = parseFloat($('#reference').css('font-size')) - 1;
+			    $('#reference').css('font-size', font+'px');
+
+			}
+		    },
+		    OK: function() {
+			pageEditor.cleanUp(event.target);
+			manager.updateText(event.target);
+			$( "#editoroverlay" ).remove();
+
 		    }
 		},
-		"-": function() {
-
-		    if($('#editor').css('font-size') <= '10px') {
-		    } 
-		    else {
-
-			var font = parseFloat($('#editor').css('font-size')) - 1;
-			$('#editor').css('font-size', font+'px');
-			font = parseFloat($('#reference').css('font-size')) - 1;
-			$('#reference').css('font-size', font+'px');
-
-		    }
-		},
-		OK: function() {
-		    event.target.innerHTML = document.getElementById('editor').innerHTML;
-		    $(event.target).html($('#editor').html());
-		    $(event.target).attr('m4pageedittype','text');
-		    $(event.target).children().attr('m4pageedittype','text');
-		    $( "#editoroverlay" ).remove();
+		close: function() {
+		    pageEditor.cleanUp(event.target);
+		    $("#editoroverlay" ).remove();
 		}
-	    },
-	    close: function() {
-		$("#editoroverlay" ).remove();
-	    }
-	});
-
+	    });
     },
 
     imageReplacer: function() {
