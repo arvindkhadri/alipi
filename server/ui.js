@@ -666,14 +666,14 @@ var a11ypi = {
 			}
 		    },
 		    OK: function() {
-			pageEditor.cleanUp(event.target);
-			manager.updateText(event.target);
+			pageEditor.cleanUp(pageEditor.event.target);
+			manager.updateText(pageEditor.event.target);
 			$( "#editoroverlay" ).remove();
 
 		    }
 		},
 		close: function() {
-		    pageEditor.cleanUp(event.target);
+		    pageEditor.cleanUp(pageEditor.event.target);
 		    $("#editoroverlay" ).remove();
 		}
 	    });

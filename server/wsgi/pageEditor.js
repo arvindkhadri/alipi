@@ -6,10 +6,12 @@ var pageEditor = {
         '<div id="editor" alipielements="alipi" contenteditable="true"></div>'+
         '<div id="forPrevData"></div>'+
         '</div>', 
+    event: 0 , //Use this var to store the event object, which will be passed for editor.
     startEdit: function(event)
     {
 	if($(event.target).attr('m4pageedittype') == 'text')
 	{
+	    pageEditor.event = event;
 	    $('#pub_overlay').slideDown();
 	    $('#element_edit_overlay').slideDown();
 
