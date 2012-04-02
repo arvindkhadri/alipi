@@ -1,11 +1,4 @@
 var pageEditor = {
-    template : '<div id="editoroverlay" title="Editor" class="alipi ui-widget-header ui-corner-all">'+
-        '<label class="alipi" style="left: 20%;">Reference</label>'+
-        '<div id="reference" class="alipi" readonly="yes"></div>'+
-        '<label class="alipi" style="left: 70%;">Editor</label>'+
-        '<div id="editor" class="alipi" contenteditable="true"></div>'+
-        '<div id="forPrevData" class="alipi"></div>'+
-        '</div>', 
     event: 0 , //Use this var to store the event object, which will be passed for editor.
     m4pageedittype: '',
     startEdit: function(event)
@@ -15,42 +8,48 @@ var pageEditor = {
 	event.preventDefault();
 	pageEditor.event = event;
 	pageEditor.m4pageedittype = $(event.target).attr('m4pageedittype');
-	//console.log($(event.target).attr('m4pageedittype'));
 	if($(event.target).attr('m4pageedittype') == 'text')
 	{
+	    $('#edit-text').show();	    
+	    $('#add-audio').show();
+	    $('#add-link').show();
+	    $('#replace-image').hide();
+
 	    $('#pub_overlay').slideDown();
 	    $('#element_edit_overlay').slideDown();
 	    
-	    _this = pageEditor;
-	    $('body').append(_this.template);
-	    var tag = event.target.nodeName;
-	    
-	    $('#reference').text('<'+tag+'>'+$(event.target).html()+'</'+tag+'>');
-	    
-	    $('#editor').html($(event.target).html());
-	    
-	    $('#edit-text').attr('disabled', false);
-	    $('#add-audio').attr('disabled', false);
-	    $('#add-link').attr('disabled', false);
-	    $('#replace-image').attr('disabled', true);
 	    // At this point 'displayEditor' function will be performed on click of 'Edit Text' button
 	    // displayEditor function is in ui.js file
 	}
 	else if($(event.target).attr('m4pageedittype') == 'image')
 	{
-	    _this = pageEditor;
-	    $('#replace-image').attr('disabled', false);
-	    $('#add-audio').attr('disabled', true);
-	    $('#add-link').attr('disabled', true);
-	    $('#edit-text').attr('disabled', true);
+	    $('#replace-image').show();
+	    $('#add-audio').hide();
+	    $('#add-link').hide();;
+	    $('#edit-text').hide();
+
+	    $('#element_edit_overlay').slideDown();
+	    $('#pub_overlay').slideDown();
 	    // At this point 'imageReplacer' function will be performed on click of 'Replace Image' button
 	    // imageReplacer function is in ui.js
+	} else {
+	    $('#element_edit_overlay').slideUp();
+
+	    $('#edit-text').hide();
+	    $('#add-audio').hide();
+	    $('#add-link').hide();
+	    $('#replace-image').hide();
 	}
     },
+    
     cleanUp: function(element)
     {
 	$(element).attr('m4pageedittype', pageEditor.m4pageedittype);
 	$(element).children().attr('m4pageedittype', pageEditor.m4pageedittype);
+
+	$(document).mouseover(a11ypi.highlightOnHover);
+	$(document).mouseout(a11ypi.unhighlightOnMouseOut);
+
     },
 };
 
@@ -143,6 +142,7 @@ var util = {
     // historyObj : function (pageEditor) {
     // 	var self = this, history = [], imageSrc, imageMatcher, imageHeight, imageWidth, buildDataString, anchorElement, anchorElementId, ajaxResultProcessor = new AjaxResultProcessor();
     history: [],
+    command: [],
 
     forEach : function(array, callback) {
 	var i = 0, length = array.length, value;
@@ -161,18 +161,18 @@ var util = {
     
     recordHistory: function (command, selectedElement) {
 	var poofPosition, poofDiv;
-
-	switch (command.command) {
+	util.command = command;
+	switch (util.command.command) {
         case 'TEXT_UPDATE':
-	    command.element = selectedElement;
-	    command.previousData = $(selectedElement).html();
-	    command.data = $("#editor").html();
-	    DOM.settextContent(command.element, command.data);
+	    util.command.element = selectedElement;
+	    util.command.previousData = $(selectedElement).html();
+	    util.command.data = $("#editor").html();
+	    DOM.settextContent(util.command.element, util.command.data);
 	    //pageEditor.showMessage('Text changed');
 	    break;
         case 'AUDIO_SRC_UPDATE':
 	    textElementPopup.hasAudio = true;	
-	    command.previousData = "";
+	    util.command.previousData = "";
 	    //pageEditor.showMessage('Audio updated');
 	    break;
 
@@ -196,51 +196,51 @@ var util = {
 
         case 'IMAGE_SRC_UPDATE':
 	    console.log(command.data);
-	    imageMatcher = new RegExp("(\\d+)x(\\d+),(.+)").exec(command.data);
+	    imageMatcher = new RegExp("(\\d+)x(\\d+),(.+)").exec(util.command.data);
 	    imageWidth = imageMatcher[1];
 	    imageHeight = imageMatcher[2];
 	    imageSrc = imageMatcher[3];
 
-	    if (imageSrc && command.element.src != imageSrc) {
-		command.element.src = imageSrc;
+	    if (imageSrc && util.command.element.src != imageSrc) {
+		util.command.element.src = imageSrc;
 		//pageEditor.showMessage('Image changed');
 	    }
 	    if (imageWidth == 0) {
-		command.element.removeAttribute('width');
+		util.command.element.removeAttribute('width');
 	    } else {
-		command.element.width = imageWidth;
+		util.command.element.width = imageWidth;
 	    }
 
 	    if (imageHeight == 0) {
-		command.element.removeAttribute('height');
+		util.command.element.removeAttribute('height');
 	    } else {
-		command.element.height = imageHeight;
+		util.command.element.height = imageHeight;
 	    }
 	    break;
 
         case 'ANCHOR_UPDATE':
-	    command.element.setAttribute('href', command.data);
+	    util.command.element.setAttribute('href', util.command.data);
 	    pageEditor.showMessage('Link changed');
 	    break;
 
         case 'ANCHOR_CREATE':
-	    anchorElement = DOM.BUILDER.A({ 'href' : command.data });
-	    console.log(command.element);
-	    command.element.parentNode.replaceChild(anchorElement, command.element);
-	    anchorElement.appendChild(command.element);
-	    command.previousData = anchorElement;
+	    anchorElement = DOM.BUILDER.A({ 'href' : util.command.data });
+	    console.log(util.command.element);
+	    util.command.element.parentNode.replaceChild(anchorElement, util.command.element);
+	    anchorElement.appendChild(util.command.element);
+	    util.command.previousData = anchorElement;
 	    pageEditor.showMessage('Link added');
 	    break;
 
 	case 'AUDIO_UPDATE':
-	    command.element.setAttribute('src', command.data);
+	    util.command.element.setAttribute('src', util.command.data);
 	    pageEditor.showMessage('Audio changed');
 	    break;
 	    
         case 'AUDIO_CREATE':
 	    audioElement = document.createElement('audio');
 	    audioElement.setAttribute("id", "audiotag");
-	    audioElement.setAttribute('src',command.data);
+	    audioElement.setAttribute('src',util.command.data);
 	    audioElement.setAttribute('controls','controls');
 	    audioElement.setAttribute('style', 'display:table;');
 	    $(audioElement).insertBefore($(selectedElement));		
@@ -248,32 +248,34 @@ var util = {
 	    break;
 
         default:
-	    console.error('Unknown command:', command);
+	    console.error('Unknown util.command:', util.command);
 	}
 
-	util.history.push(command);
+	util.history.push(util.command);
     },
 
-    undoChanges:function (command) {
-	var imageElement, command;
+    hasChangesPending:function()
+    {
+	return util.history.length > 0;
+    },
+    undoChanges:function () {
+	var imageElement, command=util.command;
 
-	if (self.hasChangesPending()) {
+	if (util.hasChangesPending()) {
 	    command = util.history.pop();
 	    switch (command.command) {
 	    case 'TEXT_UPDATE':
-		console.log(command.element.innerHTML);
-		console.log(command.previousData.innerHTML);
 		command.element.innerHTML = command.previousData;
-		pageEditor.showMessage('Text change undone');
+		//		pageEditor.showMessage('Text change undone');
 		break;
 
 	    case 'DELETE':
 		DOM.restoreStyleProperty(command.element, 'display', '');
-		pageEditor.showMessage('Delete undone');
+		//		pageEditor.showMessage('Delete undone');
 		break;
 
 	    case 'IMAGE_SRC_UPDATE':
-		imageElement = new M4ImageElement(command.element);
+		//		imageElement = new M4ImageElement(command.element);
 
 		command.element.src = command.previousData.src;
 		if (command.previousData.size.width) {
@@ -286,30 +288,42 @@ var util = {
 		} else {
 		    command.element.removeAttribute('height');
 		}
-		imageElement.setRawImageSize(command.previousData.rawImageSize)
+		//		imageElement.setRawImageSize(command.previousData.rawImageSize)
 
-		pageEditor.showMessage('Image change undone');
+		//		pageEditor.showMessage('Image change undone');
 		break;
 		
 	    case 'AUDIO_SRC_UPDATE':
 		command.element.remove();
-		pageEditor.showMessage('Link removed');
+		//		pageEditor.showMessage('Link removed');
 		break;
 	    case 'ANCHOR_UPDATE':
 		command.element.setAttribute('href', command.previousData);
-		pageEditor.showMessage('Link change undone');
+		//		pageEditor.showMessage('Link change undone');
 		break;
 
 	    case 'ANCHOR_CREATE':
 		command.previousData.parentNode.replaceChild(command.element, command.previousData);
-		pageEditor.showMessage('Link removed');
+		//		pageEditor.showMessage('Link removed');
 		break;
 
 	    default:
 		console.error('Unknown command:', command);
 	    }
 	} else {
-	    pageEditor.showMessage('Nothing to undo');
+	    //	    pageEditor.showMessage('Nothing to undo');
+	}
+    },
+    checkHistoryChanges: function()
+    {
+	if(util.hasChangesPending())
+	{
+	    $('#undo-button').attr('disabled',false);
+	    $('#publish-button').attr('disabled',false);
+	}
+	else{
+	    $('#undo-button').attr('disabled',true);
+	    $('#publish-button').attr('disabled',true);
 	}
     },
 
