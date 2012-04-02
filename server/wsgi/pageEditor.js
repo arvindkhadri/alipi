@@ -1,50 +1,45 @@
 var pageEditor = {
-    template : '<div id="editoroverlay" title="Editor" class="alipi ui-widget-header ui-corner-all">'+
-        '<label class="alipi" style="left: 20%;">Reference</label>'+
-        '<div id="reference" class="alipi" readonly="yes"></div>'+
-        '<label class="alipi" style="left: 70%;">Editor</label>'+
-        '<div id="editor" class="alipi" contenteditable="true"></div>'+
-        '<div id="forPrevData" class="alipi"></div>'+
-        '</div>', 
     event: 0 , //Use this var to store the event object, which will be passed for editor.
     m4pageedittype: '',
     startEdit: function(event)
     {
 	pageEditor.event = event;
 	pageEditor.m4pageedittype = $(event.target).attr('m4pageedittype');
+	event.stopPropagation();
+	event.preventDefault();
 	if($(event.target).attr('m4pageedittype') == 'text')
 	{
+	    $('#edit-text').show();	    
+	    $('#add-audio').show();
+	    $('#add-link').show();
+	    $('#replace-image').hide();
+
 	    $('#pub_overlay').slideDown();
 	    $('#element_edit_overlay').slideDown();
-	    
-	    _this = pageEditor;
-	    $(event.target).removeAttr('m4pageedittype');
-	    $(event.target).children().removeAttr('m4pageedittype');
-	    $('body').append(_this.template);
-	    var tag = event.target.nodeName;
-	    
-	    $('#reference').text('<'+tag+'>'+$(event.target).html()+'</'+tag+'>');
-	    
-	    $('#editor').html($(event.target).html());
-	    
-	    $('#edit-text').attr('disabled', false);
-	    $('#add-audio').attr('disabled', false);
-	    $('#add-link').attr('disabled', false);
-	    $('#replace-image').attr('disabled', true);
 	    // At this point 'displayEditor' function will be performed on click of 'Edit Text' button
 	    // displayEditor function is in ui.js file
 	}
 	else if($(event.target).attr('m4pageedittype') == 'image')
 	{
-	    _this = pageEditor;
-	    $('#replace-image').attr('disabled', false);
-	    $('#add-audio').attr('disabled', true);
-	    $('#add-link').attr('disabled', true);
-	    $('#edit-text').attr('disabled', true);
+	    $('#replace-image').show();
+	    $('#add-audio').hide();
+	    $('#add-link').hide();;
+	    $('#edit-text').hide();
+
+	    $('#element_edit_overlay').slideDown();
+	    $('#pub_overlay').slideDown();
 	    // At this point 'imageReplacer' function will be performed on click of 'Replace Image' button
 	    // imageReplacer function is in ui.js
+	} else {
+	    $('#element_edit_overlay').slideUp();
+
+	    $('#edit-text').hide();
+	    $('#add-audio').hide();
+	    $('#add-link').hide();
+	    $('#replace-image').hide();
 	}
     },
+    
     cleanUp: function(element)
     {
 	$(element).attr('m4pageedittype', pageEditor.m4pageedittype);
