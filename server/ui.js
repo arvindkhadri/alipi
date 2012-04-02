@@ -14,15 +14,13 @@ var a11ypi = {
  	$(document).ready(function(){$('body *').contents().filter(function() 
 								   {
 								       try{
-									   if(this.nodeType == 3)
+									   if(this.nodeType == 3 && !($(this).hasClass('alipi')))
 									   {
 									       return (this.nodeType == 3) && this.nodeValue.match(/\S/);}}
 								       catch(err)
 								       {
-									   //									       console.log(err.message);
-									   //									       console.log(this);
 								       }}).parent().attr('m4pageedittype','text')}); 
-
+	
 
 	vimg = document.getElementsByTagName('img');
 	for(i=0; i<vimg.length; i++)
@@ -353,23 +351,23 @@ var a11ypi = {
     },
     loadOverlay: function()
     {
-	var icon_template = '<div id="icon_on_overlay" class="ui-widget-header ui-corner-all" '+
-	    'onClick="a11ypi.hide_overlays();"> <input type="image" <img style="width:100%;height:100%;" '+
+	var icon_template = '<div id="icon_on_overlay" class="alipi ui-widget-header ui-corner-all" '+
+	    'onClick="a11ypi.hide_overlays();"> <input class="alipi" type="image" <img style="width:100%;height:100%;" '+
 	    'src="http://y.a11y.in/alipi.gif" /></input></div>';
 
-	var overlay_template = '<div id="renarrated_overlay" class="ui-widget-header ui-corner-all">'+
-            '<input id="edit-current" type="submit" onclick="a11ypi.editPage();" value="Renarrate this page">'+
-            '<input id="see-narration" type="submit" onclick="a11ypi.showBox();" value="See Narrations">'+
-            '<input id="see-links" type="submit" onclick="a11ypi.showBox1();" value="List of Pages Narrated">'+
-            '<select id="blog-filter" onclick="a11ypi.blogFilter();"><option>Choose a blog</option></select>'+
-            '<input id="go" type="submit" onclick="a11ypi.go();" value="Go">'+
-            '</div><div id="show-box"></div><div id="show-links"></div>';
+	var overlay_template = '<div id="renarrated_overlay" class="alipi ui-widget-header ui-corner-all">'+
+            '<input id="edit-current" class="alipi" type="submit" onclick="a11ypi.editPage();" value="Renarrate this page">'+
+            '<input id="see-narration" class="alipi" type="submit" onclick="a11ypi.showBox();" value="See Narrations">'+
+            '<input id="see-links" class="alipi" type="submit" onclick="a11ypi.showBox1();" value="List of Pages Narrated">'+
+            '<select id="blog-filter" class="alipi" onclick="a11ypi.blogFilter();"><option>Choose a blog</option></select>'+
+            '<input id="go" class="alipi" type="submit" onclick="a11ypi.go();" value="Go">'+
+            '</div><div id="show-box"></div><div id="show-links" class="alipi"></div>';
 	
-	var pub_overlay_template = '<div id="pub_overlay" class="ui-widget-header ui-corner-all">'+
-	    '<input id="exit-mode" type="submit" onclick="a11ypi.exitMode();" value="EXIT">'+
-            '<input id="edit-current" type="submit" onclick="a11ypi.help_window();" value="Help">'+
-            '<input id="see-narration" type="submit" onclick="a11ypi." value="Undo">'+
-            '<input id="see-links" type="submit" onclick="a11ypi.publish();" value="Publish">';	
+	var pub_overlay_template = '<div id="pub_overlay" class="alipi ui-widget-header ui-corner-all">'+
+	    '<input id="exit-mode" class="alipi" type="submit" onclick="a11ypi.exitMode();" value="EXIT">'+
+            '<input id="edit-current" class="alipi" type="submit" onclick="a11ypi.help_window();" value="Help">'+
+            '<input id="see-narration" class="alipi" type="submit" onclick="a11ypi." value="Undo">'+
+            '<input id="see-links" class="alipi" type="submit" onclick="a11ypi.publish();" value="Publish">';	
 
 	var element_edit_overlay_template = '<div id="element_edit_overlay" class="alipi ui-widget-header ui-corner-all">'+
 	    '<input id="edit-text" class="alipi" type="submit" onclick="a11ypi.displayEditor();" value="Edit Text" disabled=true>'+
@@ -378,34 +376,54 @@ var a11ypi = {
             '<input id="replace-image" type="submit" onclick="a11ypi.imageReplacer();" class="alipi" value="Replace Image" disabled=true>';
 	
 	var imageInputTemplate = '<div id="imageInputElement" title="Enter url" class="alipi ui-widget-header ui-corner-all">'+
-            '<input type="text" id="imageInput" placeholder="http://foo.com/baz.jpg" class="alipi" value=""/>'+
-	    '</div>';
+            '<input type="text" id="imageInput" placeholder="http://foo.com/baz.jpg" class="alipi" value=""/></div>';
+
+	var publish_template = '<div id="targetoverlay" class="alipi ui-widget-header ui-corner-all">Target'+
+	    '<div id="infovis" class="alipi"></div><label class="alipi" style="position:absolute;top:12%; '+
+	    'left:72%;color:#000;"> TARGET</label> '+
+	    '<label class="alipi" style="position:absolute;top:25%;left:62%;color:#000;">Location :</label> '+
+	    '<label class="alipi" id="loc-select" style="position:absolute;top:25%;left:75%;color:#000;"></label>'+
+	    '<label class="alipi" style="position:absolute;top:40%;left:62%;color:#000;">Language :</label> '+
+	    '<label id="lang-select" class="alipi" style="position:absolute;top:40%;left:75%;color:#000;"></label>'+
+	    '<label class="alipi" style="position:absolute;top:55%;left:62%;color:#000;">Style :</label> '+
+	    '<label id="style-select" class="alipi" style="position:absolute;top:55%;left:75%;color:#000;"></label>'+
+	    '<label class="alipi" style="position:absolute;top:70%;left:62%;color:#000;">Author :</label> '+
+	    '<input id="auth-select" class="alipi" type="text" style="position:absolute;top:70%;left:75%; '+
+	    'width:160px;"></input><input id="our-check" class="alipi" type="radio"name="blog"style= '+
+	    '"position:absolute;top:85%;left:52%;width:160px;"></input><label class="alipi" style="position:absolute; '+
+	    'top:85%;left:64%;color:#000;">Our Blog</label><input id="your-check" class="alipi" type="radio" '+
+	    'name="blog" style="position:absolute;top:85%;left:75%;"></input><label class="alipi" style= '+
+	    '"position:absolute;top:85%;left:78%;color:#000;">Your Blog</label></div>';
 
 	$('body').append(icon_template);
 	$('body').append(overlay_template);
 	$('body').append(pub_overlay_template);
 	$('body').append(element_edit_overlay_template);
 	$('body').append(imageInputTemplate);
+	$('body').append(publish_template);
+
+	$(document).addEventListener("DOMActivate", init, false);
 	a11ypi.ajax();
 	a11ypi.ajaxLinks1();
 	go.disabled = true;
     },
     
     help_window: function() {
-	var help_template = '<div id="helpwindow" class="ui-widget-header ui-corner-all">'+
-            '<label id="txtlab" style="color:#000;font-weight:normal;">TEXT :- It will popup a window and allow you to'+
-	    'modify/replace text of select element on editor(right) box.'+
-	    '<p>To delete - Empty the editor(right) box and press "OK".'+
-	    '</p><p style="margin-left:50px";>See narrations - If the selected element has other narrations '+
-	    'then it will list, on click.</p><p style="margin-left:50px";>Audio - It allows you to enter audio URL.</p>'+
-	    'IMAGE:- <p style="margin-left:50px";> Replace - It allows you to enter image URL.'+
-	    '</p><p style="margin-left:50px";> See narrations - If the selected element has other '+
+	var help_template = '<div id="helpwindow" class="alipi ui-widget-header ui-corner-all">'+
+            '<label id="txtlab" class="alipi" style="color:#000;font-weight:normal;">TEXT :- It will popup a '+
+	    'window and allow you to modify/replace text of select element on editor(right) box.'+
+	    '<p class="alipi">To delete - Empty the editor(right) box and press "OK".'+
+	    '</p><p class="alipi" style="margin-left:50px";>See narrations - If the selected element has other narrations '+
+	    'then it will list, on click.</p><p class="alipi" style="margin-left:50px";>Audio - It allows you to '+
+	    'enter audio URL.</p>IMAGE:- <p class="alipi" style="margin-left:50px";> Replace - It allows you to enter '+
+	    'image URL.</p><p class="alipi" style="margin-left:50px";> See narrations - If the selected element has other '+
 	    'image narration then it will show, on click.</p> UNDO:- Use it when you want to revert back to '+
-	    'previous change.<p style="margin-left:50px";> Revert deleted - Press \'Undo\' button twice. </p>'+
+	    'previous change.<p class="alipi" style="margin-left:50px";> Revert deleted - Press \'Undo\' button twice.</p>'+
 	    'PUBLISH:- To publish your crafted changes to database and blog (our/your).'+
-	    '<p style="margin-left:50px";>States - To the place you are targetting.</p><p style="margin-left:50px";>'+
-	    'Languages - In language you publishing.</p><p style="margin-left:50px";>Style - In what style you crafted?'+
-	    '</p><p style="margin-left:50px";> Author - Who is a crafter?</p><p style="margin-left:50px";>'+
+	    '<p class="alipi" style="margin-left:50px";>States - To the place you are targetting.</p><p class="alipi" '+
+	    'style="margin-left:50px";>Languages - In language you publishing.</p><p class="alipi" style= '+
+	    '"margin-left:50px";>Style - In what style you crafted?</p><p class="alipi" style="margin-left:50px";> '+
+	    'Author - Who is a crafter?</p><p class="alipi" style="margin-left:50px";>'+
 	    'Our blog - If you don\'t have blogspot ID then check this to post it to our blog.</p></div>';
 
 	$('body').append(help_template);
@@ -434,27 +452,9 @@ var a11ypi = {
 	$('#element_edit_overlay').slideToggle();
     },
     publish: function() {
-
-	var publish_template = '<div id="targetoverlay" class="ui-widget-header ui-corner-all">Target'+
-	    '<div id="infovis"></div><label style="position:absolute;top:12%;left:72%;color:#000;">TARGET</label> '+
-	    '<label style="position:absolute;top:25%;left:62%;color:#000;">Location :</label> '+
-	    '<label id="loc-select" style="position:absolute;top:25%;left:75%;color:#000;"></label>'+
-	    '<label style="position:absolute;top:40%;left:62%;color:#000;">Language :</label> '+
-	    '<label id="lang-select" style="position:absolute;top:40%;left:75%;color:#000;"></label>'+
-	    '<label style="position:absolute;top:55%;left:62%;color:#000;">Style :</label> '+
-	    '<label id="style-select" style="position:absolute;top:55%;left:75%;color:#000;"></label>'+
-	    '<label style="position:absolute;top:70%;left:62%;color:#000;">Author :</label> '+
-	    '<input id="auth-select" type="text" style="position:absolute;top:70%;left:75%;width:160px;"></input>'+
-	    '<input id="our-check" type="radio"name="blog"style="position:absolute;top:85%;left:52%;width:160px;"></input>'+
-	    '<label style="position:absolute;top:85%;left:64%;color:#000;">Our Blog</label>'+
-	    '<input id="your-check" type="radio" name="blog" style="position:absolute;top:85%;left:75%;"></input>'+
-	    '<label style="position:absolute;top:85%;left:78%;color:#000;">Your Blog</label>'+
-	    '</div>';
-
-	$('body').append(publish_template);
-	document.addEventListener("DOMActivate", init, false);
 	
 	$(function() {
+	    $( "#targetoverlay" ).dialog( "destroy" );
 	    $( "#targetoverlay" ).dialog({
 		height:500,
 		width:800,
@@ -632,6 +632,7 @@ var a11ypi = {
 	$('#icon_on_overlay').show();
 	$('#pub_overlay').show();
 	$('#element_edit_overlay').show();
+
 	$('body *').contents().filter(function(){
 	    {
 		try{
@@ -642,6 +643,9 @@ var a11ypi = {
 		{
 		    //pass
 		}}}).click(pageEditor.startEdit);
+	$(document).click(pageEditor.startEdit);
+	$(document).mouseover(a11ypi.highlightOnHover);
+	$(document).mouseout(a11ypi.unhighlightOnMouseOut);
     },
 
     displayEditor: function() {
@@ -715,10 +719,20 @@ var a11ypi = {
 	});
 	
     },
+    
+    highlightOnHover: function() {
+	if( !$(event.target).hasClass('alipi') ) {
+	    $(event.target).addClass('highlightElement');
+	}
+    },
+
+    unhighlightOnMouseOut: function() {
+	$(event.target).removeClass('highlightElement');
+    },
 
     showTopBar: function() {
 	
-    }
+    },
 };
 
 // $('html').bind('keypress', function(e)
