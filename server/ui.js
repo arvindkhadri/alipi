@@ -371,16 +371,21 @@ var a11ypi = {
             '<input id="see-narration" type="submit" onclick="a11ypi." value="Undo">'+
             '<input id="see-links" type="submit" onclick="a11ypi.publish();" value="Publish">';	
 
-	var element_edit_overlay_template = '<div id="element_edit_overlay" class="ui-widget-header ui-corner-all">'+
-	    '<input id="edit-text" type="submit" onclick="a11ypi.displayEditor();" value="Edit Text" disabled=true>'+
-            '<input id="add-audio" type="submit" onclick="a11ypi.help_window();" value="Add Audio" disabled=true>'+
-            '<input id="add-link" type="submit" onclick="a11ypi.showBox();" value="Add Link" disabled=true>'+
-            '<input id="replace-image" type="submit" onclick="a11ypi.imageReplacer();" value="Replace Image" disabled=true>';
+	var element_edit_overlay_template = '<div id="element_edit_overlay" class="alipi ui-widget-header ui-corner-all">'+
+	    '<input id="edit-text" class="alipi" type="submit" onclick="a11ypi.displayEditor();" value="Edit Text" disabled=true>'+
+            '<input id="add-audio" type="submit" onclick="a11ypi.help_window();" class="alipi" value="Add Audio" disabled=true>'+
+            '<input id="add-link" type="submit" onclick="a11ypi.showBox();" class="alipi" value="Add Link" disabled=true>'+
+            '<input id="replace-image" type="submit" onclick="a11ypi.imageReplacer();" class="alipi" value="Replace Image" disabled=true>';
+	
+	var imageInputTemplate = '<div id="imageInputElement" title="Enter url" class="alipi ui-widget-header ui-corner-all">'+
+            '<input type="text" id="imageInput" placeholder="http://foo.com/baz.jpg" class="alipi" value=""/>'+
+	    '</div>';
 
 	$('body').append(icon_template);
 	$('body').append(overlay_template);
 	$('body').append(pub_overlay_template);
 	$('body').append(element_edit_overlay_template);
+	$('body').append(imageInputTemplate);
 	a11ypi.ajax();
 	a11ypi.ajaxLinks1();
 	go.disabled = true;
@@ -627,10 +632,16 @@ var a11ypi = {
 	$('#icon_on_overlay').show();
 	$('#pub_overlay').show();
 	$('#element_edit_overlay').show();
-	// document.addEventListener('click',pageEditor.startEdit, false);
-	$(document).click(pageEditor.startEdit);
-	//page_edit('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');
-	//    document.getElementById("renarrated_overlay").style.display = "none";
+	$('body *').contents().filter(function(){
+	    {
+		try{
+		    if(!($(this).hasClass('alipi')))
+			return this;
+		}
+		catch(err)
+		{
+		    //pass
+		}}}).click(pageEditor.startEdit);
     },
 
     displayEditor: function() {
@@ -680,9 +691,28 @@ var a11ypi = {
     },
 
     imageReplacer: function() {
-	var src = prompt("Enter the url");
-	$(event.target).attr('src',src);
-	console.log(DOM.getXpath(event.target));
+	$( "#imageInputElement" ).dialog({
+		width:300,
+		height:200,
+		modal: true,
+		buttons: {
+		    OK: function() {
+			
+			var formValue = $('#imageInput').val();
+			if(formValue != '\/S/')
+			{
+			    pageEditor.cleanUp(pageEditor.event.target);
+			    console.log(formValue);
+			    manager.updateImage(pageEditor.event.target, formValue);
+			    $( "#imageInputElement" ).remove();
+			}
+		    }
+		},
+	    close: function() {
+		pageEditor.cleanUp(pageEditor.event.target);
+		$("#imageInputElement" ).remove();
+	    }
+	});
 	
     },
 

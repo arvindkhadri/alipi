@@ -4,14 +4,17 @@ var pageEditor = {
         '<div id="reference" readonly="yes"></div>'+
         '<label style="left: 70%;">Editor</label>'+
         '<div id="editor" alipielements="alipi" contenteditable="true"></div>'+
-        '<div id="forPrevData"></div>'+
+         '<div id="forPrevData"></div>'+
         '</div>', 
     event: 0 , //Use this var to store the event object, which will be passed for editor.
+    m4pageedittype: '',
     startEdit: function(event)
     {
+	pageEditor.event = event;
+	pageEditor.m4pageedittype = $(event.target).attr('m4pageedittype');
 	if($(event.target).attr('m4pageedittype') == 'text')
 	{
-	    pageEditor.event = event;
+
 	    $('#pub_overlay').slideDown();
 	    $('#element_edit_overlay').slideDown();
 
@@ -33,17 +36,19 @@ var pageEditor = {
 	}
 	else if($(event.target).attr('m4pageedittype') == 'image')
 	{
+	    _this = pageEditor;
 	    $('#replace-image').attr('disabled', false);
-	    $('#add-audio').attr('disabled', false);
-	    $('#add-link').attr('disabled', false);
+	    $('#add-audio').attr('disabled', true);
+	    $('#add-link').attr('disabled', true);
 	    $('#edit-text').attr('disabled', true);
+	    
 	}
 	
     },
     cleanUp: function(element)
     {
-	$(element).attr('m4pageedittype','text');
-	$(element).children().attr('m4pageedittype','text');
+	$(element).attr('m4pageedittype', pageEditor.m4pageedittype);
+	$(element).children().attr('m4pageedittype', pageEditor.m4pageedittype);
     },
 };
 
@@ -188,6 +193,7 @@ var util = {
 	    // 	break;
 
             case 'IMAGE_SRC_UPDATE':
+		console.log(command.data);
 		imageMatcher = new RegExp("(\\d+)x(\\d+),(.+)").exec(command.data);
 		imageWidth = imageMatcher[1];
 		imageHeight = imageMatcher[2];
@@ -195,7 +201,7 @@ var util = {
 
 		if (imageSrc && command.element.src != imageSrc) {
 		    command.element.src = imageSrc;
-		    pageEditor.showMessage('Image changed');
+		    //pageEditor.showMessage('Image changed');
 		}
 		if (imageWidth == 0) {
 		    command.element.removeAttribute('width');
@@ -407,4 +413,37 @@ var manager = {
 	    };
 	util.recordHistory(command, selectedElement); 
     },
+    updateImage: function(selectedElement, url)
+    {
+	console.log(url);
+	var command = {
+		command : 'IMAGE_SRC_UPDATE',
+		element : selectedElement,
+		elementType : 'image',
+		xpath : DOM.getXpath(selectedElement),
+		url : window.location.href,
+		data : new StringUtil.StringBuffer().append(selectedElement.width).append('x').append(selectedElement.height).append(',').append(url).toString(),
+		previousData : {
+		    'src' : selectedElement.src,
+		    'size' : { width: selectedElement.width, height: selectedElement.height }
+		    //'rawImageSize' : image.getRawImageSize()
+		}
+	}
+	util.recordHistory(command, selectedElement);
+    },
 };
+//Implementing the class for doing StringBuffer.
+var StringUtil = StringUtil || {};
+(function(StringUtil){
+    StringUtil.StringBuffer = function StringBuffer() {
+	    var buffer = [];
+	    this.append = function append(string) {
+		buffer.push(string);
+		return this;
+	    };
+
+	    this.toString = function toString() {
+		return buffer.join('');
+	    };
+    };
+})(StringUtil);
