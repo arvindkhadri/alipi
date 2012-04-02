@@ -7,6 +7,7 @@ var a11ypi = {
     showbox : 0,
     showlinks : 0,
     blog_flag: false,
+    target : false,
     testContext : function()
     {
 	if(document.getElementById('social_overlay') != null)
@@ -378,31 +379,14 @@ var a11ypi = {
 	var imageInputTemplate = '<div id="imageInputElement" title="Enter url" class="alipi ui-widget-header ui-corner-all">'+
             '<input type="text" id="imageInput" placeholder="http://foo.com/baz.jpg" class="alipi" value=""/></div>';
 
-	var publish_template = '<div id="targetoverlay" class="alipi ui-widget-header ui-corner-all">Target'+
-	    '<div id="infovis" class="alipi"></div><label class="alipi" style="position:absolute;top:12%; '+
-	    'left:72%;color:#000;"> TARGET</label> '+
-	    '<label class="alipi" style="position:absolute;top:25%;left:62%;color:#000;">Location :</label> '+
-	    '<label class="alipi" id="loc-select" style="position:absolute;top:25%;left:75%;color:#000;"></label>'+
-	    '<label class="alipi" style="position:absolute;top:40%;left:62%;color:#000;">Language :</label> '+
-	    '<label id="lang-select" class="alipi" style="position:absolute;top:40%;left:75%;color:#000;"></label>'+
-	    '<label class="alipi" style="position:absolute;top:55%;left:62%;color:#000;">Style :</label> '+
-	    '<label id="style-select" class="alipi" style="position:absolute;top:55%;left:75%;color:#000;"></label>'+
-	    '<label class="alipi" style="position:absolute;top:70%;left:62%;color:#000;">Author :</label> '+
-	    '<input id="auth-select" class="alipi" type="text" style="position:absolute;top:70%;left:75%; '+
-	    'width:160px;"></input><input id="our-check" class="alipi" type="radio"name="blog"style= '+
-	    '"position:absolute;top:85%;left:52%;width:160px;"></input><label class="alipi" style="position:absolute; '+
-	    'top:85%;left:64%;color:#000;">Our Blog</label><input id="your-check" class="alipi" type="radio" '+
-	    'name="blog" style="position:absolute;top:85%;left:75%;"></input><label class="alipi" style= '+
-	    '"position:absolute;top:85%;left:78%;color:#000;">Your Blog</label></div>';
+	
 
 	$('body').append(icon_template);
 	$('body').append(overlay_template);
 	$('body').append(pub_overlay_template);
 	$('body').append(element_edit_overlay_template);
 	$('body').append(imageInputTemplate);
-	$('body').append(publish_template);
 
-	$(document).addEventListener("DOMActivate", init, false);
 	a11ypi.ajax();
 	a11ypi.ajaxLinks1();
 	go.disabled = true;
@@ -452,7 +436,28 @@ var a11ypi = {
 	$('#element_edit_overlay').slideToggle();
     },
     publish: function() {
-	
+	if(a11ypi.target == false)
+	{
+	var publish_template = '<div id="targetoverlay" class="alipi ui-widget-header ui-corner-all">Target'+
+	    '<div id="infovis" class="alipi"></div><label class="alipi" style="position:absolute;top:12%; '+
+	    'left:72%;color:#000;"> TARGET</label> '+
+	    '<label class="alipi" style="position:absolute;top:25%;left:62%;color:#000;">Location :</label> '+
+	    '<label class="alipi" id="loc-select" style="position:absolute;top:25%;left:75%;color:#000;"></label>'+
+	    '<label class="alipi" style="position:absolute;top:40%;left:62%;color:#000;">Language :</label> '+
+	    '<label id="lang-select" class="alipi" style="position:absolute;top:40%;left:75%;color:#000;"></label>'+
+	    '<label class="alipi" style="position:absolute;top:55%;left:62%;color:#000;">Style :</label> '+
+	    '<label id="style-select" class="alipi" style="position:absolute;top:55%;left:75%;color:#000;"></label>'+
+	    '<label class="alipi" style="position:absolute;top:70%;left:62%;color:#000;">Author :</label> '+
+	    '<input id="auth-select" class="alipi" type="text" style="position:absolute;top:70%;left:75%; '+
+	    'width:160px;"></input><input id="our-check" class="alipi" type="radio"name="blog"style= '+
+	    '"position:absolute;top:85%;left:52%;width:160px;"></input><label class="alipi" style="position:absolute; '+
+	    'top:85%;left:64%;color:#000;">Our Blog</label><input id="your-check" class="alipi" type="radio" '+
+	    'name="blog" style="position:absolute;top:85%;left:75%;"></input><label class="alipi" style= '+
+	    '"position:absolute;top:85%;left:78%;color:#000;">Your Blog</label></div>';
+	    $('body').append(publish_template);
+	    a11ypi.target = true;
+	}
+	init();
 	$(function() {
 	    $( "#targetoverlay" ).dialog( "destroy" );
 	    $( "#targetoverlay" ).dialog({
@@ -632,7 +637,7 @@ var a11ypi = {
 	$('#icon_on_overlay').show();
 	$('#pub_overlay').show();
 	$('#element_edit_overlay').show();
-
+	
 	$('body *').contents().filter(function(){
 	    {
 		try{
@@ -643,12 +648,14 @@ var a11ypi = {
 		{
 		    //pass
 		}}}).click(pageEditor.startEdit);
-	$(document).click(pageEditor.startEdit);
+//	$(document).click(pageEditor.startEdit);
 	$(document).mouseover(a11ypi.highlightOnHover);
 	$(document).mouseout(a11ypi.unhighlightOnMouseOut);
     },
 
     displayEditor: function() {
+	$(pageEditor.event.target).removeAttr('m4pageedittype');
+	$(pageEditor.event.target).children().removeAttr('m4pageedittype');
 	    $( "#editoroverlay" ).dialog({
 		width:1000,
 		height:550,
@@ -720,13 +727,13 @@ var a11ypi = {
 	
     },
     
-    highlightOnHover: function() {
+    highlightOnHover: function(event) {
 	if( !$(event.target).hasClass('alipi') ) {
 	    $(event.target).addClass('highlightElement');
 	}
     },
 
-    unhighlightOnMouseOut: function() {
+    unhighlightOnMouseOut: function(event) {
 	$(event.target).removeClass('highlightElement');
     },
 

@@ -10,16 +10,18 @@ var pageEditor = {
     m4pageedittype: '',
     startEdit: function(event)
     {
+	//console.log(event.target);
+	event.stopPropagation();
+	event.preventDefault();
 	pageEditor.event = event;
 	pageEditor.m4pageedittype = $(event.target).attr('m4pageedittype');
+	//console.log($(event.target).attr('m4pageedittype'));
 	if($(event.target).attr('m4pageedittype') == 'text')
 	{
 	    $('#pub_overlay').slideDown();
 	    $('#element_edit_overlay').slideDown();
 	    
 	    _this = pageEditor;
-	    $(event.target).removeAttr('m4pageedittype');
-	    $(event.target).children().removeAttr('m4pageedittype');
 	    $('body').append(_this.template);
 	    var tag = event.target.nodeName;
 	    
