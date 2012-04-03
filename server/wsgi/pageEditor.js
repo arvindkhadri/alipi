@@ -15,6 +15,7 @@ var pageEditor = {
 	    $('#add-audio').show();
 	    $('#add-link').show();
 	    $('#replace-image').hide();
+	    $('#delete-image').hide();
 
 	    $('#pub_overlay').slideDown();
 	    $('#element_edit_overlay').slideDown();
@@ -25,6 +26,7 @@ var pageEditor = {
 	else if($(event.target).attr('m4pageedittype') == 'image')
 	{
 	    $('#replace-image').show();
+	    $('#delete-image').show();
 	    $('#add-audio').hide();
 	    $('#add-link').hide();;
 	    $('#edit-text').hide();
@@ -40,6 +42,7 @@ var pageEditor = {
 	    $('#add-audio').hide();
 	    $('#add-link').hide();
 	    $('#replace-image').hide();
+	    $('#delete-image').hide();
 	}
     },
     addLink: function(){
@@ -54,7 +57,7 @@ var pageEditor = {
 	    {
 		pageEditor.savedHtml = $(pageEditor.event.target).html();
 		var url = prompt("Enter url");
-		var regex = new RegExp(^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?)))
+//		var regex = new RegExp(^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?)))
 		sel.anchorNode.textContent = sel.anchorNode.textContent.substr(0,y)+'<a href="'+url+'">'+sel.anchorNode.textContent.substr(y,z-y)+"</a>"+sel.anchorNode.textContent.substr(z);
 		abc = $(pageEditor.event.target).html();
 		abc = abc.replace(/(&lt;)/g,'<');
@@ -67,6 +70,9 @@ var pageEditor = {
 		//
 	    }
 	},
+    deleteImage: function(){
+	manager.deleteImage(pageEditor.event.target);
+    },
     
     cleanUp: function(element)
     {
@@ -213,7 +219,10 @@ var util = {
 	    //pageEditor.showMessage('Audio updated');
 	    break;
 
-            // case 'DELETE':
+        case 'IMAGE_DELETE':
+	    $(selectedElement).hide();
+	    break;
+// case 'DELETE':
 	    // 	poofPosition = DOM.findPosition(command.element);
 
 	    // 	poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://y.a11y.in/alipi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
@@ -340,7 +349,9 @@ var util = {
 		command.previousData.parentNode.replaceChild(command.element, command.previousData);
 		//		pageEditor.showMessage('Link removed');
 		break;
-
+	    case 'IMAGE_DELETE':
+		$(command.element).show();
+		break;
 	    default:
 		console.error('Unknown command:', command);
 	    }
@@ -482,9 +493,26 @@ var manager = {
 		'size' : { width: selectedElement.width, height: selectedElement.height }
 		//'rawImageSize' : image.getRawImageSize()
 	    }
-	}
+	};
 	util.recordHistory(command, selectedElement);
     },
+    deleteImage : function(selectedElement) {
+	var command = {
+	    command : 'IMAGE_DELETE',
+	    element : selectedElement,
+	    url : window.location.href,
+	    elementType : 'image',
+	    data : '',
+	    xpath : '',
+	    data : '',
+	    previousData : {
+		'src' : selectedElement.src,
+		'size' : { width: selectedElement.width, height: selectedElement.height }
+	    }
+	};
+	util.recordHistory(command, selectedElement); 
+    },
+
 };
 //Implementing the class for doing StringBuffer.
 var StringUtil = StringUtil || {};
