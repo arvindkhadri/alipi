@@ -15,6 +15,7 @@ var pageEditor = {
 	    $('#add-audio').show();
 	    $('#add-link').show();
 	    $('#replace-image').hide();
+	    $('#delete-image').hide();
 
 	    $('#pub_overlay').slideDown();
 	    $('#element_edit_overlay').slideDown();
@@ -25,6 +26,7 @@ var pageEditor = {
 	else if($(event.target).attr('m4pageedittype') == 'image')
 	{
 	    $('#replace-image').show();
+	    $('#delete-image').show();
 	    $('#add-audio').hide();
 	    $('#add-link').hide();;
 	    $('#edit-text').hide();
@@ -40,6 +42,7 @@ var pageEditor = {
 	    $('#add-audio').hide();
 	    $('#add-link').hide();
 	    $('#replace-image').hide();
+	    $('#delete-image').hide();
 	}
     },
     addLink: function(){
@@ -54,7 +57,6 @@ var pageEditor = {
 	    {
 		pageEditor.savedHtml = $(pageEditor.event.target).html();
 		var url = prompt("Enter url");
-		//var regex = new RegExp(^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?)))
 		sel.anchorNode.textContent = sel.anchorNode.textContent.substr(0,y)+'<a href="'+url+'">'+sel.anchorNode.textContent.substr(y,z-y)+"</a>"+sel.anchorNode.textContent.substr(z);
 		abc = $(pageEditor.event.target).html();
 		abc = abc.replace(/(&lt;)/g,'<');
@@ -67,21 +69,33 @@ var pageEditor = {
 		//
 	    }
 	},
-
+    
     addAudio: function(){
-			url = prompt("enter an .ogg audio link");
-			if(url.substr(-4)=='.ogg'){
-			manager.updateAudio(pageEditor.event.target);		
-			}
-			else{
-				console.log("please add an ogg file");
-			}
-			
+	url = prompt("enter an .ogg audio link");
+	if(url.substr(-4)=='.ogg'){
+	    manager.updateAudio(pageEditor.event.target);		
+	}
+	else{
+	    console.log("please add an ogg file");
+	}
+	
+	
+    },
 
-	},
+    deleteImage: function(){
+	manager.deleteImage(pageEditor.event.target);
+    },
     
     cleanUp: function(element)
     {
+	if(util.hasChangesPending() == true) {
+	    $('#undo-button').attr('disabled', false);
+	    $('#publish-button').attr('disabled', false);
+	} else {
+	    $('#undo-button').attr('disabled', false);
+	    $('#publish-button').attr('disabled', false);
+	}
+
 	$(element).attr('m4pageedittype', pageEditor.m4pageedittype);
 	$(element).children().attr('m4pageedittype', pageEditor.m4pageedittype);
 
@@ -151,34 +165,9 @@ var DOM = {
     {
 	return $(element).html();
     },
-
-    // (function() {  Re-wrote this portion in simpler terms.  TO BE CLEANED.
-    // 	if (document.all) {
-    // 	    // IE specific
-    // 	    return function textContent(element, content) {
-    // 		if (content) {
-    // 		    element.innerText = content;
-    // 		}
-    // 		return element.innerText;
-    // 	    }
-    // 	} else {
-    // 	    return function textContent(element, content) {
-    // 		if (element == undefined) {
-    // 		    element = document.getElementById("alipiSelectedElement");
-    // 		    content = document.getElementById("alipiSelectedElement").innerHTML;
-    // 		    element.innerHTML = content;
-    // 		} else if (content) {
-    // 		    element.innerHTML = content;
-    // 		}
-    // 		return element.innerHTML;
-    // 	    }
-    // 	}
-    //     })(),
 };
 
 var util = {
-    // historyObj : function (pageEditor) {
-    // 	var self = this, history = [], imageSrc, imageMatcher, imageHeight, imageWidth, buildDataString, anchorElement, anchorElementId, ajaxResultProcessor = new AjaxResultProcessor();
     history: [],
     command: [],
 
@@ -217,32 +206,15 @@ var util = {
 	    else
 		util.command.data = $(selectedElement).html();
 	    DOM.settextContent(util.command.element, util.command.data);
-//	    pageEditor.showMessage('Text changed');
 	    break;
         case 'AUDIO_SRC_UPDATE':
 	    textElementPopup.hasAudio = true;	
 	    util.command.previousData = "";
-	    //pageEditor.showMessage('Audio updated');
 	    break;
 
-            // case 'DELETE':
-	    // 	poofPosition = DOM.findPosition(command.element);
-
-	    // 	poofDiv = DOM.BUILDER.DIV({'style' : 'width:32px;height:32px;background: transparent url(http://y.a11y.in/alipi/images/poof.png) no-repeat;position:absolute;top:' + poofPosition.y + 'px;left:' + poofPosition.x + 'px;'});
-	    // 	document.body.appendChild(poofDiv);
-
-	    // 	UTIL.animate(function(index, last) {
-	    // 		if (last) {
-	    // 		    document.body.removeChild(poofDiv);
-	    // 		} else {
-	    // 		    poofDiv.style.backgroundPosition = '0 -' + (index * 32) + 'px';
-	    // 		}
-	    // 	    }, 5, 100);
-
-	    // 	DOM.overrideStyleProperty(command.element, 'display', 'none');
-	    // 	pageEditor.showMessage('Section deleted');
-	    // 	break;
-
+        case 'IMAGE_DELETE':
+	    $(selectedElement).hide();
+	    break;
         case 'IMAGE_SRC_UPDATE':
 	    console.log(command.data);
 	    imageMatcher = new RegExp("(\\d+)x(\\d+),(.+)").exec(util.command.data);
@@ -252,7 +224,6 @@ var util = {
 
 	    if (imageSrc && util.command.element.src != imageSrc) {
 		util.command.element.src = imageSrc;
-		//pageEditor.showMessage('Image changed');
 	    }
 	    if (imageWidth == 0) {
 		util.command.element.removeAttribute('width');
@@ -312,17 +283,13 @@ var util = {
 	    case 'TEXT_UPDATE':
 		console.log(command.previousData);
 		command.element.innerHTML = command.previousData;
-		//		pageEditor.showMessage('Text change undone');
 		break;
 
 	    case 'DELETE':
 		DOM.restoreStyleProperty(command.element, 'display', '');
-		//		pageEditor.showMessage('Delete undone');
 		break;
 
 	    case 'IMAGE_SRC_UPDATE':
-		//		imageElement = new M4ImageElement(command.element);
-
 		command.element.src = command.previousData.src;
 		if (command.previousData.size.width) {
 		    command.element.width = command.previousData.size.width;
@@ -334,25 +301,21 @@ var util = {
 		} else {
 		    command.element.removeAttribute('height');
 		}
-		//		imageElement.setRawImageSize(command.previousData.rawImageSize)
-
-		//		pageEditor.showMessage('Image change undone');
 		break;
 		
 	    case 'AUDIO_SRC_UPDATE':
 		command.element.remove();
-		//		pageEditor.showMessage('Link removed');
 		break;
 	    case 'ANCHOR_UPDATE':
 		command.element.setAttribute('href', command.previousData);
-		//		pageEditor.showMessage('Link change undone');
 		break;
 
 	    case 'ANCHOR_CREATE':
 		command.previousData.parentNode.replaceChild(command.element, command.previousData);
-		//		pageEditor.showMessage('Link removed');
 		break;
-
+	    case 'IMAGE_DELETE':
+		$(command.element).show();
+		break;
 	    default:
 		console.error('Unknown command:', command);
 	    }
@@ -462,8 +425,6 @@ var manager = {
 	    data : DOM.gettextContent(selectedElement),
 	    previousData : prevData
         }; 
-	// (DOM.gettextContent(selectedElement).length == 0) {
-	//   manager.deleteElement(selectedElement);
 	util.recordHistory(command, selectedElement); 
     },
     updateAudio:function(selectedElement){
@@ -505,11 +466,27 @@ var manager = {
 	    previousData : {
 		'src' : selectedElement.src,
 		'size' : { width: selectedElement.width, height: selectedElement.height }
-		//'rawImageSize' : image.getRawImageSize()
 	    }
-	}
+	};
 	util.recordHistory(command, selectedElement);
     },
+    deleteImage : function(selectedElement) {
+	var command = {
+	    command : 'IMAGE_DELETE',
+	    element : selectedElement,
+	    url : window.location.href,
+	    elementType : 'image',
+	    data : '',
+	    xpath : '',
+	    data : '',
+	    previousData : {
+		'src' : selectedElement.src,
+		'size' : { width: selectedElement.width, height: selectedElement.height }
+	    }
+	};
+	util.recordHistory(command, selectedElement); 
+    },
+
 };
 //Implementing the class for doing StringBuffer.
 var StringUtil = StringUtil || {};

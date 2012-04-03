@@ -129,16 +129,16 @@ function init(){
 		    },
 		    "children": []
 		}, {
-		    "id": "telgu",
-		    "name": "Telgu",
+		    "id": "telugu",
+		    "name": "Telugu",
 		    "data": {
 			"band": "Languages",
 			"relation": "project_original.html"
 		    },
 		    "children": []
 		}, {
-		    "id": "gujurathi",
-		    "name": "Gujurathi",
+		    "id": "gujarati",
+		    "name": "Gujarati",
 		    "data": {
 			"band": "Languages",
 			"relation": "project_memorilization.html"
@@ -187,8 +187,8 @@ function init(){
 		    },
 		    "children": []
 		}, {
-		    "id": "transilation",
-		    "name": "Transilation",
+		    "id": "translation",
+		    "name": "Translation",
 		    "data": {
 			"band": "Style",
 			"relation": "project_3dsurface.html"
