@@ -372,7 +372,7 @@ var a11ypi = {
 
 	var element_edit_overlay_template = '<div id="element_edit_overlay" class="alipi ui-widget-header ui-corner-all" >'+
 	    '<input id="edit-text" class="alipi" type="submit" onclick="a11ypi.displayEditor();" value="Edit Text" style="display:none;" >'+
-            '<input id="add-audio" type="submit" onclick="a11ypi.help_window();" class="alipi" value="Add Audio" style="display:none;" >'+
+            '<input id="add-audio" type="submit" onclick="pageEditor.addAudio();" class="alipi" value="Add Audio" style="display:none;" >'+
             '<input id="add-link" type="submit" onclick="pageEditor.addLink();;" class="alipi" value="Add Link" style="display:none;" >'+
             '<input id="replace-image" type="submit" onclick="a11ypi.imageReplacer();" class="alipi" value="Replace Image" style="display:none;" >';
 	

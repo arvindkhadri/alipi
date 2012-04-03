@@ -54,7 +54,7 @@ var pageEditor = {
 	    {
 		pageEditor.savedHtml = $(pageEditor.event.target).html();
 		var url = prompt("Enter url");
-		var regex = new RegExp(^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?)))
+		//var regex = new RegExp(^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?)))
 		sel.anchorNode.textContent = sel.anchorNode.textContent.substr(0,y)+'<a href="'+url+'">'+sel.anchorNode.textContent.substr(y,z-y)+"</a>"+sel.anchorNode.textContent.substr(z);
 		abc = $(pageEditor.event.target).html();
 		abc = abc.replace(/(&lt;)/g,'<');
@@ -66,6 +66,18 @@ var pageEditor = {
 	    else{
 		//
 	    }
+	},
+
+    addAudio: function(){
+			url = prompt("enter an .ogg audio link");
+			if(url.substr(-4)=='.ogg'){
+			manager.updateAudio(pageEditor.event.target);		
+			}
+			else{
+				console.log("please add an ogg file");
+			}
+			
+
 	},
     
     cleanUp: function(element)
@@ -271,7 +283,7 @@ var util = {
 
 	case 'AUDIO_UPDATE':
 	    util.command.element.setAttribute('src', util.command.data);
-	    pageEditor.showMessage('Audio changed');
+	    //pageEditor.showMessage('Audio changed');
 	    break;
 	    
         case 'AUDIO_CREATE':
@@ -281,7 +293,7 @@ var util = {
 	    audioElement.setAttribute('controls','controls');
 	    audioElement.setAttribute('style', 'display:table;');
 	    $(audioElement).insertBefore($(selectedElement));		
-	    pageEditor.showMessage('Audio added');
+	    //pageEditor.showMessage('Audio added');
 	    break;
 
         default:
@@ -453,6 +465,19 @@ var manager = {
 	// (DOM.gettextContent(selectedElement).length == 0) {
 	//   manager.deleteElement(selectedElement);
 	util.recordHistory(command, selectedElement); 
+    },
+    updateAudio:function(selectedElement){
+	var command = {
+		command : 'AUDIO_CREATE',
+		element : selectedElement,
+		url : window.location.href,
+		xpath : DOM.getXpath(selectedElement),
+		elementType: 'audio/ogg',
+		data : selectedElement,
+		previousData : ''
+		
+	};
+	util.recordHistory(command,selectedElement);
     },
     deleteElement : function(selectedElement) {
 	var command = {
