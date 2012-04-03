@@ -1,6 +1,7 @@
 var pageEditor = {
     event: 0 , //Use this var to store the event object, which will be passed for editor.
     m4pageedittype: '',
+    savedHtml: '',
     startEdit: function(event)
     {
 	//console.log(event.target);
@@ -41,6 +42,31 @@ var pageEditor = {
 	    $('#replace-image').hide();
 	}
     },
+    addLink: function(){
+	$(pageEditor.event.target).mouseup(pageEditor.handler);
+    },
+	handler: function()
+	{
+	    var sel = window.getSelection();
+	    y = sel.anchorOffset;
+	    z = sel.focusOffset;
+	    if(y != z)
+	    {
+		pageEditor.savedHtml = $(pageEditor.event.target).html();
+		var url = prompt("Enter url");
+		var regex = new RegExp(^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?)))
+		sel.anchorNode.textContent = sel.anchorNode.textContent.substr(0,y)+'<a href="'+url+'">'+sel.anchorNode.textContent.substr(y,z-y)+"</a>"+sel.anchorNode.textContent.substr(z);
+		abc = $(pageEditor.event.target).html();
+		abc = abc.replace(/(&lt;)/g,'<');
+		abc = abc.replace(/(&gt;)/g,'>');
+		$(pageEditor.event.target).html(abc);
+		manager.updateText(pageEditor.event.target);
+		$(pageEditor.event.target).unbind('mouseup', pageEditor.handler);
+	    }
+	    else{
+		//
+	    }
+	},
     
     cleanUp: function(element)
     {
@@ -165,10 +191,21 @@ var util = {
 	switch (util.command.command) {
         case 'TEXT_UPDATE':
 	    util.command.element = selectedElement;
-	    util.command.previousData = $(selectedElement).html();
-	    util.command.data = $("#editor").html();
+	    if($('#reference').html() !=null)
+	    {
+		abc = $('#reference').html();
+		abc = abc.replace(/(&lt;)/g,'<');
+		abc = abc.replace(/(&gt;)/g,'>');
+		util.command.previousData = abc;
+	    }
+	    else
+		util.command.previousData = pageEditor.savedHtml;
+	    if($("#editor").html() != null)
+		util.command.data = $("#editor").html();
+	    else
+		util.command.data = $(selectedElement).html();
 	    DOM.settextContent(util.command.element, util.command.data);
-	    //pageEditor.showMessage('Text changed');
+//	    pageEditor.showMessage('Text changed');
 	    break;
         case 'AUDIO_SRC_UPDATE':
 	    textElementPopup.hasAudio = true;	
@@ -254,10 +291,6 @@ var util = {
 	util.history.push(util.command);
     },
 
-    hasChangesPending:function()
-    {
-	return util.history.length > 0;
-    },
     undoChanges:function () {
 	var imageElement, command=util.command;
 
@@ -265,6 +298,7 @@ var util = {
 	    command = util.history.pop();
 	    switch (command.command) {
 	    case 'TEXT_UPDATE':
+		console.log(command.previousData);
 		command.element.innerHTML = command.previousData;
 		//		pageEditor.showMessage('Text change undone');
 		break;
@@ -402,6 +436,11 @@ var util = {
 
 var manager = {
     updateText:function (selectedElement) {
+	var prevData;
+	if($("#editor").html() != null)
+	    prevData = $('#editor').html();
+	else
+	    prevData = pageEditor.savedHtml;
 	var command = {
 	    command : 'TEXT_UPDATE',
 	    element : selectedElement,
@@ -409,12 +448,11 @@ var manager = {
 	    xpath : DOM.getXpath(selectedElement),
 	    elementType : 'text',
 	    data : DOM.gettextContent(selectedElement),
-	    previousData : $("editor").html()
+	    previousData : prevData
         }; 
+	// (DOM.gettextContent(selectedElement).length == 0) {
+	//   manager.deleteElement(selectedElement);
 	util.recordHistory(command, selectedElement); 
-	if (DOM.gettextContent(selectedElement).length == 0) {
-	    manager.deleteElement(selectedElement);
-	}
     },
     deleteElement : function(selectedElement) {
 	var command = {
