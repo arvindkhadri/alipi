@@ -336,7 +336,7 @@ var util = {
 	    $.ajax({
 		url: 'http://dev.a11y.in/test',
 		type: "POST",
-		data : util.buildDataString()
+		data : util.buildDataString()+'&title='+encodeURIComponent(document.title)
 	    }).done(function(){
 		window.location.reload();
 	    });
@@ -395,7 +395,7 @@ var util = {
 	    } else {
 		buffer.append(encodeURIComponent($('#auth-select').val()));
 	    }
-	});  	    console.log(buffer.toString());	    
+	});  
 	return buffer.toString().substring(3);
     },
 };

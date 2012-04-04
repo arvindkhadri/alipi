@@ -41,6 +41,7 @@ def application(environ, start_response):
         target = ''
         about = ''
         author = ''
+        title = ''
         commands = recieved.split('###') #for every elementary re-narration (e.g a paragraph)
         dicts = []
         i = 0
@@ -67,7 +68,8 @@ def application(environ, start_response):
             target = d['location']
             about = d['about']
             author = d['author']
-            
+            title = d['title']
+            d.pop('title')
             dicts.append(d)
             i+=1
         blogEntry= ''
@@ -81,10 +83,12 @@ def application(environ, start_response):
         query.feed = '/feeds/default/blogs'
         feed = blogger_service.Get(query.ToUri())
         blog_id = " "
+        if title == '':
+            title = "Re-narration"
         for entry in feed.entry:
             if "http://testalipi.blogspot.com/" == entry.GetHtmlLink().href:
                 blog_id = entry.GetSelfLink().href.split("/")[-1]
-                blogEntry = CreatePublicPost(blogger_service, blog_id, title="Re-narration", content=string + "<blockquote><p>Re-narration by "+author+' in '+lang+' targeting '+target+' for this web <a href="'+about+'">page</a></p></blockquote>')
+                blogEntry = CreatePublicPost(blogger_service, blog_id, title=title, content=string + "<blockquote><p>Re-narration by "+author+' in '+lang+' targeting '+target+' for this web <a href="'+about+'">page</a></p></blockquote>')
 
         j=0
         while j< len(dicts):
