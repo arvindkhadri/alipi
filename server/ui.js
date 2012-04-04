@@ -8,6 +8,8 @@ var a11ypi = {
     showlinks : 0,
     blog_flag: false,
     target : false,
+    pageHtml:'',
+    d: {},
     testContext : function()
     {
 	if(document.getElementById('social_overlay') != null)
@@ -62,11 +64,14 @@ var a11ypi = {
 	    var para  = document.createElement("p");
 	    var newel = document.createElement("a");
 	    newel.textContent = menu_list[i];
-	    newel.setAttribute("href","http://dev.a11y.in/web?foruri="+page+"&lang="+menu_list[i]+"&interactive=1");
+	    //$(newel).css("cursor","pointer");
+	    $(newel).attr("href","http://dev.a11y.in/web?foruri="+page+"&lang="+menu_list[i]+"&interactive=1");
 	    para.appendChild(newel);
 	    xyz.appendChild(para);
 	}
     },
+    
+	
     clearMenu: function() {
 	// var xyz = document.getElementById("menu-button");
 	// while(null!= xyz.firstChild)
@@ -144,7 +149,7 @@ var a11ypi = {
 	window.location = window.location.href + "&lang=" + e.value;
 	window.reload();
     },
-    ren: function()
+    ren: function(e)
     {
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function()
@@ -178,15 +183,15 @@ var a11ypi = {
 		}
 	    }
 	}
+	
 	d = window.location.search.split('?')[1];
 	var a =[];
 	for (var i = 0;i<d.split('&').length;i++){ 
 	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
 	}
 	var url = a['foruri'];
-	var lang= a['lang'];
-	var data="url="+url+"&lang="+encodeURIComponent(lang);
-	
+	var lang = $(e.target).text();
+	var Data="url="+url+"&lang="+encodeURIComponent(lang);
 	xhr.open("POST","http://dev.a11y.in/replace",true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send(data);
@@ -427,13 +432,13 @@ var a11ypi = {
 		var publish_template = '<div id="targetoverlay" class="alipi ui-widget-header ui-corner-all"> '+
 		    '<div id="infovis" class="alipi"></div><label class="alipi" style="position:absolute;top:12%; '+
 		    'left:72%;color:#000;"> TARGET</label> '+
-		    '<label class="alipi" style="position:absolute;top:25%;left:62%;color:#000;">Location :</label> '+
+		    '<label class="alipi" style="position:absolute;top:25%;left:62%;color:#000;">Location:</label> '+
 		    '<label class="alipi" id="loc-select" style="position:absolute;top:25%;left:75%;color:#000;"></label>'+
-		    '<label class="alipi" style="position:absolute;top:40%;left:62%;color:#000;">Language :</label> '+
+		    '<label class="alipi" style="position:absolute;top:40%;left:62%;color:#000;">Language:</label> '+
 		    '<label id="lang-select" class="alipi" style="position:absolute;top:40%;left:75%;color:#000;"></label>'+
-		    '<label class="alipi" style="position:absolute;top:55%;left:62%;color:#000;">Style :</label> '+
+		    '<label class="alipi" style="position:absolute;top:55%;left:62%;color:#000;">Style:</label> '+
 		    '<label id="style-select" class="alipi" style="position:absolute;top:55%;left:75%;color:#000;"></label>'+
-		    '<label class="alipi" style="position:absolute;top:70%;left:62%;color:#000;">Author :</label> '+
+		    '<label class="alipi" style="position:absolute;top:70%;left:62%;color:#000;">Author:</label> '+
 		    '<input id="auth-select" class="alipi" type="text" style="position:absolute;top:70%;left:75%; '+
 		    'width:160px;"></input><input id="our-check" class="alipi" type="radio"name="blog"style= '+
 		    '"position:absolute;top:85%;left:52%;width:160px;"></input><label class="alipi" style="position:absolute; '+
@@ -453,7 +458,7 @@ var a11ypi = {
 		    modal: true,
 		    buttons: {
 			OK: function() {
-			    pageEditor.publish();
+			    util.publish();
 			} 
 		    },
 		    close: function() {
@@ -754,13 +759,3 @@ var a11ypi = {
     },
 };
 
-// $('html').bind('keypress', function(e)
-// 	       {
-// 		   if(e.keyCode == 73)
-// 		   {
-// 		       e.preventDefault();
-// 		       //     $('.blink').delay(400).fadeOut(400).delay(200).fadeIn(400).delay(400).fadeOut(400).delay(200).fadeIn(400);
-// 		       setTimeout("$('.blink').addClass('blinks')", 800);
-// 		       setTimeout("$('.blink').removeClass('blinks')", 2400);
-// 		   }
-// 	       });

@@ -330,13 +330,17 @@ var util = {
 	{
 	    localStorage.myContent = buildDataString();
 	    window.location.href = "http://dev.a11y.in/test.html";
-	    window.reload();
+	    window.location.reload();
 	}
 	else{
-	    
-	    AJAX.post('http://dev.a11y.in/test',  buildDataString(), function(result) {
-	    	ajaxResultProcessor.processPublishedResponse(result);
+	    $.ajax({
+		url: 'http://dev.a11y.in/test',
+		type: "POST",
+		data : util.buildDataString()
+	    }).done(function(){
+		window.location.reload();
 	    });
+	 
 	}
     },
     
@@ -365,19 +369,18 @@ var util = {
 	}
 
 	util.history = temp_history;
-	console.log("hello" + styleSelect.innerHTML);
-	var command, buffer;
-	buffer = new UTIL.StringBuffer();
+	var command = util.command, buffer;
+	buffer = new StringUtil.StringBuffer();
 	util.forEach(util.history, function(index, command) {
 	    buffer.append('###'); //separates the commands
 	    buffer.append('about=');  //url=about    //removed '&' on purpose
 	    buffer.append(window.location.search.split('=')[1]);
 	    buffer.append('&lang=');//lang
-	    buffer.append(encodeURIComponent(langName.innerHTML));
+	    buffer.append(encodeURIComponent($('#loc-select').html()));
 	    buffer.append('&location=');//location
-	    buffer.append(encodeURIComponent(locName.innerHTML));
+	    buffer.append(encodeURIComponent($('#loc-select').html()));
 	    buffer.append('&style=');//style
-	    buffer.append(encodeURIComponent(styleSelect.innerHTML));
+	    buffer.append(encodeURIComponent($('#style-select').html()));
 	    buffer.append('&blog=');  //blog where to post
 	    buffer.append(encodeURIComponent("blog"));
 	    buffer.append('&elementtype='); // text, audio, img
@@ -387,10 +390,10 @@ var util = {
 	    buffer.append('&data=');  //data
 	    buffer.append(encodeURIComponent(command.data));
 	    buffer.append('&author='); //author
-	    if (author.value == '') {
+	    if ($('#auth-select').val() == '' || $('#auth-select').val() == /\S/) {
 		buffer.append(encodeURIComponent('Anonymous'));
 	    } else {
-		buffer.append(encodeURIComponent(author.value));
+		buffer.append(encodeURIComponent($('#auth-select').val()));
 	    }
 	});  	    console.log(buffer.toString());	    
 	return buffer.toString().substring(3);
