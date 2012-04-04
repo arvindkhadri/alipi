@@ -1,3 +1,9 @@
+body {
+    margin:0px;
+    padding:0px;
+    text-align:justify;
+}
+
 #ren_overlay {
     height:25px;
     width:100%;
@@ -113,10 +119,22 @@
     position:fixed;
     top:0;
     width:80%;
+    height:30px;
     align:center;
     text-align:center;
     left:10%;
     z-index:2147483645;
+}
+
+#edit-current, #see-narrations, #see-links, #go {
+    position:relative;
+    top:0px;    
+}
+
+#renarrated_overlay .ui-button {
+    height:25px;
+    text-align:justify;
+    padding:0.2em 0.4em 0.2em 0.4em;
 }
 
 #icon_on_overlay {
@@ -136,15 +154,29 @@
     position:fixed;
     top:0;
     width:40%;
+    height:30px;
     /* align:center; */
     text-align:center;
     left:12%;
     z-index:2147483645;
 }
 
+#exit-mode, #help-window, #undo-button, #publish-button {
+    position:relative;
+    top:3px;
+}
+
+#pub_overlay .ui-button {
+    height:25px;
+    text-align:justify;
+    padding:0.2em 0.4em 0.2em 0.4em;
+}
+
 #element_edit_overlay {
     display:none;
     position:fixed;
+    padding-top:2.5px;
+    padding-bottom:2.5px;
     top:0;
     width:40%;
     /* align:center; */
@@ -153,23 +185,43 @@
     z-index:2147483645;
 }
 
+#element_edit_overlay .ui-button {
+    height:25px;
+    text-align:justify;
+    padding:0.2em 0.4em 0.2em 0.4em;
+}
+
 .highlightElement {
     /* color:#fff; */
     /* background-color:#777; */
     border:dotted;
 }
 
+.highlightOnSelect {
+    border:solid;
+}
+
 #blog-filter {
-    min-width:200px;max-width:200px;
+    min-width:200px;
+    max-width:200px;
+    top:1px;
+}
+
+#blogset{
+    position:absolute;
+    
 }
 
 #infovis {
-    position:relative;
-    top:6%;
+    position:absolute;
+    top:3%;
     left:0%;
     width:60%;
-    height:90%;
+    height:95%;
     overflow:hidden;
+}
+#infovis-canvaswidget, infovis-canvas {
+    height:95%
 }
 
 #infonar {

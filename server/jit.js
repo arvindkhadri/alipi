@@ -6780,13 +6780,12 @@ THE SOFTWARE.
 	 onClick:function(y,w){
 // Ajay - Visual target selection
 	     if (this.graph.getNode(y)._angularWidth == 0.5) {
-		 console.log(this.graph.getNode(y).data.band);
 		 if (this.graph.getNode(y).data.band == "Location") {
-		     document.getElementById("loc-select").innerHTML = ': ' + this.graph.getNode(y).name;
+		     $("#loc-select").html(this.graph.getNode(y).name);
 		 } else if (this.graph.getNode(y).data.band == "Languages") {
-		     document.getElementById("lang-select").innerHTML = ': ' + this.graph.getNode(y).name;
+		     $("#lang-select").html(this.graph.getNode(y).name);
 		 } else	if (this.graph.getNode(y).data.band == "Style") {
-		     document.getElementById("style-select").innerHTML = ': ' + this.graph.getNode(y).name;
+		     $("#style-select").html(this.graph.getNode(y).name);
 		 }
 	     }
 // Ajay - end of visual target  selection

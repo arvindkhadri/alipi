@@ -358,23 +358,23 @@ var a11ypi = {
 	
 	var pub_overlay_template = '<div id="pub_overlay" class="alipi ui-widget-header ui-corner-all">'+
 	    '<input id="exit-mode" class="alipi" type="submit" onclick="a11ypi.exitMode();" value="EXIT">'+
-            '<input id="edit-current" class="alipi" type="submit" onclick="a11ypi.help_window();" value="Help">'+
-            '<input id="undo-button" class="alipi" type="submit" onclick="util.undoChanges();" value="Undo">'+
-            '<input id="publish-button" class="alipi" type="submit" onclick="a11ypi.publish();" value="Publish"></div>';	
+            '<input id="help-window" class="alipi" type="submit" onclick="a11ypi.help_window();" value="Help">'+
+            '<input id="undo-button" class="alipi" type="submit" onclick="util.undoChanges();" value="Undo" disabled=true; >'+
+            '<input id="publish-button" class="alipi" type="submit" onclick="a11ypi.publish();" value="Publish" disabled=true; ></div>';	
 
 	var element_edit_overlay_template = '<div id="element_edit_overlay" class="alipi ui-widget-header ui-corner-all" >'+
 	    '<input id="edit-text" class="alipi" type="submit" onclick="a11ypi.displayEditor();" value="Edit Text" style="display:none;" >'+
-            '<input id="add-audio" type="submit" onclick="a11ypi.help_window();" class="alipi" value="Add Audio" style="display:none;" >'+
-            '<input id="add-link" type="submit" onclick="pageEditor.addLink();;" class="alipi" value="Add Link" style="display:none;" >'+
+            '<input id="add-audio" type="submit" onclick="pageEditor.addAudio();" class="alipi" value="Add Audio" style="display:none;" >'+
             '<input id="replace-image" type="submit" onclick="a11ypi.imageReplacer();" class="alipi" value="Replace Image" style="display:none;" >'+
 	    '<input id="delete-image" type="submit" onclick="pageEditor.deleteImage();" class="alipi" value="Delete Image" style="display:none;" >'+
 	    '</div>';
-	
 
 	$('body').append(icon_template);
 	$('body').append(overlay_template);
 	$('body').append(pub_overlay_template);
 	$('body').append(element_edit_overlay_template);
+
+	$('input:.alipi, select:.alipi').button();
 
 	a11ypi.ajax();
 	a11ypi.ajaxLinks1();
@@ -400,7 +400,9 @@ var a11ypi = {
 	    'Our blog - If you don\'t have blogspot ID then check this to post it to our blog.</p></div>';
 
 	$('body').append(help_template);
-	
+	$(document).unbind('mouseover'); // Unbind the css on mouseover
+	$(document).unbind('mouseout'); // Unbind the css on mouseout
+
 	$(function() {
 	    $( "#helpwindow" ).dialog({
 		width:800,
@@ -429,32 +431,34 @@ var a11ypi = {
 	if(util.hasChangesPending())
 	{
 	    if (a11ypi.target == false ) {
-		var publish_template = '<div id="targetoverlay" class="alipi ui-widget-header ui-corner-all"> '+
-		    '<div id="infovis" class="alipi"></div><label class="alipi" style="position:absolute;top:12%; '+
-		    'left:72%;color:#000;"> TARGET</label> '+
-		    '<label class="alipi" style="position:absolute;top:25%;left:62%;color:#000;">Location:</label> '+
-		    '<label class="alipi" id="loc-select" style="position:absolute;top:25%;left:75%;color:#000;"></label>'+
-		    '<label class="alipi" style="position:absolute;top:40%;left:62%;color:#000;">Language:</label> '+
-		    '<label id="lang-select" class="alipi" style="position:absolute;top:40%;left:75%;color:#000;"></label>'+
-		    '<label class="alipi" style="position:absolute;top:55%;left:62%;color:#000;">Style:</label> '+
-		    '<label id="style-select" class="alipi" style="position:absolute;top:55%;left:75%;color:#000;"></label>'+
-		    '<label class="alipi" style="position:absolute;top:70%;left:62%;color:#000;">Author:</label> '+
-		    '<input id="auth-select" class="alipi" type="text" style="position:absolute;top:70%;left:75%; '+
-		    'width:160px;"></input><input id="our-check" class="alipi" type="radio"name="blog"style= '+
-		    '"position:absolute;top:85%;left:52%;width:160px;"></input><label class="alipi" style="position:absolute; '+
-		    'top:85%;left:64%;color:#000;">Our Blog</label><input id="your-check" class="alipi" type="radio" '+
-		    'name="blog" style="position:absolute;top:85%;left:75%;"></input><label class="alipi" style= '+
-		    '"position:absolute;top:85%;left:78%;color:#000;">Your Blog</label></div>';
+		var publish_template = '<div id="targetoverlay" title="Target Window" class="alipi ui-widget-header ui-corner-all"> '+
+		    '<div id="infovis" class="alipi"> </div>'+
+		    '<label class="alipi" style="position:absolute;top:20%;left:65%;color:#000;">Location: </label> '+
+		    '<label class="alipi" id="loc-select" style="position:absolute;top:20%;left:72%;color:#000;"></label>'+
+		    '<label class="alipi" style="position:absolute;top:35%;left:65%;color:#000;">Language: </label> '+
+		    '<label id="lang-select" class="alipi" style="position:absolute;top:35%;left:73%;color:#000;"></label>'+
+		    '<label class="alipi" style="position:absolute;top:50%;left:65%;color:#000;">Style: </label> '+
+		    '<label id="style-select" class="alipi" style="position:absolute;top:50%;left:69.5%;color:#000;"></label>'+
+		    '<label class="alipi" style="position:absolute;top:65%;left:65%;color:#000;">Author: </label> '+
+		    '<input id="auth-select" class="alipi" type="text" style="position:absolute;top:65%;left:71%; '+
+		    'width:160px;" /><div id="blogset" style="position:absolute;top:80%;left:65%;width:35%;"><input id="our-check" class="alipi" '+
+		    'type="radio"name="blog"style="position:relative;" /><label class="alipi" style="position:relative; '+
+		    'color:#000;">Alipi Blog</label><input id="your-check" class="alipi" type="radio" '+
+		    'name="blog" style="position:relative;margin-left:10%;" /><label class="alipi" style= '+
+		    '"position:relative;color:#000;">Personal Blog</label></div></div>';
 		
 		$('body').append(publish_template);
 		document.addEventListener("DOMActivate", init, false);
 		a11ypi.target = true;
 	    }
-	    
+
+	    $(document).unbind('mouseover'); // Unbind the css on mouseover
+	    $(document).unbind('mouseout'); // Unbind the css on mouseout
+
 	    $(function() {
 		$( "#targetoverlay" ).dialog({
-		    height:500,
-		    width:800,
+		    height:600,
+		    width:1000,
 		    modal: true,
 		    buttons: {
 			OK: function() {
@@ -471,6 +475,9 @@ var a11ypi = {
     },
     
     showBox: function() {
+	$(document).unbind('mouseover'); // Unbind the css on mouseover
+	$(document).unbind('mouseout'); // Unbind the css on mouseout
+
 	$(function() {
 	    $( "#show-box" ).dialog( "destroy" );
 	    
@@ -507,6 +514,9 @@ var a11ypi = {
 	xhr.send('url='+a['foruri'])
     },
     showBox1: function() {
+	$(document).unbind('mouseover'); // Unbind the css on mouseover
+	$(document).unbind('mouseout'); // Unbind the css on mouseout
+
 	$(function() {
 	    $( "#show-links" ).dialog( "destroy" );
 	    
@@ -666,8 +676,9 @@ var a11ypi = {
 	
 	$('#editor').html($(pageEditor.event.target).html());
 
-	$(document).unbind('mouseover');
-	$(document).unbind('mouseout');
+	$(document).unbind('mouseover'); // Unbind the css on mouseover
+	$(document).unbind('mouseout'); // Unbind the css on mouseout
+	$(event.target).removeClass('highlightOnSelect'); // Remove hightlight of selected element
 
 	$( "#editoroverlay" ).dialog({
 	    width:1000,
@@ -675,12 +686,10 @@ var a11ypi = {
 	    modal: true,
 	    buttons: {
 		"+": function() {
-
 		    if($('#editor').css('font-size') >= '30px') {
 			// passthrough
 		    } 
 		    else {
-
 			var font = parseFloat($('#editor').css('font-size')) + 1;
 			$('#editor').css('font-size', font+'px');
 			font = parseFloat($('#reference').css('font-size')) + 1;
@@ -688,22 +697,22 @@ var a11ypi = {
 		    }
 		},
 		"-": function() {
-
 		    if($('#editor').css('font-size') <= '10px') {
 		    } 
 		    else {
-
 			var font = parseFloat($('#editor').css('font-size')) - 1;
 			$('#editor').css('font-size', font+'px');
 			font = parseFloat($('#reference').css('font-size')) - 1;
 			$('#reference').css('font-size', font+'px');
 		    }
 		},
+		Link: function() {
+		    pageEditor.handler();
+		},
 		OK: function() {
 		    manager.updateText(pageEditor.event.target);
 		    pageEditor.cleanUp(pageEditor.event.target);
-		    $( "#editoroverlay" ).remove();
-
+		    $( "#editoroverlay" ).remove();		    
 		}
 	    },
 	    close: function() {
@@ -711,15 +720,22 @@ var a11ypi = {
 		$("#editoroverlay" ).remove();
 	    }
 	});
-    },
 
+	$($($('<label>').insertAfter($('.ui-dialog-buttonset').children()[0])).html('Magnify or Demagnify')).css({}); // Element added externally with css
+	$($('.ui-dialog-buttonset').children()[1]).css({'position':'absolute','left':'100','font-weight':'bold','margin-top':'10'});
+	$($('.ui-dialog-buttonset').children()[0]).css({'position':'absolute','left':'45'}); // '+' CSS for postioning button on editor
+	$($('.ui-dialog-buttonset').children()[2]).css({'position':'absolute','left':'265'}); // '-' CSS for postioning button on editor
+	$($('.ui-dialog-buttonset').children()[3]).css({'position':'absolute','left':'550'}) // 'Link' CSS for postioning button on editor
+    },
+    
     imageReplacer: function() {
 	var imageInputTemplate = '<div id="imageInputElement" title="Enter url" class="alipi ui-widget-header ui-corner-all">'+
             '<input type="text" id="imageInput" placeholder="http://foo.com/baz.jpg" class="alipi" value=""/></div>';
 
 	$('body').append(imageInputTemplate);
-	$(document).unbind('mouseover');
-	$(document).unbind('mouseout');
+	$(document).unbind('mouseover'); // Unbind the css on mouseover
+	$(document).unbind('mouseout'); // Unbind the css on mouseout
+
 	$( "#imageInputElement" ).dialog({
 	    width:300,
 	    height:200,
