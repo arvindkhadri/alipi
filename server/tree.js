@@ -218,7 +218,7 @@ function init(){
     };
     //end
     var infovis = document.getElementById('infovis');
-    var w = infovis.offsetWidth - 0, h = infovis.offsetHeight - 0;
+    var w = infovis.offsetWidth - 20, h = infovis.offsetHeight - 15;
     
     //init Hypertree
     var ht = new $jit.Hypertree({
@@ -240,7 +240,7 @@ function init(){
 
 	// On hover
 	Tips: {  
-	    enable: true,  
+	    enable: false,  
 
 	    onShow: function(tip, node) {
 		ht.tips.config.offsetX = "10";
@@ -278,6 +278,9 @@ function init(){
             } else if(node._depth == 1){
 		style.fontSize = "0.9em";
 		style.color = "#222";
+            } else if(node._depth == 2){
+		style.fontSize = "0.7em";
+		style.color = "#444";
             }
 	    else {
 		style.display = 'none';

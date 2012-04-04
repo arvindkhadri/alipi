@@ -4,13 +4,15 @@ var pageEditor = {
     savedHtml: '',
     startEdit: function(event)
     {
-	//console.log(event.target);
 	event.stopPropagation();
 	event.preventDefault();
 	pageEditor.event = event;
 	pageEditor.m4pageedittype = $(event.target).attr('m4pageedittype');
+	$('*').removeClass('highlightOnSelect');
 	if($(event.target).attr('m4pageedittype') == 'text')
 	{
+	    $(event.target).addClass('highlightOnSelect'); // To show selected element
+
 	    $('#edit-text').show();	    
 	    $('#add-audio').show();
 	    $('#add-link').show();
@@ -25,6 +27,8 @@ var pageEditor = {
 	}
 	else if($(event.target).attr('m4pageedittype') == 'image')
 	{
+	    $(event.target).addClass('highlightOnSelect'); // To show selected element
+
 	    $('#replace-image').show();
 	    $('#delete-image').show();
 	    $('#add-audio').hide();
@@ -45,55 +49,54 @@ var pageEditor = {
 	    $('#delete-image').hide();
 	}
     },
-    addLink: function(){
-	$(pageEditor.event.target).mouseup(pageEditor.handler);
-    },
-	handler: function()
+    // addLink: function(){
+    // 	$(pageEditor.event.target).mouseup(pageEditor.handler);
+    // },
+    handler: function()
+    {
+	var sel = window.getSelection();
+	y = sel.anchorOffset;
+	z = sel.focusOffset;
+	if(y != z)
 	{
-	    var sel = window.getSelection();
-	    y = sel.anchorOffset;
-	    z = sel.focusOffset;
-	    if(y != z)
-	    {
-		pageEditor.savedHtml = $(pageEditor.event.target).html();
-		var url = prompt("Enter url");
-		sel.anchorNode.textContent = sel.anchorNode.textContent.substr(0,y)+'<a href="'+url+'">'+sel.anchorNode.textContent.substr(y,z-y)+"</a>"+sel.anchorNode.textContent.substr(z);
-		abc = $(pageEditor.event.target).html();
-		abc = abc.replace(/(&lt;)/g,'<');
-		abc = abc.replace(/(&gt;)/g,'>');
-		$(pageEditor.event.target).html(abc);
-		manager.updateText(pageEditor.event.target);
-		$(pageEditor.event.target).unbind('mouseup', pageEditor.handler);
-	    }
-	    else{
-		//
-	    }
-	},
+	    pageEditor.savedHtml = $('#editor').html();
+	    var url = prompt("Enter url");
+	    sel.anchorNode.textContent = sel.anchorNode.textContent.substr(0,y)+'<a href="'+url+'">'+sel.anchorNode.textContent.substr(y,z-y)+"</a>"+sel.anchorNode.textContent.substr(z);
+	    abc = $('#editor').html();
+	    abc = abc.replace(/(&lt;)/g,'<');
+	    abc = abc.replace(/(&gt;)/g,'>');
+	    $('#editor').html(abc);
+	    // manager.updateText(pageEditor.event.target);
+	    //$(pageEditor.event.target).unbind('mouseup', pageEditor.handler);
+	}
+	else{
+	    //
+	}
+    },
     
     addAudio: function(){
 	url = prompt("enter an .ogg audio link");
 	if(url.substr(-4)=='.ogg'){
-	    manager.updateAudio(pageEditor.event.target);		
+	    manager.updateAudio(pageEditor.event.target);
 	}
 	else{
 	    console.log("please add an ogg file");
 	}
-	
-	
     },
 
     deleteImage: function(){
 	manager.deleteImage(pageEditor.event.target);
+	pageEditor.cleanUp(pageEditor.event.target);
     },
     
     cleanUp: function(element)
     {
-	if(util.hasChangesPending() == true) {
+	if(util.hasChangesPending()) {
 	    $('#undo-button').attr('disabled', false);
 	    $('#publish-button').attr('disabled', false);
 	} else {
-	    $('#undo-button').attr('disabled', false);
-	    $('#publish-button').attr('disabled', false);
+	    $('#undo-button').attr('disabled', true);
+	    $('#publish-button').attr('disabled', true);
 	}
 
 	$(element).attr('m4pageedittype', pageEditor.m4pageedittype);
@@ -101,7 +104,7 @@ var pageEditor = {
 
 	$(document).mouseover(a11ypi.highlightOnHover);
 	$(document).mouseout(a11ypi.unhighlightOnMouseOut);
-
+//	$(event.target).removeClass('highlightOnSelect'); // Remove highlighted selected element
     },
 };
 
@@ -259,7 +262,7 @@ var util = {
 	    
         case 'AUDIO_CREATE':
 	    audioElement = document.createElement('audio');
-	    audioElement.setAttribute("id", "audiotag");
+	    audioElement.setAttribute("class", "alipi");
 	    audioElement.setAttribute('src',util.command.data);
 	    audioElement.setAttribute('controls','controls');
 	    audioElement.setAttribute('style', 'display:table;');
@@ -319,6 +322,7 @@ var util = {
 	    default:
 		console.error('Unknown command:', command);
 	    }
+	    pageEditor.cleanUp(pageEditor.event.target);
 	} else {
 	    //	    pageEditor.showMessage('Nothing to undo');
 	}
@@ -434,7 +438,7 @@ var manager = {
 		url : window.location.href,
 		xpath : DOM.getXpath(selectedElement),
 		elementType: 'audio/ogg',
-		data : selectedElement,
+		data : url,
 		previousData : ''
 		
 	};
