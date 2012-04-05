@@ -15,7 +15,6 @@ var pageEditor = {
 
 	    $('#edit-text').show();	    
 	    $('#add-audio').show();
-	    $('#add-link').show();
 	    $('#replace-image').hide();
 	    $('#delete-image').hide();
 
@@ -32,7 +31,6 @@ var pageEditor = {
 	    $('#replace-image').show();
 	    $('#delete-image').show();
 	    $('#add-audio').hide();
-	    $('#add-link').hide();;
 	    $('#edit-text').hide();
 
 	    $('#element_edit_overlay').slideDown();
@@ -44,7 +42,6 @@ var pageEditor = {
 
 	    $('#edit-text').hide();
 	    $('#add-audio').hide();
-	    $('#add-link').hide();
 	    $('#replace-image').hide();
 	    $('#delete-image').hide();
 	}
@@ -91,11 +88,11 @@ var pageEditor = {
     cleanUp: function(element)
     {
 	if(util.hasChangesPending()) {
-	    $('#undo-button').attr('disabled', false);
-	    $('#publish-button').attr('disabled', false);
+	    $('#undo-button').button('option', 'disabled', false); // Another way of enabling UI-JQUERY button
+	    $('#publish-button').button({ disabled: false}); // Enabling UI-JQUERY button
 	} else {
-	    $('#undo-button').attr('disabled', true);
-	    $('#publish-button').attr('disabled', true);
+	    $('#undo-button').button({ disabled: true}); // Disabling button
+	    $('#publish-button').button({ disabled: true}); // Disabling button
 	}
 
 	$(element).attr('m4pageedittype', pageEditor.m4pageedittype);
@@ -395,10 +392,6 @@ var util = {
 var manager = {
     recordText:function (selectedElement) {
 	var prevData = $(selectedElement).html();
-	// if($("#editor").html() != null)
-	//     prevData = $('#editor').html();
-	// else
-	//     prevData = pageEditor.savedHtml;
 	var command = {
 	    command : 'TEXT_UPDATE',
 	    element : selectedElement,

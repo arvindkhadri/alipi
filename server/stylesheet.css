@@ -92,6 +92,7 @@ body {
     max-width:450px;
     min-height:370px;
     max-height:370px;
+    font-size:15;
     text-align:justify;
     color:#000;
     font-weight:normal;
@@ -109,7 +110,7 @@ body {
     color:#000;
     font-weight:normal;
 }
-#forprevData {
+#forPrevData {
     display:none;
     height:1px;
     width:1px;
@@ -126,23 +127,24 @@ body {
     z-index:2147483645;
 }
 
-#edit-current, #see-narrations, #see-links, #go {
+#edit-current, #see-narration, #see-links, #go {
     position:relative;
-    top:0px;    
+    top:0px;
 }
 
-#renarrated_overlay .ui-button {
+#renarrated_overlay .ui-button, #icon-button {
     height:25px;
     text-align:justify;
-    padding:0.2em 0.4em 0.2em 0.4em;
+    padding:0.1em 0.8em 0.2em 0.8em;
+    font-weight:normal;
 }
 
 #icon_on_overlay {
     display:none;
     position:fixed;
     top:0;
-    width:5%;
-    height:5%;
+    /* width:5%; */
+    /* height:5%; */
     /* align:center; */
     text-align:center;
     left:1%;
@@ -169,7 +171,8 @@ body {
 #pub_overlay .ui-button {
     height:25px;
     text-align:justify;
-    padding:0.2em 0.4em 0.2em 0.4em;
+    padding:0.1em 0.8em 0.2em 0.8em;
+    font-weight:normal;
 }
 
 #element_edit_overlay {
@@ -188,7 +191,8 @@ body {
 #element_edit_overlay .ui-button {
     height:25px;
     text-align:justify;
-    padding:0.2em 0.4em 0.2em 0.4em;
+    padding:0.1em 0.8em 0.2em 0.8em;
+    font-weight:normal;
 }
 
 .highlightElement {
