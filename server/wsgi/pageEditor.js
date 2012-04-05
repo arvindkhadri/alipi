@@ -136,9 +136,7 @@ var DOM = {
     },
     
     makePath : function makePath(elt){
-	if(elt.tagName != 'IMG')
-	    elt = elt.parentNode;
-    	var path = '';
+	var path = '';
 	for (; elt && elt.nodeType == 1; elt = elt.parentNode)
 	{
 	    if(elt.id == "")
