@@ -20,10 +20,10 @@
     {
     foruri = document.getElementById("inputurl").value;
     if(foruri.substring(0,7) == "http://") {
-    window.open("http://dev.a11y.in/web?foruri=" + encodeURIComponent(foruri));
+    window.open("http://127.0.0.1:5000/?foruri=" + encodeURIComponent(foruri));
     }
     else if (foruri.substring(0,8) == "https://") {
-        window.open("http://dev.a11y.in/web?foruri=" + encodeURIComponent(foruri));
+        window.open("http://127.0.0.1:5000/?foruri=" + encodeURIComponent(foruri));
     }
     else {
     alert("Please enter 'HTTP' protocoled URL");

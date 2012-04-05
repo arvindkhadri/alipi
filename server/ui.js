@@ -7,6 +7,9 @@ var a11ypi = {
     showbox : 0,
     showlinks : 0,
     blog_flag: false,
+    target : false,
+    pageHtml:'',
+    d: {},
     testContext : function()
     {
 	if(document.getElementById('social_overlay') != null)
@@ -14,15 +17,13 @@ var a11ypi = {
  	$(document).ready(function(){$('body *').contents().filter(function() 
 								   {
 								       try{
-									   if(this.nodeType == 3)
+									   if(this.nodeType == 3 && !($(this).hasClass('alipi')))
 									   {
 									       return (this.nodeType == 3) && this.nodeValue.match(/\S/);}}
 								       catch(err)
 								       {
-//									       console.log(err.message);
-//									       console.log(this);
-								       }}).wrap('<span m4pageedittype = text />')}); 
-
+								       }}).parent().attr('m4pageedittype','text')}); 
+	
 
 	vimg = document.getElementsByTagName('img');
 	for(i=0; i<vimg.length; i++)
@@ -63,17 +64,19 @@ var a11ypi = {
 	    var para  = document.createElement("p");
 	    var newel = document.createElement("a");
 	    newel.textContent = menu_list[i];
-	    newel.setAttribute("href","http://dev.a11y.in/web?foruri="+page+"&lang="+menu_list[i]+"&interactive=1");
+	    $(newel).attr("href","http://dev.a11y.in/web?foruri="+page+"&lang="+menu_list[i]+"&interactive=1");
 	    para.appendChild(newel);
 	    xyz.appendChild(para);
 	}
     },
+    
+	
     clearMenu: function() {
-	var xyz = document.getElementById("menu-button");
-	while(null!= xyz.firstChild)
-	{
-	    xyz.removeChild(xyz.firstChild);
-	}
+	// var xyz = document.getElementById("menu-button");
+	// while(null!= xyz.firstChild)
+	// {
+	//     xyz.removeChild(xyz.firstChild);
+	// }
     },
     ajax: function() {
 	if(a11ypi.flag == '0')
@@ -90,9 +93,9 @@ var a11ypi = {
 		    }
 		    else
 		    {
-			document.getElementById("see-narration").disabled = false;
-			document.getElementById("blog-filter").disabled = false;
-			document.getElementById("go").disabled = false;
+			$('#see-narration').button('option', 'disabled', false);
+			$("#blog-filter").button('option', 'disabled', false);
+			$("#go").button('option', 'disabled', false);
 			a11ypi.showbox = JSON.parse(xhr.responseText);
 		    }
 		}
@@ -179,18 +182,18 @@ var a11ypi = {
 		}
 	    }
 	}
+	
 	d = window.location.search.split('?')[1];
 	var a =[];
 	for (var i = 0;i<d.split('&').length;i++){ 
 	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
 	}
 	var url = a['foruri'];
-	var lang= a['lang'];
-	var data="url="+url+"&lang="+encodeURIComponent(lang);
-	
+	var lang = a['lang'];
+	var Data="url="+url+"&lang="+encodeURIComponent(lang);
 	xhr.open("POST","http://dev.a11y.in/replace",true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xhr.send(data);//
+	xhr.send(data);
     },
     evaluate: function()
     {
@@ -340,67 +343,154 @@ var a11ypi = {
     },
     loadOverlay: function()
     {
-	body = document.body;
-	overlay = document.createElement("div");
-	overlay.setAttribute("id", "renarrated_overlay");
-	overlay.setAttribute("class", "ui-widget-header ui-corner-all");
-	overlay.setAttribute("style", "position:fixed;top:0;width:80%;align:center;text-align:center;left:10%;z-index:2147483645;");
-	body.appendChild(overlay);
+	var icon_template = '<div id="icon_on_overlay" class="alipi demo ui-widget-header ui-corner-all" '+
+	    'onClick="a11ypi.hide_overlays();"> <input id="icon-button" class="alipi" type="submit" value="Hide Bar"'+
+	    // <img style="width:100%;height:100%;" '+
+	    // 'src="http://y.a11y.in/alipi.gif" />
+	    '</input></div>';
 
-	show_box = document.createElement("div");
-	show_box.setAttribute("id", "show-box");
-	show_box.title = "Please choose one of the languages";
-	body.appendChild(show_box);
+	var overlay_template = '<div id="renarrated_overlay" class="alipi ui-widget-header ui-corner-all">'+
+            '<input id="edit-current" class="alipi" type="submit" onclick="a11ypi.editPage();" value="Renarrate this page">'+
+            '<input id="see-narration" class="alipi" type="submit" onclick="a11ypi.showBox();" value="See Narrations">'+
+            '<input id="see-links" class="alipi" type="submit" onclick="a11ypi.showBox1();" value="List of Pages Narrated">'+
+            '<select id="blog-filter" class="alipi" onclick="a11ypi.blogFilter();" value="choose a blog"></select>'+
+            '<input id="go" class="alipi" type="submit" onclick="a11ypi.go();" value="Go">'+
+            '</div><div id="show-box"></div><div id="show-links" class="alipi"></div>';
+	
+	var pub_overlay_template = '<div id="pub_overlay" class="alipi ui-widget-header ui-corner-all">'+
+	    '<input id="exit-mode" class="alipi" type="submit" onclick="a11ypi.exitMode();" value="Exit">'+
+            '<input id="help-window" class="alipi" type="submit" onclick="a11ypi.help_window();" value="Help">'+
+            '<input id="undo-button" class="alipi" type="submit" onclick="util.undoChanges();" value="Undo" ; >'+
+            '<input id="publish-button" class="alipi" type="submit" onclick="a11ypi.publish();" value="Publish" ></div>';	
 
-	show_links = document.createElement("div");
-	show_links.setAttribute("id", "show-links");
-	show_links.title = "Please choose one of the links";
-	body.appendChild(show_links);
+	var element_edit_overlay_template = '<div id="element_edit_overlay" class="alipi ui-widget-header ui-corner-all" >'+
+	    '<input id="edit-text" class="alipi" type="submit" onclick="a11ypi.displayEditor();" value="Edit Text" style="display:none;" >'+
+            '<input id="add-audio" type="submit" onclick="pageEditor.addAudio();" class="alipi" value="Add Audio" style="display:none;" >'+
+            '<input id="replace-image" type="submit" onclick="a11ypi.imageReplacer();" class="alipi" value="Replace Image" style="display:none;" >'+
+	    '<input id="delete-image" type="submit" onclick="pageEditor.deleteImage();" class="alipi" value="Delete Image" style="display:none;" >'+
+	    '</div>';
 
-	edit_current = document.createElement("input");
-        edit_current.setAttribute("id", "edit-current");
-	edit_current.setAttribute("type", "submit");
-	edit_current.setAttribute("onclick", "a11ypi.editPage();");
-	edit_current.setAttribute("value", "Re-narrate this page");
-	overlay.appendChild(edit_current);
+	$('body').append(icon_template);
+	$('body').append(overlay_template);
+	$('body').append(pub_overlay_template);
+	$('body').append(element_edit_overlay_template);
 
-	see_narration = document.createElement("input");
-	see_narration.setAttribute("id", "see-narration");
-	see_narration.setAttribute("type", "submit");
-	see_narration.setAttribute("onclick", "a11ypi.showBox();");
-	see_narration.setAttribute("value", "See narrations");
-	see_narration.disabled = true;
-	overlay.appendChild(see_narration);
+	$('#undo-button').button({ disabled: true});
+	$('#publish-button').button({ disabled: true});
+	$('input:.alipi, select:.alipi').button();
+	
 	a11ypi.ajax();
-
-	see_links = document.createElement("input");
-	see_links.setAttribute("id", "see-links");
-	see_links.setAttribute("type", "submit");
-	see_links.setAttribute("onclick", "a11ypi.showBox1();");
-	see_links.setAttribute("value", "List of pages narrated");
-	see_links.disabled = true;
-	overlay.appendChild(see_links);
 	a11ypi.ajaxLinks1();
-
-	blog_filter = document.createElement("select");
-	blog_filter.setAttribute("id", "blog-filter");
-	blog_filter.setAttribute("style", "min-width:200px;max-width:200px;");
-	blog_filter.setAttribute("onclick", "a11ypi.blogFilter();");
-	blog_option = document.createElement("option");
-	blog_option.textContent = "Choose a blog name";
-	blog_filter.appendChild(blog_option);
-	blog_filter.disabled = true;
-	overlay.appendChild(blog_filter);
-
-	go = document.createElement("input");
-	go.setAttribute("id", "go");
-	go.setAttribute("type", "submit");
-	go.setAttribute("onclick", "a11ypi.go();");
-	go.setAttribute("value", "Go");
-	go.disabled = true;
-	overlay.appendChild(go);
+	$('#go').button('option','disabled', true);
+	$('#blog-filter').button('option', 'disabled', true);
+//	$('#element_edit_overlay').slideUp();
+	//go.disabled = true; //This throws a warning.  FIX IT.
     },
+    
+    help_window: function() {
+	var help_template = '<div id="helpwindow" class="alipi ui-widget-header ui-corner-all">'+
+            '<label id="txtlab" class="alipi" style="color:#000;font-weight:normal;">TEXT :- It will popup a '+
+	    'window and allow you to modify/replace text of select element on editor(right) box.'+
+	    '<p class="alipi">To delete - Empty the editor(right) box and press "OK".'+
+	    '</p><p class="alipi" style="margin-left:50px";>See narrations - If the selected element has other narrations '+
+	    'then it will list, on click.</p><p class="alipi" style="margin-left:50px";>Audio - It allows you to '+
+	    'enter audio URL.</p>IMAGE:- <p class="alipi" style="margin-left:50px";> Replace - It allows you to enter '+
+	    'image URL.</p><p class="alipi" style="margin-left:50px";> See narrations - If the selected element has other '+
+	    'image narration then it will show, on click.</p> UNDO:- Use it when you want to revert back to '+
+	    'previous change.<p class="alipi" style="margin-left:50px";> Revert deleted - Press \'Undo\' button twice.</p>'+
+	    'PUBLISH:- To publish your crafted changes to database and blog (our/your).'+
+	    '<p class="alipi" style="margin-left:50px";>States - To the place you are targetting.</p><p class="alipi" '+
+	    'style="margin-left:50px";>Languages - In language you publishing.</p><p class="alipi" style= '+
+	    '"margin-left:50px";>Style - In what style you crafted?</p><p class="alipi" style="margin-left:50px";> '+
+	    'Author - Who is a crafter?</p><p class="alipi" style="margin-left:50px";>'+
+	    'Our blog - If you don\'t have blogspot ID then check this to post it to our blog.</p></div>';
+
+	$('body').append(help_template);
+	$(document).unbind('mouseover'); // Unbind the css on mouseover
+	$(document).unbind('mouseout'); // Unbind the css on mouseout
+
+	$(function() {
+	    $( "#helpwindow" ).dialog({
+		width:800,
+		height:550,
+		modal: true,
+		close: function() {
+		    $("#helpwindow").remove();
+		}
+	    });
+	});
+    },  
+    
+    exitMode: function() {
+	var exit = window.confirm("Do you really want to exit from edit mode?");
+	if (exit == true) {
+	    window.location.reload();
+	}
+    },
+
+    hide_overlays: function() {
+	if($('#icon-button').val() == 'Hide Bar') {
+	    $('#icon-button').attr('value', 'Show Bar');
+	    $('#pub_overlay').slideToggle();
+	    $('#element_edit_overlay').slideToggle();
+	} else {
+	    $('#icon-button').val('Hide Bar');
+	    $('#pub_overlay').slideToggle();
+	    $('#element_edit_overlay').slideToggle();	    
+	}
+    },
+
+    publish: function() {
+	if(util.hasChangesPending())
+	{
+	    if (a11ypi.target == false ) {
+		var publish_template = '<div id="targetoverlay" title="Target Window" class="alipi ui-widget-header ui-corner-all"> '+
+		    '<div id="infovis" class="alipi"> </div>'+
+		    '<label class="alipi" style="position:absolute;top:20%;left:65%;color:#000;">Location: </label> '+
+		    '<label class="alipi" id="loc-select" style="position:absolute;top:20%;left:72%;color:#000;"></label>'+
+		    '<label class="alipi" style="position:absolute;top:35%;left:65%;color:#000;">Language: </label> '+
+		    '<label id="lang-select" class="alipi" style="position:absolute;top:35%;left:73%;color:#000;"></label>'+
+		    '<label class="alipi" style="position:absolute;top:50%;left:65%;color:#000;">Style: </label> '+
+		    '<label id="style-select" class="alipi" style="position:absolute;top:50%;left:69.5%;color:#000;"></label>'+
+		    '<label class="alipi" style="position:absolute;top:65%;left:65%;color:#000;">Author: </label> '+
+		    '<input id="auth-select" class="alipi" type="text" style="position:absolute;top:65%;left:71%; '+
+		    'width:160px;" /><div id="blogset" style="position:absolute;top:80%;left:65%;width:35%;"><input id="our-check" class="alipi" '+
+		    'type="radio"name="blog"style="position:relative;" /><label class="alipi" style="position:relative; '+
+		    'color:#000;">Alipi Blog</label><input id="your-check" class="alipi" type="radio" '+
+		    'name="blog" style="position:relative;margin-left:10%;" /><label class="alipi" style= '+
+		    '"position:relative;color:#000;">Personal Blog</label></div></div>';
+		
+		$('body').append(publish_template);
+		document.addEventListener("DOMActivate", init, false);
+		a11ypi.target = true;
+	    }
+
+	    $(document).unbind('mouseover'); // Unbind the css on mouseover
+	    $(document).unbind('mouseout'); // Unbind the css on mouseout
+
+	    $(function() {
+		$( "#targetoverlay" ).dialog({
+		    height:600,
+		    width:1000,
+		    modal: true,
+		    buttons: {
+			OK: function() {
+			    util.publish();
+			} 
+		    },
+		    close: function() {
+			$( "#targetoverlay" ).hide();
+			document.removeEventListener("DOMActivate", init, false);
+		    }
+		});
+	    });
+	}
+    },
+    
     showBox: function() {
+	$(document).unbind('mouseover'); // Unbind the css on mouseover
+	$(document).unbind('mouseout'); // Unbind the css on mouseout
+
 	$(function() {
 	    $( "#show-box" ).dialog( "destroy" );
 	    
@@ -420,9 +510,9 @@ var a11ypi = {
 	    {
 		if(xhr.responseText == "empty")
 		{ }
-		    else
+		else
 		{
-		    document.getElementById("see-links").disabled = false;
+		    $("#see-links").button('option', 'disabled', false);
 		    a11ypi.showlinks = JSON.parse(xhr.responseText);
 		}
 	    }
@@ -437,6 +527,9 @@ var a11ypi = {
 	xhr.send('url='+a['foruri'])
     },
     showBox1: function() {
+	$(document).unbind('mouseover'); // Unbind the css on mouseover
+	$(document).unbind('mouseout'); // Unbind the css on mouseout
+
 	$(function() {
 	    $( "#show-links" ).dialog( "destroy" );
 	    
@@ -449,8 +542,8 @@ var a11ypi = {
 	a11ypi.createDomainMenu();
     },
     createDomainMenu: function() {
-	var xyz = document.getElementById("show-links");
-	xyz.innerHTML = "";
+	var xyz = $("#show-links");
+	xyz.html('');
 	menu_list = a11ypi.showlinks;
 	for(var i=0; i<menu_list.length;i++)
 	{
@@ -460,7 +553,7 @@ var a11ypi = {
 	    newel.setAttribute("href", "http://dev.a11y.in/web?foruri="+encodeURIComponent(menu_list[i]));
 	    newel.setAttribute("class","alipiShowLink");
 	    para.appendChild(newel);
-	    xyz.appendChild(para);
+	    xyz.append(para);
 	}
 	$('.alipiShowLink').hover(
 	    function() {
@@ -471,7 +564,7 @@ var a11ypi = {
 		    {
 			if(xhr.responseText == "empty")
 			{ }
-			     else
+			else
 			{
 			    menu_list = JSON.parse(xhr.responseText);
 			    x = '';
@@ -482,7 +575,7 @@ var a11ypi = {
 				    x += menu_list[i] + ", ";
 				}
 			    }
-			    document.getElementById('show-links').title = x;
+			    $('#show-links').title = x;
 			}
 		    }
 		}
@@ -490,7 +583,7 @@ var a11ypi = {
 		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 		xhr.send('url='+encodeURIComponent($(this).attr('href'))) ;
 	    },
-	    function () {document.getElementById('show-links').title= '';}
+	    function () {$('#show-links').title= '';}
 	);
     },
     blogFilter: function() {
@@ -503,11 +596,11 @@ var a11ypi = {
 		{
 		    if(xhr.responseText == "empty")
 		    { }
-		        else
+		    else
 		    {
-			var sel = document.getElementById("blog-filter");
+			var sel = $("#blog-filter");
 			var menu_list = JSON.parse(xhr.responseText);
-	//		blogArray = [];
+			//		blogArray = [];
 			// for (var i=0; i< menu_list.length; i++)
 			// {
 			//     blogArray[i] = menu_list[i].split("http://")[1].split(".com")[0] + ".com";
@@ -517,19 +610,19 @@ var a11ypi = {
 			{
 			    // if ( i == 0 )
 			    // {
-				opt = document.createElement("option");
-				opt.textContent = menu_list[i];
-				sel.appendChild(opt);
+			    opt = document.createElement("option");
+			    opt.textContent = menu_list[i];
+			    sel.append(opt);
 			}
-			    // else if(blogArray[i] == blogArray[i-1])
-			    // { }
-			    //     else 
-			    // {
-			    // 	opt = document.createElement("option");
-			    // 	opt.textContent = blogArray[i];
-			    // 	sel.appendChild(opt);
-			    // }
-		    
+			// else if(blogArray[i] == blogArray[i-1])
+			// { }
+			//     else 
+			// {
+			// 	opt = document.createElement("option");
+			// 	opt.textContent = blogArray[i];
+			// 	sel.appendChild(opt);
+			// }
+			
 		    }
 		}
 	    }
@@ -548,24 +641,151 @@ var a11ypi = {
 	for (var i = 0;i<d.split('&').length;i++){ 
 	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
 	}
-	if (document.getElementById("blog-filter").value == "Choose a blog name")
+	if ($("#blog-filter").val() == null)
 	{    }
 	else {
-	    window.open("http://dev.a11y.in/web?foruri=" + a['foruri'] + "&blog=" + document.getElementById("blog-filter").value);
-	}},
+	    window.open("http://dev.a11y.in/web?foruri=" + a['foruri'] + "&blog=" + $("#blog-filter").val());
+	}
+    },
     editPage: function() {
-	a11ypi.testContext(); page_edit('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');
-	document.getElementById("renarrated_overlay").style.display = "none";
+	a11ypi.testContext();
+	$('#renarrated_overlay').hide();
+	$('#icon_on_overlay').show();
+	$('#pub_overlay').show();
+	$('#element_edit_overlay').slideUp(); // When 1st time page entered in edit mode
+	
+	$('body *').contents().filter(function(){
+	    {
+		try{
+		    if(!($(this).hasClass('alipi')))
+			return this;
+		}
+		catch(err)
+		{
+		    //pass
+		}
+	    }
+	}).click(pageEditor.startEdit);
+	//	$(document).click(pageEditor.startEdit);
+	$(document).mouseover(a11ypi.highlightOnHover);
+	$(document).mouseout(a11ypi.unhighlightOnMouseOut);
+    },
+
+    displayEditor: function() {
+	var template = '<div id="editoroverlay" title="Editor" class="alipi ui-widget-header ui-corner-all">'+
+            '<label class="alipi" style="left: 20%;">Reference</label>'+
+            '<div id="reference" class="alipi" readonly="yes"></div>'+
+            '<label class="alipi" style="left: 70%;">Editor</label>'+
+            '<div id="editor" class="alipi" contenteditable="true"></div>'+
+            '<div id="forPrevData" class="alipi"></div>'+
+            '</div>';
+	
+	$('body').append(template);
+
+	var tag = pageEditor.event.target.nodeName;
+	$(pageEditor.event.target).removeAttr('m4pageedittype');
+	$(pageEditor.event.target).children().removeAttr('m4pageedittype');
+	
+	$('#reference').text('<'+tag+'>'+$(pageEditor.event.target).html()+'</'+tag+'>');
+	$('#editor').html($(pageEditor.event.target).html());
+
+	$(document).unbind('mouseover'); // Unbind the css on mouseover
+	$(document).unbind('mouseout'); // Unbind the css on mouseout
+	$(pageEditor.event.target).removeClass('highlightOnSelect'); // Remove hightlight of selected element
+
+	$( "#editoroverlay" ).dialog({
+	    width:1000,
+	    height:550,
+	    modal: true,
+	    buttons: {
+		"+": function() {
+		    if($('#editor').css('font-size') >= '30px') {
+			// passthrough
+		    } 
+		    else {
+			var font = parseFloat($('#editor').css('font-size')) + 1;
+			$('#editor').css('font-size', font+'px');
+			font = parseFloat($('#reference').css('font-size')) + 1;
+			$('#reference').css('font-size', font+'px');
+		    }
+		},
+		"-": function() {
+		    if($('#editor').css('font-size') <= '10px') {
+			//passthrough
+		    } 
+		    else {
+			var font = parseFloat($('#editor').css('font-size')) - 1;
+		    console.log($('#editor').css('font-size'))
+			$('#editor').css('font-size', font+'px');
+			font = parseFloat($('#reference').css('font-size')) - 1;
+			$('#reference').css('font-size', font+'px');
+		    }
+		},
+		Link: function() {
+		    pageEditor.handler();
+		},
+		OK: function() {
+		    manager.recordText(pageEditor.event.target);
+		    pageEditor.cleanUp(pageEditor.event.target);
+		    $( "#editoroverlay" ).remove();		    
+		}
+	    },
+	    close: function() {
+		pageEditor.cleanUp(pageEditor.event.target);
+		$("#editoroverlay" ).remove();
+	    }
+	});
+
+	$($($('<label>').insertAfter($('.ui-dialog-buttonset').children()[0])).html('Magnify or Demagnify')).css({}); // Element added externally with css
+	$($('.ui-dialog-buttonset').children()[1]).css({'position':'absolute','left':'100','font-weight':'bold','margin-top':'10'});
+	$($('.ui-dialog-buttonset').children()[0]).css({'position':'absolute','left':'45'}); // '+' CSS for postioning button on editor
+	$($('.ui-dialog-buttonset').children()[2]).css({'position':'absolute','left':'265'}); // '-' CSS for postioning button on editor
+	$($('.ui-dialog-buttonset').children()[3]).css({'position':'absolute','left':'550'}) // 'Link' CSS for postioning button on editor
+    },
+    
+    imageReplacer: function() {
+	var imageInputTemplate = '<div id="imageInputElement" title="Enter url" class="alipi ui-widget-header ui-corner-all">'+
+            '<input type="text" id="imageInput" placeholder="http://foo.com/baz.jpg" class="alipi" value=""/></div>';
+
+	$('body').append(imageInputTemplate);
+	$(document).unbind('mouseover'); // Unbind the css on mouseover
+	$(document).unbind('mouseout'); // Unbind the css on mouseout
+
+	$( "#imageInputElement" ).dialog({
+	    width:300,
+	    height:200,
+	    modal: true,
+	    buttons: {
+		OK: function() {
+		    var formValue = $('#imageInput').val();
+		    if(formValue != '\/S/')
+		    {
+			manager.updateImage(pageEditor.event.target, formValue);
+			pageEditor.cleanUp(pageEditor.event.target);
+			$( "#imageInputElement" ).remove();
+		    }
+		}
+	    },
+	    close: function() {
+		pageEditor.cleanUp(pageEditor.event.target);
+		$("#imageInputElement" ).remove();
+	    }
+	});
+	
+    },
+    
+    highlightOnHover: function(event) {
+	if( !($(event.target).hasClass('alipi')) ) {
+	    $(event.target).addClass('highlightElement');
+	}
+    },
+
+    unhighlightOnMouseOut: function(event) {
+	$(event.target).removeClass('highlightElement');
+    },
+
+    showTopBar: function() {
+	
     },
 };
 
-$('html').bind('keypress', function(e)
-	       {
-			   if(e.keyCode == 118)
-			   {
-			       e.preventDefault();
-			  //     $('.blink').delay(400).fadeOut(400).delay(200).fadeIn(400).delay(400).fadeOut(400).delay(200).fadeIn(400);
-			       setTimeout("$('.blink').addClass('blinks')", 800);
-			       setTimeout("$('.blink').removeClass('blinks')", 2400);
-			   }
-		       });

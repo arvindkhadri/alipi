@@ -1,3 +1,9 @@
+body {
+    margin:0px;
+    padding:0px;
+    text-align:justify;
+}
+
 #ren_overlay {
     height:25px;
     width:100%;
@@ -66,4 +72,197 @@
     height:30px;
     font-size:20px;
     font-weight:bold;
+}
+
+#editoroverlay {
+    display: none;
+}
+#editoroverlay label {
+    position: absolute;
+    top: 5%;
+    color: #000;
+    font-size: 25px;
+}
+
+#reference {
+    position: absolute;
+    top: 15%;
+    left:4%;
+    min-width:450px;
+    max-width:450px;
+    min-height:370px;
+    max-height:370px;
+    font-size:15;
+    text-align:justify;
+    color:#000;
+    font-weight:normal;
+}
+#editor {
+    position:absolute;
+    top:15%;
+    left:51%;
+    min-width:450px;
+    max-width:450px;
+    min-height:370px;
+    max-height:370px;
+    font-size:15;
+    text-align:justify;
+    color:#000;
+    font-weight:normal;
+}
+#forPrevData {
+    display:none;
+    height:1px;
+    width:1px;
+}
+
+#renarrated_overlay {
+    position:fixed;
+    top:0;
+    width:80%;
+    height:30px;
+    align:center;
+    text-align:center;
+    left:10%;
+    z-index:2147483645;
+}
+
+#edit-current, #see-narration, #see-links, #go {
+    position:relative;
+    top:0px;
+}
+
+#renarrated_overlay .ui-button, #icon-button {
+    height:25px;
+    text-align:justify;
+    padding:0.1em 0.8em 0.2em 0.8em;
+    font-weight:normal;
+}
+
+#icon_on_overlay {
+    display:none;
+    position:fixed;
+    top:0;
+    /* width:5%; */
+    /* height:5%; */
+    /* align:center; */
+    text-align:center;
+    left:1%;
+    z-index:2147483645;
+}
+
+#pub_overlay {
+    display:none;
+    position:fixed;
+    top:0;
+    width:40%;
+    height:30px;
+    /* align:center; */
+    text-align:center;
+    left:12%;
+    z-index:2147483645;
+}
+
+#exit-mode, #help-window, #undo-button, #publish-button {
+    position:relative;
+    top:3px;
+}
+
+#pub_overlay .ui-button {
+    height:25px;
+    text-align:justify;
+    padding:0.1em 0.8em 0.2em 0.8em;
+    font-weight:normal;
+}
+
+#element_edit_overlay {
+    display:none;
+    position:fixed;
+    padding-top:2.5px;
+    padding-bottom:2.5px;
+    top:0;
+    width:40%;
+    /* align:center; */
+    text-align:center;
+    right:05%;
+    z-index:2147483645;
+}
+
+#element_edit_overlay .ui-button {
+    height:25px;
+    text-align:justify;
+    padding:0.1em 0.8em 0.2em 0.8em;
+    font-weight:normal;
+}
+
+.highlightElement {
+    /* color:#fff; */
+    /* background-color:#777; */
+    border:dotted;
+}
+
+.highlightOnSelect {
+    border:solid;
+}
+
+#blog-filter {
+    min-width:200px;
+    max-width:200px;
+    top:1px;
+}
+
+#blogset{
+    position:absolute;
+    
+}
+
+#infovis {
+    position:absolute;
+    top:3%;
+    left:0%;
+    width:60%;
+    height:95%;
+    overflow:hidden;
+}
+#infovis-canvaswidget, infovis-canvas {
+    height:95%
+}
+
+#infonar {
+    position:relative;
+    top:2%;
+    left:0;
+    width:35%;
+    height:90%;
+    overflow:show;
+/* color:#000; */
+/* background-color: rgba(0,0,0,0.5); */
+}
+
+#narrations-div {
+    position:fixed;
+    top:5%;
+    bottom:2%
+    right:0.1%;
+    width:30%;
+    height:93%;
+    overflow:show;    
+    background-color: rgba(0,0,0,0.5);
+    z-index:999999999;
+}
+/*TOOLTIPS*/
+.tip {
+    color: #fff;
+    width: 140px;
+    background-color: rgba(0,0,0,1);
+    border:1px solid #ccc;
+    -moz-box-shadow:#555 2px 2px 8px;
+    -webkit-box-shadow:#555 2px 2px 8px;
+    -o-box-shadow:#555 2px 2px 8px;
+    box-shadow:#555 2px 2px 8px;
+    opacity:1;
+    /* filter:alpha(opacity=90); */
+    font-size:12px;
+    font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;
+    padding:7px;
 }
