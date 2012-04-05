@@ -211,12 +211,17 @@ var a11ypi = {
             {
 		if (elementType == 'image')
 		{
-                    result.setAttribute('src',newContent.split(',')[1]);  //A hack to display images properly, the size has been saved in the database.
-		    width = newContent.split(',')[0].split('x')[0];
-		    height = newContent.split(',')[0].split('x')[1];
-		    result.setAttribute('width',width);
-		    result.setAttribute('height', height);
-		    result.setAttribute('class','blink');
+		    if(newContent != '')
+		    {
+			result.setAttribute('src',newContent.split(',')[1]);  //A hack to display images properly, the size has been saved in the database.
+			width = newContent.split(',')[0].split('x')[0];
+			height = newContent.split(',')[0].split('x')[1];
+			result.setAttribute('width',width);
+			result.setAttribute('height', height);
+			result.setAttribute('class','blink');
+		    }
+		    else
+			$(result).hide();
                 }
 		else if(elementType == 'audio/ogg')
 		{
@@ -375,6 +380,7 @@ var a11ypi = {
 	$('body').append(pub_overlay_template);
 	$('body').append(element_edit_overlay_template);
 
+	
 	$('#undo-button').button({ disabled: true});
 	$('#publish-button').button({ disabled: true});
 	$('input:.alipi, select:.alipi').button();
@@ -383,6 +389,8 @@ var a11ypi = {
 	a11ypi.ajaxLinks1();
 	$('#go').button('option','disabled', true);
 	$('#blog-filter').button('option', 'disabled', true);
+	$('#see-narration').button('option', 'disabled', true);
+	$("#see-links").button('option', 'disabled', true);
 //	$('#element_edit_overlay').slideUp();
 	//go.disabled = true; //This throws a warning.  FIX IT.
     },
@@ -445,9 +453,13 @@ var a11ypi = {
     publish: function() {
 	if(util.hasChangesPending())
 	{
+	    $('#pub_overlay').slideUp();
+	    $('#element_edit_overlay').slideUp(); 
+	    $('#icon_on_overlay').hide();
 	    if (a11ypi.target == false ) {
 		var publish_template = '<div id="targetoverlay" title="Target Window" class="alipi ui-widget-header ui-corner-all"> '+
 		    '<div id="infovis" class="alipi"> </div>'+
+		    '<label class="alipi" style="position:absolute;top:10%;left:800px;color:#000;">Target </label>'+
 		    '<label class="alipi" style="position:absolute;top:20%;left:700px;color:#000;">Location: </label> '+
 		    '<label id="loc-select" class="alipi" style="position:absolute;top:20%;left:770px;color:#000;"></label>'+
 		    '<label class="alipi" style="position:absolute;top:35%;left:700px;color:#000;">Language: </label> '+
@@ -476,11 +488,14 @@ var a11ypi = {
 		    width:1000,
 		    modal: true,
 		    buttons: {
-			OK: function() {
+			Publish: function() {
 			    util.publish();
 			} 
 		    },
 		    close: function() {
+			$('#pub_overlay').slideDown();
+			$('#element_edit_overlay').slideDown(); 
+			$('#icon_on_overlay').show();
 			$( "#targetoverlay" ).hide();
 			document.removeEventListener("DOMActivate", init, false);
 		    }
@@ -683,6 +698,9 @@ var a11ypi = {
             '</div>';
 	
 	$('body').append(template);
+	 $('#pub_overlay').slideUp();
+	$('#element_edit_overlay').slideUp(); 
+	$('#icon_on_overlay').hide();
 
 	var tag = pageEditor.event.target.nodeName;
 	$(pageEditor.event.target).removeAttr('m4pageedittype');
@@ -726,6 +744,9 @@ var a11ypi = {
 		    pageEditor.handler();
 		},
 		OK: function() {
+		    $('#pub_overlay').slideDown();
+		    $('#element_edit_overlay').slideDown(); 
+		    $('#icon_on_overlay').show();
 		    manager.recordText(pageEditor.event.target);
 		    pageEditor.cleanUp(pageEditor.event.target);
 		    $( "#editoroverlay" ).remove();		    

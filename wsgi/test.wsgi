@@ -61,11 +61,13 @@ def application(environ, start_response):
             elif d['elementtype'] == 'audio/ogg':
                 string+='<audio about="{0}" xpath="{1}" controls="controls" alipius="{2}" src="{3}"></audio>'.format(d['about'],d['xpath'],alipius,d['data'])
             else:
-                src = d['data'].split(',')[1]
-                width = d['data'].split(',')[0].split('x')[0]
-                height = d['data'].split(',')[0].split('x')[1]
-                string+='<img about="{0}" xpath="{1}" alipius="{2}" src="{3}" width={4} height={5}></img>'.format(d['about'],d['xpath'],alipius,src,width,height)
-
+                if data is not '':
+                    src = d['data'].split(',')[1]
+                    width = d['data'].split(',')[0].split('x')[0]
+                    height = d['data'].split(',')[0].split('x')[1]
+                    string+='<img about="{0}" xpath="{1}" alipius="{2}" src="{3}" width={4} height={5}></img>'.format(d['about'],d['xpath'],alipius,src,width,height)
+                else:
+                    string+='<img about="{0}" xpath="{1}" alipius="{2}" src="{3}" width={4} height={5}></img>'.format(d['about'],d['xpath'],alipius,'','','')
             lang = d['lang']
             target = d['location']
             about = d['about']
