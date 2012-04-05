@@ -93,9 +93,9 @@ var a11ypi = {
 		    }
 		    else
 		    {
-			document.getElementById("see-narration").disabled = false;
-			document.getElementById("blog-filter").disabled = false;
-			document.getElementById("go").disabled = false;
+			$('#see-narration').button('option', 'disabled', false);
+			$("#blog-filter").button('option', 'disabled', false);
+			$("#go").button('option', 'disabled', false);
 			a11ypi.showbox = JSON.parse(xhr.responseText);
 		    }
 		}
@@ -343,23 +343,25 @@ var a11ypi = {
     },
     loadOverlay: function()
     {
-	var icon_template = '<div id="icon_on_overlay" class="alipi ui-widget-header ui-corner-all" '+
-	    'onClick="a11ypi.hide_overlays();"> <input class="alipi" type="image" <img style="width:100%;height:100%;" '+
-	    'src="http://y.a11y.in/alipi.gif" /></input></div>';
+	var icon_template = '<div id="icon_on_overlay" class="alipi demo ui-widget-header ui-corner-all" '+
+	    'onClick="a11ypi.hide_overlays();"> <input id="icon-button" class="alipi" type="submit" value="Hide Bar"'+
+	    // <img style="width:100%;height:100%;" '+
+	    // 'src="http://y.a11y.in/alipi.gif" />
+	    '</input></div>';
 
 	var overlay_template = '<div id="renarrated_overlay" class="alipi ui-widget-header ui-corner-all">'+
             '<input id="edit-current" class="alipi" type="submit" onclick="a11ypi.editPage();" value="Renarrate this page">'+
             '<input id="see-narration" class="alipi" type="submit" onclick="a11ypi.showBox();" value="See Narrations">'+
             '<input id="see-links" class="alipi" type="submit" onclick="a11ypi.showBox1();" value="List of Pages Narrated">'+
-            '<select id="blog-filter" class="alipi" onclick="a11ypi.blogFilter();"><option>Choose a blog</option></select>'+
+            '<select id="blog-filter" class="alipi" onclick="a11ypi.blogFilter();" value="choose a blog"></select>'+
             '<input id="go" class="alipi" type="submit" onclick="a11ypi.go();" value="Go">'+
             '</div><div id="show-box"></div><div id="show-links" class="alipi"></div>';
 	
 	var pub_overlay_template = '<div id="pub_overlay" class="alipi ui-widget-header ui-corner-all">'+
-	    '<input id="exit-mode" class="alipi" type="submit" onclick="a11ypi.exitMode();" value="EXIT">'+
+	    '<input id="exit-mode" class="alipi" type="submit" onclick="a11ypi.exitMode();" value="Exit">'+
             '<input id="help-window" class="alipi" type="submit" onclick="a11ypi.help_window();" value="Help">'+
-            '<input id="undo-button" class="alipi" type="submit" onclick="util.undoChanges();" value="Undo" disabled=true; >'+
-            '<input id="publish-button" class="alipi" type="submit" onclick="a11ypi.publish();" value="Publish" disabled=true; ></div>';	
+            '<input id="undo-button" class="alipi" type="submit" onclick="util.undoChanges();" value="Undo" ; >'+
+            '<input id="publish-button" class="alipi" type="submit" onclick="a11ypi.publish();" value="Publish" ></div>';	
 
 	var element_edit_overlay_template = '<div id="element_edit_overlay" class="alipi ui-widget-header ui-corner-all" >'+
 	    '<input id="edit-text" class="alipi" type="submit" onclick="a11ypi.displayEditor();" value="Edit Text" style="display:none;" >'+
@@ -373,11 +375,16 @@ var a11ypi = {
 	$('body').append(pub_overlay_template);
 	$('body').append(element_edit_overlay_template);
 
+	$('#undo-button').button({ disabled: true});
+	$('#publish-button').button({ disabled: true});
 	$('input:.alipi, select:.alipi').button();
-
+	
 	a11ypi.ajax();
 	a11ypi.ajaxLinks1();
-	go.disabled = true; //This throws a warning.  FIX IT.
+	$('#go').button('option','disabled', true);
+	$('#blog-filter').button('option', 'disabled', true);
+//	$('#element_edit_overlay').slideUp();
+	//go.disabled = true; //This throws a warning.  FIX IT.
     },
     
     help_window: function() {
@@ -422,8 +429,15 @@ var a11ypi = {
     },
 
     hide_overlays: function() {
-	$('#pub_overlay').slideToggle();
-	$('#element_edit_overlay').slideToggle();
+	if($('#icon-button').val() == 'Hide Bar') {
+	    $('#icon-button').attr('value', 'Show Bar');
+	    $('#pub_overlay').slideToggle();
+	    $('#element_edit_overlay').slideToggle();
+	} else {
+	    $('#icon-button').val('Hide Bar');
+	    $('#pub_overlay').slideToggle();
+	    $('#element_edit_overlay').slideToggle();	    
+	}
     },
 
     publish: function() {
@@ -498,7 +512,7 @@ var a11ypi = {
 		{ }
 		else
 		{
-		    document.getElementById("see-links").disabled = false;
+		    $("#see-links").button('option', 'disabled', false);
 		    a11ypi.showlinks = JSON.parse(xhr.responseText);
 		}
 	    }
@@ -528,8 +542,8 @@ var a11ypi = {
 	a11ypi.createDomainMenu();
     },
     createDomainMenu: function() {
-	var xyz = document.getElementById("show-links");
-	xyz.innerHTML = "";
+	var xyz = $("#show-links");
+	xyz.html('');
 	menu_list = a11ypi.showlinks;
 	for(var i=0; i<menu_list.length;i++)
 	{
@@ -539,7 +553,7 @@ var a11ypi = {
 	    newel.setAttribute("href", "http://dev.a11y.in/web?foruri="+encodeURIComponent(menu_list[i]));
 	    newel.setAttribute("class","alipiShowLink");
 	    para.appendChild(newel);
-	    xyz.appendChild(para);
+	    xyz.append(para);
 	}
 	$('.alipiShowLink').hover(
 	    function() {
@@ -561,7 +575,7 @@ var a11ypi = {
 				    x += menu_list[i] + ", ";
 				}
 			    }
-			    document.getElementById('show-links').title = x;
+			    $('#show-links').title = x;
 			}
 		    }
 		}
@@ -569,7 +583,7 @@ var a11ypi = {
 		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 		xhr.send('url='+encodeURIComponent($(this).attr('href'))) ;
 	    },
-	    function () {document.getElementById('show-links').title= '';}
+	    function () {$('#show-links').title= '';}
 	);
     },
     blogFilter: function() {
@@ -584,7 +598,7 @@ var a11ypi = {
 		    { }
 		    else
 		    {
-			var sel = document.getElementById("blog-filter");
+			var sel = $("#blog-filter");
 			var menu_list = JSON.parse(xhr.responseText);
 			//		blogArray = [];
 			// for (var i=0; i< menu_list.length; i++)
@@ -598,7 +612,7 @@ var a11ypi = {
 			    // {
 			    opt = document.createElement("option");
 			    opt.textContent = menu_list[i];
-			    sel.appendChild(opt);
+			    sel.append(opt);
 			}
 			// else if(blogArray[i] == blogArray[i-1])
 			// { }
@@ -627,17 +641,18 @@ var a11ypi = {
 	for (var i = 0;i<d.split('&').length;i++){ 
 	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
 	}
-	if (document.getElementById("blog-filter").value == "Choose a blog name")
+	if ($("#blog-filter").val() == null)
 	{    }
 	else {
-	    window.open("http://dev.a11y.in/web?foruri=" + a['foruri'] + "&blog=" + document.getElementById("blog-filter").value);
-	}},
+	    window.open("http://dev.a11y.in/web?foruri=" + a['foruri'] + "&blog=" + $("#blog-filter").val());
+	}
+    },
     editPage: function() {
 	a11ypi.testContext();
 	$('#renarrated_overlay').hide();
 	$('#icon_on_overlay').show();
 	$('#pub_overlay').show();
-	$('#element_edit_overlay').show();
+	$('#element_edit_overlay').slideUp(); // When 1st time page entered in edit mode
 	
 	$('body *').contents().filter(function(){
 	    {
@@ -672,7 +687,6 @@ var a11ypi = {
 	$(pageEditor.event.target).children().removeAttr('m4pageedittype');
 	
 	$('#reference').text('<'+tag+'>'+$(pageEditor.event.target).html()+'</'+tag+'>');
-	
 	$('#editor').html($(pageEditor.event.target).html());
 
 	$(document).unbind('mouseover'); // Unbind the css on mouseover
@@ -697,9 +711,11 @@ var a11ypi = {
 		},
 		"-": function() {
 		    if($('#editor').css('font-size') <= '10px') {
+			//passthrough
 		    } 
 		    else {
 			var font = parseFloat($('#editor').css('font-size')) - 1;
+		    console.log($('#editor').css('font-size'))
 			$('#editor').css('font-size', font+'px');
 			font = parseFloat($('#reference').css('font-size')) - 1;
 			$('#reference').css('font-size', font+'px');
@@ -744,8 +760,8 @@ var a11ypi = {
 		    var formValue = $('#imageInput').val();
 		    if(formValue != '\/S/')
 		    {
+			manager.updateImage(pageEditor.event.target, formValue);
 			pageEditor.cleanUp(pageEditor.event.target);
-			manager.recordImage(pageEditor.event.target, formValue);
 			$( "#imageInputElement" ).remove();
 		    }
 		}
