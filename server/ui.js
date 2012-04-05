@@ -64,7 +64,6 @@ var a11ypi = {
 	    var para  = document.createElement("p");
 	    var newel = document.createElement("a");
 	    newel.textContent = menu_list[i];
-	    //$(newel).css("cursor","pointer");
 	    $(newel).attr("href","http://dev.a11y.in/web?foruri="+page+"&lang="+menu_list[i]+"&interactive=1");
 	    para.appendChild(newel);
 	    xyz.appendChild(para);
@@ -149,7 +148,7 @@ var a11ypi = {
 	window.location = window.location.href + "&lang=" + e.value;
 	window.reload();
     },
-    ren: function(e)
+    ren: function()
     {
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function()
@@ -190,7 +189,7 @@ var a11ypi = {
 	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
 	}
 	var url = a['foruri'];
-	var lang = $(e.target).text();
+	var lang = a['lang'];
 	var Data="url="+url+"&lang="+encodeURIComponent(lang);
 	xhr.open("POST","http://dev.a11y.in/replace",true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
