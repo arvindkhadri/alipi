@@ -449,7 +449,7 @@ var a11ypi = {
 		var publish_template = '<div id="targetoverlay" title="Target Window" class="alipi ui-widget-header ui-corner-all"> '+
 		    '<div id="infovis" class="alipi"> </div>'+
 		    '<label class="alipi" style="position:absolute;top:20%;left:700px;color:#000;">Location: </label> '+
-		    '<label class="alipi" id="loc-select" style="position:absolute;top:20%;left:770px;color:#000;"></label>'+
+		    '<label id="loc-select" class="alipi" style="position:absolute;top:20%;left:770px;color:#000;"></label>'+
 		    '<label class="alipi" style="position:absolute;top:35%;left:700px;color:#000;">Language: </label> '+
 		    '<label id="lang-select" class="alipi" style="position:absolute;top:35%;left:780px;color:#000;"></label>'+
 		    '<label class="alipi" style="position:absolute;top:50%;left:700px;color:#000;">Style: </label> '+

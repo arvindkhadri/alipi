@@ -365,7 +365,7 @@ var util = {
 	    buffer.append('about=');  //url=about    //removed '&' on purpose
 	    buffer.append(window.location.search.split('=')[1]);
 	    buffer.append('&lang=');//lang
-	    buffer.append(encodeURIComponent($('#loc-select').html()));
+	    buffer.append(encodeURIComponent($('#lang-select').html()));
 	    buffer.append('&location=');//location
 	    buffer.append(encodeURIComponent($('#loc-select').html()));
 	    buffer.append('&style=');//style
