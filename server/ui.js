@@ -431,12 +431,14 @@ var a11ypi = {
     hide_overlays: function() {
 	if($('#icon-button').val() == 'Hide Bar') {
 	    $('#icon-button').attr('value', 'Show Bar');
-	    $('#pub_overlay').slideToggle();
-	    $('#element_edit_overlay').slideToggle();
+	    $('#pub_overlay').slideUp();
+	    $('#element_edit_overlay').slideUp();
 	} else {
 	    $('#icon-button').val('Hide Bar');
-	    $('#pub_overlay').slideToggle();
-	    $('#element_edit_overlay').slideToggle();	    
+	    $('#pub_overlay').slideDown();
+	    if( $('#element_edit_overlay').children()[0].style.display != 'none' || $('#element_edit_overlay').children()[2].style.display != 'none' ) {
+	    $('#element_edit_overlay').slideDown();	    
+	    }
 	}
     },
 
@@ -446,15 +448,15 @@ var a11ypi = {
 	    if (a11ypi.target == false ) {
 		var publish_template = '<div id="targetoverlay" title="Target Window" class="alipi ui-widget-header ui-corner-all"> '+
 		    '<div id="infovis" class="alipi"> </div>'+
-		    '<label class="alipi" style="position:absolute;top:20%;left:65%;color:#000;">Location: </label> '+
-		    '<label class="alipi" id="loc-select" style="position:absolute;top:20%;left:72%;color:#000;"></label>'+
-		    '<label class="alipi" style="position:absolute;top:35%;left:65%;color:#000;">Language: </label> '+
-		    '<label id="lang-select" class="alipi" style="position:absolute;top:35%;left:73%;color:#000;"></label>'+
-		    '<label class="alipi" style="position:absolute;top:50%;left:65%;color:#000;">Style: </label> '+
-		    '<label id="style-select" class="alipi" style="position:absolute;top:50%;left:69.5%;color:#000;"></label>'+
-		    '<label class="alipi" style="position:absolute;top:65%;left:65%;color:#000;">Author: </label> '+
-		    '<input id="auth-select" class="alipi" type="text" style="position:absolute;top:65%;left:71%; '+
-		    'width:160px;" /><div id="blogset" style="position:absolute;top:80%;left:65%;width:35%;"><input id="our-check" class="alipi" '+
+		    '<label class="alipi" style="position:absolute;top:20%;left:700px;color:#000;">Location: </label> '+
+		    '<label class="alipi" id="loc-select" style="position:absolute;top:20%;left:770px;color:#000;"></label>'+
+		    '<label class="alipi" style="position:absolute;top:35%;left:700px;color:#000;">Language: </label> '+
+		    '<label id="lang-select" class="alipi" style="position:absolute;top:35%;left:780px;color:#000;"></label>'+
+		    '<label class="alipi" style="position:absolute;top:50%;left:700px;color:#000;">Style: </label> '+
+		    '<label id="style-select" class="alipi" style="position:absolute;top:50%;left:745px;color:#000;"></label>'+
+		    '<label class="alipi" style="position:absolute;top:65%;left:700px;color:#000;">Author: </label> '+
+		    '<input id="auth-select" class="alipi" type="text" style="position:absolute;top:65%;left:760px; '+
+		    'width:160px;" /><div id="blogset" style="position:absolute;top:80%;left:700px;width:250px;"><input id="our-check" class="alipi" '+
 		    'type="radio"name="blog"style="position:relative;" /><label class="alipi" style="position:relative; '+
 		    'color:#000;">Alipi Blog</label><input id="your-check" class="alipi" type="radio" '+
 		    'name="blog" style="position:relative;margin-left:10%;" /><label class="alipi" style= '+
@@ -691,7 +693,6 @@ var a11ypi = {
 
 	$(document).unbind('mouseover'); // Unbind the css on mouseover
 	$(document).unbind('mouseout'); // Unbind the css on mouseout
-	$(pageEditor.event.target).removeClass('highlightOnSelect'); // Remove hightlight of selected element
 
 	$( "#editoroverlay" ).dialog({
 	    width:1000,
@@ -760,7 +761,7 @@ var a11ypi = {
 		    var formValue = $('#imageInput').val();
 		    if(formValue != '\/S/')
 		    {
-			manager.updateImage(pageEditor.event.target, formValue);
+			manager.recordImage(pageEditor.event.target, formValue);
 			pageEditor.cleanUp(pageEditor.event.target);
 			$( "#imageInputElement" ).remove();
 		    }

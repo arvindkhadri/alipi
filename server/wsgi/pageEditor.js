@@ -20,6 +20,7 @@ var pageEditor = {
 
 	    $('#pub_overlay').slideDown();
 	    $('#element_edit_overlay').slideDown();
+	    $('#icon-button').attr('value', 'Hide Bar');
 	    
 	    // At this point 'displayEditor' function will be performed on click of 'Edit Text' button
 	    // displayEditor function is in ui.js file
@@ -35,6 +36,7 @@ var pageEditor = {
 
 	    $('#element_edit_overlay').slideDown();
 	    $('#pub_overlay').slideDown();
+	    $('#icon-button').attr('value', 'Hide Bar');
 	    // At this point 'imageReplacer' function will be performed on click of 'Replace Image' button
 	    // imageReplacer function is in ui.js
 	} else {
@@ -100,7 +102,7 @@ var pageEditor = {
 
 	$(document).mouseover(a11ypi.highlightOnHover);
 	$(document).mouseout(a11ypi.unhighlightOnMouseOut);
-//	$(event.target).removeClass('highlightOnSelect'); // Remove highlighted selected element
+//	$(pageEditor.event.target).removeClass('highlightOnSelect'); // Remove hightlight of selected element
     },
 };
 
