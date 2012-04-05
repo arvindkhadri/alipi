@@ -76,11 +76,10 @@ var pageEditor = {
     
     addAudio: function(){
 	url = prompt("enter an .ogg audio link");
-	if(url.substr(-4)=='.ogg'){
-	    manager.updateAudio(pageEditor.event.target);
+	if(url.substr(-4) =='.ogg'){
+	    manager.recordAudio(pageEditor.event.target);
 	}
 	else{
-	    console.log("please add an ogg file");
 	}
     },
 
@@ -189,37 +188,17 @@ var util = {
 	return (locName == '' &&  langName=='' && styleName == '' );
     },
     
-    recordHistory: function (command, selectedElement) {
+    makeChanges: function (command, selectedElement) {
 	var poofPosition, poofDiv;
 	util.command = command;
 	switch (util.command.command) {
         case 'TEXT_UPDATE':
-	    util.command.element = selectedElement;
-	    if($('#reference').html() !=null)
-	    {
-		abc = $('#reference').html();
-		abc = abc.replace(/(&lt;)/g,'<');
-		abc = abc.replace(/(&gt;)/g,'>');
-		util.command.previousData = abc;
-	    }
-	    else
-		util.command.previousData = pageEditor.savedHtml;
-	    if($("#editor").html() != null)
-		util.command.data = $("#editor").html();
-	    else
-		util.command.data = $(selectedElement).html();
 	    DOM.settextContent(util.command.element, util.command.data);
 	    break;
-        case 'AUDIO_SRC_UPDATE':
-	    textElementPopup.hasAudio = true;	
-	    util.command.previousData = "";
-	    break;
-
         case 'IMAGE_DELETE':
 	    $(selectedElement).hide();
 	    break;
         case 'IMAGE_SRC_UPDATE':
-	    console.log(command.data);
 	    imageMatcher = new RegExp("(\\d+)x(\\d+),(.+)").exec(util.command.data);
 	    imageWidth = imageMatcher[1];
 	    imageHeight = imageMatcher[2];
@@ -242,8 +221,7 @@ var util = {
 	    break;
 
         case 'ANCHOR_UPDATE':
-	    util.command.element.setAttribute('href', util.command.data);
-	    pageEditor.showMessage('Link changed');
+	    $(util.command.element).attr('href', util.command.data);
 	    break;
 
         case 'ANCHOR_CREATE':
@@ -252,7 +230,6 @@ var util = {
 	    util.command.element.parentNode.replaceChild(anchorElement, util.command.element);
 	    anchorElement.appendChild(util.command.element);
 	    util.command.previousData = anchorElement;
-	    pageEditor.showMessage('Link added');
 	    break;
 
 	case 'AUDIO_UPDATE':
@@ -284,7 +261,6 @@ var util = {
 	    command = util.history.pop();
 	    switch (command.command) {
 	    case 'TEXT_UPDATE':
-		console.log(command.previousData);
 		command.element.innerHTML = command.previousData;
 		break;
 
@@ -293,6 +269,7 @@ var util = {
 		break;
 
 	    case 'IMAGE_SRC_UPDATE':
+		console.log("here");
 		command.element.src = command.previousData.src;
 		if (command.previousData.size.width) {
 		    command.element.width = command.previousData.size.width;
@@ -324,7 +301,6 @@ var util = {
 	    }
 	    pageEditor.cleanUp(pageEditor.event.target);
 	} else {
-	    //	    pageEditor.showMessage('Nothing to undo');
 	}
     },
     checkHistoryChanges: function()
@@ -417,24 +393,24 @@ var util = {
 };
 
 var manager = {
-    updateText:function (selectedElement) {
-	var prevData;
-	if($("#editor").html() != null)
-	    prevData = $('#editor').html();
-	else
-	    prevData = pageEditor.savedHtml;
+    recordText:function (selectedElement) {
+	var prevData = $(selectedElement).html();
+	// if($("#editor").html() != null)
+	//     prevData = $('#editor').html();
+	// else
+	//     prevData = pageEditor.savedHtml;
 	var command = {
 	    command : 'TEXT_UPDATE',
 	    element : selectedElement,
 	    url : window.location.href,
 	    xpath : DOM.getXpath(selectedElement),
 	    elementType : 'text',
-	    data : DOM.gettextContent(selectedElement),
+	    data : DOM.gettextContent($('#editor')),
 	    previousData : prevData
         }; 
-	util.recordHistory(command, selectedElement); 
+	util.makeChanges(command, selectedElement); 
     },
-    updateAudio:function(selectedElement){
+    recordAudio:function(selectedElement){
 	var command = {
 		command : 'AUDIO_CREATE',
 		element : selectedElement,
@@ -445,7 +421,7 @@ var manager = {
 		previousData : ''
 		
 	};
-	util.recordHistory(command,selectedElement);
+	util.makeChanges(command,selectedElement);
     },
     deleteElement : function(selectedElement) {
 	var command = {
@@ -458,11 +434,10 @@ var manager = {
 	    data : '',
 	    previousData : ''
 	};
-	util.recordHistory(command, selectedElement); 
+	util.makeChanges(command, selectedElement); 
     },
-    updateImage: function(selectedElement, url)
+    recordImage: function(selectedElement, url)
     {
-	console.log(url);
 	var command = {
 	    command : 'IMAGE_SRC_UPDATE',
 	    element : selectedElement,
@@ -475,7 +450,7 @@ var manager = {
 		'size' : { width: selectedElement.width, height: selectedElement.height }
 	    }
 	};
-	util.recordHistory(command, selectedElement);
+	util.makeChanges(command, selectedElement);
     },
     deleteImage : function(selectedElement) {
 	var command = {
@@ -491,7 +466,7 @@ var manager = {
 		'size' : { width: selectedElement.width, height: selectedElement.height }
 	    }
 	};
-	util.recordHistory(command, selectedElement); 
+	util.makeChanges(command, selectedElement); 
     },
 
 };

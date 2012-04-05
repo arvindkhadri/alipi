@@ -6,7 +6,9 @@ from pymongo import *
 from bson.code import *
 from urllib import unquote_plus
 import random
-
+import os.path, sys
+print sys.path.insert(0, '../server') #A hack to import modules from server dir.  FIXME
+import conf
 def application(environ, start_response):
     #set the headers
     status = '200 OK'
@@ -73,7 +75,7 @@ def application(environ, start_response):
             dicts.append(d)
             i+=1
         blogEntry= ''
-        blogger_service = service.GDataService("allipi123@gmail.com", "allipi3354")
+        blogger_service = service.GDataService(conf.EMAIL[0], conf.PASSWD[0])
         blogger_service.source = 'Servelots-alipi-1.0'
         blogger_service.service = 'blogger'
         blogger_service.account_type = 'GOOGLE'
@@ -86,7 +88,7 @@ def application(environ, start_response):
         if title == '':
             title = "Re-narration"
         for entry in feed.entry:
-            if "http://testalipi.blogspot.com/" == entry.GetHtmlLink().href:
+            if conf.BLOGURL[0] == entry.GetHtmlLink().href:
                 blog_id = entry.GetSelfLink().href.split("/")[-1]
                 blogEntry = CreatePublicPost(blogger_service, blog_id, title=title, content=string + "<blockquote><p>Re-narration by "+author+' in '+lang+' targeting '+target+' for this web <a href="'+about+'">page</a></p></blockquote>')
 

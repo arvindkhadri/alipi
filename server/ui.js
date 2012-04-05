@@ -678,7 +678,7 @@ var a11ypi = {
 
 	$(document).unbind('mouseover'); // Unbind the css on mouseover
 	$(document).unbind('mouseout'); // Unbind the css on mouseout
-	$(event.target).removeClass('highlightOnSelect'); // Remove hightlight of selected element
+	$(pageEditor.event.target).removeClass('highlightOnSelect'); // Remove hightlight of selected element
 
 	$( "#editoroverlay" ).dialog({
 	    width:1000,
@@ -710,7 +710,7 @@ var a11ypi = {
 		    pageEditor.handler();
 		},
 		OK: function() {
-		    manager.updateText(pageEditor.event.target);
+		    manager.recordText(pageEditor.event.target);
 		    pageEditor.cleanUp(pageEditor.event.target);
 		    $( "#editoroverlay" ).remove();		    
 		}
@@ -746,8 +746,7 @@ var a11ypi = {
 		    if(formValue != '\/S/')
 		    {
 			pageEditor.cleanUp(pageEditor.event.target);
-			console.log(formValue);
-			manager.updateImage(pageEditor.event.target, formValue);
+			manager.recordImage(pageEditor.event.target, formValue);
 			$( "#imageInputElement" ).remove();
 		    }
 		}
