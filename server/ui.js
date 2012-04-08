@@ -189,7 +189,7 @@ var a11ypi = {
 	}
 	var url = a['foruri'];
 	var lang = a['lang'];
-	var Data="url="+url+"&lang="+encodeURIComponent(lang);
+	var data="url="+url+"&lang="+encodeURIComponent(lang);
 	xhr.open("POST","http://dev.a11y.in/replace",true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send(data);
