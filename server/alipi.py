@@ -80,13 +80,13 @@ def start_page() :
 
         script_jq_cust = root.makeelement('script')
         root.body.append(script_jq_cust)
-        script_jq_cust.set("src", conf.JQUERYURL[0] + "/jquery-ui.min.js")
+        script_jq_cust.set("src", conf.JQUERYUI[0] + "/jquery-ui.min.js")
         script_jq_cust.set("type", "text/javascript")
 
         style_cust = root.makeelement('link')
         style_cust.set("rel","stylesheet")
         style_cust.set("type", "text/css")
-        style_cust.set("href", conf.JQUERYURL[0] + "/jquery-ui.css")
+        style_cust.set("href", conf.JQUERYCSS[0] + "/jquery-ui.css")
         root.body.append(style_cust)
 
         root.body.set("onload","a11ypi.loadOverlay();")
@@ -101,12 +101,12 @@ def start_page() :
         
         script_jq_mini = root.makeelement('script')
         root.body.append(script_jq_mini)
-        script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery.min.js")
+        script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery-1.7.min.js")
         script_jq_mini.set("type", "text/javascript")
 
         script_jqui = root.makeelement('script')
         script_jqui.set("type","text/javascript")
-        script_jqui.set("src",conf.JQUERYURL[0] + "/jquery-ui.min.js")
+        script_jqui.set("src",conf.JQUERYUI[0] + "/jquery-ui.min.js")
         root.body.append(script_jqui)
         script_test.set("src", conf.APPURL[0] + "/server/ui.js")
         script_test.set("type", "text/javascript")
@@ -117,7 +117,7 @@ def start_page() :
         ui_css = root.makeelement("link")
         ui_css.set("rel", "stylesheet");
         ui_css.set("type", "text/css");
-        ui_css.set("href", conf.JQUERYURL[0] + "/jquery-ui.css");
+        ui_css.set("href", conf.JQUERYCSS[0] + "/jquery-ui.css");
         root.body.append(ui_css);
         
         ren_overlay = root.makeelement('div')
@@ -168,7 +168,7 @@ def start_page() :
     elif request.args.has_key('lang') == True and request.args.has_key('blog') == False:
         script_jq_mini = root.makeelement('script')
         root.body.append(script_jq_mini)
-        script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery.js")
+        script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery-1.7.min.js")
         script_jq_mini.set("type", "text/javascript")
         d['lang'] = request.args['lang']
         script_test = root.makeelement('script')
@@ -198,12 +198,12 @@ def start_page() :
         root.body.append(script_edit)
         
         script_jqui.set("type","text/javascript")
-        script_jqui.set("src",conf.JQUERYURL[0] + "/jquery-ui.min.js")
+        script_jqui.set("src",conf.JQUERYUI[0] + "/jquery-ui.min.js")
         root.body.append(script_jqui)        
         ui_css = root.makeelement("link")
         ui_css.set("rel", "stylesheet");
         ui_css.set("type", "text/css");
-        ui_css.set("href", conf.JQUERYURL[0] + "/jquery-ui.css");
+        ui_css.set("href", conf.JQUERYCSS[0] + "/jquery-ui.css");
         root.body.append(ui_css);
         
         ren_overlay = root.makeelement('div')
@@ -276,18 +276,18 @@ def start_page() :
         
         script_jq_mini = root.makeelement('script')
         root.body.append(script_jq_mini)
-        script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery.min.js")
+        script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery-1.7.min.js")
         script_jq_mini.set("type", "text/javascript")
 
         script_jq_cust = root.makeelement('script')
         root.body.append(script_jq_cust)
-        script_jq_cust.set("src", conf.JQUERYURL[0] + "/jquery-ui.min.js")
+        script_jq_cust.set("src", conf.JQUERYUI[0] + "/jquery-ui.min.js")
         script_jq_cust.set("type", "text/javascript")
 
         style_cust = root.makeelement('link')
         style_cust.set("rel","stylesheet")
         style_cust.set("type", "text/css")
-        style_cust.set("href", conf.JQUERYURL[0] + "/jquery-ui.css")
+        style_cust.set("href", conf.JQUERYCSS[0] + "/jquery-ui.css")
         root.body.append(style_cust)
 
         style = root.makeelement('link')
