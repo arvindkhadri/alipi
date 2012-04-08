@@ -45,7 +45,9 @@ def start_page() :
     root = lxml.html.parse(StringIO.StringIO(page)).getroot()
     if request.args.has_key('lang') == False and request.args.has_key('blog') == False:
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
-        
+        for i in root.iterlinks():
+            if i[1] == 'href' and i[0].tag != 'link':
+                i[0].attrib['href'] = 'http://127.0.0.1:5000/?foruri={0}'.format(quote_plus(i[0].attrib['href']))
         script_test = root.makeelement('script')
         script_edit = root.makeelement('script')
         root.body.append(script_test)
@@ -104,7 +106,7 @@ def start_page() :
 
         script_test.set("src", conf.APPURL[0] + "/server/ui.js")
         script_test.set("type", "text/javascript")
-        script_edit.set("src", conf.APPURL[0] + "/server/wsgi/page_edit.js")
+        script_edit.set("src", conf.APPURL[0] + "/server/wsgi/pageEditor.js")
         script_edit.set("type","text/javascript")
         script_jqui = root.makeelement('script')
         script_jqui.set("type","text/javascript")
@@ -160,16 +162,6 @@ def start_page() :
         style.set("type", "text/css")
         style.set("href", "http://dev.a11y.in/server/stylesheet.css")
         
-        # overlay2 = root.makeelement('div')
-        # root.body.append(overlay2)
-        # overlay2.set("id", "overlay2")
-        
-        # btn = root.makeelement('input')
-        # overlay2.append(btn)
-        # btn.set("id", "edit-button")
-        # btn.set("type", "submit")
-        # btn.set("onClick", "a11ypi.testContext();page_edit('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');")
-        # btn.set("value", "EDIT")
         root.body.set("onload","a11ypi.ren();a11ypi.tweet(); a11ypi.facebook();a11ypi.loadOverlay();")
         return lxml.html.tostring(root)
         
@@ -201,7 +193,7 @@ def start_page() :
         root.body.append(script_jq_mini)
 
         script_edit = root.makeelement('script')
-        script_edit.set("src", conf.APPURL[0] + "/server/wsgi/page_edit.js")
+        script_edit.set("src", conf.APPURL[0] + "/server/wsgi/pageEditor.js")
         script_edit.set("type","text/javascript")
         root.body.append(script_edit)
         
@@ -304,7 +296,7 @@ def start_page() :
         style.set("type", "text/css")
         style.set("href", conf.APPURL[0] + "/server/stylesheet.css")
 
-        collection = g.db['post']
+        collection = g.db['post'] #FIXME Move this logic to JS.
         if collection.find_one({"about" : request.args['foruri']}) is not None:
             overlay1 = root.makeelement('div')
             root.body.append(overlay1)

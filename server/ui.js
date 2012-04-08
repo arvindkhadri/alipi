@@ -24,7 +24,6 @@ var a11ypi = {
 								       {
 								       }}).parent().attr('m4pageedittype','text')}); 
 	
-
 	vimg = document.getElementsByTagName('img');
 	for(i=0; i<vimg.length; i++)
 	{
@@ -355,12 +354,12 @@ var a11ypi = {
 	    '</input></div>';
 
 	var overlay_template = '<div id="renarrated_overlay" class="alipi ui-widget-header ui-corner-all">'+
-            '<input id="edit-current" class="alipi" type="submit" onclick="a11ypi.editPage();" value="Renarrate this page">'+
-            '<input id="see-narration" class="alipi" type="submit" onclick="a11ypi.showBox();" value="See Narrations">'+
-            '<input id="see-links" class="alipi" type="submit" onclick="a11ypi.showBox1();" value="List of Pages Narrated">'+
+            '<input id="edit-current" class="alipi" type="submit" onclick="a11ypi.editPage();" value="Re-narrate this page">'+
+            '<input id="see-narration" class="alipi" type="submit" onclick="a11ypi.showBox();" value="See re-narrations">'+
+            '<input id="see-links" class="alipi" type="submit" onclick="a11ypi.showBox1();" value="List of pages narrated">'+
             '<select id="blog-filter" class="alipi" onclick="a11ypi.blogFilter();" value="choose a blog"></select>'+
             '<input id="go" class="alipi" type="submit" onclick="a11ypi.go();" value="Go">'+
-            '</div><div id="show-box"></div><div id="show-links" class="alipi"></div>';
+            '</div><div id="show-box" title="Choose a narration"></div><div id="show-links" title="List of pages narrated in this domain" class="alipi"></div>';
 	
 	var pub_overlay_template = '<div id="pub_overlay" class="alipi ui-widget-header ui-corner-all">'+
 	    '<input id="exit-mode" class="alipi" type="submit" onclick="a11ypi.exitMode();" value="Exit">'+
@@ -674,7 +673,7 @@ var a11ypi = {
 	$('body *').contents().filter(function(){
 	    {
 		try{
-		    if(!($(this).hasClass('alipi')))
+		    if(!($(this).hasClass('alipi')) || $(this).attr('m4pageedittype') )
 			return this;
 		}
 		catch(err)
@@ -696,9 +695,16 @@ var a11ypi = {
             '<div id="editor" class="alipi" contenteditable="true"></div>'+
             '<div id="forPrevData" class="alipi"></div>'+
             '</div>';
+	var url_template = '<div id="url-template" title="Enter a URL">'+
+	    '<input type="text" id="url"></input>'+
+	    '</div>';
+	var message_template = '<div id="dialog-message" title="Attention!!">'+
+	    '</div>';
 	
 	$('body').append(template);
-	 $('#pub_overlay').slideUp();
+	$('body').append(message_template);
+	//$('body').append(url_template);
+	$('#pub_overlay').slideUp();
 	$('#element_edit_overlay').slideUp(); 
 	$('#icon_on_overlay').hide();
 
@@ -740,10 +746,10 @@ var a11ypi = {
 			$('#reference').css('font-size', font+'px');
 		    }
 		},
-		Link: function() {
+		"Add Link": function() {
 		    pageEditor.handler();
 		},
-		OK: function() {
+		"Save chages": function() {
 		    $('#pub_overlay').slideDown();
 		    $('#element_edit_overlay').slideDown(); 
 		    $('#icon_on_overlay').show();

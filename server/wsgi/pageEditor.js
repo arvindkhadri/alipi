@@ -2,6 +2,8 @@ var pageEditor = {
     event: 0 , //Use this var to store the event object, which will be passed for editor.
     m4pageedittype: '',
     savedHtml: '',
+    url:'',
+    selection:'',
     startEdit: function(event)
     {
 	event.stopPropagation();
@@ -48,9 +50,7 @@ var pageEditor = {
 	    $('#delete-image').hide();
 	}
     },
-    // addLink: function(){
-    // 	$(pageEditor.event.target).mouseup(pageEditor.handler);
-    // },
+
     handler: function()
     {
 	var sel = window.getSelection();
@@ -60,25 +60,55 @@ var pageEditor = {
 	{
 	    pageEditor.savedHtml = $('#editor').html();
 	    var url = prompt("Enter url");
-	    sel.anchorNode.textContent = sel.anchorNode.textContent.substr(0,y)+'<a href="'+url+'">'+sel.anchorNode.textContent.substr(y,z-y)+"</a>"+sel.anchorNode.textContent.substr(z);
-	    abc = $('#editor').html();
-	    abc = abc.replace(/(&lt;)/g,'<');
-	    abc = abc.replace(/(&gt;)/g,'>');
-	    $('#editor').html(abc);
-	    // manager.updateText(pageEditor.event.target);
-	    //$(pageEditor.event.target).unbind('mouseup', pageEditor.handler);
+	    if(url)
+	    {
+		sel.anchorNode.textContent = sel.anchorNode.textContent.substr(0,y)+'<a href="'+url+'">'+sel.anchorNode.textContent.substr(y,z-y)+"</a>"+sel.anchorNode.textContent.substr(z);
+		abc = $('#editor').html();
+		abc = abc.replace(/(&lt;)/g,'<');
+		abc = abc.replace(/(&gt;)/g,'>');
+		$('#editor').html(abc);
+	    }
+	    else
+	    {
+		$('#dialog-message').html('<p>Please enter a valid url</p>');
+		$('#dialog-message').dialog({
+		modal: true,
+		buttons:{
+		    OK:function(){
+			$(this).dialog("close");
+			$(this).html('');
+		    }
+		}});
+	    }
 	}
 	else{
-	    //
+	    $('#dialog-message').html('<p>Please choose a portion of text and then click <b>Add link</b>.</p>');
+	    $('#dialog-message').dialog({
+		modal: true,
+		buttons:{
+		    OK:function(){
+			$(this).dialog("close");
+			$(this).html('');
+		    }
+		}});
 	}
     },
-    
+	
     addAudio: function(){
 	url = prompt("enter an .ogg audio link");
 	if(url.substr(-4) =='.ogg'){
 	    manager.recordAudio(pageEditor.event.target);
 	}
 	else{
+	    $('#dialog-message').html('<p>Please enter a valid url</p>');
+	    $('#dialog-message').dialog({
+		modal: true,
+		buttons:{
+		    OK:function(){
+			$(this).dialog("close");
+			$(this).html('');
+		    }
+		}});
 	}
     },
 
@@ -99,7 +129,9 @@ var pageEditor = {
 
 	$(element).attr('m4pageedittype', pageEditor.m4pageedittype);
 	$(element).children().attr('m4pageedittype', pageEditor.m4pageedittype);
-
+	$('#icon_on_overlay').slideDown();
+	$('#pub_overlay').slideDown();
+	$('#element_edit_overlay').slideDown(); 
 	$(document).mouseover(a11ypi.highlightOnHover);
 	$(document).mouseout(a11ypi.unhighlightOnMouseOut);
 //	$(pageEditor.event.target).removeClass('highlightOnSelect'); // Remove hightlight of selected element
