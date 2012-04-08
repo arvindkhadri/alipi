@@ -104,14 +104,14 @@ def start_page() :
         script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery.min.js")
         script_jq_mini.set("type", "text/javascript")
 
-        script_test.set("src", conf.APPURL[0] + "/server/ui.js")
-        script_test.set("type", "text/javascript")
-        script_edit.set("src", conf.APPURL[0] + "/server/wsgi/pageEditor.js")
-        script_edit.set("type","text/javascript")
         script_jqui = root.makeelement('script')
         script_jqui.set("type","text/javascript")
         script_jqui.set("src",conf.JQUERYURL[0] + "/jquery-ui.min.js")
         root.body.append(script_jqui)
+        script_test.set("src", conf.APPURL[0] + "/server/ui.js")
+        script_test.set("type", "text/javascript")
+        script_edit.set("src", conf.APPURL[0] + "/server/wsgi/pageEditor.js")
+        script_edit.set("type","text/javascript")
 
         
         ui_css = root.makeelement("link")
