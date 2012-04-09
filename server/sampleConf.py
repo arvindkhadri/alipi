@@ -5,4 +5,4 @@ JQUERYURL = ('http://foo.jquery',) #URL for jquery.
 PASSWD = ('password',)
 BLOGURL = ('http://something.blogspot.com',)
 EMAIL = ('johnDoe@gmail.com',)
-
+DEPLOYURL = ('http://127.0.0.1:5000/',)
