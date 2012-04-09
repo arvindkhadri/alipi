@@ -47,7 +47,7 @@ def start_page() :
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
         for i in root.iterlinks():
             if i[1] == 'href' and i[0].tag != 'link':
-                i[0].attrib['href'] = 'http://127.0.0.1:5000/?foruri={0}'.format(quote_plus(i[0].attrib['href']))
+                i[0].attrib['href'] = 'http://{0}?foruri={1}'.format(conf.DEPLOYURL[0],quote_plus(i[0].attrib['href']))
         script_test = root.makeelement('script')
         script_edit = root.makeelement('script')
         root.body.append(script_test)
