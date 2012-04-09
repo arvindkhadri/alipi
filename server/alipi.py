@@ -113,6 +113,15 @@ def start_page() :
         script_edit.set("src", conf.APPURL[0] + "/server/wsgi/pageEditor.js")
         script_edit.set("type","text/javascript")
 
+        jit_script = root.makeelement('script')
+        root.body.append(jit_script)
+        jit_script.set("src", conf.APPURL[0] + "/server/jit.js")
+        jit_script.set("type", "text/javascript")
+
+        tree_script = root.makeelement('script')
+        root.body.append(tree_script)
+        tree_script.set("src", conf.APPURL[0] + "/server/tree.js")
+        tree_script.set("type", "text/javascript")
         
         ui_css = root.makeelement("link")
         ui_css.set("rel", "stylesheet");
@@ -196,6 +205,16 @@ def start_page() :
         script_edit.set("src", conf.APPURL[0] + "/server/wsgi/pageEditor.js")
         script_edit.set("type","text/javascript")
         root.body.append(script_edit)
+
+        jit_script = root.makeelement('script')
+        root.body.append(jit_script)
+        jit_script.set("src", conf.APPURL[0] + "/server/jit.js")
+        jit_script.set("type", "text/javascript")
+
+        tree_script = root.makeelement('script')
+        root.body.append(tree_script)
+        tree_script.set("src", conf.APPURL[0] + "/server/tree.js")
+        tree_script.set("type", "text/javascript")
         
         script_jqui.set("type","text/javascript")
         script_jqui.set("src",conf.JQUERYUI[0] + "/jquery-ui.min.js")
