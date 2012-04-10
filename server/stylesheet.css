@@ -16,6 +16,15 @@
 /*     font-size:15px; */
 /* } */
 
+.alipi {
+    font-weight:normal;
+}
+
+#targetoverlay .alipi {
+    font-size:15px;
+    font-weight:bold;
+}
+
 #renarrated_overlay {
     position:fixed;
     top:0px;

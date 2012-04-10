@@ -836,32 +836,6 @@ var a11ypi = {
 	});
     },
  
-    addLink: function() {
-	var linkInputTemplate = '<div id="linkInputElement" title="Enter url" class="alipi ui-widget-header ui-corner-all">'+
-            '<input type="text" id="linkInput" placeholder="http://foo.com/baz.jpg" class="alipi" value=""/></div>';
-
-	$('body').append(linkInputTemplate);
-	$(document).unbind('mouseover'); // Unbind the css on mouseover
-	$(document).unbind('mouseout'); // Unbind the css on mouseout
-
-	$( "#linkInputElement" ).dialog({
-	    width:300,
-	    height:200,
-	    modal: true,
-	    buttons: {
-		OK: function() {
-		    pageEditor.addAudio();
-		    pageEditor.cleanUp(pageEditor.event.target);
-		    $( "#linkInputElement" ).remove();
-		}
-	    },
-	    close: function() {
-		pageEditor.cleanUp(pageEditor.event.target);
-		$("#linkInputElement" ).remove();
-	    }
-	});
-    },
-   
     highlightOnHover: function(event) {
 	if( !($(event.target).hasClass('alipi')) ) {
 	    $(event.target).addClass('highlightElement');
