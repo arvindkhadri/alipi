@@ -369,7 +369,7 @@ var a11ypi = {
 
 	var element_edit_overlay_template = '<div id="element_edit_overlay" class="alipi ui-widget-header ui-corner-all" >'+
 	    '<input id="edit-text" class="alipi" type="submit" onclick="a11ypi.displayEditor();" value="Edit Text" style="display:none;" >'+
-            '<input id="add-audio" type="submit" onclick="pageEditor.addAudio();" class="alipi" value="Add Audio" style="display:none;" >'+
+            '<input id="add-audio" type="submit" onclick="a11ypi.addAudio();" class="alipi" value="Add Audio" style="display:none;" >'+
             '<input id="replace-image" type="submit" onclick="a11ypi.imageReplacer();" class="alipi" value="Replace Image" style="display:none;" >'+
 	    '<input id="delete-image" type="submit" onclick="pageEditor.deleteImage();" class="alipi" value="Delete Image" style="display:none;" >'+
 	    '</div>';
@@ -388,8 +388,8 @@ var a11ypi = {
 	a11ypi.ajaxLinks1();
 	$('#go').button('option','disabled', true);
 	$('#blog-filter').button('option', 'disabled', true);
-	$('#see-narration').button('option', 'disabled', true);
 	$("#see-links").button('option', 'disabled', true);
+	$("#see-narration").button('option', 'disabled', true);
 //	$('#element_edit_overlay').slideUp();
 	//go.disabled = true; //This throws a warning.  FIX IT.
     },
@@ -484,10 +484,11 @@ var a11ypi = {
 	    $(function() {
 		$( "#targetoverlay" ).dialog({
 		    height:600,
-		    width:1000,
+		    width:$(window).width()-180,
 		    modal: true,
 		    buttons: {
 			Publish: function() {
+			$( "#targetoverlay" ).hide();
 			    util.publish();
 			} 
 		    },
@@ -496,9 +497,16 @@ var a11ypi = {
 			$('#element_edit_overlay').slideDown(); 
 			$('#icon_on_overlay').show();
 			$( "#targetoverlay" ).hide();
+			$('#pub_overlay').slideDown();
+			$('#element_edit_overlay').slideDown();
+			$('#icon-button').slideDown();
 			document.removeEventListener("DOMActivate", init, false);
 		    }
 		});
+			    $('#pub_overlay').slideUp();
+			    $('#element_edit_overlay').slideUp();
+			    $('#icon-button').slideUp();
+
 	    });
 	}
     },
@@ -719,7 +727,8 @@ var a11ypi = {
 	$(document).unbind('mouseout'); // Unbind the css on mouseout
 
 	$( "#editoroverlay" ).dialog({
-	    width:1000,
+	    position: 'center',
+	    width:$(window).width()-100,
 	    height:550,
 	    modal: true,
 	    buttons: {
@@ -740,7 +749,6 @@ var a11ypi = {
 		    } 
 		    else {
 			var font = parseFloat($('#editor').css('font-size')) - 1;
-		    console.log($('#editor').css('font-size'))
 			$('#editor').css('font-size', font+'px');
 			font = parseFloat($('#reference').css('font-size')) - 1;
 			$('#reference').css('font-size', font+'px');
@@ -749,7 +757,7 @@ var a11ypi = {
 		"Add Link": function() {
 		    pageEditor.handler();
 		},
-		"Save chages": function() {
+		"Save changes": function() {
 		    $('#pub_overlay').slideDown();
 		    $('#element_edit_overlay').slideDown(); 
 		    $('#icon_on_overlay').show();
@@ -767,8 +775,8 @@ var a11ypi = {
 	$($($('<label>').insertAfter($('.ui-dialog-buttonset').children()[0])).html('Magnify or Demagnify')).css({}); // Element added externally with css
 	$($('.ui-dialog-buttonset').children()[1]).css({'position':'absolute','left':'100','font-weight':'bold','margin-top':'10'});
 	$($('.ui-dialog-buttonset').children()[0]).css({'position':'absolute','left':'45'}); // '+' CSS for postioning button on editor
-	$($('.ui-dialog-buttonset').children()[2]).css({'position':'absolute','left':'265'}); // '-' CSS for postioning button on editor
-	$($('.ui-dialog-buttonset').children()[3]).css({'position':'absolute','left':'550'}) // 'Link' CSS for postioning button on editor
+	$($('.ui-dialog-buttonset').children()[2]).css({'position':'absolute','left':'270'}); // '-' CSS for postioning button on editor
+	$($('.ui-dialog-buttonset').children()[3]).css({'position':'absolute','left':'54%'}) // 'Link' CSS for postioning button on editor
     },
     
     imageReplacer: function() {
@@ -801,7 +809,59 @@ var a11ypi = {
 	});
 	
     },
-    
+
+    addAudio: function() {
+	var audioInputTemplate = '<div id="audioInputElement" title="Enter url" class="alipi ui-widget-header ui-corner-all">'+
+            '<input type="text" id="audioInput" placeholder="http://foo.com/baz.jpg" class="alipi" value=""/></div>';
+
+	$('body').append(audioInputTemplate);
+	$(document).unbind('mouseover'); // Unbind the css on mouseover
+	$(document).unbind('mouseout'); // Unbind the css on mouseout
+
+	$( "#audioInputElement" ).dialog({
+	    width:300,
+	    height:200,
+	    modal: true,
+	    buttons: {
+		OK: function() {
+		    pageEditor.addAudio();
+		    pageEditor.cleanUp(pageEditor.event.target);
+		    $( "#audioInputElement" ).remove();
+		}
+	    },
+	    close: function() {
+		pageEditor.cleanUp(pageEditor.event.target);
+		$("#audioInputElement" ).remove();
+	    }
+	});
+    },
+ 
+    addLink: function() {
+	var linkInputTemplate = '<div id="linkInputElement" title="Enter url" class="alipi ui-widget-header ui-corner-all">'+
+            '<input type="text" id="linkInput" placeholder="http://foo.com/baz.jpg" class="alipi" value=""/></div>';
+
+	$('body').append(linkInputTemplate);
+	$(document).unbind('mouseover'); // Unbind the css on mouseover
+	$(document).unbind('mouseout'); // Unbind the css on mouseout
+
+	$( "#linkInputElement" ).dialog({
+	    width:300,
+	    height:200,
+	    modal: true,
+	    buttons: {
+		OK: function() {
+		    pageEditor.addAudio();
+		    pageEditor.cleanUp(pageEditor.event.target);
+		    $( "#linkInputElement" ).remove();
+		}
+	    },
+	    close: function() {
+		pageEditor.cleanUp(pageEditor.event.target);
+		$("#linkInputElement" ).remove();
+	    }
+	});
+    },
+   
     highlightOnHover: function(event) {
 	if( !($(event.target).hasClass('alipi')) ) {
 	    $(event.target).addClass('highlightElement');
