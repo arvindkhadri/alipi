@@ -95,21 +95,22 @@ var pageEditor = {
     },
 	
     addAudio: function(){
-	url = prompt("enter an .ogg audio link");
+	url = $('#audioInput').val();
+	console.log(url);
 	if(url.substr(-4) =='.ogg'){
 	    manager.recordAudio(pageEditor.event.target);
 	}
-	else{
-	    $('#dialog-message').html('<p>Please enter a valid url</p>');
-	    $('#dialog-message').dialog({
-		modal: true,
-		buttons:{
-		    OK:function(){
-			$(this).dialog("close");
-			$(this).html('');
-		    }
-		}});
-	}
+	// else{
+	//     $('#dialog-message').html('<p>Please enter a valid url</p>');
+	//     $('#dialog-message').dialog({
+	// 	modal: true,
+	// 	buttons:{
+	// 	    OK:function(){
+	// 		$(this).dialog("close");
+	// 		$(this).html('');
+	// 	    }
+	// 	}});
+	// }
     },
 
     deleteImage: function(){
