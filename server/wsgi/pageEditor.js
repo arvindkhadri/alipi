@@ -6,8 +6,10 @@ var pageEditor = {
     selection:'',
     startEdit: function(event)
     {
-	event.stopPropagation();
-	event.preventDefault();
+	if(event.target.nodeName != 'AUDIO'){
+		event.stopPropagation();
+		event.preventDefault();
+	}
 	pageEditor.event = event;
 	pageEditor.m4pageedittype = $(event.target).attr('m4pageedittype');
 	$('*').removeClass('highlightOnSelect');
@@ -272,7 +274,8 @@ var util = {
 	    audioElement.setAttribute("class", "alipi");
 	    audioElement.setAttribute('src',util.command.data);
 	    audioElement.setAttribute('controls','controls');
-	    audioElement.setAttribute('style', 'display:table;');
+	    audioElement.setAttribute('mime-type','audio/ogg');
+	    //audioElement.setAttribute('style', 'display:table;');
 	    $(audioElement).insertBefore($(selectedElement));		
 	    //pageEditor.showMessage('Audio added');
 	    break;
@@ -398,11 +401,11 @@ var util = {
 	    buffer.append('about=');  //url=about    //removed '&' on purpose
 	    buffer.append(window.location.search.split('=')[1]);
 	    buffer.append('&lang=');//lang
-	    buffer.append(encodeURIComponent($('#lang-select').html()));
+	    buffer.append(encodeURIComponent($('#lang-select').val()));
 	    buffer.append('&location=');//location
-	    buffer.append(encodeURIComponent($('#loc-select').html()));
+	    buffer.append(encodeURIComponent($('#loc-select').val()));
 	    buffer.append('&style=');//style
-	    buffer.append(encodeURIComponent($('#style-select').html()));
+	    buffer.append(encodeURIComponent($('#style-select').val()));
 	    buffer.append('&blog=');  //blog where to post
 	    buffer.append(encodeURIComponent("blog"));
 	    buffer.append('&elementtype='); // text, audio, img
