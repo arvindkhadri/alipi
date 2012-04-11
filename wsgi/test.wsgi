@@ -7,7 +7,7 @@ from bson.code import *
 from urllib import unquote_plus
 import random
 import os.path, sys
-print sys.path.insert(0, '../server') #A hack to import modules from server dir.  FIXME
+sys.path.insert(0, '../server') #A hack to import modules from server dir.  FIXME
 import conf
 def application(environ, start_response):
     #set the headers
@@ -72,8 +72,11 @@ def application(environ, start_response):
             target = d['location']
             about = d['about']
             author = d['author']
-            title = d['title']
-            d.pop('title')
+            try:
+                title = d['title']
+                d.pop('title')
+            except KeyError:
+                title = "Re-narration"
             dicts.append(d)
             i+=1
         blogEntry= ''
