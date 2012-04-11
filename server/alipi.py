@@ -348,7 +348,8 @@ def show_directory():
 
 @app.route('/getLoc', methods=['GET'])
 def get_loc():
-    term = request.args['term'] 
+
+    term = request.args['term']
     connection = oursql.Connection(conf.DBHOST[0],conf.DBUSRNAME[0],conf.DBPASSWD[0],db=conf.DBNAME[0])
     cursor = connection.cursor(oursql.DictCursor)
     cursor.execute('select l.name, c.country_name from `location` as l, `codes` as c where l.name like ? and l.code=c.code limit ?', (term+'%', 5))
@@ -356,10 +357,12 @@ def get_loc():
     connection.close()
     d = {}
     d['return'] = r
-    return jsonify(d)
+    response = jsonify(d)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
 @app.route('/getLang', methods=['GET'])
 def get_lang():
-    term = request.args['term'] 
+    term = request.args['term']
     connection = oursql.Connection(conf.DBHOST[0],conf.DBUSRNAME[0],conf.DBPASSWD[0],db=conf.DBNAME[0])
     cursor = connection.cursor(oursql.DictCursor)
     cursor.execute('select * from `languages` as l  where l.name like ? limit ?', (term+'%',5))
@@ -367,7 +370,10 @@ def get_lang():
     connection.close()
     d = {}
     d['return'] = r
-    return jsonify(d)
+    response = jsonify(d)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
 import logging,os
 from logging import FileHandler
 
