@@ -11,6 +11,8 @@ from flask import redirect
 from urllib import quote_plus
 from urllib import unquote_plus
 import conf
+import oursql
+from flask import jsonify
 app = Flask(__name__)
 @app.before_request
 def first():
@@ -344,24 +346,28 @@ def show_directory():
     query.reverse()
     return render_template('directory.html', name=query, mymodule = quote_plus, myset=set, mylist= list)
 
-@app.route('/getLang')
+@app.route('/getLoc', methods=['GET'])
+def get_loc():
+    term = request.args['term'] 
+    connection = oursql.Connection(conf.DBHOST[0],conf.DBUSRNAME[0],conf.DBPASSWD[0],db=conf.DBNAME[0])
+    cursor = connection.cursor(oursql.DictCursor)
+    cursor.execute('select l.name, c.country_name from `location` as l, `codes` as c where l.name like ? and l.code=c.code limit ?', (term+'%', 5))
+    r = cursor.fetchall()
+    connection.close()
+    d = {}
+    d['return'] = r
+    return jsonify(d)
+@app.route('/getLang', methods=['GET'])
 def get_lang():
-    collection = g.db['alipi_lang']
-    term = '^{0}.*'.format(request.args['term'][0])
-    query = collection.group(
-        key = Code('function(doc){return {"name" : doc.name}}'),
-        condition={"name":{'$regex':term, '$options':'i'}},
-        initial={'na': []},
-        reduce=Code('function(doc,out){out.na.push(doc);}')
-        )
-    string = {'name':[]}
-    if len(query) != 0:
-        for i in query:
-            for x in i['na']:
-                if x != '_id':
-                    string['name'].append((x['name']))
-    return jsonify(string)
-
+    term = request.args['term'] 
+    connection = oursql.Connection(conf.DBHOST[0],conf.DBUSRNAME[0],conf.DBPASSWD[0],db=conf.DBNAME[0])
+    cursor = connection.cursor(oursql.DictCursor)
+    cursor.execute('select * from `languages` as l  where l.name like ? limit ?', (term+'%',5))
+    r = cursor.fetchall()
+    connection.close()
+    d = {}
+    d['return'] = r
+    return jsonify(d)
 import logging,os
 from logging import FileHandler
 
