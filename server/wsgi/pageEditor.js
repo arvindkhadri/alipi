@@ -275,9 +275,8 @@ var util = {
 	    audioElement.setAttribute('src',util.command.data);
 	    audioElement.setAttribute('controls','controls');
 	    audioElement.setAttribute('mime-type','audio/ogg');
-	    //audioElement.setAttribute('style', 'display:table;');
 	    $(audioElement).insertBefore($(selectedElement));		
-	    //pageEditor.showMessage('Audio added');
+	    util.command.element = audioElement;
 	    break;
 
         default:
@@ -316,8 +315,8 @@ var util = {
 		}
 		break;
 		
-	    case 'AUDIO_SRC_UPDATE':
-		command.element.remove();
+	    case 'AUDIO_CREATE':
+		$(command.element).remove();
 		break;
 	    case 'ANCHOR_UPDATE':
 		command.element.setAttribute('href', command.previousData);
