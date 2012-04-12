@@ -7,49 +7,48 @@ var pageEditor = {
     startEdit: function(event)
     {
 	if(event.target.nodeName != 'AUDIO'){
-		event.stopPropagation();
-		event.preventDefault();
+	    event.stopPropagation();
+	    event.preventDefault();
 	}
 	pageEditor.event = event;
 	pageEditor.m4pageedittype = $(event.target).attr('m4pageedittype');
 	$('*').removeClass('highlightOnSelect');
-	if($(event.target).attr('m4pageedittype') == 'text')
-	{
+	if($(event.target).attr('m4pageedittype') == 'text') {
 	    $(event.target).addClass('highlightOnSelect'); // To show selected element
 
 	    $('#edit-text').show();	    
 	    $('#add-audio').show();
 	    $('#replace-image').hide();
 	    $('#delete-image').hide();
+	    $('#cant-edit').hide();
 
 	    $('#pub_overlay').slideDown();
 	    $('#element_edit_overlay').slideDown();
-	    $('#icon-button').attr('value', 'Hide Bar');
-	    
 	    // At this point 'displayEditor' function will be performed on click of 'Edit Text' button
 	    // displayEditor function is in ui.js file
 	}
-	else if($(event.target).attr('m4pageedittype') == 'image')
-	{
+	else if($(event.target).attr('m4pageedittype') == 'image') {
 	    $(event.target).addClass('highlightOnSelect'); // To show selected element
 
 	    $('#replace-image').show();
 	    $('#delete-image').show();
 	    $('#add-audio').hide();
 	    $('#edit-text').hide();
+	    $('#cant-edit').hide();
 
 	    $('#element_edit_overlay').slideDown();
 	    $('#pub_overlay').slideDown();
-	    $('#icon-button').attr('value', 'Hide Bar');
 	    // At this point 'imageReplacer' function will be performed on click of 'Replace Image' button
 	    // imageReplacer function is in ui.js
 	} else {
-	    $('#element_edit_overlay').slideUp();
-
 	    $('#edit-text').hide();
 	    $('#add-audio').hide();
 	    $('#replace-image').hide();
 	    $('#delete-image').hide();
+	    $('#cant-edit').show();
+
+	    $('#pub_overlay').slideDown();
+	    $('#element_edit_overlay').slideDown();
 	}
     },
 

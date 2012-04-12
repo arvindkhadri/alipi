@@ -27,7 +27,7 @@
 
 #renarrated_overlay {
     position:fixed;
-    top:0px;
+    /* top:0px; */
     clear:both;
     width:90%;
     left:5%;
@@ -62,7 +62,7 @@
 #icon_on_overlay {
     display:none;
     position:fixed;
-    top:0;
+    /* top:0; */
     left:10px;
     min-width:100px;
     max-width:120px;
@@ -80,7 +80,7 @@
 #pub_overlay {
     display:none;
     position:fixed;
-    top:0;
+    /* top:0; */
     left:150px;
     min-width:200px;
     width:40%;
@@ -108,7 +108,7 @@
     position:fixed;
     /* padding-top:2.5px; */
     /* padding-bottom:2.5px; */
-    top:0;
+    /* top:0; */
     right:10px;
     min-width:200px;
     width:40%;
@@ -145,12 +145,14 @@
 #reference {
     position: absolute;
     top: 15%;
-    left:4%;
+    left:2%;
     min-width:250px;
     max-width:45%;
-    /* min-height:370px; */
-    /* max-height:370px; */
-    font-size:15;
+    min-height:80%;
+    max-height:80%;
+    border:solid 3px;
+    padding:10px;
+    font-size:100%;
     text-align:justify;
     color:#000;
     font-weight:normal;
@@ -162,9 +164,11 @@
     left:52%;
     min-width:250px;
     max-width:45%;
-    /* min-height:370px; */
-    /* max-height:370px; */
-    font-size:15;
+    min-height:80%;
+    max-height:80%;
+    border:solid 3px;
+    padding:10px;
+    font-size:100%;
     text-align:justify;
     color:#000;
     font-weight:normal;
@@ -177,13 +181,19 @@
 }
 
 .highlightElement {
-    /* color:#fff; */
-    /* background-color:#777; */
-    border:dotted;
+    box-shadow: 0 0 20px #000;
 }
 
 .highlightOnSelect {
-    border:solid;
+    box-shadow: 0 0 50px #000;
+}
+
+.barOnBottom {
+    bottom:0px;
+}
+
+.barOnTop {
+    top:0px;
 }
 
 #blogset{ /* Our blog & your blog div so whole set can adjustable */

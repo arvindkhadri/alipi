@@ -30,24 +30,23 @@ var a11ypi = {
 	{
 	    vimg[i].setAttribute('m4pageedittype','image');
 	}
-
-	var v = document.getElementsByTagName("body");
+	//	var v = document.getElementsByTagName("body");
 	// 	var a = document.createElement("script");
 	// 	a.setAttribute("src","http://dev.a11y.in/alipi/wsgi/page_edit.js");
 	// //	a.setAttribute("src","http://localhost/alipi-1/server/wsgi/page_edit.js");
 	// 	a.setAttribute("type","text/javascript");
 	// 	v[0].appendChild(a);
-	var alltags = document.getElementsByTagName('*');
-	for (x=0; x<alltags.length; x++) {
-	    if (alltags[x].id == 'ren_overlay' || alltags[x].id == 'overlay1' ) {
-		if(document.getElementById('overlay1') != null)
-		{
-		    v[0].removeChild(document.getElementById('overlay1'));
-		}
-	    }
-	}
-	if(document.getElementById('overlay2') != null)
-	    v[0].removeChild(document.getElementById('overlay2'));
+	// var alltags = document.getElementsByTagName('*');
+	// for (x=0; x<alltags.length; x++) {
+	//     if (alltags[x].id == 'ren_overlay' || alltags[x].id == 'overlay1' ) {
+	// 	if(document.getElementById('overlay1') != null)
+	// 	{
+	// 	    v[0].removeChild(document.getElementById('overlay1'));
+	// 	}
+	//     }
+	// }
+	// if(document.getElementById('overlay2') != null)
+	//     v[0].removeChild(document.getElementById('overlay2'));
     },
 
     createMenu: function(menu_list) {
@@ -349,18 +348,20 @@ var a11ypi = {
     loadOverlay: function()
     {
 	var icon_template = '<div id="icon_on_overlay" class="alipi demo ui-widget-header ui-corner-all" '+
-	    'onClick="a11ypi.hide_overlays();"> <input id="icon-button" class="alipi" type="submit" value="Hide Bar"'+
+	    'onClick="a11ypi.hide_overlays();"> <input id="icon-button" class="alipi" type="submit" value="To Bottom"'+
 	    // <img style="width:100%;height:100%;" '+
 	    // 'src="http://y.a11y.in/alipi.gif" />
 	    '</input></div>';
 
 	var overlay_template = '<div id="renarrated_overlay" class="alipi ui-widget-header ui-corner-all">'+
-            '<input id="edit-current" class="alipi" type="submit" onclick="a11ypi.editPage();" value="Re-narrate this page">'+
+            '<input id="outter-toggle-button" class="alipi" type="submit" onclick="a11ypi.outterToggle();" value="To Bottom" style="position:absolute; '+
+	    'left:2%;"><input id="edit-current" class="alipi" type="submit" onclick="a11ypi.editPage();" value="Re-narrate this page">'+
             '<input id="see-narration" class="alipi" type="submit" onclick="a11ypi.showBox();" value="See re-narrations">'+
             '<input id="see-links" class="alipi" type="submit" onclick="a11ypi.showBox1();" value="List of pages narrated">'+
             '<select id="blog-filter" class="alipi" onclick="a11ypi.blogFilter();" value="choose a blog"></select>'+
             '<input id="go" class="alipi" type="submit" onclick="a11ypi.go();" value="Go">'+
-            '</div><div id="show-box" title="Choose a narration"></div><div id="show-links" title="List of pages narrated in this domain" class="alipi"></div>';
+            '</div><div id="show-box" title="Choose a narration"></div><div id="show-links" title="List of pages narrated in this domain" '+
+	    'class="alipi"></div>';
 	
 	var pub_overlay_template = '<div id="pub_overlay" class="alipi ui-widget-header ui-corner-all">'+
 	    '<input id="exit-mode" class="alipi" type="submit" onclick="a11ypi.exitMode();" value="Exit">'+
@@ -373,6 +374,7 @@ var a11ypi = {
             '<input id="add-audio" type="submit" onclick="a11ypi.addAudio();" class="alipi" value="Add Audio" style="display:none;" >'+
             '<input id="replace-image" type="submit" onclick="a11ypi.imageReplacer();" class="alipi" value="Replace Image" style="display:none;" >'+
 	    '<input id="delete-image" type="submit" onclick="pageEditor.deleteImage();" class="alipi" value="Delete Image" style="display:none;" >'+
+	    '<label id="cant-edit" class="alipi" style="display:none;color:#000;font-size:200%;">You can\'t select that portion </label> '+
 	    '</div>';
 
 	$('body').append(icon_template);
@@ -384,15 +386,13 @@ var a11ypi = {
 	$('#undo-button').button({ disabled: true});
 	$('#publish-button').button({ disabled: true});
 	$('input:.alipi, select:.alipi').button();
-	
+	$('#renarrated_overlay').addClass('barOnTop');
 	a11ypi.ajax();
 	a11ypi.ajaxLinks1();
 	$('#go').button('option','disabled', true);
 	$('#blog-filter').button('option', 'disabled', true);
 	$("#see-links").button('option', 'disabled', true);
 	$("#see-narration").button('option', 'disabled', true);
-//	$('#element_edit_overlay').slideUp();
-	//go.disabled = true; //This throws a warning.  FIX IT.
     },
     
     help_window: function() {
@@ -437,18 +437,29 @@ var a11ypi = {
     },
 
     hide_overlays: function() {
-	if($('#icon-button').val() == 'Hide Bar') {
-	    $('#icon-button').attr('value', 'Show Bar');
-	    $('#pub_overlay').slideUp();
-	    $('#element_edit_overlay').slideUp();
+	if($('#icon-button').val() == 'To Bottom') {
+	    $('#icon-button').attr('value', 'To Top');
+	    $('#pub_overlay').addClass('barOnBottom'); $('#pub_overlay').removeClass('barOnTop');
+	    $('#element_edit_overlay').addClass('barOnBottom'); $('#element_edit_overlay').removeClass('barOnTop'); 
+	    $('#icon_on_overlay').addClass('barOnBottom'); $('#icon_on_overlay').removeClass('barOnTop');
 	} else {
-	    $('#icon-button').val('Hide Bar');
-	    $('#pub_overlay').slideDown();
-	    if( $('#element_edit_overlay').children()[0].style.display != 'none' || $('#element_edit_overlay').children()[2].style.display != 'none' ) {
-	    $('#element_edit_overlay').slideDown();	    
-	    }
+	    $('#icon-button').val('To Bottom');
+	    $('#pub_overlay').addClass('barOnTop'); $('#pub_overlay').removeClass('barOnBottom');
+	    $('#element_edit_overlay').addClass('barOnTop'); $('#element_edit_overlay').removeClass('barOnBottom'); 
+	    $('#icon_on_overlay').addClass('barOnTop'); $('#icon_on_overlay').removeClass('barOnBottom');
 	}
     },
+    
+    outterToggle: function() {
+	if($('#outter-toggle-button').val() == 'To Bottom') {
+	    $('#outter-toggle-button').attr('value', 'To Top');
+	    $('#renarrated_overlay').addClass('barOnBottom'); $('#renarrated_overlay').removeClass('barOnTop');
+	} else {
+	    $('#outter-toggle-button').val('To Bottom');
+	    $('#renarrated_overlay').addClass('barOnTop'); $('#renarrated_overlay').removeClass('barOnBottom');
+	}
+    },
+    
    
     getLoc: function() {
 
@@ -509,30 +520,31 @@ var a11ypi = {
 	{
 	    $('#pub_overlay').slideUp();
 	    $('#element_edit_overlay').slideUp(); 
-	    $('#icon_on_overlay').hide();
+	    $('#icon_on_overlay').slideUp();
 	    if (a11ypi.target == false ) {
-		var publish_template = '<div id="targetoverlay" title="Target Window" class="alipi ui-widget-header ui-corner-all"> '+
+		var publish_template = '<div id="targetoverlay" title="Who are you narrating to??" class="alipi ui-widget-header ui-corner-all"> '+
 //		    '<div id="infovis" class="alipi"> </div>'+
-		    '<label class="alipi" style="position:absolute;top:10%;left:300px;color:#000;">Target </label>'+
-		    '<label class="alipi" style="position:absolute;top:20%;left:150px;color:#000;">Location: </label> '+
-		    '<input id="loc-select" class="alipi" style="position:absolute;top:20%;left:223px;width:256px;color:#000;"/>'+
+		    '<label class="alipi" style="position:absolute;top:7%;left:15%;color:#000;font-size:150%;">Enter few attributes of the '+
+		    'target community </label>'+
+		    '<label class="alipi" style="position:absolute;top:20%;left:125px;color:#000;">Location: </label> '+
+		    '<input id="loc-select" class="alipi"style="position:absolute;top:20%;left:210px;width:256px;color:#000;"placeholder="City or Town"/>'+
   		    '<img id="loc-img" src="http://localhost/wsgi/images/db_loading.gif" style="width:25px;height:20px;position:absolute; '+
-		    'top:20.5%;left:450px;display:none;" /> '+
-		    '<label class="alipi" style="position:absolute;top:35%;left:150px;color:#000;">Language: </label> '+
-		    '<input id="lang-select" class="alipi" style="position:absolute;top:35%;left:223px;width:256px;color:#000;"/>'+
+		    'top:20.5%;left:440px;display:none;" /> '+
+		    '<label class="alipi" style="position:absolute;top:30%;left:125px;color:#000;">Language: </label> '+
+		    '<input id="lang-select" class="alipi" style="position:absolute;top:30%;left:210px;width:256px;color:#000;"placeholder="Language"/>'+
   		    '<img id="lang-img" src="http://localhost/wsgi/images/db_loading.gif" style="width:25px;height:18px;position:absolute;'+
-  		    'top:36%;left:450px;display:none; "/> '+
-		    '<label class="alipi" style="position:absolute;top:50%;left:150px;color:#000;">Style: </label> '+
-		    '<select id="style-select" class="alipi" style="position:absolute;top:50%;left:223px;width:256px;color:#000;"> '+
-		    '<option>Simplification</option><option>Abstract</option><option>Funny</option><option>Translation</option> '+
-		    '<option>Imaginary</option><option>Hypothetical</option><option>Contradiction</option></select>'+
-		    '<label class="alipi" style="position:absolute;top:65%;left:150px;color:#000;">Author: </label> '+
-		    '<input id="auth-select" class="alipi" type="text" style="position:absolute;top:65%;left:223px; '+
-		    'width:256px;" /><div id="blogset" style="position:absolute;top:80%;left:224px;width:250px;"><input id="our-check" class="alipi" '+
-		    'type="radio"name="blog"style="position:relative;" /><label class="alipi" style="position:relative; '+
-		    'color:#000;">Alipi Blog</label><input id="your-check" class="alipi" type="radio" '+
-		    'name="blog" style="position:relative;margin-left:10%;" /><label class="alipi" style= '+
-		    '"position:relative;color:#000;">Personal Blog</label></div></div>';
+  		    'top:31%;left:440px;display:none; "/> '+
+		    '<label class="alipi" style="position:absolute;top:45%;left:125px;color:#000;">Select a style of re-narration: </label> '+
+		    '<select id="style-select" class="alipi" style="position:absolute;top:50%;left:210px;width:256px;color:#000;"> '+
+		    '<option>Simplification</option><option>Technical</option><option>Fun</option><option>Translation</option> '+
+		    '<option>Correction</option><option>Evolution</option><option>Other</option></select>'+
+		    '<label class="alipi" style="position:absolute;top:60%;left:125px;color:#000;">Enter an author name for your contribution: </label> '+
+		    '<input id="auth-select" class="alipi" type="text" style="position:absolute;top:65%;left:210px;width:256px;" placeholder="John"'+
+		    'width:256px;" /><div id="blogset" style="position:absolute;top:80%;left:50px;width:500px;color:#000;"> You can choose to post '+
+		    'this in your own blog or in the default Alipi blog</div><p style="position:absolute;top:85%;left:210px;"><input id="our-check" '+
+		    'class="alipi" style="position:relative;" type="radio"name="blog" /><label class="alipi" style="position:relative;color:#000;"> '+
+		    'Alipi Blog</label><input id="your-check" class="alipi" type="radio" name="blog" style="position:relative;margin-left:25px;" /> '+
+		    '<label class="alipi" style="color:#000;position:relative;">Personal Blog</label></p></div>';
 		
 		$('body').append(publish_template);
 		//document.addEventListener("DOMActivate", init, false);	
@@ -544,9 +556,13 @@ var a11ypi = {
 	    $(document).unbind('mouseover'); // Unbind the css on mouseover
 	    $(document).unbind('mouseout'); // Unbind the css on mouseout
 
+	    $('#pub_overlay').slideUp();
+	    $('#element_edit_overlay').slideUp(); 
+	    $('#icon_on_overlay').slideUp();
+
 	    $(function() {
 		$( "#targetoverlay" ).dialog({
-		    height:500,
+		    height:550,
 		    width:600,
 		    modal: true,
 		    buttons: {
@@ -554,7 +570,7 @@ var a11ypi = {
 			$( "#targetoverlay" ).dialog('close');
 			    $('#pub_overlay').slideUp();
 			    $('#element_edit_overlay').slideUp();
-			    $('#icon-button').slideUp();
+			    $('#icon_on_overlay').slideUp();
 			var success_template = '<div id="success-dialog" title="Posting your changes" class="alipi ui-widget-header ui-corner-all" '+
 				' style="color:#000"> '+
 				'<p><b>Please wait !!!</b></p><p>Your changes are being posted</p></div>';
@@ -570,18 +586,11 @@ var a11ypi = {
 		    close: function() {
 			$('#pub_overlay').slideDown();
 			$('#element_edit_overlay').slideDown(); 
-			$('#icon_on_overlay').show();
+			$('#icon_on_overlay').slideDown();
 			$( "#targetoverlay" ).hide();
-			$('#pub_overlay').slideDown();
-			$('#element_edit_overlay').slideDown();
-			$('#icon-button').slideDown();
-			document.removeEventListener("DOMActivate", init, false);
+//			document.removeEventListener("DOMActivate", init, false);
 		    }
 		});
-			    $('#pub_overlay').slideUp();
-			    $('#element_edit_overlay').slideUp();
-			    $('#icon-button').slideUp();
-
 	    });
 	}
     },
@@ -748,10 +757,12 @@ var a11ypi = {
     },
     editPage: function() {
 	a11ypi.testContext();
+	$('#icon_on_overlay').show(); $('#icon_on_overlay').addClass('barOnTop'); // When 1st time page entered in edit mode
+	$('#pub_overlay').show(); $('#pub_overlay').addClass('barOnTop'); 
+	// $('#element_edit_overlay').show();
+	$('#element_edit_overlay').addClass('barOnTop');
+
 	$('#renarrated_overlay').hide();
-	$('#icon_on_overlay').show();
-	$('#pub_overlay').show();
-	$('#element_edit_overlay').slideUp(); // When 1st time page entered in edit mode
 	
 	$('body *').contents().filter(function(){
 	    {
@@ -778,18 +789,18 @@ var a11ypi = {
             '<div id="editor" class="alipi" contenteditable="true"></div>'+
             '<div id="forPrevData" class="alipi"></div>'+
             '</div>';
-	var url_template = '<div id="url-template" title="Enter a URL">'+
-	    '<input type="text" id="url"></input>'+
-	    '</div>';
-	var message_template = '<div id="dialog-message" title="Attention!!">'+
-	    '</div>';
+	// var url_template = '<div id="url-template" title="Enter a URL">'+
+	//     '<input type="text" id="url"></input>'+
+	//     '</div>';
+	// var message_template = '<div id="dialog-message" title="Attention!!">'+
+	//     '</div>';
 	
 	$('body').append(template);
-	$('body').append(message_template);
+//	$('body').append(message_template);
 	//$('body').append(url_template);
 	$('#pub_overlay').slideUp();
 	$('#element_edit_overlay').slideUp(); 
-	$('#icon_on_overlay').hide();
+	$('#icon_on_overlay').slideUp();
 
 	var tag = pageEditor.event.target.nodeName;
 	$(pageEditor.event.target).removeAttr('m4pageedittype');
@@ -804,7 +815,7 @@ var a11ypi = {
 	$( "#editoroverlay" ).dialog({
 	    position: 'center',
 	    width:$(window).width()-100,
-	    height:550,
+	    height:$(window).height()-50,
 	    modal: true,
 	    buttons: {
 		"+": function() {
@@ -835,7 +846,7 @@ var a11ypi = {
 		"Save changes": function() {
 		    $('#pub_overlay').slideDown();
 		    $('#element_edit_overlay').slideDown(); 
-		    $('#icon_on_overlay').show();
+		    $('#icon_on_overlay').slideDown();
 		    manager.recordText(pageEditor.event.target);
 		    pageEditor.cleanUp(pageEditor.event.target);
 		    $( "#editoroverlay" ).remove();		    
@@ -862,6 +873,10 @@ var a11ypi = {
 	$(document).unbind('mouseover'); // Unbind the css on mouseover
 	$(document).unbind('mouseout'); // Unbind the css on mouseout
 
+	$('#pub_overlay').slideUp();
+	$('#element_edit_overlay').slideUp();
+	$('#icon_on_overlay').slideUp();
+
 	$( "#imageInputElement" ).dialog({
 	    width:300,
 	    height:200,
@@ -887,11 +902,15 @@ var a11ypi = {
 
     addAudio: function() {
 	var audioInputTemplate = '<div id="audioInputElement" title="Enter url" class="alipi ui-widget-header ui-corner-all">'+
-            '<input type="text" id="audioInput" placeholder="http://foo.com/baz.jpg" class="alipi" value=""/></div>';
+            '<input type="text" id="audioInput" placeholder="http://foo.com/baz.ogg" class="alipi" value=""/></div>';
 
 	$('body').append(audioInputTemplate);
 	$(document).unbind('mouseover'); // Unbind the css on mouseover
 	$(document).unbind('mouseout'); // Unbind the css on mouseout
+
+	$('#pub_overlay').slideUp();
+	$('#element_edit_overlay').slideUp();
+	$('#icon_on_overlay').slideUp();
 
 	$( "#audioInputElement" ).dialog({
 	    width:300,
