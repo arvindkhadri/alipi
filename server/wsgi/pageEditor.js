@@ -349,21 +349,24 @@ var util = {
 
     publish:function (){
 	var result;
-	if(document.getElementById('your-check').checked)
-	{
-	    localStorage.myContent = buildDataString();
-	    window.location.href = "http://dev.a11y.in/test.html";
-	    window.location.reload();
-	}
-	else{
-	    $.ajax({
-		url: 'http://dev.a11y.in/test',
-		type: "POST",
-		data : util.buildDataString()+'&title='+encodeURIComponent(document.title)
-	    }).done(function(){
+	if ($('#loc-select').val() == '' || $('#lang-select').val() == '' || $('#auth-select').val() == '' && ($('#your-check').attr('checked') == undefined || $('#our-check').attr('checked') == undefined )) {
+	    alert("please furnish all the details");
+	} else {
+	    if(document.getElementById('your-check').checked)
+	    {
+		localStorage.myContent = buildDataString();
+		window.location.href = "http://dev.a11y.in/test.html";
 		window.location.reload();
-	    });
-	 
+	    }
+	    else{
+		$.ajax({
+		    url: 'http://dev.a11y.in/test',
+		    type: "POST",
+		    data : util.buildDataString()+'&title='+encodeURIComponent(document.title)
+		}).done(function(){
+		    window.location.reload();
+		});
+	    }
 	}
     },
     
