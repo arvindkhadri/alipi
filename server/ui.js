@@ -11,8 +11,7 @@ var a11ypi = {
     pageHtml:'',
     d: {},
     testContext : function()
-    {
-	
+    {	
 	if(document.getElementById('social_overlay') != null)
 	    document.body.removeChild(document.getElementById('social_overlay'));
  	$(document).ready(function(){$('body *').contents().filter(function() 
@@ -354,14 +353,15 @@ var a11ypi = {
 	    '</input></div>';
 
 	var overlay_template = '<div id="renarrated_overlay" class="alipi ui-widget-header ui-corner-all">'+
-            '<input id="outter-toggle-button" class="alipi" type="submit" onclick="a11ypi.outterToggle();" value="To Bottom" style="position:absolute; '+
-	    'left:2%;"><input id="edit-current" class="alipi" type="submit" onclick="a11ypi.editPage();" value="Re-narrate this page">'+
+            '<input id="outter-toggle-button" class="alipi" type="submit" onclick="a11ypi.outterToggle();" value="To Bottom"> '+
+	    '<input id="edit-current" class="alipi" type="submit" onclick="a11ypi.editPage();" value="Re-narrate this page">'+
             '<input id="see-narration" class="alipi" type="submit" onclick="a11ypi.showBox();" value="See re-narrations">'+
             '<input id="see-links" class="alipi" type="submit" onclick="a11ypi.showBox1();" value="List of pages narrated">'+
-            '<select id="blog-filter" class="alipi" onclick="a11ypi.blogFilter();" value="choose a blog"></select>'+
-            '<input id="go" class="alipi" type="submit" onclick="a11ypi.go();" value="Go">'+
+            '<select id="blog-filter" class="alipi" onclick="a11ypi.blogFilter();"><option>Filter by specific blog</option></select>'+
+            '<input id="go" class="alipi" type="submit" onclick="a11ypi.go();" value="|Y|">'+
+            '<input id="share" class="alipi" type="submit" onclick="a11ypi.share();" value="Share">'+
             '</div><div id="show-box" title="Choose a narration"></div><div id="show-links" title="List of pages narrated in this domain" '+
-	    'class="alipi"></div>';
+	    'class="alipi"></div><div id="share-box" class="alipi" title="Share this page in any following social network"></div>';
 	
 	var pub_overlay_template = '<div id="pub_overlay" class="alipi ui-widget-header ui-corner-all">'+
 	    '<input id="exit-mode" class="alipi" type="submit" onclick="a11ypi.exitMode();" value="Exit">'+
@@ -381,7 +381,6 @@ var a11ypi = {
 	$('body').append(overlay_template);
 	$('body').append(pub_overlay_template);
 	$('body').append(element_edit_overlay_template);
-
 	
 	$('#undo-button').button({ disabled: true});
 	$('#publish-button').button({ disabled: true});
@@ -393,6 +392,14 @@ var a11ypi = {
 	$('#blog-filter').button('option', 'disabled', true);
 	$("#see-links").button('option', 'disabled', true);
 	$("#see-narration").button('option', 'disabled', true);
+
+	if($('#orig-button'))  {
+	    $('#renarrated_overlay').append($('#orig-button')); $('#orig-button').css('display', 'inline');
+	    // $('#fb-root').insertAfter('tweet');
+	    $('#share-box').append($('#fb-like')); 
+	    $('#share-box').append($('#tweet-root')); 
+	}
+
     },
     
     help_window: function() {
@@ -478,7 +485,7 @@ var a11ypi = {
                           //suggestions.push(val.country);
                         // for(i=0;i<val.length;i++){
 			//	console.log(val[i]);
-                          suggestions.push(val['name']+','+val['country_name']);
+                          suggestions.push(val['name']+', '+val['country_name']);
                           //}
                                   });
                               //pass array to callback
@@ -524,24 +531,26 @@ var a11ypi = {
 	    if (a11ypi.target == false ) {
 		var publish_template = '<div id="targetoverlay" title="Who are you narrating to??" class="alipi ui-widget-header ui-corner-all"> '+
 //		    '<div id="infovis" class="alipi"> </div>'+
-		    '<label class="alipi" style="position:absolute;top:7%;left:15%;color:#000;font-size:150%;">Enter few attributes of the '+
+		    '<label class="alipi" style="position:absolute;top:5%;left:110px;color:#000;">Enter few attributes of the '+
 		    'target community </label>'+
-		    '<label class="alipi" style="position:absolute;top:20%;left:125px;color:#000;">Location: </label> '+
-		    '<input id="loc-select" class="alipi"style="position:absolute;top:20%;left:210px;width:256px;color:#000;"placeholder="City or Town"/>'+
-  		    '<img id="loc-img" src="http://localhost/wsgi/images/db_loading.gif" style="width:25px;height:20px;position:absolute; '+
-		    'top:20.5%;left:440px;display:none;" /> '+
-		    '<label class="alipi" style="position:absolute;top:30%;left:125px;color:#000;">Language: </label> '+
-		    '<input id="lang-select" class="alipi" style="position:absolute;top:30%;left:210px;width:256px;color:#000;"placeholder="Language"/>'+
+		    '<label class="alipi" style="position:absolute;top:20%;left:125px;color:#000;">Location of the target community: </label> '+
+		    '<input id="loc-select" class="alipi" style="position:absolute;top:25%;left:210px;width:256px;color:#000; '+
+		    '"placeholder="Type city/town name"/> '+
+		    '<img id="loc-img" src="http://localhost/wsgi/images/db_loading.gif" style="width:25px;height:20px;position:absolute; '+
+		    'top:25.5%;left:440px;display:none;" /> '+
+		    '<label class="alipi" style="position:absolute;top:35%;left:125px;color:#000;">Language of re-narration: </label> '+
+		    '<input id="lang-select" class="alipi" style="position:absolute;top:40%;left:210px;width:256px;color:#000;" '+
+		    'placeholder="Type language name"/>'+
   		    '<img id="lang-img" src="http://localhost/wsgi/images/db_loading.gif" style="width:25px;height:18px;position:absolute;'+
-  		    'top:31%;left:440px;display:none; "/> '+
-		    '<label class="alipi" style="position:absolute;top:45%;left:125px;color:#000;">Select a style of re-narration: </label> '+
-		    '<select id="style-select" class="alipi" style="position:absolute;top:50%;left:210px;width:256px;color:#000;"> '+
-		    '<option>Simplification</option><option>Technical</option><option>Fun</option><option>Translation</option> '+
+  		    'top:41%;left:440px;display:none; "/> '+
+		    '<label class="alipi" style="position:absolute;top:50%;left:125px;color:#000;">Select a style of re-narration: </label> '+
+		    '<select id="style-select" class="alipi" style="position:absolute;top:55%;left:210px;width:256px;color:#000;"> '+
+		    '<option>Translation</option><option>Technical</option><option>Fun</option><option>Simplification</option> '+
 		    '<option>Correction</option><option>Evolution</option><option>Other</option></select>'+
-		    '<label class="alipi" style="position:absolute;top:60%;left:125px;color:#000;">Enter an author name for your contribution: </label> '+
-		    '<input id="auth-select" class="alipi" type="text" style="position:absolute;top:65%;left:210px;width:256px;" placeholder="John"'+
-		    'width:256px;" /><div id="blogset" style="position:absolute;top:80%;left:50px;width:500px;color:#000;"> You can choose to post '+
-		    'this in your own blog or in the default Alipi blog</div><p style="position:absolute;top:85%;left:210px;"><input id="our-check" '+
+		    '<label class="alipi" style="position:absolute;top:65%;left:125px;color:#000;">Enter an author name for your contribution: </label> '+
+		    '<input id="auth-select" class="alipi" type="text" style="position:absolute;top:70%;left:210px;width:256px;" placeholder="John"'+
+		    'width:256px;" /><div id="blogset" style="position:absolute;top:80%;left:125px;right:100px;color:#000;"> You can choose to post '+
+		    'this in your own blog or in the default Alipi blog</div><p style="position:absolute;top:90%;left:210px;"><input id="our-check" '+
 		    'class="alipi" style="position:relative;" type="radio"name="blog" /><label class="alipi" style="position:relative;color:#000;"> '+
 		    'Alipi Blog</label><input id="your-check" class="alipi" type="radio" name="blog" style="position:relative;margin-left:25px;" /> '+
 		    '<label class="alipi" style="color:#000;position:relative;">Personal Blog</label></p></div>';
@@ -573,7 +582,7 @@ var a11ypi = {
 			    $('#icon_on_overlay').slideUp();
 			var success_template = '<div id="success-dialog" title="Posting your changes" class="alipi ui-widget-header ui-corner-all" '+
 				' style="color:#000"> '+
-				'<p><b>Please wait !!!</b></p><p>Your changes are being posted</p></div>';
+				'<p><b>Please wait !!!</b></p><p>Your contribution is being posted</p></div>';
 			$('body').append(success_template);
 			$(function() {
 				$( "#success-dialog" ).dialog({
@@ -754,6 +763,16 @@ var a11ypi = {
 	else {
 	    window.open("http://dev.a11y.in/web?foruri=" + a['foruri'] + "&blog=" + $("#blog-filter").val());
 	}
+    },
+    share: function() {
+	$('#fb-like').css('display', 'block'); 
+	$('#tweet-root').css('display', 'block');
+	$( "#share-box" ).dialog({
+	    position: 'center',
+	    width:450,
+	    height:150,
+	    modal: true,
+	});
     },
     editPage: function() {
 	a11ypi.testContext();
