@@ -16,14 +16,11 @@ from flask import jsonify
 app = Flask(__name__)
 @app.before_request
 def first():
-    #return "<h1>Hello</h1>";
-    #g.connection = pymongo.Connection('localhost',27017) #Create the object once and use it.
-    #g.db = g.connection['dev_alipi']
-    pass
+    g.connection = pymongo.Connection('localhost',27017) #Create the object once and use it.
+    g.db = g.connection['dev_alipi']
 @app.teardown_request
 def close(exception):
-    #g.connection.disconnect()
-    pass
+    g.connection.disconnect()
 @app.route('/')
 def start_page() :
     d = {}
