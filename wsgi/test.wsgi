@@ -7,7 +7,7 @@ from bson.code import *
 from urllib import unquote_plus
 import random
 import os.path, sys
-sys.path.insert(0, '../server') #A hack to import modules from server dir.  FIXME
+sys.path.insert(0,os.path.abspath(os.path.join('.', os.path.pardir)))  #A hack to import modules from server dir.
 import conf
 def application(environ, start_response):
     #set the headers
@@ -61,7 +61,7 @@ def application(environ, start_response):
             elif d['elementtype'] == 'audio/ogg':
                 string+='<audio about="{0}" xpath="{1}" controls="controls" alipius="{2}" src="{3}"></audio>'.format(d['about'],d['xpath'],alipius,d['data'])
             else:
-                if data is not '':
+                if d['data'] is not '':
                     src = d['data'].split(',')[1]
                     width = d['data'].split(',')[0].split('x')[0]
                     height = d['data'].split(',')[0].split('x')[1]

@@ -530,7 +530,7 @@ var a11ypi = {
 		    '<label class="alipi" style="position:absolute;top:20%;left:125px;color:#000;">Location of the target community: </label> '+
 		    '<input id="loc-select" class="alipi" style="position:absolute;top:25%;left:210px;width:256px;color:#000; '+
 		    '"placeholder="Type city/town name"/> '+
-		    '<img id="loc-img" src="http://localhost/wsgi/images/db_loading.gif" style="width:25px;height:20px;position:absolute; '+
+		    '<img id="loc-img" src="http://dev.a11y.in/wsgi/images/db_loading.gif" style="width:25px;height:20px;position:absolute; '+
 		    'top:25.5%;left:440px;display:none;" /> '+
 		    '<label class="alipi" style="position:absolute;top:35%;left:125px;color:#000;">Language of re-narration: </label> '+
 		    '<input id="lang-select" class="alipi" style="position:absolute;top:40%;left:210px;width:256px;color:#000;" '+
