@@ -52,7 +52,7 @@ var a11ypi = {
 	}
     },
     
-	
+    
     clearMenu: function() {
     },
     ajax: function() {
@@ -216,7 +216,7 @@ var a11ypi = {
         }
         catch (e)
         {
-//            dump( 'error: Document tree modified during iteration ' + e );
+	    //            dump( 'error: Document tree modified during iteration ' + e );
         }
     },
     filter: function()
@@ -465,53 +465,53 @@ var a11ypi = {
 	}
     },
     
-   
+    
     getLoc: function() {
 
- 	 $( "#loc-select" ).autocomplete({
-              source: function(req, add){
+ 	$( "#loc-select" ).autocomplete({
+            source: function(req, add){
 
-                  //pass request to server
-                  $.getJSON("http://dev.a11y.in/web/getLoc?", req, function(data) {
-			$('#loc-img').hide();
+                //pass request to server
+                $.getJSON("http://dev.a11y.in/web/getLoc?", req, function(data) {
+		    $('#loc-img').hide();
 
-                      //create array for response objects
-                      var suggestions = [];
+                    //create array for response objects
+                    var suggestions = [];
 
-                      //process response
-                      $.each(data['return'], function(i,val){
-                          suggestions.push(val['name']+', '+val['country_name']);
-                      });
-                              //pass array to callback
-                              add(suggestions);
-                          });
-			$('#loc-img').show();
-                  },
-                      });         
+                    //process response
+                    $.each(data['return'], function(i,val){
+                        suggestions.push(val['name']+', '+val['country_name']);
+                    });
+                    //pass array to callback
+                    add(suggestions);
+                });
+		$('#loc-img').show();
+            },
+        });         
     },
 
     getLang: function() {
 	$( "#lang-select" ).autocomplete({
-              source: function(req, add){
+            source: function(req, add){
 
-                  //pass request to server
-                  $.getJSON("http://dev.a11y.in/web/getLang?", req, function(data) {
-			$('#lang-img').hide();
+                //pass request to server
+                $.getJSON("http://dev.a11y.in/web/getLang?", req, function(data) {
+		    $('#lang-img').hide();
 
-                      //create array for response objects
-                      var suggestions = [];
+                    //create array for response objects
+                    var suggestions = [];
 
-                      //process response
-                      $.each(data['return'], function(i, val){
-                          //suggestions.push(val.country);
-                              suggestions.push(val['name']);
-                                  });
-                              //pass array to callback
-                              add(suggestions);
-                          });
-			$('#lang-img').show();
-                  },
-                      });                             
+                    //process response
+                    $.each(data['return'], function(i, val){
+                        //suggestions.push(val.country);
+                        suggestions.push(val['name']);
+                    });
+                    //pass array to callback
+                    add(suggestions);
+                });
+		$('#lang-img').show();
+            },
+        });                             
 
 
     },
@@ -524,7 +524,7 @@ var a11ypi = {
 	    $('#icon_on_overlay').slideUp();
 	    if (a11ypi.target == false ) {
 		var publish_template = '<div id="targetoverlay" title="Who are you narrating to??" class="alipi ui-widget-header ui-corner-all"> '+
-//		    '<div id="infovis" class="alipi"> </div>'+
+		    //		    '<div id="infovis" class="alipi"> </div>'+
 		    '<label class="alipi" style="position:absolute;top:5%;left:110px;color:#000;">Enter few attributes of the '+
 		    'target community </label>'+
 		    '<label class="alipi" style="position:absolute;top:20%;left:125px;color:#000;">Location of the target community: </label> '+
@@ -535,7 +535,7 @@ var a11ypi = {
 		    '<label class="alipi" style="position:absolute;top:35%;left:125px;color:#000;">Language of re-narration: </label> '+
 		    '<input id="lang-select" class="alipi" style="position:absolute;top:40%;left:210px;width:256px;color:#000;" '+
 		    'placeholder="Type language name"/>'+
-  		    '<img id="lang-img" src="http://localhost/wsgi/images/db_loading.gif" style="width:25px;height:18px;position:absolute;'+
+  		    '<img id="lang-img" src="http://dev.a11y.in/wsgi/images/db_loading.gif" style="width:25px;height:18px;position:absolute;'+
   		    'top:41%;left:440px;display:none; "/> '+
 		    '<label class="alipi" style="position:absolute;top:50%;left:125px;color:#000;">Select a style of re-narration: </label> '+
 		    '<select id="style-select" class="alipi" style="position:absolute;top:55%;left:210px;width:256px;color:#000;"> '+
@@ -570,20 +570,16 @@ var a11ypi = {
 		    modal: true,
 		    buttons: {
 			Publish: function() {
-			$( "#targetoverlay" ).dialog('close');
-			    $('#pub_overlay').slideUp();
-			    $('#element_edit_overlay').slideUp();
-			    $('#icon_on_overlay').slideUp();
-			var success_template = '<div id="success-dialog" title="Posting your changes" class="alipi ui-widget-header ui-corner-all" '+
+			    var success_template = '<div id="success-dialog" title="Posting your changes" class="alipi ui-widget-header ui-corner-all" '+
 				' style="color:#000"> '+
 				'<p><b>Please wait !!!</b></p><p>Your contribution is being posted</p></div>';
-			$('body').append(success_template);
-			$(function() {
+			    $('body').append(success_template);
+			    $(function() {
 				$( "#success-dialog" ).dialog({
-				modal: true,
+				    modal: true,
 				});
-			});
-		    util.publish();
+			    });
+			    util.publish();
 			} 
 		    },
 		    close: function() {
@@ -591,7 +587,7 @@ var a11ypi = {
 			$('#element_edit_overlay').slideDown(); 
 			$('#icon_on_overlay').slideDown();
 			$( "#targetoverlay" ).hide();
-//			document.removeEventListener("DOMActivate", init, false);
+			//			document.removeEventListener("DOMActivate", init, false);
 		    }
 		});
 	    });
@@ -927,7 +923,7 @@ var a11ypi = {
 	    }
 	});
     },
- 
+    
     highlightOnHover: function(event) {
 	if( !($(event.target).hasClass('alipi')) ) {
 	    $(event.target).addClass('highlightElement');

@@ -349,7 +349,7 @@ var util = {
 
     publish:function (){
 	var result;
-	if ($('#loc-select').val() == '' || $('#lang-select').val() == '' || $('#auth-select').val() == '' && ($('#your-check').attr('checked') == undefined || $('#our-check').attr('checked') == undefined )) {
+	if ($('#loc-select').val() == '' || $('#lang-select').val() == '' || $('#auth-select').val() == '' || ($('#your-check').attr('checked') == undefined && $('#our-check').attr('checked') == undefined )) {
 	    alert("please furnish all the details");
 	} else {
 	    if(document.getElementById('your-check').checked)
@@ -359,6 +359,15 @@ var util = {
 		window.location.reload();
 	    }
 	    else{
+		$(function(){
+		    $( "#targetoverlay" ).dialog('close');
+		    $('#pub_overlay').slideUp();
+		    $('#element_edit_overlay').slideUp();
+		    $('#icon_on_overlay').slideUp();
+		    $( "#success-dialog" ).dialog({
+		    modal: true,
+		    });
+		});
 		$.ajax({
 		    url: 'http://dev.a11y.in/test',
 		    type: "POST",
