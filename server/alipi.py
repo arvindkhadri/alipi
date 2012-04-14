@@ -128,10 +128,6 @@ def start_page() :
         ui_css.set("href", conf.JQUERYCSS[0] + "/jquery-ui.css");
         root.body.append(ui_css);
         
-        ren_overlay = root.makeelement('div')
-        root.body.append(ren_overlay)
-        ren_overlay.set("id", "social_overlay")
-        
         see_orig = root.makeelement('input')
         root.body.append(see_orig)
         see_orig.set("id", "orig-button")
@@ -175,7 +171,7 @@ def start_page() :
         style.set("type", "text/css")
         style.set("href", "http://dev.a11y.in/server/stylesheet.css")
         
-        root.body.set("onload","a11ypi.ren();a11ypi.tweet(); a11ypi.facebook();a11ypi.loadOverlay();")
+        root.body.set("onload","a11ypi.ren();a11ypi.tweet(); a11ypi.facebook(); a11ypi.loadOverlay();")
         return lxml.html.tostring(root)
         
     elif request.args.has_key('lang') == True and request.args.has_key('blog') == False:
@@ -193,7 +189,6 @@ def start_page() :
         return lxml.html.tostring(root)
 
     elif request.args.has_key('interactive') == True and request.args.has_key('blog') == True and request.args.has_key('lang') == True:
-        script_jqui = root.makeelement('script')
 
         script_test = root.makeelement('script')
         script_test.set("src", conf.APPURL[0] + "/server/ui.js")
@@ -210,16 +205,17 @@ def start_page() :
         script_edit.set("type","text/javascript")
         root.body.append(script_edit)
 
-        jit_script = root.makeelement('script')
-        root.body.append(jit_script)
-        jit_script.set("src", conf.APPURL[0] + "/server/jit.js")
-        jit_script.set("type", "text/javascript")
+        # jit_script = root.makeelement('script')
+        # root.body.append(jit_script)
+        # jit_script.set("src", conf.APPURL[0] + "/server/jit.js")
+        # jit_script.set("type", "text/javascript")
 
-        tree_script = root.makeelement('script')
-        root.body.append(tree_script)
-        tree_script.set("src", conf.APPURL[0] + "/server/tree.js")
-        tree_script.set("type", "text/javascript")
+        # tree_script = root.makeelement('script')
+        # root.body.append(tree_script)
+        # tree_script.set("src", conf.APPURL[0] + "/server/tree.js")
+        # tree_script.set("type", "text/javascript")
         
+        script_jqui = root.makeelement('script')
         script_jqui.set("type","text/javascript")
         script_jqui.set("src",conf.JQUERYUI[0] + "/jquery-ui.min.js")
         root.body.append(script_jqui)        
@@ -228,66 +224,51 @@ def start_page() :
         ui_css.set("type", "text/css");
         ui_css.set("href", conf.JQUERYCSS[0] + "/jquery-ui.css");
         root.body.append(ui_css);
-        
-        ren_overlay = root.makeelement('div')
-        root.body.append(ren_overlay)
-        ren_overlay.set("id", "social_overlay")
-        
+
         see_orig = root.makeelement('input')
-        ren_overlay.append(see_orig)
-        see_orig.set("id", "see_orig-button")
+        root.body.append(see_orig)
+        see_orig.set("id", "orig-button")
+        see_orig.set("class", "alipi")
         see_orig.set("type", "submit")
         see_orig.set("onClick", "a11ypi.showOriginal();")
-        see_orig.set("value", "See original page")
-        see_orig.set("style","position:fixed;left:5px;top:6px;")
+        see_orig.set("value", "Original page")
+        see_orig.set("style","display:none;")
+
+        tweetroot = root.makeelement("div")
+        tweetroot.set("id", "tweet-root")
+        tweetroot.set("class", "alipi")
+        tweetroot.set("style", "display:none;padding:10px;")
+        root.body.append(tweetroot)
 
         tweet = root.makeelement("a")
         tweet.set("id", "tweet")
         tweet.set("href", "https://twitter.com/share")
-        tweet.set("class", "twitter-share-button")
+        tweet.set("class", "alipi twitter-share-button")
         tweet.set("data-via", "a11ypi")
         tweet.set("data-lang", "en")
-        tweet.set("data-url", conf.APPURL[0] + "/web?foruri={0}&lang={1}&interactive=1".format(quote_plus(d['foruri']),request.args['lang']))
+        tweet.set("data-url", "http://dev.a11y.in/web?foruri={0}&lang={1}&interactive=1".format(quote_plus(d['foruri']),request.args['lang']))
         tweet.textContent = "Tweet"
-        ren_overlay.append(tweet)
-
-        fbroot = root.makeelement("div")
-        fbroot.set("id", "fb-root")
-        ren_overlay.append(fbroot)
+        tweetroot.append(tweet)
 
         fblike = root.makeelement("div")
-        fblike.set("class", "fb-like")
-        fblike.set("data-href", conf.APPURL[0] + "/web?foruri={0}&lang={1}&interactive=1".format(quote_plus(d['foruri']),request.args['lang']))
+        fblike.set("id", "fb-like")
+        fblike.set("class", "alipi fb-like")
+        fblike.set("style", "display:none;padding:10px;")
+        fblike.set("data-href", "http://dev.a11y.in/web?foruri={0}&lang={1}&interactive=1".format(quote_plus(d['foruri']),request.args['lang']))
         fblike.set("data-send", "true")
         fblike.set("data-layout", "button_count")
         fblike.set("data-width", "50")
         fblike.set("data-show-faces", "true")
         fblike.set("data-font", "arial")
-        ren_overlay.append(fblike)
-
+        root.body.append(fblike)
         
         style = root.makeelement('link')
         root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
         style.set("href", conf.APPURL[0] + "/server/stylesheet.css")
-        
-        overlay2 = root.makeelement('div')
-        root.body.append(overlay2)
-        overlay2.set("id", "overlay2")
-        
-        btn = root.makeelement('input')
-        overlay2.append(btn)
-        btn.set("id", "edit-button")
-        btn.set("type", "submit")
-        btn.set("onClick", "a11ypi.testContext();page_edit('4seiz', '4l85060vb9', '336e2nootv6nxjsvyjov', 'VISUAL', 'false', '');")
-        btn.set("value", "EDIT")
-
-        script_test = root.makeelement('script')
-        root.body.append(script_test)
-        script_test.set("src", conf.APPURL[0] + "/server/ui.js")
-        script_test.set("type", "text/javascript")
-        root.body.set("onload","a11ypi.filter(); a11ypi.tweet(); a11ypi.facebook();");
+                
+        root.body.set("onload","a11ypi.filter(); a11ypi.tweet(); a11ypi.facebook(); a11ypi.loadOverlay();");
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
         return lxml.html.tostring(root)
 
@@ -301,6 +282,11 @@ def start_page() :
         root.body.append(script_jq_mini)
         script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery-1.7.min.js")
         script_jq_mini.set("type", "text/javascript")
+
+        script_edit = root.makeelement('script')
+        script_edit.set("src", conf.APPURL[0] + "/server/wsgi/pageEditor.js")
+        script_edit.set("type","text/javascript")
+        root.body.append(script_edit);
 
         script_jq_cust = root.makeelement('script')
         root.body.append(script_jq_cust)
@@ -319,21 +305,8 @@ def start_page() :
         style.set("type", "text/css")
         style.set("href", conf.APPURL[0] + "/server/stylesheet.css")
 
-        collection = g.db['post'] #FIXME Move this logic to JS.
-        if collection.find_one({"about" : request.args['foruri']}) is not None:
-            overlay1 = root.makeelement('div')
-            root.body.append(overlay1)
-            overlay1.set("id", "overlay1")
-
-            opt = root.makeelement('option')
-            opt.text = "Choose a narration"
-
-            rpl = root.makeelement('select')
-            overlay1.append(rpl)
-            rpl.append(opt)
-            rpl.set("id", "menu-button")
-            rpl.set("onclick", "a11ypi.ajax1();")
         root.make_links_absolute(d['foruri'], resolve_base_href = True)
+        root.body.set('onload', 'a11ypi.loadOverlay();')
         return lxml.html.tostring(root)
 
 @app.route('/directory')
