@@ -4,6 +4,7 @@ var a11ypi = {
     elementTagName: " ",
     elementId: " ",
     flag : 0,
+    fflag  : 0,
     showbox : 0,
     showlinks : 0,
     blog_flag: false,
@@ -29,23 +30,6 @@ var a11ypi = {
 	{
 	    vimg[i].setAttribute('m4pageedittype','image');
 	}
-	//	var v = document.getElementsByTagName("body");
-	// 	var a = document.createElement("script");
-	// 	a.setAttribute("src","http://dev.a11y.in/alipi/wsgi/page_edit.js");
-	// //	a.setAttribute("src","http://localhost/alipi-1/server/wsgi/page_edit.js");
-	// 	a.setAttribute("type","text/javascript");
-	// 	v[0].appendChild(a);
-	// var alltags = document.getElementsByTagName('*');
-	// for (x=0; x<alltags.length; x++) {
-	//     if (alltags[x].id == 'ren_overlay' || alltags[x].id == 'overlay1' ) {
-	// 	if(document.getElementById('overlay1') != null)
-	// 	{
-	// 	    v[0].removeChild(document.getElementById('overlay1'));
-	// 	}
-	//     }
-	// }
-	// if(document.getElementById('overlay2') != null)
-	//     v[0].removeChild(document.getElementById('overlay2'));
     },
 
     createMenu: function(menu_list) {
@@ -70,11 +54,6 @@ var a11ypi = {
     
 	
     clearMenu: function() {
-	// var xyz = document.getElementById("menu-button");
-	// while(null!= xyz.firstChild)
-	// {
-	//     xyz.removeChild(xyz.firstChild);
-	// }
     },
     ajax: function() {
 	if(a11ypi.flag == '0')
@@ -91,9 +70,9 @@ var a11ypi = {
 		    }
 		    else
 		    {
-			$('#see-narration').button('option', 'disabled', false);
-			$("#blog-filter").button('option', 'disabled', false);
-			$("#go").button('option', 'disabled', false);
+			$('#see-narration').show();
+			$("#blog-filter").show(); a11ypi.blogFilter();
+			$("#go").show();
 			a11ypi.showbox = JSON.parse(xhr.responseText);
 		    }
 		}
@@ -110,9 +89,9 @@ var a11ypi = {
 	}
     },
     ajax1: function() {
-	if(a11ypi.flag == '0')
+	if(a11ypi.fflag == '0')
 	{
-	    a11ypi.flag = 1;
+	    a11ypi.fflag = 1;
 	    var xhr = new XMLHttpRequest();
 	    xhr.onreadystatechange = function()
 	    {
@@ -237,11 +216,8 @@ var a11ypi = {
         }
         catch (e)
         {
-            dump( 'error: Document tree modified during iteration ' + e );
+//            dump( 'error: Document tree modified during iteration ' + e );
         }
-    },
-    close: function() {
-	document.getElementById('ren_overlay').style.display = 'none';
     },
     filter: function()
     {
@@ -292,14 +268,23 @@ var a11ypi = {
 	xhr.send(data);//
     },
     createMenuFilter: function(menu_list) {
-	var xyz = document.getElementById("menu-button");
-	for(var i in menu_list)
+	var xyz = document.getElementById("show-box");
+	xyz.innerHTML = '';
+	d = window.location.search.split('?')[1];
+	var a =[];
+	for (var i = 0;i<d.split('&').length;i++){ 
+	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
+	}
+	var page = a['foruri'];
+	var blog = a['blog'];
+	for(var i=0;i<menu_list.length;i++)
 	{
-	    var newel = document.createElement("option");
+	    var para  = document.createElement("p");
+	    var newel = document.createElement("a");
 	    newel.textContent = menu_list[i];
-	    newel.setAttribute("value",menu_list[i]);
-	    newel.setAttribute("onclick","a11ypi.getURLFilter(event.target);");
-	    xyz.appendChild(newel);
+	    $(newel).attr("href","http://dev.a11y.in/web?foruri="+page+"&blog="+blog+"&lang="+menu_list[i]+"&interactive=1");
+	    para.appendChild(newel);
+	    xyz.appendChild(para);
 	}
     },
     clearMenuFilter: function() {
@@ -347,19 +332,19 @@ var a11ypi = {
     loadOverlay: function()
     {
 	var icon_template = '<div id="icon_on_overlay" class="alipi demo ui-widget-header ui-corner-all" '+
-	    'onClick="a11ypi.hide_overlays();"> <input id="icon-button" class="alipi" type="submit" value="To Bottom"'+
-	    // <img style="width:100%;height:100%;" '+
-	    // 'src="http://y.a11y.in/alipi.gif" />
+	    'onClick="a11ypi.hide_overlays();"> <input id="icon-up" class="alipi" type="submit" value="&#x25B2" down="true">'+
+	    '<input id="icon-down" class="alipi" type="submit" value="&#x25BC"'+
 	    '</input></div>';
 
 	var overlay_template = '<div id="renarrated_overlay" class="alipi ui-widget-header ui-corner-all">'+
-            '<input id="outter-toggle-button" class="alipi" type="submit" onclick="a11ypi.outterToggle();" value="To Bottom"> '+
+            '<input id="outter-down-button" class="alipi" type="submit" onclick="a11ypi.outterToggle();" value="&#x25B2;" up="true"> '+
+            '<input id="outter-up-button" class="alipi" type="submit" onclick="a11ypi.outterToggle();" value="&#x25BC;"> '+
 	    '<input id="edit-current" class="alipi" type="submit" onclick="a11ypi.editPage();" value="Re-narrate this page">'+
             '<input id="see-narration" class="alipi" type="submit" onclick="a11ypi.showBox();" value="See re-narrations">'+
             '<input id="see-links" class="alipi" type="submit" onclick="a11ypi.showBox1();" value="List of pages narrated">'+
-            '<select id="blog-filter" class="alipi" onclick="a11ypi.blogFilter();"><option>Filter by specific blog</option></select>'+
+            '<select id="blog-filter" class="alipi"></select>'+
             '<input id="go" class="alipi" type="submit" onclick="a11ypi.go();" value="|Y|">'+
-            '<input id="share" class="alipi" type="submit" onclick="a11ypi.share();" value="Share">'+
+	    '<input id="share" class="alipi" type="submit" onclick="a11ypi.share();" value="Share"> '+
             '</div><div id="show-box" title="Choose a narration"></div><div id="show-links" title="List of pages narrated in this domain" '+
 	    'class="alipi"></div><div id="share-box" class="alipi" title="Share this page in any following social network"></div>';
 	
@@ -374,32 +359,41 @@ var a11ypi = {
             '<input id="add-audio" type="submit" onclick="a11ypi.addAudio();" class="alipi" value="Add Audio" style="display:none;" >'+
             '<input id="replace-image" type="submit" onclick="a11ypi.imageReplacer();" class="alipi" value="Replace Image" style="display:none;" >'+
 	    '<input id="delete-image" type="submit" onclick="pageEditor.deleteImage();" class="alipi" value="Delete Image" style="display:none;" >'+
-	    '<label id="cant-edit" class="alipi" style="display:none;color:#000;font-size:200%;">You can\'t select that portion </label> '+
+	    '<label id="cant-edit" class="alipi" style="display:none;color:#000;font-size:134%;">You can\'t select that portion </label> '+
 	    '</div>';
+
 
 	$('body').append(icon_template);
 	$('body').append(overlay_template);
 	$('body').append(pub_overlay_template);
 	$('body').append(element_edit_overlay_template);
 	
+	$('#outter-up-button').show();
 	$('#undo-button').button({ disabled: true});
 	$('#publish-button').button({ disabled: true});
 	$('input:.alipi, select:.alipi').button();
 	$('#renarrated_overlay').addClass('barOnTop');
 	a11ypi.ajax();
 	a11ypi.ajaxLinks1();
-	$('#go').button('option','disabled', true);
-	$('#blog-filter').button('option', 'disabled', true);
-	$("#see-links").button('option', 'disabled', true);
-	$("#see-narration").button('option', 'disabled', true);
+	$('#edit-current').show();
 
-	if($('#orig-button'))  {
-	    $('#renarrated_overlay').append($('#orig-button')); $('#orig-button').css('display', 'inline');
-	    // $('#fb-root').insertAfter('tweet');
-	    $('#share-box').append($('#fb-like')); 
-	    $('#share-box').append($('#tweet-root')); 
+	d = window.location.search.split('?')[1];
+	var a =[];
+	for (var i = 0;i<d.split('&').length;i++){ 
+	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
+	}
+	if(a['blog'] != undefined ) {
+	    $('#go').hide();
+	    $('#blog-filter').hide();
+	} else { 
 	}
 
+	if($('#orig-button').val() == 'Original page')  {
+	    $('#renarrated_overlay').append($('#orig-button')); $('#orig-button').css('display', 'inline');
+	    $('#share-box').append($('#fb-like')); 
+	    $('#share-box').append($('#tweet-root')); 
+	    $('#share').show();
+	}
     },
     
     help_window: function() {
@@ -444,13 +438,15 @@ var a11ypi = {
     },
 
     hide_overlays: function() {
-	if($('#icon-button').val() == 'To Bottom') {
-	    $('#icon-button').attr('value', 'To Top');
+	if($('#icon-up').attr('down') == 'true') {
+	    $('#icon-up').attr('down', 'false');
+	    $('#icon-up').show(); $('#icon-down').hide();
 	    $('#pub_overlay').addClass('barOnBottom'); $('#pub_overlay').removeClass('barOnTop');
 	    $('#element_edit_overlay').addClass('barOnBottom'); $('#element_edit_overlay').removeClass('barOnTop'); 
 	    $('#icon_on_overlay').addClass('barOnBottom'); $('#icon_on_overlay').removeClass('barOnTop');
 	} else {
-	    $('#icon-button').val('To Bottom');
+	    $('#icon-up').attr('down', 'true');
+	    $('#icon-down').show(); $('#icon-up').hide();
 	    $('#pub_overlay').addClass('barOnTop'); $('#pub_overlay').removeClass('barOnBottom');
 	    $('#element_edit_overlay').addClass('barOnTop'); $('#element_edit_overlay').removeClass('barOnBottom'); 
 	    $('#icon_on_overlay').addClass('barOnTop'); $('#icon_on_overlay').removeClass('barOnBottom');
@@ -458,11 +454,13 @@ var a11ypi = {
     },
     
     outterToggle: function() {
-	if($('#outter-toggle-button').val() == 'To Bottom') {
-	    $('#outter-toggle-button').attr('value', 'To Top');
+	if($('#outter-down-button').attr('up') == 'true' ) {
+	    $('#outter-down-button').attr('up', 'false'); 
+	    $('#outter-up-button').hide(); $('#outter-down-button').show();
 	    $('#renarrated_overlay').addClass('barOnBottom'); $('#renarrated_overlay').removeClass('barOnTop');
 	} else {
-	    $('#outter-toggle-button').val('To Bottom');
+	    $('#outter-down-button').attr('up', 'true');
+	    $('#outter-up-button').show(); $('#outter-down-button').hide();
 	    $('#renarrated_overlay').addClass('barOnTop'); $('#renarrated_overlay').removeClass('barOnBottom');
 	}
     },
@@ -482,12 +480,8 @@ var a11ypi = {
 
                       //process response
                       $.each(data['return'], function(i,val){
-                          //suggestions.push(val.country);
-                        // for(i=0;i<val.length;i++){
-			//	console.log(val[i]);
                           suggestions.push(val['name']+', '+val['country_name']);
-                          //}
-                                  });
+                      });
                               //pass array to callback
                               add(suggestions);
                           });
@@ -617,7 +611,18 @@ var a11ypi = {
 		modal: true
 	    });
 	});
-	a11ypi.createMenu(a11ypi.showbox);
+	d = window.location.search.split('?')[1];
+	var a =[];
+	for (var i = 0;i<d.split('&').length;i++){ 
+	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
+	}
+	if (a['blog'] === undefined ) {
+	    a11ypi.createMenu(a11ypi.showbox);
+	}
+	else {
+	    $('#show-box').attr('title', 'Choose a re-narration from the blog you specified.');
+	    a11ypi.ajax1();
+	}
     },
     ajaxLinks1: function() {
 	var xhr = new XMLHttpRequest();
@@ -629,7 +634,7 @@ var a11ypi = {
 		{ }
 		else
 		{
-		    $("#see-links").button('option', 'disabled', false);
+		    $('#see-links').show();
 		    a11ypi.showlinks = JSON.parse(xhr.responseText);
 		}
 	    }
@@ -717,29 +722,12 @@ var a11ypi = {
 		    {
 			var sel = $("#blog-filter");
 			var menu_list = JSON.parse(xhr.responseText);
-			//		blogArray = [];
-			// for (var i=0; i< menu_list.length; i++)
-			// {
-			//     blogArray[i] = menu_list[i].split("http://")[1].split(".com")[0] + ".com";
-			// }
-			// blogArray.sort();
 			for (var i=0; i < menu_list.length; i++)
 			{
-			    // if ( i == 0 )
-			    // {
 			    opt = document.createElement("option");
 			    opt.textContent = menu_list[i];
 			    sel.append(opt);
 			}
-			// else if(blogArray[i] == blogArray[i-1])
-			// { }
-			//     else 
-			// {
-			// 	opt = document.createElement("option");
-			// 	opt.textContent = blogArray[i];
-			// 	sel.appendChild(opt);
-			// }
-			
 		    }
 		}
 	    }
@@ -770,7 +758,7 @@ var a11ypi = {
 	$( "#share-box" ).dialog({
 	    position: 'center',
 	    width:450,
-	    height:150,
+	    height:180,
 	    modal: true,
 	});
     },
@@ -778,7 +766,7 @@ var a11ypi = {
 	a11ypi.testContext();
 	$('#icon_on_overlay').show(); $('#icon_on_overlay').addClass('barOnTop'); // When 1st time page entered in edit mode
 	$('#pub_overlay').show(); $('#pub_overlay').addClass('barOnTop'); 
-	// $('#element_edit_overlay').show();
+	$('#icon-down').show();
 	$('#element_edit_overlay').addClass('barOnTop');
 
 	$('#renarrated_overlay').hide();
@@ -795,7 +783,6 @@ var a11ypi = {
 		}
 	    }
 	}).click(pageEditor.startEdit);
-	//	$(document).click(pageEditor.startEdit);
 	$(document).mouseover(a11ypi.highlightOnHover);
 	$(document).mouseout(a11ypi.unhighlightOnMouseOut);
     },
@@ -808,15 +795,7 @@ var a11ypi = {
             '<div id="editor" class="alipi" contenteditable="true"></div>'+
             '<div id="forPrevData" class="alipi"></div>'+
             '</div>';
-	// var url_template = '<div id="url-template" title="Enter a URL">'+
-	//     '<input type="text" id="url"></input>'+
-	//     '</div>';
-	// var message_template = '<div id="dialog-message" title="Attention!!">'+
-	//     '</div>';
-	
 	$('body').append(template);
-//	$('body').append(message_template);
-	//$('body').append(url_template);
 	$('#pub_overlay').slideUp();
 	$('#element_edit_overlay').slideUp(); 
 	$('#icon_on_overlay').slideUp();

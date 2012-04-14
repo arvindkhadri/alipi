@@ -1,21 +1,3 @@
-/* #menu-button { */
-/*     text-align:center; */
-/*     font-size:14px; */
-/*     float:left; */
-/*     width:200px; */
-/*     height:30px; */
-/*     margin-top:10px; */
-/*     margin-left:15px; */
-/* } */
-
-/* .alipi, input .alipi { */
-/*     font-weight:normal */
-/* } */
-
-/* input .alipi { */
-/*     font-size:15px; */
-/* } */
-
 .alipi {
     font-weight:normal;
     font-size:100%;
@@ -28,46 +10,40 @@
 
 #renarrated_overlay {
     position:fixed;
-    /* top:0px; */
     clear:both;
     width:99%;
     left:0.5%;
-    /* height:30px; */
-    /* min-width:500px; */
     text-align:center;
-    /* right:2%; */
     z-index:2147483645;
     display:block;
 }
 
-/* #edit-current, #see-narration, #see-links, #go { */
-/*     position:relative; */
-/*     /\* top:3px; *\/ */
-/* } */
+#edit-current, #see-narration, #see-links, #go, #share {
+    display:none;
+}
 
 #blog-filter {
     min-width:200px;
     max-width:200px;
-    /* top:1px; */
 }
 
 #renarrated_overlay .ui-button{
     height:25px;
-    /* postion:relative; */
-    /* top:1px; */
     text-align:justify;
     padding:0.1em 0.8em 0.2em 0.8em;
     font-weight:normal;
 }
 
+#outter-down-button, #outter-up-button {
+    display:none;
+}
+
 #icon_on_overlay {
     display:none;
     position:fixed;
-    /* top:0; */
     left:10px;
     min-width:100px;
     max-width:120px;
-    /* height:30px; */
     text-align:center;
     z-index:2147483645;
 }
@@ -78,24 +54,23 @@
     font-weight:normal;
 }
 
+#icon-down, #icon-up {
+    display:none;
+}
+
 #pub_overlay {
     display:none;
     position:fixed;
-    /* top:0; */
     left:150px;
     min-width:200px;
     width:40%;
-    /* height:30px; */
-    /* max-height:30px; */
-    /* align:center;  */
     text-align:center;
     z-index:2147483645;
 }
 
-/* #exit-mode, #help-window, #undo-button, #publish-button { */
-/*     position:relative; */
-/*     top:3px; */
-/* } */
+#exit-mode, #help-window, #undo-button, #publish-button {
+    /* display:none; */
+}
 
 #pub_overlay .ui-button {
     height:25px;
@@ -107,15 +82,9 @@
 #element_edit_overlay {
     display:none;
     position:fixed;
-    /* padding-top:2.5px; */
-    /* padding-bottom:2.5px; */
-    /* top:0; */
     right:10px;
     min-width:200px;
     width:40%;
-    height:25px;
-    /* max-height:25px; */
-    /* align:center; */
     text-align:center;
     z-index:2147483645;
 }
@@ -129,8 +98,6 @@
 
 #editoroverlay {
     display: none;
-    /* min-width:200px; */
-    /* max-width:100% ; */
 }
 #editoroverlay label {
     position: absolute;
@@ -198,8 +165,7 @@
 }
 
 #blogset{ /* Our blog & your blog div so whole set can adjustable */
-    position:absolute;
-    
+    position:absolute;    
 }
 
 #infovis {
@@ -221,8 +187,6 @@
     width:35%;
     height:90%;
     overflow:show;
-/* color:#000; */
-/* background-color: rgba(0,0,0,0.5); */
 }
 
 #narrations-div {
