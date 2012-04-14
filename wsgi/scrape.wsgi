@@ -2,7 +2,7 @@ import lxml.html
 import pymongo
 from urllib import unquote_plus
 import random
-
+from lxml import etree
 def application(environ, start_response):
     #set the headers
     status = '200 OK'
@@ -43,7 +43,10 @@ def application(environ, start_response):
         else:
             temp['about'] = element.attrib['about']
             temp['xpath'] = element.attrib['xpath']
-            temp['data'] = element.text
+            data =''
+            for i in element.iterdescendants():
+                data += etree.tostring(i)
+            temp['data'] = data
             temp['blog'] = url
             temp['ren_id'] = ren_id
             store_list.append(temp)

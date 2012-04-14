@@ -352,11 +352,10 @@ var util = {
 	if ($('#loc-select').val() == '' || $('#lang-select').val() == '' || $('#auth-select').val() == '' || ($('#your-check').attr('checked') == undefined && $('#our-check').attr('checked') == undefined )) {
 	    alert("please furnish all the details");
 	} else {
-	    if(document.getElementById('your-check').checked)
+	    if($('#your-check').attr('checked') != undefined)
 	    {
 		localStorage.myContent = buildDataString();
 		window.location.href = "http://dev.a11y.in/test.html";
-		window.location.reload();
 	    }
 	    else{
 		$(function(){
