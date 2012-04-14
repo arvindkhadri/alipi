@@ -7,7 +7,7 @@ from bson.code import *
 from urllib import unquote_plus
 import random
 import os.path, sys
-sys.path.insert(0,os.path.abspath(os.path.join('.', os.path.pardir)))  #A hack to import modules from server dir.
+sys.path.insert(0,(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))+'/server')  #A hack to import modules from server dir.
 import conf
 def application(environ, start_response):
     #set the headers
