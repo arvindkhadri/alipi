@@ -65,6 +65,7 @@ def start_page() :
         root.body.append(style)
         style.set("rel","stylesheet")
         style.set("type", "text/css")
+        style.set("media", "screen")
         style.set("href", conf.APPURL[0] + "/server/stylesheet.css")
 
         jit_script = root.makeelement('script')

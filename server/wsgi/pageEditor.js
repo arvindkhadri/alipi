@@ -13,15 +13,24 @@ var pageEditor = {
 	pageEditor.event = event;
 	pageEditor.m4pageedittype = $(event.target).attr('m4pageedittype');
 	$('*').removeClass('highlightOnSelect');
+
+	if (pageEditor.event) {
+	    xAxis = pageEditor.event.clientX;
+	    yAxis = pageEditor.event.clientY;
+	    $("#element_edit_overlay").css("top", yAxis);
+	    $("#element_edit_overlay").css("left", xAxis);
+	}
+
 	if($(event.target).attr('m4pageedittype') == 'text') {
 	    $(event.target).addClass('highlightOnSelect'); // To show selected element
 
 	    $('#edit-text').show();	    
 	    $('#add-audio').show();
+	    $('#close-element').show();
 	    $('#replace-image').hide();
 	    $('#delete-image').hide();
 	    $('#cant-edit').hide();
-
+	    $("body").css("overflow", "hidden");
 	    $('#pub_overlay').slideDown();
 	    $('#element_edit_overlay').slideDown();
 	    // At this point 'displayEditor' function will be performed on click of 'Edit Text' button
@@ -32,26 +41,41 @@ var pageEditor = {
 
 	    $('#replace-image').show();
 	    $('#delete-image').show();
+	    $('#close-element').show();
 	    $('#add-audio').hide();
 	    $('#edit-text').hide();
 	    $('#cant-edit').hide();
-
+	    $("body").css("overflow", "hidden");
 	    $('#element_edit_overlay').slideDown();
 	    $('#pub_overlay').slideDown();
 	    // At this point 'imageReplacer' function will be performed on click of 'Replace Image' button
 	    // imageReplacer function is in ui.js
-	} else {
+	} 
+    },
+
+    noEdit: function(event)
+    {
+	if (event) {
+	    xAxis = event.clientX;
+	    yAxis = event.clientY;
+	    $("#element_edit_overlay").css("top", yAxis);
+	    $("#element_edit_overlay").css("left", xAxis);
+	}
+	$('*').removeClass('highlightOnSelect');
+	if(!($(event.target).attr('m4pageedittype'))) {
 	    $('#edit-text').hide();
 	    $('#add-audio').hide();
 	    $('#replace-image').hide();
 	    $('#delete-image').hide();
+	    $('#close-element').hide();
 	    $('#cant-edit').show();
-
+	    window.setTimeout("$('#cant-edit').hide();", 3000);
+	    $("body").css("overflow", "auto");
 	    $('#pub_overlay').slideDown();
 	    $('#element_edit_overlay').slideDown();
 	}
     },
-
+    
     handler: function()
     {
 	var sel = window.getSelection();
@@ -131,9 +155,12 @@ var pageEditor = {
 
 	$(element).attr('m4pageedittype', pageEditor.m4pageedittype);
 	$(element).children().attr('m4pageedittype', pageEditor.m4pageedittype);
-	$('#icon_on_overlay').slideDown();
+//	$('#icon_on_overlay').slideDown();
 	$('#pub_overlay').slideDown();
-	$('#element_edit_overlay').slideDown(); 
+	$('#element_edit_overlay').hide();
+	$("body").css("overflow", "auto");
+	$('*').removeClass('highlightOnSelect');
+//	$('#element_edit_overlay').slideDown(); 
 	$(document).mouseover(a11ypi.highlightOnHover);
 	$(document).mouseout(a11ypi.unhighlightOnMouseOut);
 //	$(pageEditor.event.target).removeClass('highlightOnSelect'); // Remove hightlight of selected element
@@ -300,7 +327,6 @@ var util = {
 		break;
 
 	    case 'IMAGE_SRC_UPDATE':
-		console.log("here");
 		command.element.src = command.previousData.src;
 		if (command.previousData.size.width) {
 		    command.element.width = command.previousData.size.width;
@@ -362,11 +388,19 @@ var util = {
 		$(function(){
 		    $( "#targetoverlay" ).dialog('close');
 		    $('#pub_overlay').slideUp();
-		    $('#element_edit_overlay').slideUp();
-		    $('#icon_on_overlay').slideUp();
-		    $( "#success-dialog" ).dialog({
-		    modal: true,
-		    });
+		    $('#element_edit_overlay').hide();
+//		    $('#icon_on_overlay').slideUp();
+		    // $( "#success-dialog" ).dialog({
+		    // modal: true,
+		    // });
+		    var success_template = '<div id="success-dialog" title="Posting your changes" class="alipi ui-widget-header ui-corner-all" '+
+			'<p style="color:#aaa"><b>Please wait !!!</b></p><p style="color:#aaa">Your contribution is being posted</p></div>';
+		    $('body').append(success_template);
+		    $(function() {
+			$( "#success-dialog" ).dialog({
+			    modal: true,
+			});
+		    }); 
 		});
 		$.ajax({
 		    url: 'http://dev.a11y.in/test',
