@@ -336,12 +336,17 @@ var a11ypi = {
 	var overlay_template = '<div id="renarrated_overlay" class="alipi ui-widget-header ui-corner-all">'+
             '<button id="outter-down-button" class="alipi" onclick="a11ypi.outterToggle();" up="true" title="Move this bar to top">Move</button> '+
 	    '<button id="outter-up-button" class="alipi" onclick="a11ypi.outterToggle();" title="Move this bar to bottom">Move</button> '+
-	    '<button id="edit-current" class="alipi" onclick="a11ypi.editPage();" >Re-narrate Page</button> '+
-	    '<button id="see-narration" class="alipi" onclick="a11ypi.showBox();" >See Re-narrations</button>'+
-            '<button id="see-links" class="alipi" onclick="a11ypi.showBox1();" >Narrated Links</button>'+
-            '<select id="blog-filter" class="alipi" title="Select one of the blog name"></select>'+
+	    '<button id="edit-current" class="alipi" onclick="a11ypi.editPage();" title="Re-narrate this page">Re-narrate</button> '+
+	    '<button id="see-narration" class="alipi" onclick="a11ypi.showBox();" title="See other renarrations, which are in same or other languages"> '+
+	    'Re-narrations</button>'+
+            '<button id="see-links" class="alipi" onclick="a11ypi.showBox1();" title="See other re-narrated pages of this domain">Re-narrated Pages '+
+	    '</button>'+
+            '<select id="blog-filter" class="alipi" onChange="a11ypi.checkSelect();" title="Select one of the blog name"></select>'+
             '<button id="go" class="alipi ui-icon-circle-arrow-e" onclick="a11ypi.go();" title="Filter by blog" >|Y|</button>'+
-	    '<button id="share" class="alipi" onclick="a11ypi.share();" >Share</button> </div>'+
+	    '<button id="share" class="alipi" onclick="a11ypi.share();" title="Share your contribution in your social network">Share</button>'+
+	    '<button id="orig-button" class="alipi" onclick="a11ypi.showOriginal();" title="Go to Original link, the original page of this renarrated"> '+
+	    'Original Page</button>'+
+	    '<button id="info" class="alipi" onclick="" title="Have a look at the information of each renarrated element">Info</button> </div>'+
             '<div id="show-box" title="Choose a narration"></div> '+
 	    '<div id="show-links" title="List of pages narrated in this domain" class="alipi"></div> '+
 	    '<div id="share-box" class="alipi" title="Share this page in any following social network"></div>';
@@ -349,16 +354,19 @@ var a11ypi = {
 	var pub_overlay_template = '<div id="pub_overlay" class="alipi ui-widget-header ui-corner-all">'+
 	    '<button id="icon-up" class="alipi" down="true" onClick="a11ypi.hide_overlays();" title="Move this bar to top">Move</button>'+ //&#x25B2
 	    '<button id="icon-down" class="alipi" onClick="a11ypi.hide_overlays();" title="Move this bar to bottom">Move</button>'+ //&#x25BC
-	    '<button id="exit-mode" class="alipi" onclick="a11ypi.exitMode();">Exit Editing</button>'+
-            '<button id="help-window" class="alipi" onclick="a11ypi.help_window();">Help</button>'+
-            '<button id="undo-button" class="alipi" onclick="util.undoChanges();">Undo last change</button>'+
-            '<button id="publish-button" class="alipi" onclick="a11ypi.publish();">Publish to blog</button></div>';	
+	    '<button id="exit-mode" class="alipi" onclick="a11ypi.exitMode();" title="Exit from editing mode">Exit</button>'+
+            '<button id="help-window" class="alipi" onclick="a11ypi.help_window();" title="How to help you in editing this page">Help</button>'+
+            '<button id="undo-button" class="alipi" onclick="util.undoChanges();"title="Undo previous changes, one by one">Undo change</button>'+
+            '<button id="publish-button" class="alipi" onclick="a11ypi.publish();"title="Publish your changes to blog">Publish</button></div>';	
 
-	var element_edit_overlay_template = '<div id="element_edit_overlay" class="alipi ui-widget-header ui-corner-all" >'+
-	    '<button id="edit-text" class="alipi" onclick="a11ypi.displayEditor();" >Edit Text</button>'+
-            '<button id="add-audio" class="alipi" onclick="a11ypi.addAudio();" >Add Audio</button>'+
-            '<button id="replace-image" class="alipi" onclick="a11ypi.imageReplacer();" >Replace Image</button>'+
-	    '<button id="delete-image" class="alipi" onclick="pageEditor.deleteImage();" >Delete Image</button>'+
+         var element_edit_overlay_template = '<div id="element_edit_overlay" class="alipi ui-widget-header ui-corner-all" >'+
+	    '<button id="edit-text" class="alipi" onclick="a11ypi.displayEditor();" title="Help you to edit this element by providing an editor '+
+	    'with reference on left.">Edit Text</button>'+
+            '<button id="add-audio" class="alipi" onclick="a11ypi.addAudio();" title="Allow you to give an audio file(.ogg) link to add to this '+
+	    'element ">Add Audio</button>'+
+            '<button id="replace-image" class="alipi" onclick="a11ypi.imageReplacer();" title="Allow you to give an image file(jpeg/jpg/gif/png) '+
+	    'link to replace with this image">Replace Image</button>'+
+	    '<button id="delete-image" class="alipi" onclick="pageEditor.deleteImage();" title="Remove this image from page">Delete Image</button>'+
 	    '<button id="close-element" class="alipi" onclick="pageEditor.cleanUp();" title="Close" ></button>'+
 	    '<label id="cant-edit" class="alipi">No selection / Too large to select </label> '+
 	    '</div>';
@@ -368,6 +376,7 @@ var a11ypi = {
 	$('body').append(element_edit_overlay_template);
 	
 	$('#outter-up-button').show();
+	$('#go').button({disabled : true});
 	$('#undo-button').button({ disabled: true});
 	$('#publish-button').button({ disabled: true});
 	$('input:.alipi, select:.alipi').button();
@@ -380,6 +389,8 @@ var a11ypi = {
 	/*$("#blog-filter").button({icons:{secondary:"ui-icon-triangle-1-s"}}); */ $('#blog-filter').children().addClass('alipi');
 	$("#go").button({icons:{primary:"ui-icon-arrowthick-1-e"},text:false});  $('#go').children().addClass('alipi');
 	$("#share").button({icons:{primary:"ui-icon-signal-diag"}});  $('#share').children().addClass('alipi');
+	$("#orig-button").button({icons:{primary:"ui-icon-extlink"}});  $('#orig-button').children().addClass('alipi');
+	$("#info").button({icons:{primary:"ui-icon-info"}});  $('#info').children().addClass('alipi');
 
 	$("#icon-up").button({icons:{primary:"ui-icon-circle-arrow-n"},text:false});  $('#icon-up').children().addClass('alipi');
 	$("#icon-down").button({icons:{primary:"ui-icon-circle-arrow-s"},text:false});  $('#icon-down').children().addClass('alipi');
@@ -410,8 +421,8 @@ var a11ypi = {
 	} else { 
 	}
 
-	if($('#orig-button').val() == 'Original page')  {
-	    $('#renarrated_overlay').append($('#orig-button')); $('#orig-button').css('display', 'inline');
+	if($('#orig-button').val() == 'Original Page')  {
+	    $('#orig-button').show();;
 	    $('#share-box').append($('#fb-like')); 
 	    $('#share-box').append($('#tweet-root')); 
 	    $('#share').show();

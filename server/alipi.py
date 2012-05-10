@@ -72,7 +72,6 @@ def start_page() :
         return lxml.html.tostring(root)
 
     elif request.args.has_key('interactive') == True and request.args.has_key('blog') == True and request.args.has_key('lang') == True:
-
         setScripts()
         setSocialScript()
         g.root.body.set("onload","a11ypi.filter(); a11ypi.tweet(); a11ypi.facebook(); a11ypi.loadOverlay();");
