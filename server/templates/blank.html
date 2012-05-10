@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<body>
+<div id="info_content">
+</div>
+</body>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+var responseJSON = [];
+function onLoad()
+{
+var html;
+for(var i = 0; i < responseJSON.length;i++)
+{
+html = $('#info_content').html() + '<pre>&lt;alipi&gt;'+
+		   '\n\t&lt;xpath&gt;'+responseJSON[i]['xpath']+'&lt;/xpath&gt;'+
+		   '\n\t&lt;blog&gt;'+responseJSON[i]['blog']+'&lt;/blog&gt;'+
+		   '\n\t&lt;elementType&gt;'+responseJSON[i]['elementtype']+'&lt;/elementType&gt;'+
+		   '\n\t&lt;data&gt;'+responseJSON[i]['data']+'&lt;/data&gt;'+
+		   '\n&lt;/alipi&gt;</pre>';
+$('#info_content').html(html);
+}
+}
+</script>
+</html>
