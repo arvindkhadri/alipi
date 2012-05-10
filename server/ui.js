@@ -11,6 +11,7 @@ var a11ypi = {
     target : false,
     pageHtml:'',
     d: {},
+    response:'',
     testContext : function()
     {	
 	if(document.getElementById('social_overlay') != null)
@@ -46,7 +47,7 @@ var a11ypi = {
 	    var para  = document.createElement("p");
 	    var newel = document.createElement("a");
 	    newel.textContent = menu_list[i];
-	    $(newel).attr("href","http://dev.a11y.in/web?foruri="+page+"&lang="+menu_list[i]+"&interactive=1");
+	    $(newel).attr("href","http://127.0.0.1:5000?foruri="+page+"&lang="+menu_list[i]+"&interactive=1");
 	    para.appendChild(newel);
 	    xyz.appendChild(para);
 	}
@@ -136,8 +137,10 @@ var a11ypi = {
 		}
 		else
 		{
-		    
+		    var info_template = '<div id="infoDiv"></div>';
+		    $('#renarrated_overlay').append(info_template);
 		    d ={};
+		    a11ypi.response = xhr.responseText;
 		    var response=xhr.responseText.substring(3).split('###');
 		    for (var j= 0; j< response.length ; j++){
 			chunk = response[j].substring(1).split('&');
@@ -148,6 +151,8 @@ var a11ypi = {
 			    value = pair[1];
 			    d[key] = value;
 			}
+			$('#infoDiv').append(d['xpath']);
+			$('#infoDiv').append('<br>');
 			path = d['xpath'];
 			newContent = d['data'];
 			elementType = d['elementtype'];
@@ -200,7 +205,7 @@ var a11ypi = {
 		else if(elementType == 'audio/ogg')
 		{
 		    newContent = decodeURIComponent(newContent);
-		    audio = '<audio controls="controls" autoplay="autoplay" src="'+newContent+'" style="display:table;"></audio>';
+		    audio = '<audio controls="controls" src="'+newContent+'" style="display:table;"></audio>';
 		    $(result).before(audio);
 		    result.setAttribute('class','blink');
 		}
@@ -412,6 +417,14 @@ var a11ypi = {
 	    $('#share').show();
 	}
     },
+    checkSelect: function()
+    {
+	if($('#blog-filter').val() != "Choose a blog") {
+	    $('#go').button({disabled : false});
+	} else {
+	    $('#go').button({disabled : true});
+	}
+    },
 
     help_window: function() {
 	var help_template = '<div id="helpwindow" class="alipi ui-widget-header ui-corner-all">'+
@@ -559,7 +572,6 @@ var a11ypi = {
 		    '<label id="tar-lab7" class="alipi">Personal Blog</label></p></div>';
 		
 		$('body').append(publish_template);
-		//document.addEventListener("DOMActivate", init, false);	
 		a11ypi.getLoc();
 		a11ypi.getLang();
 		a11ypi.target = true;
@@ -587,7 +599,6 @@ var a11ypi = {
 //			$('#element_edit_overlay').slideDown(); 
 //			$('#icon_on_overlay').slideDown();
 			$( "#targetoverlay" ).hide();
-			//			document.removeEventListener("DOMActivate", init, false);
 		    }
 		});
 	    });
@@ -718,6 +729,9 @@ var a11ypi = {
 		    {
 			var sel = $("#blog-filter");
 			var menu_list = JSON.parse(xhr.responseText);
+			opt = document.createElement("option");
+			opt.textContent = "Choose a blog";
+			sel.append(opt);
 			for (var i=0; i < menu_list.length; i++)
 			{
 			    opt = document.createElement("option");
@@ -976,6 +990,39 @@ var a11ypi = {
 
     unhighlightOnMouseOut: function(event) {
 	$(event.target).removeClass('highlightElement');
+    },
+    showInfo: function() {
+	infoWindow = window.open('blank','Info page');
+	window.setTimeout(function(){a11ypi.pushInfo(infoWindow.document.getElementById('info_content'),infoWindow);},2000);
+	// $('#infoDiv').dialog({
+	//     height:500,
+	//     width:500,
+	//     modal: true,
+	//     close: function(){
+	// 	$('#infoDiv').close();
+	//     }
+	// });
+    },
+    pushInfo: function(ele, win) //ele contains the info_content element from blank.html
+    {
+	var alipi_template = '<pre>&lt;alipi&gt;&lt;/alipi&gt;</pre>';
+
+	var response = a11ypi.response.substring(3).split('###');
+	myjson = [];
+	for (var j= 0; j< response.length ; j++){
+	    d = {};
+	    chunk = response[j].substring(1).split('&');
+	    for (var i= 0; i< chunk.length ; i++){
+		pair =chunk[i].split("::");
+		key = pair[0];
+		value = pair[1];
+		d[key] = value;
+	    }
+	    
+	    myjson.push(d);
+	}
+	win.responseJSON = myjson;
+	win.onLoad();
     },
 };
 

@@ -41,139 +41,21 @@ def start_page() :
         page = unicode(page,'utf-8')  #Hack to fix improperly displayed chars on wikipedia.
     except UnicodeDecodeError:
         pass #Some pages may not need be utf-8'ed
-    root = lxml.html.parse(StringIO.StringIO(page)).getroot()
+    g.root = lxml.html.parse(StringIO.StringIO(page)).getroot()
     if request.args.has_key('lang') == False and request.args.has_key('blog') == False:
-        root.make_links_absolute(d['foruri'], resolve_base_href = True)
-        for i in root.iterlinks():
+        g.root.make_links_absolute(d['foruri'], resolve_base_href = True)
+        for i in g.root.iterlinks():
             if i[1] == 'href' and i[0].tag != 'link':
                 i[0].attrib['href'] = 'http://{0}?foruri={1}'.format(conf.DEPLOYURL[0],quote_plus(i[0].attrib['href']))
-        script_test = root.makeelement('script')
-        script_edit = root.makeelement('script')
-        root.body.append(script_test)
-        root.body.append(script_edit)
-        script_test.set("src", conf.APPURL[0] + "/server/ui.js")
-        script_test.set("type", "text/javascript")
-        script_edit.set("src", conf.APPURL[0] + "/server/wsgi/pageEditor.js")
-        script_edit.set("type","text/javascript")
-        
-        script_jq_mini = root.makeelement('script')
-        root.body.append(script_jq_mini)
-        script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery-1.7.min.js")
-        script_jq_mini.set("type", "text/javascript")
-        
-        style = root.makeelement('link')
-        root.body.append(style)
-        style.set("rel","stylesheet")
-        style.set("type", "text/css")
-        style.set("media", "screen")
-        style.set("href", conf.APPURL[0] + "/server/stylesheet.css")
-
-        jit_script = root.makeelement('script')
-        root.body.append(jit_script)
-        jit_script.set("src", conf.APPURL[0] + "/server/jit.js")
-        jit_script.set("type", "text/javascript")
-
-        tree_script = root.makeelement('script')
-        root.body.append(tree_script)
-        tree_script.set("src", conf.APPURL[0] + "/server/tree.js")
-        tree_script.set("type", "text/javascript")
-
-        script_jq_cust = root.makeelement('script')
-        root.body.append(script_jq_cust)
-        script_jq_cust.set("src", conf.JQUERYUI[0] + "/jquery-ui.min.js")
-        script_jq_cust.set("type", "text/javascript")
-
-        style_cust = root.makeelement('link')
-        style_cust.set("rel","stylesheet")
-        style_cust.set("type", "text/css")
-        style_cust.set("href", conf.JQUERYCSS[0] + "/jquery-ui.css")
-        root.body.append(style_cust)
-
-        root.body.set("onload","a11ypi.loadOverlay();")
-        return lxml.html.tostring(root)
+        setScripts() 
+        g.root.body.set("onload","a11ypi.loadOverlay();")
+        return lxml.html.tostring(g.root)
 
     elif request.args.has_key('lang') == True and request.args.has_key('interactive') == True and request.args.has_key('blog') == False:
-        root.make_links_absolute(d['foruri'], resolve_base_href = True)
-        script_test = root.makeelement('script')
-        script_edit = root.makeelement('script')
-        root.body.append(script_test)
-        root.body.append(script_edit)
-        
-        script_jq_mini = root.makeelement('script')
-        root.body.append(script_jq_mini)
-        script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery-1.7.min.js")
-        script_jq_mini.set("type", "text/javascript")
-
-        script_jqui = root.makeelement('script')
-        script_jqui.set("type","text/javascript")
-        script_jqui.set("src",conf.JQUERYUI[0] + "/jquery-ui.min.js")
-        root.body.append(script_jqui)
-        script_test.set("src", conf.APPURL[0] + "/server/ui.js")
-        script_test.set("type", "text/javascript")
-        script_edit.set("src", conf.APPURL[0] + "/server/wsgi/pageEditor.js")
-        script_edit.set("type","text/javascript")
-
-        jit_script = root.makeelement('script')
-        root.body.append(jit_script)
-        jit_script.set("src", conf.APPURL[0] + "/server/jit.js")
-        jit_script.set("type", "text/javascript")
-
-        tree_script = root.makeelement('script')
-        root.body.append(tree_script)
-        tree_script.set("src", conf.APPURL[0] + "/server/tree.js")
-        tree_script.set("type", "text/javascript")
-        
-        ui_css = root.makeelement("link")
-        ui_css.set("rel", "stylesheet");
-        ui_css.set("type", "text/css");
-        ui_css.set("href", conf.JQUERYCSS[0] + "/jquery-ui.css");
-        root.body.append(ui_css);
-        
-        see_orig = root.makeelement('input')
-        root.body.append(see_orig)
-        see_orig.set("id", "orig-button")
-        see_orig.set("class", "alipi")
-        see_orig.set("type", "submit")
-        see_orig.set("onClick", "a11ypi.showOriginal();")
-        see_orig.set("value", "Original page")
-        see_orig.set("style","display:none;")
-
-        tweetroot = root.makeelement("div")
-        tweetroot.set("id", "tweet-root")
-        tweetroot.set("class", "alipi")
-        tweetroot.set("style", "display:none;padding:10px;")
-        root.body.append(tweetroot)
-
-        tweet = root.makeelement("a")
-        tweet.set("id", "tweet")
-        tweet.set("href", "https://twitter.com/share")
-        tweet.set("class", "alipi twitter-share-button")
-        tweet.set("data-via", "a11ypi")
-        tweet.set("data-lang", "en")
-        tweet.set("data-url", "http://dev.a11y.in/web?foruri={0}&lang={1}&interactive=1".format(quote_plus(d['foruri']),request.args['lang']))
-        tweet.textContent = "Tweet"
-        tweetroot.append(tweet)
-
-        fblike = root.makeelement("div")
-        fblike.set("id", "fb-like")
-        fblike.set("class", "alipi fb-like")
-        fblike.set("style", "display:none;padding:10px;")
-        fblike.set("data-href", "http://dev.a11y.in/web?foruri={0}&lang={1}&interactive=1".format(quote_plus(d['foruri']),request.args['lang']))
-        fblike.set("data-send", "true")
-        fblike.set("data-layout", "button_count")
-        fblike.set("data-width", "50")
-        fblike.set("data-show-faces", "true")
-        fblike.set("data-font", "arial")
-        root.body.append(fblike)
-        
-        style = root.makeelement('link')
-        root.body.append(style)
-        style.set("rel","stylesheet")
-        style.set("type", "text/css")
-        style.set("href", "http://dev.a11y.in/server/stylesheet.css")
-        
-        root.body.set("onload","a11ypi.ren();a11ypi.tweet(); a11ypi.facebook(); a11ypi.loadOverlay();")
-        return lxml.html.tostring(root)
+        setScripts()
+        setSocialScript()
+        g.root.body.set("onload","a11ypi.ren();a11ypi.tweet(); a11ypi.facebook(); a11ypi.loadOverlay();")
+        return lxml.html.tostring(g.root)
         
     elif request.args.has_key('lang') == True and request.args.has_key('blog') == False:
         script_jq_mini = root.makeelement('script')
@@ -191,125 +73,104 @@ def start_page() :
 
     elif request.args.has_key('interactive') == True and request.args.has_key('blog') == True and request.args.has_key('lang') == True:
 
-        script_test = root.makeelement('script')
-        script_test.set("src", conf.APPURL[0] + "/server/ui.js")
-        script_test.set("type", "text/javascript")
-        root.body.append(script_test)
-        
-        script_jq_mini = root.makeelement('script')
-        script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery-1.7.min.js")
-        script_jq_mini.set("type", "text/javascript")
-        root.body.append(script_jq_mini)
-
-        script_edit = root.makeelement('script')
-        script_edit.set("src", conf.APPURL[0] + "/server/wsgi/pageEditor.js")
-        script_edit.set("type","text/javascript")
-        root.body.append(script_edit)
-
-        # jit_script = root.makeelement('script')
-        # root.body.append(jit_script)
-        # jit_script.set("src", conf.APPURL[0] + "/server/jit.js")
-        # jit_script.set("type", "text/javascript")
-
-        # tree_script = root.makeelement('script')
-        # root.body.append(tree_script)
-        # tree_script.set("src", conf.APPURL[0] + "/server/tree.js")
-        # tree_script.set("type", "text/javascript")
-        
-        script_jqui = root.makeelement('script')
-        script_jqui.set("type","text/javascript")
-        script_jqui.set("src",conf.JQUERYUI[0] + "/jquery-ui.min.js")
-        root.body.append(script_jqui)        
-        ui_css = root.makeelement("link")
-        ui_css.set("rel", "stylesheet");
-        ui_css.set("type", "text/css");
-        ui_css.set("href", conf.JQUERYCSS[0] + "/jquery-ui.css");
-        root.body.append(ui_css);
-
-        see_orig = root.makeelement('input')
-        root.body.append(see_orig)
-        see_orig.set("id", "orig-button")
-        see_orig.set("class", "alipi")
-        see_orig.set("type", "submit")
-        see_orig.set("onClick", "a11ypi.showOriginal();")
-        see_orig.set("value", "Original page")
-        see_orig.set("style","display:none;")
-
-        tweetroot = root.makeelement("div")
-        tweetroot.set("id", "tweet-root")
-        tweetroot.set("class", "alipi")
-        tweetroot.set("style", "display:none;padding:10px;")
-        root.body.append(tweetroot)
-
-        tweet = root.makeelement("a")
-        tweet.set("id", "tweet")
-        tweet.set("href", "https://twitter.com/share")
-        tweet.set("class", "alipi twitter-share-button")
-        tweet.set("data-via", "a11ypi")
-        tweet.set("data-lang", "en")
-        tweet.set("data-url", "http://dev.a11y.in/web?foruri={0}&lang={1}&interactive=1".format(quote_plus(d['foruri']),request.args['lang']))
-        tweet.textContent = "Tweet"
-        tweetroot.append(tweet)
-
-        fblike = root.makeelement("div")
-        fblike.set("id", "fb-like")
-        fblike.set("class", "alipi fb-like")
-        fblike.set("style", "display:none;padding:10px;")
-        fblike.set("data-href", "http://dev.a11y.in/web?foruri={0}&lang={1}&interactive=1".format(quote_plus(d['foruri']),request.args['lang']))
-        fblike.set("data-send", "true")
-        fblike.set("data-layout", "button_count")
-        fblike.set("data-width", "50")
-        fblike.set("data-show-faces", "true")
-        fblike.set("data-font", "arial")
-        root.body.append(fblike)
-        
-        style = root.makeelement('link')
-        root.body.append(style)
-        style.set("rel","stylesheet")
-        style.set("type", "text/css")
-        style.set("href", conf.APPURL[0] + "/server/stylesheet.css")
-                
-        root.body.set("onload","a11ypi.filter(); a11ypi.tweet(); a11ypi.facebook(); a11ypi.loadOverlay();");
-        root.make_links_absolute(d['foruri'], resolve_base_href = True)
-        return lxml.html.tostring(root)
+        setScripts()
+        setSocialScript()
+        g.root.body.set("onload","a11ypi.filter(); a11ypi.tweet(); a11ypi.facebook(); a11ypi.loadOverlay();");
+        g.root.make_links_absolute(d['foruri'], resolve_base_href = True)
+        return lxml.html.tostring(g.root)
 
     elif request.args.has_key('interactive') == False and request.args.has_key('blog') == True:    
-        script_test = root.makeelement('script')
-        root.body.append(script_test)
-        script_test.set("src", conf.APPURL[0] + "/server/ui.js")
-        script_test.set("type", "text/javascript")
-        
-        script_jq_mini = root.makeelement('script')
-        root.body.append(script_jq_mini)
-        script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery-1.7.min.js")
-        script_jq_mini.set("type", "text/javascript")
+        setScripts()
+        g.root.make_links_absolute(d['foruri'], resolve_base_href = True)
+        g.root.body.set('onload', 'a11ypi.loadOverlay();')
+        return lxml.html.tostring(g.root)
 
-        script_edit = root.makeelement('script')
-        script_edit.set("src", conf.APPURL[0] + "/server/wsgi/pageEditor.js")
-        script_edit.set("type","text/javascript")
-        root.body.append(script_edit);
+def setScripts():
+    script_test = g.root.makeelement('script')
+    script_edit = g.root.makeelement('script')
+    g.root.body.append(script_test)
+    g.root.body.append(script_edit)
+    script_test.set("src", conf.APPURL[0] + "/server/ui.js")
+    script_test.set("type", "text/javascript")
+    script_edit.set("src", conf.APPURL[0] + "/server/wsgi/pageEditor.js")
+    script_edit.set("type","text/javascript")
+    
+    script_jq_mini = g.root.makeelement('script')
+    g.root.body.append(script_jq_mini)
+    script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery-1.7.min.js")
+    script_jq_mini.set("type", "text/javascript")
+    
+    style = g.root.makeelement('link')
+    g.root.body.append(style)
+    style.set("rel","stylesheet")
+    style.set("type", "text/css")
+    style.set("href", conf.APPURL[0] + "/server/stylesheet.css")
 
-        script_jq_cust = root.makeelement('script')
-        root.body.append(script_jq_cust)
-        script_jq_cust.set("src", conf.JQUERYUI[0] + "/jquery-ui.min.js")
-        script_jq_cust.set("type", "text/javascript")
+    jit_script = g.root.makeelement('script')
+    g.root.body.append(jit_script)
+    jit_script.set("src", conf.APPURL[0] + "/server/jit.js")
+    jit_script.set("type", "text/javascript")
 
-        style_cust = root.makeelement('link')
-        style_cust.set("rel","stylesheet")
-        style_cust.set("type", "text/css")
-        style_cust.set("href", conf.JQUERYCSS[0] + "/jquery-ui.css")
-        root.body.append(style_cust)
+    tree_script = g.root.makeelement('script')
+    g.root.body.append(tree_script)
+    tree_script.set("src", conf.APPURL[0] + "/server/tree.js")
+    tree_script.set("type", "text/javascript")
 
-        style = root.makeelement('link')
-        root.body.append(style)
-        style.set("rel","stylesheet")
-        style.set("type", "text/css")
-        style.set("href", conf.APPURL[0] + "/server/stylesheet.css")
+    script_jq_cust = g.root.makeelement('script')
+    g.root.body.append(script_jq_cust)
+    script_jq_cust.set("src", conf.JQUERYUI[0] + "/jquery-ui.min.js")
+    script_jq_cust.set("type", "text/javascript")
 
-        root.make_links_absolute(d['foruri'], resolve_base_href = True)
-        root.body.set('onload', 'a11ypi.loadOverlay();')
-        return lxml.html.tostring(root)
+    style_cust = g.root.makeelement('link')
+    style_cust.set("rel","stylesheet")
+    style_cust.set("type", "text/css")
+    style_cust.set("href", conf.JQUERYCSS[0] + "/jquery-ui.css")
+    g.root.body.append(style_cust)
+    
+def setSocialScript():
+    see_orig = g.root.makeelement('input')
+    g.root.body.append(see_orig)
+    see_orig.set("id", "orig-button")
+    see_orig.set("class", "alipi")
+    see_orig.set("type", "submit")
+    see_orig.set("onClick", "a11ypi.showOriginal();")
+    see_orig.set("value", "Original page")
+    see_orig.set("style","display:none;")
 
+    tweetroot = g.root.makeelement("div")
+    tweetroot.set("id", "tweet-root")
+    tweetroot.set("class", "alipi")
+    tweetroot.set("style", "display:none;padding:10px;")
+    g.root.body.append(tweetroot)
+
+    tweet = g.root.makeelement("a")
+    tweet.set("id", "tweet")
+    tweet.set("href", "https://twitter.com/share")
+    tweet.set("class", "alipi twitter-share-button")
+    tweet.set("data-via", "a11ypi")
+    tweet.set("data-lang", "en")
+    tweet.set("data-url", "http://dev.a11y.in/web?foruri={0}&lang={1}&interactive=1".format(quote_plus(request.args['foruri']),request.args['lang']))
+    tweet.textContent = "Tweet"
+    tweetroot.append(tweet)
+
+    fblike = g.root.makeelement("div")
+    fblike.set("id", "fb-like")
+    fblike.set("class", "alipi fb-like")
+    fblike.set("style", "display:none;padding:10px;")
+    fblike.set("data-href", "http://dev.a11y.in/web?foruri={0}&lang={1}&interactive=1".format(quote_plus(request.args['foruri']),request.args['lang']))
+    fblike.set("data-send", "true")
+    fblike.set("data-layout", "button_count")
+    fblike.set("data-width", "50")
+    fblike.set("data-show-faces", "true")
+    fblike.set("data-font", "arial")
+    g.root.body.append(fblike)
+    
+    style = g.root.makeelement('link')
+    g.root.body.append(style)
+    style.set("rel","stylesheet")
+    style.set("type", "text/css")
+    style.set("href", "http://dev.a11y.in/server/stylesheet.css")
+    
 @app.route('/directory')
 def show_directory():
     collection = g.db['post']
@@ -349,6 +210,9 @@ def get_lang():
     response = jsonify(d)
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
+@app.route('/blank', methods=['GET'])
+def serve_blank():
+    return render_template('blank.html')
 
 import logging,os
 from logging import FileHandler
