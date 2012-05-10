@@ -8,7 +8,9 @@ from urllib import unquote_plus
 import random
 import os.path, sys
 sys.path.insert(0,(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))+'/server')  #A hack to import modules from server dir.
+sys.path.insert(0,(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))+'/wsgi')
 import conf
+import alipiUtils
 def application(environ, start_response):
     #set the headers
     status = '200 OK'
@@ -97,13 +99,12 @@ def application(environ, start_response):
                 blog_id = entry.GetSelfLink().href.split("/")[-1]
                 blogEntry = CreatePublicPost(blogger_service, blog_id, title=title, content=string + "<blockquote><p>Re-narration by "+author+' in '+lang+' targeting '+target+' for this web <a href="'+about+'">page</a></p></blockquote>')
 
-        j=0
-        while j< len(dicts):
-            dicts[j]["blog"] = str(blogEntry.GetHtmlLink().href)
-            collection.insert(dicts[j])
-            j+=1
-            
-        #commands.getoutput(cmd)
+        # j=0
+        # while j< len(dicts):
+        #     dicts[j]["blog"] = str(blogEntry.GetHtmlLink().href)
+        #     collection.insert(dicts[j])
+        #     j+=1
+        rstr = alipiUtils.doScrape(str(blogEntry.GetHtmlLink().href))
         connection.disconnect()
         return 'ok'
         #return ["Blog successfuly posted!!"]

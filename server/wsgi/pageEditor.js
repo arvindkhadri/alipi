@@ -354,7 +354,7 @@ var util = {
 	} else {
 	    if($('#your-check').attr('checked') != undefined)
 	    {
-		localStorage.myContent = buildDataString();
+		localStorage.myContent = util.buildDataString();
 		window.location.href = "http://dev.a11y.in/test.html";
 	    }
 	    else{
