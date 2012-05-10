@@ -47,7 +47,7 @@ var a11ypi = {
 	    var para  = document.createElement("p");
 	    var newel = document.createElement("a");
 	    newel.textContent = menu_list[i];
-	    $(newel).attr("href","http://127.0.0.1:5000?foruri="+page+"&lang="+menu_list[i]+"&interactive=1");
+	    $(newel).attr("href","http://dev.a11y.in/web?foruri="+page+"&lang="+menu_list[i]+"&interactive=1");
 	    para.appendChild(newel);
 	    xyz.appendChild(para);
 	}
