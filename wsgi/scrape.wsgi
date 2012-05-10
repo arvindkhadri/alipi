@@ -1,4 +1,5 @@
 from urllib import unquote_plus
+import sys, os
 sys.path.insert(0,(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))+'/wsgi')
 import alipiUtils
 def application(environ, start_response):

@@ -1,4 +1,4 @@
-"""A mudoule to have utilities.  Right now it contains the xpath module"""
+#A mudoule to have utilities.  Right now it contains the xpath module
 import lxml.html
 import pymongo
 import random
@@ -12,7 +12,7 @@ def getCount(elt):
     return count
 
 def makePath(elt):
-"""An element is passed to this function and the xpath of that element is returned"""
+#An element is passed to this function and the xpath of that element is returned#
     path = ''
     i = elt
     while(i is not None):
@@ -30,7 +30,7 @@ def makePath(elt):
     return path
 
 def doScrape(url):
-""" Crawling is a utility, pass the url to be crawled.  Alipi attributes will be indexed from the given url. """
+# Crawling is a utility, pass the url to be crawled.  Alipi attributes will be indexed from the given url. #
     connection = pymongo.Connection('localhost', 27017)
     db = connection['dev_alipi']
     collection = db['post']
@@ -41,7 +41,10 @@ def doScrape(url):
     for element in elements:
         temp = {}
         for i in element.attrib['alipius'].split(','):
-            temp[i.split(':')[0]] = i.split(':')[1]
+            try:
+                temp[i.split(':')[0]] = i.split(':')[1]
+            except IndexError:
+                temp['location'] += ','+i
         if temp['elementtype'] == 'audio/ogg':
             temp['about'] = element.attrib['about']
             temp['xpath'] = element.attrib['xpath']
@@ -72,5 +75,4 @@ def doScrape(url):
     for z in store_list:
         collection.insert(z)
         connection.disconnect()
-        print >> environ['wsgi.errors'], z
     return 'ok'
