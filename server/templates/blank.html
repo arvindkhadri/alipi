@@ -1,5 +1,13 @@
 <!doctype html>
 <html>
+<head>
+<style>
+span
+{color:#0000FF;
+font-weight:bold;
+line-height:1.5em;
+}
+</style>
 <body>
 <div id="info_content">
 </div>
@@ -12,12 +20,13 @@ function onLoad()
 var html;
 for(var i = 0; i < responseJSON.length;i++)
 {
-html = $('#info_content').html() + '<pre>&lt;alipi&gt;'+
-		   '\n\t&lt;xpath&gt;'+responseJSON[i]['xpath']+'&lt;/xpath&gt;'+
-		   '\n\t&lt;blog&gt;'+responseJSON[i]['blog']+'&lt;/blog&gt;'+
-		   '\n\t&lt;elementType&gt;'+responseJSON[i]['elementtype']+'&lt;/elementType&gt;'+
-		   '\n\t&lt;data&gt;'+responseJSON[i]['data']+'&lt;/data&gt;'+
-		   '\n&lt;/alipi&gt;</pre>';
+html = $('#info_content').html() + '<pre><span>&lt;alipi&gt;</span>'+
+                   '<span>\n\t&lt;xpath&gt;</span>'+responseJSON[i]['xpath']+'<span>&lt;/xpath&gt;</span>'+
+                   '<span>\n\t&lt;blog&gt;</span>'+responseJSON[i]['blog']+'<span>&lt;/blog&gt;</span>'+
+                   '<span>\n\t&lt;elementType&gt;</span>'+responseJSON[i]['elementtype']+'<span>&lt;/elementType&gt;</span>'+
+                   '<span>\n\t&lt;bxpath&gt;</span>'+responseJSON[i]['bxpath']+'<span>&lt;/bxpath&gt;</span>'+
+                   '<span>\n\t&lt;data&gt;</span>'+responseJSON[i]['data']+'<span>&lt;/data&gt;<span>'+
+                   '<span>\n&lt;/alipi&gt;<span></pre>';
 $('#info_content').html(html);
 }
 }
