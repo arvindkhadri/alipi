@@ -417,10 +417,10 @@ var a11ypi = {
 	}
 
 	if($('#orig-button').text() == 'Original Page')  {
-	    $('#renarrated_overlay').append($('#share')); $('#share').show();
-	    $('#renarrated_overlay').append($('#info')); $('#info').show();
-	    $('#renarrated_overlay').append($('#orig-button'));  $('#orig-button').show();
-	    $('#share-box').append($('#fb-like')); $('#share-box').append($('#tweet-root')); 
+	    $('#share').insertAfter($('#go'));  $('#share').show();
+	    $('#info').insertAfter($('#go')); $('#info').show();
+	    $('#orig-button').insertAfter($('#go'));  $('#orig-button').show();
+	    $('#share-box').append($('#fb-like')); $('#share-box').append($('#tweet-root'));
 	}
     },
     checkSelect: function()
@@ -1010,14 +1010,6 @@ var a11ypi = {
     showInfo: function() {
 	infoWindow = window.open('blank','Info page');
 	window.setTimeout(function(){a11ypi.pushInfo(infoWindow.document.getElementById('info_content'),infoWindow);},2000);
-	// $('#infoDiv').dialog({
-	//     height:500,
-	//     width:500,
-	//     modal: true,
-	//     close: function(){
-	// 	$('#infoDiv').close();
-	//     }
-	// });
     },
     pushInfo: function(ele, win) //ele contains the info_content element from blank.html
     {

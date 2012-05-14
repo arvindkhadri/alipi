@@ -74,5 +74,5 @@ def doScrape(url):
             store_list.append(temp)
     for z in store_list:
         collection.insert(z)
-        connection.disconnect()
+    connection.disconnect()
     return 'ok'
