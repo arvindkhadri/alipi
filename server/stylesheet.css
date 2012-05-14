@@ -1,22 +1,21 @@
 @media screen and (min-width:1000px) {
 
-/* .alipi { font-weight:normal; font-size:100%; } */
-
-#renarrated_overlay            { position:fixed; left:0.5%; width:99%; text-align:center; font-weight:normal; z-index:2147483645; display:block; }
-/* #renarrated_overlay .ui-button { text-align:justify; } */
+#renarrated_overlay { position:fixed; left:0.5%; width:99%; text-align:center; font-weight:normal; z-index:2147483645; display:block; }
 
 #edit-current  { font-size:17px; font-weight:400; font-style:italic; text-align:justify; display:none; }
 #see-narration { font-size:17px; font-weight:400; font-style:italic; text-align:justify; display:none; }
 #see-links     { font-size:17px; font-weight:400; font-style:italic; text-align:justify; display:none; }
-#go            { height:37px; font-size:17px; font-weight:400; font-style:italic; -moz-border-radius-bottomleft:0px; -webkit-border-bottom-left-radius:0px; 
-		 -khtml-border-bottom-left-radius:0px;  border-bottom-left-radius:0px; -moz-border-radius-topleft:0px; 
-		 -webkit-border-top-left-radius:0px; -khtml-border-top-left-radius:0px;  border-top-left-radius:0px; text-align:justify; display:none; }
-#blog-filter { right:-3px; min-width:225px; max-width:225px; height:37px; font-size:17px; font-weight:400; font-style:italic; 
-	       -moz-border-radius-bottomright:0px; -webkit-border-bottom-right-radius:0px; -khtml-border-bottom-right-radius:0px;
-	       border-bottom-right-radius:0px; -moz-border-radius-topright:0px; -webkit-border-top-right-radius:0px; -khtml-border-top-right-radius:0px; 
-	       border-top-right-radius:0px; -moz-border-radius-bottomleft:5px; -webkit-border-bottom-left-radius:5px; border-bottom-left-radius:5px; 
-	       -moz-border-radius-topleft:5px; -webkit-border-top-left-radius:5px; -khtml-border-top-left-radius:5px;  border-top-right-radius:0px;
-	       text-align:justify; display:none; }
+#blog-filter   { right:-3px; min-width:225px; max-width:225px; font-size:17px; font-weight:400; font-style:italic; 
+	       -moz-border-radius-bottomright:0px; -webkit-border-bottom-right-radius:0px; border-bottom-right-radius:0px; 
+	       -moz-border-radius-topright:0px; -webkit-border-top-right-radius:0px; border-top-right-radius:0px; -moz-margin-start:7px; 
+	       text-align:center; display:none; }
+@-moz-document domain(127.0.0.1), domain(dev.a11y.in), domain(y.a11y.in) {
+    #go  { top:11px !important; }
+}
+#go            { top:6px; height:25px; text-align:justify; display:none;
+		 -moz-border-radius-bottomleft:0px; -webkit-border-bottom-left-radius:0px; border-bottom-left-radius:0px; 
+		 -moz-border-radius-topleft:0px; -webkit-border-top-left-radius:0px; -khtml-border-top-left-radius:0px; border-top-left-radius:0px; }
+
 #share         { font-size:17px; font-weight:400; font-style:italic; text-align:justify; display:none; }
 #orig-button   { font-size:17px; font-weight:400; font-style:italic; text-align:justify; display:none; }
 #info          { font-size:17px; font-weight:400; font-style:italic; text-align:justify; display:none; }
@@ -46,13 +45,13 @@
 #editoroverlay   { min-width:90%; text-align:justify; display: none; }
 #editoroverlay a { color:#1C94C4; }
 
-#adv-reference { position: absolute; top:15%; left:2%; min-width:48%; max-width:48%; min-height:100%; border:solid 3px; padding:10px; font-size:17px; 
+#adv-reference { position: absolute; top:15%; left:2%; min-width:48%; max-width:48%; border:solid 3px; padding:10px; font-size:16px; 
 		 font-weight:400; font-style:normal; color:#aaa; overflow:show; background:none; text-align:justify; display:none; }
 
-#reference { position: absolute; top: 15%; left:2%; min-width:46%; max-width:46%; min-height:100%; border:solid 3px; padding:10px; font-size:17px; 
+#reference { position: absolute; top: 15%; left:2%; min-width:46%; max-width:46%; min-height:10%; border:solid 3px; padding:10px; font-size:17px; 
 	     font-weight:400; font-style:normal; text-align:justify; color:#aaa; overflow:show; background:none; text-align:justify; }
 
-#editor { position:absolute; top:15%; left:52%; min-width:45%; max-width:45%; min-height:96%; border:3px solid; padding:10px; font-size:17px;
+#editor { position:absolute; top:15%; left:52%; min-width:45%; max-width:45%; min-height:10%; border:3px solid #aaa; padding:10px; font-size:17px;
 	  font-weight:400; font-style:normal; text-align:justify; color:#000; background-color:#ffe; text-align:justify; }
 
 #ref-lab  { position:absolute; top:5%; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
@@ -108,15 +107,15 @@
 #edit-current  { font-size:14px; font-weight:200; font-style:italic; text-align:justify; display:none; }
 #see-narration { font-size:14px; font-weight:200; font-style:italic; text-align:justify; display:none; }
 #see-links     { font-size:14px; font-weight:200; font-style:italic; text-align:justify; display:none; }
-#go            { height:30px; -moz-border-radius-bottomleft:0px; -webkit-border-bottom-left-radius:0px; -khtml-border-bottom-left-radius:0px; 
+#blog-filter   { right:-3px; min-width:150px; max-width:150px; font-weight:200; font-style:italic; text-align:justify; display:none;
+		 -moz-border-radius-bottomright:0px; -webkit-border-bottom-right-radius:0px; border-bottom-right-radius:0px; 
+		 -moz-border-radius-topright:0px; -webkit-border-top-right-radius:0px; border-top-right-radius:0px; }
+#go            { top:5px; height:18px; -moz-border-radius-bottomleft:0px; -webkit-border-bottom-left-radius:0px; -khtml-border-bottom-left-radius:0px; 
 		 border-bottom-left-radius:0px; -moz-border-radius-topleft:0px; -webkit-border-top-left-radius:0px; -khtml-border-top-left-radius:0px; 
 		 border-top-left-radius:0px; font-size:14px; font-weight:200; font-style:italic; text-align:justify; display:none; }
-#blog-filter   { right:-3px; min-width:150px; max-width:150px; height:30px; -moz-border-radius-bottomright:0px; -webkit-border-bottom-right-radius:0px;
-	       -khtml-border-bottom-right-radius:0px; border-bottom-right-radius:0px; -moz-border-radius-topright:0px; 
-	       -webkit-border-top-right-radius:0px; -khtml-border-top-right-radius:0px; border-top-right-radius:0px; -moz-border-radius-bottomleft:5px; 
-	       -webkit-border-bottom-left-radius:5px; border-bottom-left-radius:5px; -moz-border-radius-topleft:5px; -webkit-border-top-left-radius:5px; 
-	       -khtml-border-top-left-radius:5px;  border-top-right-radius:0px;font-size:14px; font-weight:200; font-style:italic; text-align:justify; 
-	       display:none; }
+@-moz-document domain(127.0.0.1), domain(dev.a11y.in), domain(y.a11y.in) {
+    #go  { height:23px !important; top:4px !important; }
+}
 #share         { font-size:14px; font-weight:200; font-style:italic; text-align:justify; display:none; }
 #orig-button   { font-size:14px; font-weight:200; font-style:italic; text-align:justify; display:none; }
 #info          { font-size:14px; font-weight:200; font-style:italic; text-align:justify; display:none; }
@@ -149,12 +148,12 @@
 #editoroverlay   { min-width:90%;  display: none; }
 #editoroverlay a { color:#1C94C4; }
 
-#adv-reference { position: absolute; top: 24%; left:2%; min-width:48%; max-width:48%; min-height:100%; border:solid 2px; padding:10px; font-size:14px;
+#adv-reference { position: absolute; top: 24%; left:2%; min-width:48%; max-width:48%; border:solid 2px; padding:10px; font-size:13px;
 		 text-align:justify; color:#aaa; font-weight:normal; overflow:show; background:none;  display:none; }
-#reference     { position: absolute; top: 24%; left:2%; min-width:46%; max-width:46%; min-height:100%; border:solid 2px; padding:10px; font-size:14px;
+#reference     { position: absolute; top: 24%; left:2%; min-width:46%; max-width:46%; min-height:10%; border:solid 2px; padding:10px; font-size:14px;
 		 text-align:justify; color:#aaa; font-weight:normal; overflow:show; background:none; }
 
-#editor { position:absolute; top:15%; left:52%; min-width:45%; max-width:45%; min-height:96%; border:2px solid; padding:10px; color:#000; 
+#editor { position:absolute; top:15%; left:52%; min-width:45%; max-width:45%; min-height:10%; border:2px solid; padding:10px; color:#000; 
 	  background-color:#ffe; font-size:14px; font-weight:200; font-style:normal; text-align:justify; }
 
 #ref-lab  { position:absolute; top:5%; font-size:14px; font-weight:200; font-style:italic; text-align:justify; color:#aaa; }

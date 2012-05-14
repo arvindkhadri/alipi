@@ -127,15 +127,30 @@ def setScripts():
     g.root.body.append(style_cust)
     
 def setSocialScript():
-    see_orig = g.root.makeelement('input')
+    info_button = g.root.makeelement('button')
+    g.root.body.append(info_button)
+    info_button.set("id", "info")
+    info_button.set("class", "alipi")
+    info_button.set("onClick", "a11ypi.showInfo();")
+    info_button.text =  "Info"
+    info_button.set("title", "Have a look at the information of each renarrated element")
+    
+    share_button = g.root.makeelement('button')
+    g.root.body.append(share_button)
+    share_button.set("id", "share")
+    share_button.set("class", "alipi")
+    share_button.set("onClick", "a11ypi.share();")
+    share_button.text =  "Share"
+    share_button.set("title", "Share your contribution in your social network")
+    
+    see_orig = g.root.makeelement('button')
     g.root.body.append(see_orig)
     see_orig.set("id", "orig-button")
     see_orig.set("class", "alipi")
-    see_orig.set("type", "submit")
     see_orig.set("onClick", "a11ypi.showOriginal();")
-    see_orig.set("value", "Original page")
-    see_orig.set("style","display:none;")
-
+    see_orig.text = "Original Page"
+    see_orig.set("title", "Go to Original link, the original page of this renarrated")
+    
     tweetroot = g.root.makeelement("div")
     tweetroot.set("id", "tweet-root")
     tweetroot.set("class", "alipi")
