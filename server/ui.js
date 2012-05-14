@@ -151,8 +151,6 @@ var a11ypi = {
 			    value = pair[1];
 			    d[key] = value;
 			}
-			$('#infoDiv').append(d['xpath']);
-			$('#infoDiv').append('<br>');
 			path = d['xpath'];
 			newContent = d['data'];
 			elementType = d['elementtype'];
@@ -336,17 +334,13 @@ var a11ypi = {
 	var overlay_template = '<div id="renarrated_overlay" class="alipi ui-widget-header ui-corner-all">'+
             '<button id="outter-down-button" class="alipi" onclick="a11ypi.outterToggle();" up="true" title="Move this bar to top">Move</button> '+
 	    '<button id="outter-up-button" class="alipi" onclick="a11ypi.outterToggle();" title="Move this bar to bottom">Move</button> '+
-	    '<button id="edit-current" class="alipi" onclick="a11ypi.editPage();" title="Re-narrate this page">Re-narrate</button> '+
+	    '<button id="edit-current" class="alipi" onclick="a11ypi.editPage();" title="Allow to edit this page">Re-narrate</button> '+
 	    '<button id="see-narration" class="alipi" onclick="a11ypi.showBox();" title="See other renarrations, which are in same or other languages"> '+
 	    'Re-narrations</button>'+
             '<button id="see-links" class="alipi" onclick="a11ypi.showBox1();" title="See other re-narrated pages of this domain">Re-narrated Pages '+
 	    '</button>'+
             '<select id="blog-filter" class="alipi" onChange="a11ypi.checkSelect();" title="Select one of the blog name"></select>'+
             '<button id="go" class="alipi ui-icon-circle-arrow-e" onclick="a11ypi.go();" title="Filter by blog" >|Y|</button>'+
-	    '<button id="share" class="alipi" onclick="a11ypi.share();" title="Share your contribution in your social network">Share</button>'+
-	    '<button id="orig-button" class="alipi" onclick="a11ypi.showOriginal();" title="Go to Original link, the original page of this renarrated"> '+
-	    'Original Page</button>'+
-	    '<button id="info" class="alipi" onclick="" title="Have a look at the information of each renarrated element">Info</button> </div>'+
             '<div id="show-box" title="Choose a narration"></div> '+
 	    '<div id="show-links" title="List of pages narrated in this domain" class="alipi"></div> '+
 	    '<div id="share-box" class="alipi" title="Share this page in any following social network"></div>';
@@ -354,21 +348,22 @@ var a11ypi = {
 	var pub_overlay_template = '<div id="pub_overlay" class="alipi ui-widget-header ui-corner-all">'+
 	    '<button id="icon-up" class="alipi" down="true" onClick="a11ypi.hide_overlays();" title="Move this bar to top">Move</button>'+ //&#x25B2
 	    '<button id="icon-down" class="alipi" onClick="a11ypi.hide_overlays();" title="Move this bar to bottom">Move</button>'+ //&#x25BC
-	    '<button id="exit-mode" class="alipi" onclick="a11ypi.exitMode();" title="Exit from editing mode">Exit</button>'+
-            '<button id="help-window" class="alipi" onclick="a11ypi.help_window();" title="How to help you in editing this page">Help</button>'+
-            '<button id="undo-button" class="alipi" onclick="util.undoChanges();"title="Undo previous changes, one by one">Undo change</button>'+
+	    '<button id="exit-mode" class="alipi" onclick="a11ypi.exitMode();" title="Do not want to save any changes, just take me out of this editing"> '+
+	    'Exit</button>'+
+            '<button id="help-window" class="alipi" onclick="a11ypi.help_window();" title="How may I help you in editing this page?">Help</button>'+
+            '<button id="undo-button" class="alipi" onclick="util.undoChanges();"title="Undo previous change, one by one">Undo changes</button>'+
             '<button id="publish-button" class="alipi" onclick="a11ypi.publish();"title="Publish your changes to blog">Publish</button></div>';	
 
          var element_edit_overlay_template = '<div id="element_edit_overlay" class="alipi ui-widget-header ui-corner-all" >'+
-	    '<button id="edit-text" class="alipi" onclick="a11ypi.displayEditor();" title="Help you to edit this element by providing an editor '+
-	    'with reference on left.">Edit Text</button>'+
-            '<button id="add-audio" class="alipi" onclick="a11ypi.addAudio();" title="Allow you to give an audio file(.ogg) link to add to this '+
-	    'element ">Add Audio</button>'+
+	    '<button id="edit-text" class="alipi" onclick="a11ypi.displayEditor();" title="Help you to edit this element by providing an editor on right'+
+	    ' & reference on left.">Edit Text</button>'+
+            '<button id="add-audio" class="alipi" onclick="a11ypi.addAudio();" title="Allow you to give an audio file(.ogg) link to add your audio '+
+	    'to this element ">Add Audio</button>'+
             '<button id="replace-image" class="alipi" onclick="a11ypi.imageReplacer();" title="Allow you to give an image file(jpeg/jpg/gif/png) '+
 	    'link to replace with this image">Replace Image</button>'+
 	    '<button id="delete-image" class="alipi" onclick="pageEditor.deleteImage();" title="Remove this image from page">Delete Image</button>'+
 	    '<button id="close-element" class="alipi" onclick="pageEditor.cleanUp();" title="Close" ></button>'+
-	    '<label id="cant-edit" class="alipi">No selection / Too large to select </label> '+
+	    '<label id="cant-edit" class="alipi">No selection / Too large selection </label> '+
 	    '</div>';
 
 	$('body').append(overlay_template);
@@ -421,11 +416,11 @@ var a11ypi = {
 	} else { 
 	}
 
-	if($('#orig-button').val() == 'Original Page')  {
-	    $('#orig-button').show();;
-	    $('#share-box').append($('#fb-like')); 
-	    $('#share-box').append($('#tweet-root')); 
-	    $('#share').show();
+	if($('#orig-button').text() == 'Original Page')  {
+	    $('#renarrated_overlay').append($('#share')); $('#share').show();
+	    $('#renarrated_overlay').append($('#info')); $('#info').show();
+	    $('#renarrated_overlay').append($('#orig-button'));  $('#orig-button').show();
+	    $('#share-box').append($('#fb-like')); $('#share-box').append($('#tweet-root')); 
 	}
     },
     checkSelect: function()
@@ -823,12 +818,13 @@ var a11ypi = {
 
     displayEditor: function() {
 	var template = '<div id="editoroverlay" title="Editor" class="alipi ui-widget-header ui-corner-all">'+
-	    '<div id="close-adv" class="alipi" onclick="a11ypi.closeAdv();">Render source</div><div id="adv-ref" class="alipi" '+
-	    'onclick="a11ypi.showAdv();">View Source</div> '+
-            '<label id="ref-lab" class="alipi" style="left:3%;">Here is original piece</label>'+
+	    '<button id="close-adv" class="alipi" onclick="a11ypi.closeAdv();" title="Want to close View Source & display without HTML code?"> '+
+	    'Render source</button> '+
+	    '<button id="adv-ref" class="alipi" onclick="a11ypi.showAdv();" title="Want to see HTML code? Then click me !!">View Source</button> '+
+            '<label id="ref-lab" class="alipi" style="left:3%;">Here is original piece (Reference)</label>'+
             '<div id="reference" class="alipi" readonly="yes"></div>'+
 	    '<textarea id="adv-reference" class="alipi" readonly="yes"></textarea> '+
-            '<label id="edit-lab" class="alipi" style="left:53%;">Where you should edit</label>'+
+            '<label id="edit-lab" class="alipi" style="left:53%;">Where you should edit (Editor)</label>'+
             '<div id="editor" class="alipi" contenteditable="true" '+ // onkeyup="a11ypi.reflectInReference();"> 
 //            '<div id="forPrevData" class="alipi"></div>'+
             '</div>';
@@ -844,7 +840,9 @@ var a11ypi = {
 	$('#adv-reference').text('<'+tag+'>'+$(pageEditor.event.target).html()+'</'+tag+'>');
 	$('#reference').html($(pageEditor.event.target).html());
 	$('#editor').html($(pageEditor.event.target).html());
-	$('#close-adv').button();
+	$("#adv-ref").button({icons:{primary:"ui-icon-script"},text:true});  $('#adv-ref').children().addClass('alipi');
+	$("#close-adv").button({icons:{primary:"ui-icon-bookmark"},text:true});  $('#close-adv').children().addClass('alipi');
+	// $('#close-adv').button();
 	$('#close-adv').hide();
 	$('#adv-ref').button();
 
@@ -907,6 +905,13 @@ var a11ypi = {
 	$($('.ui-dialog-buttonset').children()[2]).attr('id','demag'); // '-' 
 	$($('.ui-dialog-buttonset').children()[3]).attr('id','add-link'); // 'Link'
 	$($('.ui-dialog-buttonset').children()[4]).attr('id','save-changes'); // 'Save Changes'
+
+	$('#adv-reference').height($('#editor').height() + 40);
+	$('#reference').height($('#editor').height());
+	$('#mag').attr('title', 'To magnify letters/Increase font size');
+	$('#demag').attr('title', 'To demagnify letters/Decrease font size');
+	$('#add-link').attr('title', 'Add link(href) to the selected text portion (Before clicking this button, select some portion of text in "Editor")');
+	$('#save-changes').attr('title', 'Save edited text onto the page')
     },
 
     showAdv: function() {
