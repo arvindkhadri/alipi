@@ -64,10 +64,10 @@ def doScrape(url):
         else:
             temp['about'] = element.attrib['about']
             temp['xpath'] = element.attrib['xpath']
-            data =''
-            for i in element.iterdescendants():
-                data += etree.tostring(i)
-            temp['data'] = data
+            # data =''
+            # for i in element.iterdescendants():
+            #     data += etree.tostring(i)
+            temp['data'] = element.text_content()
             temp['blog'] = url
             temp['bxpath'] = makePath(element)
             temp['ren_id'] = ren_id
