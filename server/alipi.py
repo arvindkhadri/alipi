@@ -184,6 +184,7 @@ def setSocialScript():
     style.set("rel","stylesheet")
     style.set("type", "text/css")
     style.set("href", "http://dev.a11y.in/server/stylesheet.css")
+
     
 @app.route('/directory')
 def show_directory():
@@ -228,6 +229,18 @@ def get_lang():
 def serve_blank():
     return render_template('blank.html')
 
+@app.route('/info', methods=['GET'])
+def serve_info():
+    coll = g.db['post']
+    d = {}
+    cntr = 0
+    for i in coll.find({"about":request.args['about'],"lang":request.args['lang']}):
+        i['_id'] = str(i['_id'])
+        d[cntr] = i
+        cntr+=1
+    response = jsonify(d)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
 import logging,os
 from logging import FileHandler
 
