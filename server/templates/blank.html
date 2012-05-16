@@ -1,34 +1,62 @@
 <!doctype html>
 <html>
-<head>
-<style>
-span
-{color:#0000FF;
-font-weight:bold;
-line-height:1.5em;
-}
-</style>
-<body>
-<div id="info_content">
-</div>
-</body>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
-<script type="text/javascript">
-var responseJSON = [];
-function onLoad()
-{
-var html;
-for(var i = 0; i < responseJSON.length;i++)
-{
-html = $('#info_content').html() + '<pre><span>&lt;alipi&gt;</span>'+
-                   '<span>\n\t&lt;xpath&gt;</span>'+responseJSON[i]['xpath']+'<span>&lt;/xpath&gt;</span>'+
-                   '<span>\n\t&lt;blog&gt;</span>'+responseJSON[i]['blog']+'<span>&lt;/blog&gt;</span>'+
-                   '<span>\n\t&lt;elementType&gt;</span>'+responseJSON[i]['elementtype']+'<span>&lt;/elementType&gt;</span>'+
-                   '<span>\n\t&lt;bxpath&gt;</span>'+responseJSON[i]['bxpath']+'<span>&lt;/bxpath&gt;</span>'+
-                   '<span>\n\t&lt;data&gt;</span>'+responseJSON[i]['data']+'<span>&lt;/data&gt;<span>'+
-                   '<span>\n&lt;/alipi&gt;<span></pre>';
-$('#info_content').html(html);
-}
-}
-</script>
+  <head>
+    <style>
+      span
+      {color:#0000FF;
+      font-weight:bold;
+      line-height:1.5em;
+      }
+    </style>
+    <body>
+      <!-- <button id="prev" style="left:5%;">Previous</button> -->
+      <!-- <button id="next" style="right:5%;">Next</button> -->
+      <div id="delay" style="top:10%; text-align:center;font-size:25px; font-weight:bold; display:block;">Collecting data, Please have patience</div>
+      <div id="info_content"></div>
+    </body>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <!-- <script type="text/javascript" src="http://cloud.github.com/downloads/malsup/cycle/jquery.cycle.all.latest.js"></script> -->
+    <script type="text/javascript">
+      var responseJSON = [];
+      var infoFullJSON = [];
+      function onLoad()
+      {
+      $('#delay').delay(2000).hide();
+
+      var JSON1 = [];
+      $.each(infoFullJSON, function(i, val) { JSON1.push(val) })
+      var html;
+      for(var j = 0; j < JSON1.length; j++)
+			 {
+			 html = $('#info_content').html() + '<pre><span>&lt;alipi&gt;</span>'+
+			 '<span>\n\t&lt;language&gt;</span>'+JSON1[j]['lang']+'<span>&lt;/language&gt;</span>'+
+			 '<span>\n\t&lt;location&gt;</span>'+JSON1[j]['location']+'<span>&lt;/location&gt;</span>'+
+			 '<span>\n\t&lt;author&gt;</span>'+JSON1[j]['author']+'<span>&lt;/author&gt;</span>'+
+			 '<span>\n\t&lt;elementType&gt;</span>'+JSON1[j]['elementtype']+'<span>&lt;/elementType&gt;</span>'+
+			 '<span>\n\t&lt;blog&gt;</span>'+JSON1[j]['blog']+'<span>&lt;/blog&gt;</span>'+
+			 '<span>\n\t&lt;blogxpath&gt;</span>'+JSON1[j]['bxpath']+'<span>&lt;/blogxpath&gt;</span>'+
+			 '<span>\n\t&lt;xpath&gt;</span>'+JSON1[j]['xpath']+'<span>&lt;/xpath&gt;</span>'+
+			 '<span>\n\t&lt;data&gt;</span>'+JSON1[j]['data']+'<span>&lt;/data&gt;<span>'+
+			 '<span>\n&lt;/alipi&gt;<span></pre>';
+			 $('#info_content').html(html);
+			 }
+			 <!-- $('#info_content').children().hide(); -->
+			 <!-- $($('#info_content').children()[0]).show(); -->
+			 }
+			 
+			 <!-- $(window).click(function() { -->
+			 <!-- $('#info_content').cycle({ -->
+			 <!-- fx: 'fadeZoom', -->
+			 <!-- timeout: 0, -->
+			 <!-- next: '#next', -->
+			 <!-- prev: '#prev', -->
+			 <!-- slideExpr: 'pre' -->
+			 <!-- }); -->
+			 <!-- }); -->
+			 
+			 <!-- $(window).ready('http://127.0.0.1:5000/blank', function() { -->
+			 <!-- $('#info_content').children().hide(); -->
+			 <!-- $('#info_content').children()[0].show(); -->
+			 <!-- }); -->
+    </script>
 </html>

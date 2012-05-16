@@ -11,7 +11,7 @@ var a11ypi = {
     target : false,
     pageHtml:'',
     d: {},
-    response:'',
+    responseJSON:'',
     testContext : function()
     {	
 	if(document.getElementById('social_overlay') != null)
@@ -47,7 +47,7 @@ var a11ypi = {
 	    var para  = document.createElement("p");
 	    var newel = document.createElement("a");
 	    newel.textContent = menu_list[i];
-	    $(newel).attr("href","http://dev.a11y.in/web?foruri="+page+"&lang="+menu_list[i]+"&interactive=1");
+	    $(newel).attr("href","http://127.0.0.1:5000/?foruri="+page+"&lang="+menu_list[i]+"&interactive=1");
 	    para.appendChild(newel);
 	    xyz.appendChild(para);
 	}
@@ -84,6 +84,12 @@ var a11ypi = {
 	    }
 	    var url = a['foruri'];
 	    xhr.send('url='+url);
+
+	    req = {"about":encodeURIComponent(decodeURIComponent(url)), "lang":a['lang']};
+	    $.getJSON('http://127.0.0.1:5000/info?', req, function(data)
+		      {
+			  a11ypi.responseJSON = data;
+		     });
 	}
     },
     ajax1: function() {
@@ -140,7 +146,7 @@ var a11ypi = {
 		    var info_template = '<div id="infoDiv"></div>';
 		    $('#renarrated_overlay').append(info_template);
 		    d ={};
-		    a11ypi.response = xhr.responseText;
+		    //a11ypi.response = xhr.responseText;
 		    var response=xhr.responseText.substring(3).split('###');
 		    for (var j= 0; j< response.length ; j++){
 			chunk = response[j].substring(1).split('&');
@@ -282,7 +288,7 @@ var a11ypi = {
 	    var para  = document.createElement("p");
 	    var newel = document.createElement("a");
 	    newel.textContent = menu_list[i];
-	    $(newel).attr("href","http://dev.a11y.in/web?foruri="+page+"&blog="+blog+"&lang="+menu_list[i]+"&interactive=1");
+	    $(newel).attr("href","http://127.0.0.1:5000/?foruri="+page+"&blog="+blog+"&lang="+menu_list[i]+"&interactive=1");
 	    para.appendChild(newel);
 	    xyz.appendChild(para);
 	}
@@ -301,7 +307,7 @@ var a11ypi = {
 	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
 	}
 
-	window.location = "http://dev.a11y.in/web?foruri="+a['foruri']+"&blog="+a['blog'] + "&lang=" + e.value+"&interactive=1";
+	window.location = "http://127.0.0.1:5000/?foruri="+a['foruri']+"&blog="+a['blog'] + "&lang=" + e.value+"&interactive=1";
 	window.reload();
     },
     showOriginal: function(){
@@ -506,7 +512,7 @@ var a11ypi = {
             source: function(req, add){
 
                 //pass request to server
-                $.getJSON("http://dev.a11y.in/web/getLoc?", req, function(data) {
+                $.getJSON("http://127.0.0.1:5000//getLoc?", req, function(data) {
 		    $('#loc-img').hide();
 
                     //create array for response objects
@@ -529,7 +535,7 @@ var a11ypi = {
             source: function(req, add){
 
                 //pass request to server
-                $.getJSON("http://dev.a11y.in/web/getLang?", req, function(data) {
+                $.getJSON("http://127.0.0.1:5000//getLang?", req, function(data) {
 		    $('#lang-img').hide();
 
                     //create array for response objects
@@ -685,7 +691,7 @@ var a11ypi = {
 	    var para = document.createElement("p");
 	    var newel = document.createElement("a");
 	    newel.textContent = menu_list[i];
-	    newel.setAttribute("href", "http://dev.a11y.in/web?foruri="+encodeURIComponent(menu_list[i]));
+	    newel.setAttribute("href", "http://127.0.0.1:5000/?foruri="+encodeURIComponent(menu_list[i]));
 	    newel.setAttribute("class","alipiShowLink");
 	    para.appendChild(newel);
 	    xyz.append(para);
@@ -765,7 +771,7 @@ var a11ypi = {
 	if ($("#blog-filter").val() == null)
 	{    }
 	else {
-	    window.open("http://dev.a11y.in/web?foruri=" + a['foruri'] + "&blog=" + $("#blog-filter").val());
+	    window.open("http://127.0.0.1:5000/?foruri=" + a['foruri'] + "&blog=" + $("#blog-filter").val());
 	}
     },
     share: function() {
@@ -1007,29 +1013,13 @@ var a11ypi = {
     unhighlightOnMouseOut: function(event) {
 	$(event.target).removeClass('highlightElement');
     },
-    showInfo: function() {
+    showInfo: function(data) {
 	infoWindow = window.open('blank','Info page');
-	window.setTimeout(function(){a11ypi.pushInfo(infoWindow.document.getElementById('info_content'),infoWindow);},2000);
+	window.setTimeout(function(){a11ypi.pushInfo(infoWindow.document.getElementById('info_content'),infoWindow,data);},2500);
     },
-    pushInfo: function(ele, win) //ele contains the info_content element from blank.html
+    pushInfo: function(ele, win, data) //ele contains the info_content element from blank.html
     {
-	var alipi_template = '<pre>&lt;alipi&gt;&lt;/alipi&gt;</pre>';
-
-	var response = a11ypi.response.substring(3).split('###');
-	myjson = [];
-	for (var j= 0; j< response.length ; j++){
-	    d = {};
-	    chunk = response[j].substring(1).split('&');
-	    for (var i= 0; i< chunk.length ; i++){
-		pair =chunk[i].split("::");
-		key = pair[0];
-		value = pair[1];
-		d[key] = value;
-	    }
-	    
-	    myjson.push(d);
-	}
-	win.responseJSON = myjson;
+	win.infoFullJSON = a11ypi.responseJSON;
 	win.onLoad();
     },
 };

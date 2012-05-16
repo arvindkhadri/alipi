@@ -131,7 +131,7 @@ def setSocialScript():
     g.root.body.append(info_button)
     info_button.set("id", "info")
     info_button.set("class", "alipi")
-    info_button.set("onClick", "a11ypi.showInfo();")
+    info_button.set("onClick", "a11ypi.showInfo(a11ypi.responseJSON);")
     info_button.text =  "Info"
     info_button.set("title", "Have a look at the information of each renarrated element")
     
@@ -234,7 +234,7 @@ def serve_info():
     coll = g.db['post']
     d = {}
     cntr = 0
-    for i in coll.find({"about":request.args['about'],"lang":request.args['lang']}):
+    for i in coll.find({"about":unquote_plus(request.args['about']),"lang":request.args['lang']}):
         i['_id'] = str(i['_id'])
         d[cntr] = i
         cntr+=1
