@@ -3,7 +3,7 @@ import lxml.html
 import pymongo
 import random
 from lxml import etree
-
+import re
 def getCount(elt):
     count = 1
     temp = elt
@@ -38,6 +38,7 @@ def doScrape(url):
     elements = root.xpath('//@alipius/..')
     store_list = []
     ren_id = random.random()
+    pat = re.compile('<.*?>')
     for element in elements:
         temp = {}
         for i in element.attrib['alipius'].split(','):
@@ -64,9 +65,12 @@ def doScrape(url):
         else:
             temp['about'] = element.attrib['about']
             temp['xpath'] = element.attrib['xpath']
-            # data =''
+            data =''
             # for i in element.iterdescendants():
             #     data += etree.tostring(i)
+            ret = pat.search(lxml.html.tostring(element))
+            data = lxml.html.tostring(element).partition(ret.group())[2]
+            data = data.rpartition('</p>')[0]
             temp['data'] = element.text_content()
             temp['blog'] = url
             temp['bxpath'] = makePath(element)
