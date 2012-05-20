@@ -105,16 +105,6 @@ def setScripts():
     style.set("type", "text/css")
     style.set("href", conf.APPURL[0] + "/server/stylesheet.css")
 
-    jit_script = g.root.makeelement('script')
-    g.root.body.append(jit_script)
-    jit_script.set("src", conf.APPURL[0] + "/server/jit.js")
-    jit_script.set("type", "text/javascript")
-
-    tree_script = g.root.makeelement('script')
-    g.root.body.append(tree_script)
-    tree_script.set("src", conf.APPURL[0] + "/server/tree.js")
-    tree_script.set("type", "text/javascript")
-
     script_jq_cust = g.root.makeelement('script')
     g.root.body.append(script_jq_cust)
     script_jq_cust.set("src", conf.JQUERYUI[0] + "/jquery-ui.min.js")
