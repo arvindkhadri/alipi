@@ -66,12 +66,10 @@ def doScrape(url):
             temp['about'] = element.attrib['about']
             temp['xpath'] = element.attrib['xpath']
             data =''
-            # for i in element.iterdescendants():
-            #     data += etree.tostring(i)
             ret = pat.search(lxml.html.tostring(element))
             data = lxml.html.tostring(element).partition(ret.group())[2]
             data = data.rpartition('</p>')[0]
-            temp['data'] = element.text_content()
+            temp['data'] = data
             temp['blog'] = url
             temp['bxpath'] = makePath(element)
             temp['ren_id'] = ren_id

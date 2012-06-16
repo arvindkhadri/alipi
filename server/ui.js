@@ -131,52 +131,27 @@ var a11ypi = {
     },
     ren: function()
     {
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function()
-	{
-	    if(xhr.readyState == 4)
-	    {
-		if(xhr.responseText =='empty')
-		{
-		    a11ypi.clearMenu();
-		    alert("An internal server error occured, please try later.");
-		}
-		else
-		{
-		    var info_template = '<div id="infoDiv"></div>';
-		    $('#renarrated_overlay').append(info_template);
-		    d ={};
-		    //a11ypi.response = xhr.responseText;
-		    var response=xhr.responseText.substring(3).split('###');
-		    for (var j= 0; j< response.length ; j++){
-			chunk = response[j].substring(1).split('&');
-			
-			for (var i= 0; i< chunk.length ; i++){
-			    pair =chunk[i].split("::");
-			    key = pair[0];
-			    value = pair[1];
-			    d[key] = value;
-			}
-			path = d['xpath'];
-			newContent = d['data'];
-			elementType = d['elementtype'];
-			a11ypi.evaluate(path,newContent,elementType);
-		    }
-		}
-	    }
-	}
 	
 	d = window.location.search.split('?')[1];
 	var a =[];
 	for (var i = 0;i<d.split('&').length;i++){ 
 	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
 	}
-	var url = a['foruri'];
+	var url = decodeURIComponent(a['foruri']);
 	var lang = a['lang'];
-	var data="url="+url+"&lang="+encodeURIComponent(lang);
-	xhr.open("POST","http://dev.a11y.in/replace",true);
-	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xhr.send(data);
+	$.getJSON("http://dev.a11y.in/web/replace?",{"url":url,"lang":lang},function(data)
+		  {
+		      for(var i=0;i<data['r'].length;i++)
+		      {
+			  for(var x in data['r'][i]['narration'])
+			  {
+			      path = data['r'][i]['narration'][x]['xpath'];
+			      newContent = data['r'][i]['narration'][x]['data'];
+			      elementType = data['r'][i]['narration'][x]['elementtype'];
+			      a11ypi.evaluate(path,newContent,elementType);
+			  }
+		      }
+		  });
     },
     evaluate: function()
     {
@@ -288,7 +263,7 @@ var a11ypi = {
 	    var para  = document.createElement("p");
 	    var newel = document.createElement("a");
 	    newel.textContent = menu_list[i];
-	    $(newel).attr("href","http://127.0.0.1:5000/?foruri="+page+"&blog="+blog+"&lang="+menu_list[i]+"&interactive=1");
+	    $(newel).attr("href","http://dev.a11y.in/web/?foruri="+page+"&blog="+blog+"&lang="+menu_list[i]+"&interactive=1");
 	    para.appendChild(newel);
 	    xyz.appendChild(para);
 	}
@@ -307,7 +282,7 @@ var a11ypi = {
 	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
 	}
 
-	window.location = "http://127.0.0.1:5000/?foruri="+a['foruri']+"&blog="+a['blog'] + "&lang=" + e.value+"&interactive=1";
+	window.location = "http://dev.a11y.in/web/?foruri="+a['foruri']+"&blog="+a['blog'] + "&lang=" + e.value+"&interactive=1";
 	window.reload();
     },
     showOriginal: function(){
@@ -512,7 +487,7 @@ var a11ypi = {
             source: function(req, add){
 
                 //pass request to server
-                $.getJSON("http://127.0.0.1:5000//getLoc?", req, function(data) {
+                $.getJSON("http://dev.a11y.in/web//getLoc?", req, function(data) {
 		    $('#loc-img').hide();
 
                     //create array for response objects
@@ -535,7 +510,7 @@ var a11ypi = {
             source: function(req, add){
 
                 //pass request to server
-                $.getJSON("http://127.0.0.1:5000//getLang?", req, function(data) {
+                $.getJSON("http://dev.a11y.in/web//getLang?", req, function(data) {
 		    $('#lang-img').hide();
 
                     //create array for response objects
@@ -691,7 +666,7 @@ var a11ypi = {
 	    var para = document.createElement("p");
 	    var newel = document.createElement("a");
 	    newel.textContent = menu_list[i];
-	    newel.setAttribute("href", "http://127.0.0.1:5000/?foruri="+encodeURIComponent(menu_list[i]));
+	    newel.setAttribute("href", "http://dev.a11y.in/web/?foruri="+encodeURIComponent(menu_list[i]));
 	    newel.setAttribute("class","alipiShowLink");
 	    para.appendChild(newel);
 	    xyz.append(para);
@@ -771,7 +746,7 @@ var a11ypi = {
 	if ($("#blog-filter").val() == null)
 	{    }
 	else {
-	    window.open("http://127.0.0.1:5000/?foruri=" + a['foruri'] + "&blog=" + $("#blog-filter").val());
+	    window.open("http://dev.a11y.in/web/?foruri=" + a['foruri'] + "&blog=" + $("#blog-filter").val());
 	}
     },
     share: function() {
@@ -791,7 +766,11 @@ var a11ypi = {
 	$('#icon-down').show();
 //	$('#element_edit_overlay').addClass('barOnTop');
 	$('#renarrated_overlay').hide();
-	
+	// $(window).click(function(event){
+	//     console.log(event);
+	//     event.stopPropagation();
+	//     event.preventDefault();
+	// 			   });
 	$('body *').contents().filter(function(){
 	    {
 		try{
@@ -817,7 +796,7 @@ var a11ypi = {
 		}
 	    }
 	}).click(pageEditor.noEdit);
-
+	
 	$(document).mouseover(a11ypi.highlightOnHover);
 	$(document).mouseout(a11ypi.unhighlightOnMouseOut);
     },
