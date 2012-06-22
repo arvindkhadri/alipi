@@ -36,18 +36,13 @@ var a11ypi = {
     createMenu: function(menu_list) {
 	var xyz = document.getElementById("show-box");
 	xyz.innerHTML = '';
-	d = window.location.search.split('?')[1];
-	var a =[];
-	for (var i = 0;i<d.split('&').length;i++){ 
-	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
-	}
-	var page = a['foruri'];
+	a = a11ypi.getParams();
 	for(var i=0;i<menu_list.length;i++)
 	{
 	    var para  = document.createElement("p");
 	    var newel = document.createElement("a");
 	    newel.textContent = menu_list[i];
-	    $(newel).attr("href","http://127.0.0.1:5000/?foruri="+page+"&lang="+menu_list[i]+"&interactive=1");
+	    $(newel).attr("href",config.url+"/?foruri="+a['foruri']+"&lang="+menu_list[i]+"&interactive=1");
 	    para.appendChild(newel);
 	    xyz.appendChild(para);
 	}
@@ -64,7 +59,7 @@ var a11ypi = {
 		{
 		    if(xhr.responseText == "empty")
 		    {
-			a11ypi.clearMenu();
+			//a11ypi.clearMenu();
 		    }
 		    else
 		    {
@@ -75,21 +70,16 @@ var a11ypi = {
 		    }
 		}
 	    }
-	    xhr.open("POST","http://dev.a11y.in/menu",true);
+	    xhr.open("POST",config.root+"/menu",true);
 	    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	    d = window.location.search.split('?')[1];
-	    var a =[];
-	    for (var i = 0;i<d.split('&').length;i++){ 
-		a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
-	    }
-	    var url = a['foruri'];
-	    xhr.send('url='+url);
+	    a = a11ypi.getParams();
+	    xhr.send('url='+a['foruri']);
 
-	    req = {"about":encodeURIComponent(decodeURIComponent(url)), "lang":a['lang']};
+	    req = {"about":decodeURIComponent(a['foruri']), "lang":a['lang']};
 	    $.getJSON('http://127.0.0.1:5000/info?', req, function(data)
-		      {
-			  a11ypi.responseJSON = data;
-		     });
+	    	      {
+	    		  a11ypi.responseJSON = data;
+	    	     });
 	}
     },
     ajax1: function() {
@@ -103,7 +93,7 @@ var a11ypi = {
 		{
 		    if(xhr.responseText == "empty")
 		    {
-			a11ypi.clearMenu();
+//			a11ypi.clearMenu();
 		    }
 		    else
 		    {
@@ -111,16 +101,10 @@ var a11ypi = {
 		    }
 		}
 	    }
-	    xhr.open("POST","http://dev.a11y.in/menu",true);
+	    xhr.open("POST",config.root+"/menu",true);
 	    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	    d = window.location.search.split('?')[1];
-	    var a =[];
-	    for (var i = 0;i<d.split('&').length;i++){ 
-		a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
-	    }
-	    var url = a['foruri'];
-	    var option = a['blog'];
-	    data = 'url='+url+'&option='+option;
+	    a = a11ypi.getParams();
+	    data = 'url='+a['foruri']+'&option='+a['blog'];
 	    xhr.send(data) ;
 	}
     },
@@ -131,15 +115,10 @@ var a11ypi = {
     },
     ren: function()
     {
-	
-	d = window.location.search.split('?')[1];
-	var a =[];
-	for (var i = 0;i<d.split('&').length;i++){ 
-	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
-	}
+	a = a11ypi.getParams();
 	var url = decodeURIComponent(a['foruri']);
 	var lang = a['lang'];
-	$.getJSON("http://dev.a11y.in/web/replace?",{"url":url,"lang":lang},function(data)
+	$.getJSON(config.deploy+"/replace?",{"url":url,"lang":lang},function(data)
 		  {
 		      for(var i=0;i<data['r'].length;i++)
 		      {
@@ -209,8 +188,8 @@ var a11ypi = {
 	    {
 		if(xhr.responseText =='empty')
 		{
-		    a11ypi.clearMenu();
-		    alert("An internal server error occured, please try later.");
+//		    a11ypi.clearMenu();
+//		    alert("An internal server error occured, please try later.");
 		}
 		else
 		{
@@ -234,17 +213,13 @@ var a11ypi = {
 		}
 	    }
 	}
-	d = window.location.search.split('?')[1];
-	var a =[];
-	for (var i = 0;i<d.split('&').length;i++){ 
-	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
-	}
+	a = a11ypi.getParams();
 	var url = a['foruri'];
 	var lang= a['lang'];
 	var blog= a['blog'];
 	var data="url="+url+"&lang="+encodeURIComponent(lang)+"&blog="+encodeURIComponent(blog);
 	
-	xhr.open("POST","http://dev.a11y.in/filter",true);
+	xhr.open("POST",config.root+"/filter",true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xhr.send(data);//
     },
@@ -252,10 +227,7 @@ var a11ypi = {
 	var xyz = document.getElementById("show-box");
 	xyz.innerHTML = '';
 	d = window.location.search.split('?')[1];
-	var a =[];
-	for (var i = 0;i<d.split('&').length;i++){ 
-	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
-	}
+	a = a11ypi.getParams();
 	var page = a['foruri'];
 	var blog = a['blog'];
 	for(var i=0;i<menu_list.length;i++)
@@ -263,7 +235,7 @@ var a11ypi = {
 	    var para  = document.createElement("p");
 	    var newel = document.createElement("a");
 	    newel.textContent = menu_list[i];
-	    $(newel).attr("href","http://dev.a11y.in/web/?foruri="+page+"&blog="+blog+"&lang="+menu_list[i]+"&interactive=1");
+	    $(newel).attr("href",config.deploy+"/?foruri="+page+"&blog="+blog+"&lang="+menu_list[i]+"&interactive=1");
 	    para.appendChild(newel);
 	    xyz.appendChild(para);
 	}
@@ -276,13 +248,8 @@ var a11ypi = {
 	}
     },
     getURLFilter: function(e) {
-	d = window.location.search.split('?')[1];
-	var a =[];
-	for (var i = 0;i<d.split('&').length;i++){ 
-	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
-	}
-
-	window.location = "http://dev.a11y.in/web/?foruri="+a['foruri']+"&blog="+a['blog'] + "&lang=" + e.value+"&interactive=1";
+	a= a11ypi.getParams();
+	window.location = config.deploy+"/?foruri="+a['foruri']+"&blog="+a['blog'] + "&lang=" + e.value+"&interactive=1";
 	window.reload();
     },
     showOriginal: function(){
@@ -457,14 +424,11 @@ var a11ypi = {
 	    $('#icon-up').attr('down', 'false');
 	    $('#icon-up').show(); $('#icon-down').hide();
 	    $('#pub_overlay').addClass('barOnBottom'); $('#pub_overlay').removeClass('barOnTop');
-//	    $('#element_edit_overlay').addClass('barOnBottom'); $('#element_edit_overlay').removeClass('barOnTop'); 
-//	    $('#icon_on_overlay').addClass('barOnBottom'); $('#icon_on_overlay').removeClass('barOnTop');
 	} else {
 	    $('#icon-up').attr('down', 'true');
 	    $('#icon-down').show(); $('#icon-up').hide();
 	    $('#pub_overlay').addClass('barOnTop'); $('#pub_overlay').removeClass('barOnBottom');
-//	    $('#element_edit_overlay').addClass('barOnTop'); $('#element_edit_overlay').removeClass('barOnBottom'); 
-//	    $('#icon_on_overlay').addClass('barOnTop'); $('#icon_on_overlay').removeClass('barOnBottom');
+
 	}
     },
     
@@ -487,7 +451,7 @@ var a11ypi = {
             source: function(req, add){
 
                 //pass request to server
-                $.getJSON("http://dev.a11y.in/web//getLoc?", req, function(data) {
+                $.getJSON(config.deploy+"/getLoc?", req, function(data) {
 		    $('#loc-img').hide();
 
                     //create array for response objects
@@ -510,7 +474,7 @@ var a11ypi = {
             source: function(req, add){
 
                 //pass request to server
-                $.getJSON("http://dev.a11y.in/web//getLang?", req, function(data) {
+                $.getJSON(config.deploy+"/getLang?", req, function(data) {
 		    $('#lang-img').hide();
 
                     //create array for response objects
@@ -633,13 +597,10 @@ var a11ypi = {
 		}
 	    }
 	}
-	xhr.open("POST","http://dev.a11y.in/domain",true);
+	xhr.open("POST",config.root+"/domain",true);
 	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	d = window.location.search.split('?')[1];
-	var a =[];
-	for (var i = 0;i<d.split('&').length;i++){ 
-	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
-	}
+	a = a11ypi.getParams();
 	xhr.send('url='+a['foruri'])
     },
     showBox1: function() {
@@ -666,7 +627,7 @@ var a11ypi = {
 	    var para = document.createElement("p");
 	    var newel = document.createElement("a");
 	    newel.textContent = menu_list[i];
-	    newel.setAttribute("href", "http://dev.a11y.in/web/?foruri="+encodeURIComponent(menu_list[i]));
+	    newel.setAttribute("href", config.deploy+"/?foruri="+encodeURIComponent(menu_list[i]));
 	    newel.setAttribute("class","alipiShowLink");
 	    para.appendChild(newel);
 	    xyz.append(para);
@@ -695,7 +656,7 @@ var a11ypi = {
 			}
 		    }
 		}
-		xhr.open("POST","http://dev.a11y.in/menu",true);
+		xhr.open("POST",config.root+"/menu",true);
 		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 		xhr.send('url='+encodeURIComponent($(this).attr('href'))) ;
 	    },
@@ -728,13 +689,9 @@ var a11ypi = {
 		    }
 		}
 	    }
-	    xhr.open("POST","http://dev.a11y.in/blog",true);
+	    xhr.open("POST",config.root+"/blog",true);
 	    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	    d = window.location.search.split('?')[1];
-	    var a =[];
-	    for (var i = 0;i<d.split('&').length;i++){ 
-		a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
-	    }
+	    a = a11ypi.getParams();
 	    xhr.send('url='+a['foruri']);
 	}
     },
@@ -746,7 +703,7 @@ var a11ypi = {
 	if ($("#blog-filter").val() == null)
 	{    }
 	else {
-	    window.open("http://dev.a11y.in/web/?foruri=" + a['foruri'] + "&blog=" + $("#blog-filter").val());
+	    window.open(config.deploy+"/?foruri=" + a['foruri'] + "&blog=" + $("#blog-filter").val());
 	}
     },
     share: function() {
@@ -761,16 +718,9 @@ var a11ypi = {
     },
     editPage: function() {
 	a11ypi.testContext();
-//	$('#icon_on_overlay').show(); $('#icon_on_overlay').addClass('barOnTop'); // When 1st time page entered in edit mode
 	$('#pub_overlay').show(); $('#pub_overlay').addClass('barOnTop'); 
 	$('#icon-down').show();
-//	$('#element_edit_overlay').addClass('barOnTop');
 	$('#renarrated_overlay').hide();
-	// $(window).click(function(event){
-	//     console.log(event);
-	//     event.stopPropagation();
-	//     event.preventDefault();
-	// 			   });
 	$('body *').contents().filter(function(){
 	    {
 		try{
@@ -810,13 +760,11 @@ var a11ypi = {
             '<div id="reference" class="alipi" readonly="yes"></div>'+
 	    '<textarea id="adv-reference" class="alipi" readonly="yes"></textarea> '+
             '<label id="edit-lab" class="alipi" style="left:53%;">Where you should edit (Editor)</label>'+
-            '<div id="editor" class="alipi" contenteditable="true" '+ // onkeyup="a11ypi.reflectInReference();"> 
-//            '<div id="forPrevData" class="alipi"></div>'+
+            '<div id="editor" class="alipi" contenteditable="true" '+ 
             '</div>';
 	$('body').append(template);
 	$('#pub_overlay').slideUp();
 	$('#element_edit_overlay').hide(); 
-//	$('#icon_on_overlay').slideUp();
 
 	var tag = pageEditor.event.target.nodeName;
 	$(pageEditor.event.target).removeAttr('m4pageedittype');
@@ -827,7 +775,6 @@ var a11ypi = {
 	$('#editor').html($(pageEditor.event.target).html());
 	$("#adv-ref").button({icons:{primary:"ui-icon-script"},text:true});  $('#adv-ref').children().addClass('alipi');
 	$("#close-adv").button({icons:{primary:"ui-icon-bookmark"},text:true});  $('#close-adv').children().addClass('alipi');
-	// $('#close-adv').button();
 	$('#close-adv').hide();
 	$('#adv-ref').button();
 
@@ -914,7 +861,6 @@ var a11ypi = {
     
     reflectInReference: function() {
 	var tag = pageEditor.event.target.nodeName;
-//	$('#reference').text('<'+tag+'>'+$("#editor").html()+'</'+tag+'>');
 	$("#reference").html() = $("#editor").html();
     },
 
@@ -1001,5 +947,22 @@ var a11ypi = {
 	win.infoFullJSON = a11ypi.responseJSON;
 	win.onLoad();
     },
+    getParams: function()
+    {
+	var a = [];
+	if(window.location.hostname ==  config.hostname)
+	{
+	    d = window.location.search.split('?')[1];
+	    for (var i = 0;i<d.split('&').length;i++){ 
+		a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
+	    }
+	    return a;
+	}
+	else
+	{
+	    a['foruri'] = window.location.href;
+	    return a;
+	}
+    }    
 };
 

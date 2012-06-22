@@ -99,6 +99,11 @@ def setScripts():
     script_test.set("type", "text/javascript")
     script_edit.set("src", conf.APPURL[0] + "/server/wsgi/pageEditor.js")
     script_edit.set("type","text/javascript")
+    script_config = g.root.makeelement('script')
+    g.root.body.append(script_config)
+    script_config.set("src", conf.APPURL[0] + "/server/config.js")
+    script_config.set("type", "text/javascript")
+
     
     script_jq_mini = g.root.makeelement('script')
     g.root.body.append(script_jq_mini)
