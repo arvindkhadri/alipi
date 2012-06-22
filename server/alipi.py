@@ -34,19 +34,25 @@ def start_page() :
             page = a.read()
             a.close()
     except ValueError:
-        return "The link is malformed, click <a href='http://dev.a11y.in/web?foruri={0}&lang={1}&interactive=1'>here</a> to be redirected.".format(quote_plus(unquote_plus(d['foruri'])),request.args['lang'])
+        return "The link is malformed, click <a href='http://dev.a11y.in/web?foruri={0}&lang={1}&interactive=1'>here</a> to be redirected.".format(quote_plus(unquote_plus(d['foruri'].encode('utf-8'))),request.args['lang'])
     except urllib2.URLError:
         return render_template('error.html')
     try:
         page = unicode(page,'utf-8')  #Hack to fix improperly displayed chars on wikipedia.
     except UnicodeDecodeError:
         pass #Some pages may not need be utf-8'ed
-    g.root = lxml.html.parse(StringIO.StringIO(page)).getroot()
+    try:
+        g.root = lxml.html.parse(StringIO.StringIO(page)).getroot()
+    except ValueError:
+        g.root = lxml.html.parse(d['foruri']).getroot() #Sometimes creators of the page lie about the encoding, thus leading to this execption. http://lxml.de/parsing.html#python-unicode-strings
     if request.args.has_key('lang') == False and request.args.has_key('blog') == False:
         g.root.make_links_absolute(d['foruri'], resolve_base_href = True)
         for i in g.root.iterlinks():
             if i[1] == 'href' and i[0].tag != 'link':
-                i[0].attrib['href'] = 'http://{0}?foruri={1}'.format(conf.DEPLOYURL[0],quote_plus(i[0].attrib['href']))
+                try:
+                    i[0].attrib['href'] = 'http://{0}?foruri={1}'.format(conf.DEPLOYURL[0],quote_plus(i[0].attrib['href']))
+                except KeyError:
+                    i[0].attrib['href'] = '{0}?foruri={1}'.format(conf.DEPLOYURL[0],quote_plus(i[0].attrib['href'].encode('utf-8')))
         setScripts() 
         g.root.body.set("onload","a11ypi.loadOverlay();")
         return lxml.html.tostring(g.root)
@@ -55,21 +61,21 @@ def start_page() :
         setScripts()
         setSocialScript()
         g.root.body.set("onload","a11ypi.ren();a11ypi.tweet(); a11ypi.facebook(); a11ypi.loadOverlay();")
+        g.root.make_links_absolute(d['foruri'], resolve_base_href = True)
         return lxml.html.tostring(g.root)
         
     elif request.args.has_key('lang') == True and request.args.has_key('blog') == False:
-        script_jq_mini = root.makeelement('script')
-        root.body.append(script_jq_mini)
+        script_jq_mini = g.root.makeelement('script')
+        g.root.body.append(script_jq_mini)
         script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery-1.7.min.js")
         script_jq_mini.set("type", "text/javascript")
         d['lang'] = request.args['lang']
-        script_test = root.makeelement('script')
-        root.body.append(script_test)
+        script_test = g.root.makeelement('script')
+        g.root.body.append(script_test)
         script_test.set("src", conf.APPURL[0] + "/server/ui.js")
         script_test.set("type", "text/javascript")
-        root.body.set("onload","a11ypi.ren()");
-        root.make_links_absolute(d['foruri'], resolve_base_href = True)
-        return lxml.html.tostring(root)
+        g.root.body.set("onload","a11ypi.ren()");
+        return lxml.html.tostring(g.root)
 
     elif request.args.has_key('interactive') == True and request.args.has_key('blog') == True and request.args.has_key('lang') == True:
         setScripts()
@@ -93,6 +99,11 @@ def setScripts():
     script_test.set("type", "text/javascript")
     script_edit.set("src", conf.APPURL[0] + "/server/wsgi/pageEditor.js")
     script_edit.set("type","text/javascript")
+    script_config = g.root.makeelement('script')
+    g.root.body.append(script_config)
+    script_config.set("src", conf.APPURL[0] + "/server/config.js")
+    script_config.set("type", "text/javascript")
+
     
     script_jq_mini = g.root.makeelement('script')
     g.root.body.append(script_jq_mini)
@@ -104,16 +115,6 @@ def setScripts():
     style.set("rel","stylesheet")
     style.set("type", "text/css")
     style.set("href", conf.APPURL[0] + "/server/stylesheet.css")
-
-    jit_script = g.root.makeelement('script')
-    g.root.body.append(jit_script)
-    jit_script.set("src", conf.APPURL[0] + "/server/jit.js")
-    jit_script.set("type", "text/javascript")
-
-    tree_script = g.root.makeelement('script')
-    g.root.body.append(tree_script)
-    tree_script.set("src", conf.APPURL[0] + "/server/tree.js")
-    tree_script.set("type", "text/javascript")
 
     script_jq_cust = g.root.makeelement('script')
     g.root.body.append(script_jq_cust)
@@ -241,6 +242,85 @@ def serve_info():
     response = jsonify(d)
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
+@app.route("/replace", methods=['GET'])
+def replace():
+    collection = g.db['post']
+    lang = request.args['lang']
+    url = request.args['url']
+    query = collection.group(
+        key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
+        condition={"about" : url, "lang" : lang,"elementtype":"text"},
+        initial={'narration': []},
+        reduce=Code('function(doc,out){out.narration.push(doc);}') 
+        )
+    
+    audio_query =collection.group(
+        key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
+        condition={"about" : url, "lang" : lang, 'elementtype':"audio/ogg"},
+        initial={'narration': []},
+        reduce=Code('function(doc,out){out.narration.push(doc);}') 
+        )
+
+    image_query =collection.group(
+        key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
+        condition={"about" : url, "lang" : lang, 'elementtype':"image"},
+        initial={'narration': []},
+        reduce=Code('function(doc,out){out.narration.push(doc);}') 
+        )
+    try:
+        for i in audio_query:
+            query.append(i)
+    except IndexError:
+        pass
+    try:
+        for i in image_query:
+            query.append(i)
+    except IndexError:
+        pass
+
+    for i in query:
+        for y in i['narration']:
+            del(y['_id'])
+    d = {}
+    d['r'] = query
+    response = jsonify(d)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+    
+    # string=''
+    # if len(query)==0:
+    #     print >> environ['wsgi.errors'], 'empty'
+    #     return 'empty'
+    # else:
+    #     for key in query:
+    #         #                print >> environ['wsgi.errors'], query
+    #         post = key['narration'][len(key['narration'])-1] #Fetching the last done re-narration
+            
+    #         try:
+    #             string+="###"
+
+    #             for key in post:
+    #                 if type(post[key]) is not float:
+    #                     if key != '_id':
+    #                         try:
+    #                             if type(post[key]) is unicode:
+    #                                 string+="&"+str(key)+"::"+ post[key].encode('utf-8')
+    #                             else:
+    #                                 string+="&"+str(key)+"::"+ post[key]
+    #                         except TypeError:
+    #                             print >> environ['wsgi.errors'], key
+    #                         else:
+    #                             try:
+    #                                 string+="&"+str(key)+"::"+ str(post[key])
+    #                             except TypeError:
+    #                                 print >> environ['wsgi.errors'], key
+    #                             except UnicodeEncodeError:
+    #                                 print >> environ['wsgi.errors'], key
+    #                 print >> environ['wsgi.errors'], 'Error Encoding request string'
+    #                 return 'empty'
+                
+    #     return string
+
 import logging,os
 from logging import FileHandler
 
