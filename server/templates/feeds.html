@@ -1,0 +1,21 @@
+<!doctype html>
+<head>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript">
+    $.getJSON("http://127.0.0.1:5000/feed", function(data)
+    {
+    str = "";
+    $.each(data, function(i, val)
+    {
+      if(val['about'] != undefined && val['about'] != 'undefined' && val['author'] != 'undefined' )
+      str += "<p>\n<b>@" +val['author']+"</b> has narrated <b>"+val['about']+"#"+val['xpath']+"</b> at <b>"+val['blog']+"#"+val['bxpath']+"</b> for <b>"+val['location']+"</b> in <b>"+val['lang']+"</b>\n</p>";
+    });
+    $("#feeds").html(str);
+    });
+  </script>
+</head>
+<body style="text-wrap:normal">
+<div id="feeds">
+</div>
+</body>
+</html>

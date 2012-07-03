@@ -17,7 +17,7 @@ app = Flask(__name__)
 @app.before_request
 def first():
     g.connection = pymongo.Connection('localhost',27017) #Create the object once and use it.
-    g.db = g.connection['dev_alipi']
+    g.db = g.connection[conf.MONGODB[0]]
 @app.teardown_request
 def close(exception):
     g.connection.disconnect()
@@ -286,40 +286,25 @@ def replace():
     response = jsonify(d)
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
-    
-    # string=''
-    # if len(query)==0:
-    #     print >> environ['wsgi.errors'], 'empty'
-    #     return 'empty'
-    # else:
-    #     for key in query:
-    #         #                print >> environ['wsgi.errors'], query
-    #         post = key['narration'][len(key['narration'])-1] #Fetching the last done re-narration
-            
-    #         try:
-    #             string+="###"
 
-    #             for key in post:
-    #                 if type(post[key]) is not float:
-    #                     if key != '_id':
-    #                         try:
-    #                             if type(post[key]) is unicode:
-    #                                 string+="&"+str(key)+"::"+ post[key].encode('utf-8')
-    #                             else:
-    #                                 string+="&"+str(key)+"::"+ post[key]
-    #                         except TypeError:
-    #                             print >> environ['wsgi.errors'], key
-    #                         else:
-    #                             try:
-    #                                 string+="&"+str(key)+"::"+ str(post[key])
-    #                             except TypeError:
-    #                                 print >> environ['wsgi.errors'], key
-    #                             except UnicodeEncodeError:
-    #                                 print >> environ['wsgi.errors'], key
-    #                 print >> environ['wsgi.errors'], 'Error Encoding request string'
-    #                 return 'empty'
-                
-    #     return string
+@app.route('/feeds', methods=['GET'])
+def serve_feed_temp():
+    return render_template("feeds.html")
+
+@app.route('/feed', methods=['GET'])
+def serve_feed():
+    coll = g.db['post']
+    d = {}
+    cntr = 0
+    for i in coll.find():
+        if i['data'] != '<br/>':
+            i['_id'] = str(i['_id'])
+            d[cntr] = i
+            cntr+=1
+    response = jsonify(d)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
 
 import logging,os
 from logging import FileHandler
