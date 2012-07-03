@@ -42,7 +42,7 @@ var a11ypi = {
 	    var para  = document.createElement("p");
 	    var newel = document.createElement("a");
 	    newel.textContent = menu_list[i];
-	    $(newel).attr("href",config.url+"/?foruri="+a['foruri']+"&lang="+menu_list[i]+"&interactive=1");
+	    $(newel).attr("href",config.deploy+"/?foruri="+a['foruri']+"&lang="+menu_list[i]+"&interactive=1");
 	    para.appendChild(newel);
 	    xyz.appendChild(para);
 	}
@@ -76,7 +76,7 @@ var a11ypi = {
 	    xhr.send('url='+a['foruri']);
 
 	    req = {"about":decodeURIComponent(a['foruri']), "lang":a['lang']};
-	    $.getJSON('http://127.0.0.1:5000/info?', req, function(data)
+	    $.getJSON(config.deploy+'/info?', req, function(data)
 	    	      {
 	    		  a11ypi.responseJSON = data;
 	    	     });
@@ -939,7 +939,7 @@ var a11ypi = {
 	$(event.target).removeClass('highlightElement');
     },
     showInfo: function(data) {
-	infoWindow = window.open('blank','Info page');
+	infoWindow = window.open(config.deploy+'/blank','Info page');
 	window.setTimeout(function(){a11ypi.pushInfo(infoWindow.document.getElementById('info_content'),infoWindow,data);},2500);
     },
     pushInfo: function(ele, win, data) //ele contains the info_content element from blank.html
