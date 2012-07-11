@@ -1,18 +1,8 @@
-from flask import Flask
-from flask import request
-from flask import render_template
-import lxml.html
-import pymongo
+#-*-coding: utf-8 -*-
+from flask import Flask, request, render_template, g, redirect, jsonify, make_response
 from bson import Code
-import urllib2
-import StringIO
-from flask import g
-from flask import redirect
-from urllib import quote_plus
-from urllib import unquote_plus
-import conf
-import oursql
-from flask import jsonify
+from urllib import quote_plus, unquote_plus
+import urllib2, StringIO, lxml.html, pymongo, conf, oursql
 app = Flask(__name__)
 @app.before_request
 def first():
@@ -296,7 +286,7 @@ def serve_feed():
     coll = g.db['post']
     d = {}
     cntr = 0
-    for i in coll.find():
+    for i in coll.find().sort('_id',direction=-1):
         if i['data'] != '<br/>':
             i['_id'] = str(i['_id'])
             d[cntr] = i
@@ -305,6 +295,20 @@ def serve_feed():
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
 
+@app.route('/feeds/write', methods=['POST'])
+def save_feed():
+    coll = g.db['feed']
+    d = {}
+    d['about'] = request.form['about']
+    d['blog'] = request.form['blog']
+    d['bxpath'] = request.form['bxpath']
+    d['xpath'] = request.form['xpath']
+    d['author'] = request.form['author']
+    coll.insert(d)
+    response = make_response()
+    response.data = repr(request.form['blog'])
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
 
 import logging,os
 from logging import FileHandler
