@@ -1,3 +1,4 @@
+//-*-coding: utf-8 -*-
 var a11ypi = {
     auth : " ",
     loc:" ",
@@ -33,18 +34,25 @@ var a11ypi = {
 	}
     },
 
-    createMenu: function(menu_list) {
-	var xyz = document.getElementById("show-box");
+    createMenu: function(type) {
+	var xyz = '';
+	if(type == 'renarration')
+	    xyz = document.getElementById("show-box");
+	else 
+	    xyz = document.getElementById("show-comment");
 	xyz.innerHTML = '';
 	a = a11ypi.getParams();
-	for(var i=0;i<menu_list.length;i++)
+	for(var i in a11ypi.showbox)
 	{
-	    var para  = document.createElement("p");
-	    var newel = document.createElement("a");
-	    newel.textContent = menu_list[i];
-	    $(newel).attr("href",config.deploy+"/?foruri="+a['foruri']+"&lang="+menu_list[i]+"&interactive=1");
-	    para.appendChild(newel);
-	    xyz.appendChild(para);
+	    if(a11ypi.showbox[i]['type'] == type)
+	    {
+		var para  = document.createElement("p");
+		var newel = document.createElement("a");
+		newel.textContent = a11ypi.showbox[i]['lang'];
+		$(newel).attr("href",config.deploy+"/?foruri="+a['foruri']+"&lang="+a11ypi.showbox[i]['lang']+"&interactive=1"+"&type="+type);
+		para.appendChild(newel);
+		xyz.appendChild(para);
+	    }
 	}
     },
     
@@ -52,28 +60,14 @@ var a11ypi = {
 	if(a11ypi.flag == '0')
 	{
 	    a11ypi.flag = 1;
-	    var xhr = new XMLHttpRequest();
-	    xhr.onreadystatechange = function()
-	    {
-		if(xhr.readyState == 4)
-		{
-		    if(xhr.responseText == "empty")
-		    {
-			//a11ypi.clearMenu();
-		    }
-		    else
-		    {
-			$('#see-narration').show();
-			$("#blog-filter").show(); a11ypi.blogFilter();
-			$("#go").show();
-			a11ypi.showbox = JSON.parse(xhr.responseText);
-		    }
-		}
-	    }
-	    xhr.open("POST",config.root+"/menu",true);
-	    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    a = a11ypi.getParams();
-	    xhr.send('url='+a['foruri']);
+	    $.getJSON(config.deploy+'/menu?', {"url":decodeURIComponent(a['foruri'])}, function(data)
+	    	      {
+	    		  a11ypi.showbox = data;
+			  $('#see-narration').show();
+			  $("#blog-filter").show(); a11ypi.blogFilter();
+			  $("#go").show();
+	    	     });
 
 	    req = {"about":decodeURIComponent(a['foruri']), "lang":a['lang']};
 	    $.getJSON(config.deploy+'/info?', req, function(data)
@@ -118,66 +112,86 @@ var a11ypi = {
 	a = a11ypi.getParams();
 	var url = decodeURIComponent(a['foruri']);
 	var lang = a['lang'];
-	$.getJSON(config.deploy+"/replace?",{"url":url,"lang":lang},function(data)
+	var type = a['type'];
+	$.getJSON(config.deploy+"/replace?",{"url":url,"lang":lang,"type":type},function(data)
 		  {
 		      for(var i=0;i<data['r'].length;i++)
 		      {
 			  for(var x in data['r'][i]['narration'])
 			  {
-			      path = data['r'][i]['narration'][x]['xpath'];
-			      newContent = data['r'][i]['narration'][x]['data'];
-			      elementType = data['r'][i]['narration'][x]['elementtype'];
-			      a11ypi.evaluate(path,newContent,elementType);
+			      // path = data['r'][i]['narration'][x]['xpath'];
+			      // newContent = data['r'][i]['narration'][x]['data'];
+			      // elementType = data['r'][i]['narration'][x]['elementtype'];
+			      a11ypi.evaluate(data['r'][i]['narration'][x]);
 			  }
 		      }
 		  });
     },
-    evaluate: function()
+    evaluate: function(a)
     {
 	try{
-	    var nodes = document.evaluate(path, document, null, XPathResult.ANY_TYPE,null);
+	    var nodes = document.evaluate(a['xpath'], document, null, XPathResult.ANY_TYPE,null);
 
 	}
 	catch(e)
 	{
 	    console.log(e);
 	}
-        try{
-            var result = nodes.iterateNext();
-	    while (result)
-            {
-		if (elementType == 'image')
+        if(a['type'] == 'renarrration')
+	{ 
+	    try{
+		var result = nodes.iterateNext();
+		while (result)
 		{
-		    if(newContent != '')
+		    if (a['elementtype'] == 'image')
 		    {
-			result.setAttribute('src',newContent.split(',')[1]);  //A hack to display images properly, the size has been saved in the database.
-			width = newContent.split(',')[0].split('x')[0];
-			height = newContent.split(',')[0].split('x')[1];
-			result.setAttribute('width',width);
-			result.setAttribute('height', height);
+			if(a['data'] != '')
+			{
+			    result.setAttribute('src',a['data'].split(',')[1]);  //A hack to display images properly, the size has been saved in the database.
+			    width = a['data'].split(',')[0].split('x')[0];
+			    height = a['data'].split(',')[0].split('x')[1];
+			    result.setAttribute('width',width);
+			    result.setAttribute('height', height);
+			    result.setAttribute('class','blink');
+			}
+			else
+			    $(result).hide();
+                    }
+		    else if(a['elementtype'] == 'audio/ogg')
+		    {
+			a['data'] = decodeURIComponent(a['data']);
+			audio = '<audio controls="controls" src="'+a['data']+'" style="display:table;"></audio>';
+			$(result).before(audio);
 			result.setAttribute('class','blink');
 		    }
-		    else
-			$(result).hide();
-                }
-		else if(elementType == 'audio/ogg')
-		{
-		    newContent = decodeURIComponent(newContent);
-		    audio = '<audio controls="controls" src="'+newContent+'" style="display:table;"></audio>';
-		    $(result).before(audio);
-		    result.setAttribute('class','blink');
+                    else{
+			result.innerHTML = a['data'];
+			result.setAttribute('class','blink');
+                    }
+                    result=nodes.iterateNext();
 		}
-                else{
-                    result.innerHTML = newContent;
-		    result.setAttribute('class','blink');
-                }
-                result=nodes.iterateNext();
             }
-        }
         catch (e)
         {
 	    //            dump( 'error: Document tree modified during iteration ' + e );
         }
+	}
+	else if(a['type']=='comment') 
+	{
+	     
+	    try{
+		var result = nodes.iterateNext();
+		while (result)
+		{
+		    result.innerHTML = a['data'];
+		    result=nodes.iterateNext();
+		}
+	    }
+	    catch (e)
+            {
+		//dump( 'error: Document tree modified during iteration ' + e );
+            }
+	}
     },
     filter: function()
     {
@@ -285,11 +299,14 @@ var a11ypi = {
 	    '<button id="edit-current" class="alipi" onclick="a11ypi.editPage();" title="Allow to edit this page">Re-narrate</button> '+
 	    '<button id="see-narration" class="alipi" onclick="a11ypi.showBox();" title="See other renarrations, which are in same or other languages"> '+
 	    'Re-narrations</button>'+
+	    '<button id="see-comment" class="alipi" onclick="a11ypi.showComment();" title="Comments"> '+
+	    'Comments</button>'+
             '<button id="see-links" class="alipi" onclick="a11ypi.showBox1();" title="See other re-narrated pages of this domain">Re-narrated Pages '+
 	    '</button>'+
             '<select id="blog-filter" class="alipi" onChange="a11ypi.checkSelect();" title="Select one of the blog name"></select>'+
             '<button id="go" class="alipi ui-icon-circle-arrow-e" onclick="a11ypi.go();" title="Filter by blog" >|Y|</button>'+
             '<div id="show-box" title="Choose a narration"></div> '+
+	    '<div id="show-comment" title="Comments for"></div> '+
 	    '<div id="show-links" title="List of pages narrated in this domain" class="alipi"></div> '+
 	    '<div id="share-box" class="alipi" title="Share this page in any following social network"></div>';
 	
@@ -328,6 +345,7 @@ var a11ypi = {
 	$("#outter-up-button").button({icons:{primary:"ui-icon-circle-arrow-s"},text:false});  $('#outter-up-button').children().addClass('alipi');
 	$("#edit-current").button({icons:{primary:"ui-icon-pencil"}});  $('#edit-current').children().addClass('alipi');
 	$("#see-narration").button({icons:{primary:"ui-icon-document-b"}});  $('#see-narration').children().addClass('alipi');
+	$("#see-comment").button({icons:{primary:"ui-icon-document-b"}});  $('#see-comment').children().addClass('alipi');
 	$("#see-links").button({icons:{primary:"ui-icon-link"}});  $('#see-links').children().addClass('alipi');
 	/*$("#blog-filter").button({icons:{secondary:"ui-icon-triangle-1-s"}}); */ $('#blog-filter').children().addClass('alipi');
 	$("#go").button({icons:{primary:"ui-icon-arrowthick-1-e"},text:false});  $('#go').children().addClass('alipi');
@@ -555,8 +573,14 @@ var a11ypi = {
 	    });
 	}
     },
+
+    hideAll: function() {
+	var boxes = '#show-links, #show-box, #show-comment';	
+	$(boxes).dialog('close');
+    },
     
     showBox: function() {
+	this.hideAll();
 	$(document).unbind('mouseover'); // Unbind the css on mouseover
 	$(document).unbind('mouseout'); // Unbind the css on mouseout
 
@@ -570,18 +594,32 @@ var a11ypi = {
 	    });
 	});
 	d = window.location.search.split('?')[1];
-	var a =[];
-	for (var i = 0;i<d.split('&').length;i++){ 
-	    a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
-	}
+	var a = a11ypi.getParams();
 	if (a['blog'] === undefined ) {
-	    a11ypi.createMenu(a11ypi.showbox);
+	    a11ypi.createMenu('renarration');
 	}
 	else {
 	    $('#show-box').attr('title', 'Choose a re-narration from the blog you specified.');
 	    a11ypi.ajax1();
 	}
     },
+    showComment: function() {
+	this.hideAll();
+	$(document).unbind('mouseover'); // Unbind the css on mouseover
+	$(document).unbind('mouseout'); // Unbind the css on mouseout
+	
+	$(function() {
+	    $( "#show-comment" ).dialog( "destroy" );
+	    
+	    $( "#show-comment" ).dialog({
+		width: 300,
+		height: 300,
+		modal: true
+	    });
+	});
+	a11ypi.createMenu('comment');
+    },
+
     ajaxLinks1: function() {
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function()
@@ -604,6 +642,7 @@ var a11ypi = {
 	xhr.send('url='+a['foruri'])
     },
     showBox1: function() {
+	this.hideAll();
 	$(document).unbind('mouseover'); // Unbind the css on mouseover
 	$(document).unbind('mouseout'); // Unbind the css on mouseout
 
@@ -717,6 +756,7 @@ var a11ypi = {
 	});
     },
     editPage: function() {
+	this.hideAll();
 	a11ypi.testContext();
 	$('#pub_overlay').show(); $('#pub_overlay').addClass('barOnTop'); 
 	$('#icon-down').show();

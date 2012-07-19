@@ -18,24 +18,33 @@
   </script>
 </head>
 <body style="text-wrap:normal">
-    @<input type="text" id="t1" name="author" value="author" /> says <input type="text" id="t2" name="about" value="about" />  <input type="text" id="t3" name="xpath" value="xpath" /> is related to <input type="text" id="t4" name="blog" value="blog" /> <input type="text" id="t5" name="bxpath" value="bxpath" /> <input type="submit" id="post" name="alipi" value="Feed" onclick="postForm();" />
+    @<input type="text" id="t1" name="author" value="author" /> says <input type="text" id="t2" name="about" value="about" />  <input type="text" id="t3" name="xpath" value="xpath" /> has <select id="selected" ><option>re-narrations</option><option>comment</option></select> at <input type="text" id="t4" name="blog" value="blog" /> <input type="text" id="t5" name="bxpath" value="bxpath" /> in <input type="text" name="lang" value="language" id="t6" /> targetting <input type="text" name="loc" value="location" id="t7"/>  <input type="submit" id="post" name="alipi" value="Feed" onclick="postForm();" />
 <div id="feeds">
 </div>
 <script type="text/javascript">
    function postForm()
   {
-   console.log("here");
-  var arr = {};
-  arr['author'] = $('#t1').val();
-  arr['about'] = $('#t2').val();
-  arr['xpath'] = $('#t3').val();
-  arr['blog'] = $('#t4').val();
-  arr['bxpath'] = $('#t5').val();
+   var arr = {};
+   arr['author'] = $('#t1').val();
+   arr['about'] = $('#t2').val();
+   arr['xpath'] = $('#t3').val();
+   arr['blog'] = $('#t4').val();
+   arr['bxpath'] = $('#t5').val();
+   arr['type'] = $("#selected").val();
+   arr['lang'] = $('#t6').val();
+   arr['location'] = $('#t7').val();
   $.post("http://127.0.0.1:5000/feeds/write", arr, function(data)
   {
   alert("Posted");
   });
 }
+function checkVal(){
+    if($("#selected").val() == "comment")
+	$("#post").hide();
+    else
+	$("#post").show();
+}
+
 </script>
 </body>
 </html>

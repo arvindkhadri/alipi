@@ -2,6 +2,7 @@
 from flask import Flask, request, render_template, g, redirect, jsonify, make_response
 from bson import Code
 from urllib import quote_plus, unquote_plus
+from lxml.html import html5parser
 import urllib2, StringIO, lxml.html, pymongo, conf, oursql
 app = Flask(__name__)
 @app.before_request
@@ -49,8 +50,11 @@ def start_page() :
 
     elif request.args.has_key('lang') == True and request.args.has_key('interactive') == True and request.args.has_key('blog') == False:
         setScripts()
-        setSocialScript()
-        g.root.body.set("onload","a11ypi.ren();a11ypi.tweet(); a11ypi.facebook(); a11ypi.loadOverlay();")
+        if request.args['interactive'] == '1':
+            setSocialScript()
+            g.root.body.set("onload","a11ypi.ren();a11ypi.tweet(); a11ypi.facebook(); a11ypi.loadOverlay();")
+        else:
+            g.root.body.set("onload","a11ypi.ren();")
         g.root.make_links_absolute(d['foruri'], resolve_base_href = True)
         return lxml.html.tostring(g.root)
         
@@ -237,37 +241,46 @@ def replace():
     collection = g.db['post']
     lang = request.args['lang']
     url = request.args['url']
-    query = collection.group(
-        key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
-        condition={"about" : url, "lang" : lang,"elementtype":"text"},
-        initial={'narration': []},
-        reduce=Code('function(doc,out){out.narration.push(doc);}') 
-        )
+    if request.args['type'] == 'renarration':
+        query = collection.group(
+            key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
+            condition={"about" : url, "lang" : lang,"elementtype":"text","type":"renarration"},
+            initial={'narration': []},
+            reduce=Code('function(doc,out){out.narration.push(doc);}') 
+            )
     
-    audio_query =collection.group(
-        key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
-        condition={"about" : url, "lang" : lang, 'elementtype':"audio/ogg"},
-        initial={'narration': []},
-        reduce=Code('function(doc,out){out.narration.push(doc);}') 
-        )
+        audio_query =collection.group(
+            key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
+            condition={"about" : url, "lang" : lang, 'elementtype':"audio/ogg","type":"renarration"},
+            initial={'narration': []},
+            reduce=Code('function(doc,out){out.narration.push(doc);}') 
+            )
 
-    image_query =collection.group(
-        key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
-        condition={"about" : url, "lang" : lang, 'elementtype':"image"},
-        initial={'narration': []},
-        reduce=Code('function(doc,out){out.narration.push(doc);}') 
-        )
-    try:
-        for i in audio_query:
-            query.append(i)
-    except IndexError:
-        pass
-    try:
-        for i in image_query:
-            query.append(i)
-    except IndexError:
-        pass
+        image_query =collection.group(
+            key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
+            condition={"about" : url, "lang" : lang, 'elementtype':"image", "type":"renarration"},
+            initial={'narration': []},
+            reduce=Code('function(doc,out){out.narration.push(doc);}') 
+            )
+        try:
+            for i in audio_query:
+                query.append(i)
+        except IndexError:
+            pass
+        try:
+            for i in image_query:
+                query.append(i)
+        except IndexError:
+            pass
 
+    elif request.args['type'] == 'comment':
+        query = []
+        query = collection.group(
+            key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
+            condition={"about" : url, "lang" : lang,"type":"comment"},
+            initial={'narration': []},
+            reduce=Code('function(doc,out){out.narration.push(doc);}') 
+            )
     for i in query:
         for y in i['narration']:
             del(y['_id'])
@@ -304,11 +317,56 @@ def save_feed():
     d['bxpath'] = request.form['bxpath']
     d['xpath'] = request.form['xpath']
     d['author'] = request.form['author']
+    d['type'] = request.form['type']
+    d['lang']  = request.form['lang']
+    d['location'] = request.form['location']
     coll.insert(d)
+    if d['type'] == 'comment':
+        collection = g.db['post']
+        root = html5parser.parse(d['blog']).getroot()
+        tree = root.getroottree()
+        if tree.docinfo.doctype == '':
+            lxml.html.xhtml_to_html(root)
+        d['data'] = lxml.html.tostring(root.xpath(d['bxpath'])[0]) #TODO implement a function like lxml.html.make_links_absolute
+        collection.insert(d)
     response = make_response()
     response.data = repr(request.form['blog'])
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
+
+@app.route("/menu",methods=['GET'])
+def menuForDialog():
+    if request.args.has_key('option') == False:
+        collection = g.db['post']
+        c = {}
+        cntr = 0
+        for i in collection.find({"about":request.args['url']}).distinct('lang'):
+            for j in collection.find({"about":request.args['url'],'lang':i}).distinct('type'):
+                d = {}
+                d['lang'] = i
+                d['type'] = j
+                c[cntr] = d
+                cntr += 1
+        return jsonify(c)
+    else:
+        collection = g.db['post']
+        #get the ren languages for the received url
+        langForUrl = collection.group(
+            key = Code('function(doc){return {"about" : doc.about}}'),
+            condition={"about" : d['url'],"blog":{'$regex':'/'+d['option']+'.*/'}},
+            initial={'lang': []},
+            reduce=Code('function(doc, out){if (out.lang.indexOf(doc.lang) == -1) out.lang.push(doc.lang)}') #here xpath for test
+            )
+        
+        #send the response
+        if (langForUrl):
+            connection.disconnect()
+            return json.dumps(langForUrl[0]['lang'])
+        
+        else:
+            connection.disconnect()
+            return "empty"
+
 
 import logging,os
 from logging import FileHandler
