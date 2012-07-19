@@ -1,0 +1,13 @@
+* Alipi
+  Alipi is re-narration web framework.
+  [[http://a11y.in]]
+  [[http://alipi.us]]
+
+** Setup
+   + =$python setup.py install= 
+   + You will also need to install 
+     1. MongoDB
+	Check http://mongodb.org for installation notes.
+     2. mod_wsgi
+	$ sudo aptitude install libapache2-mod-wsgi
+
