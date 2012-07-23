@@ -36,7 +36,7 @@ def start_page() :
         g.root = lxml.html.parse(StringIO.StringIO(page)).getroot()
     except ValueError:
         g.root = lxml.html.parse(d['foruri']).getroot() #Sometimes creators of the page lie about the encoding, thus leading to this execption. http://lxml.de/parsing.html#python-unicode-strings
-    if request.args.has_key('lang') == False and request.args.has_key('blog') == False:
+    if request.args.has_key('lang') == False and request.args.has_key('blog') == False and request.args.has_key('tags') == False:
         g.root.make_links_absolute(d['foruri'], resolve_base_href = True)
         for i in g.root.iterlinks():
             if i[1] == 'href' and i[0].tag != 'link':
@@ -48,7 +48,7 @@ def start_page() :
         g.root.body.set("onload","a11ypi.loadOverlay();")
         return lxml.html.tostring(g.root)
 
-    elif request.args.has_key('lang') == True and request.args.has_key('interactive') == True and request.args.has_key('blog') == False:
+    elif (request.args.has_key('lang') == True or request.args.has_key('tags') == True) and request.args.has_key('interactive') == True and request.args.has_key('blog') == False:
         setScripts()
         if request.args['interactive'] == '1':
             setSocialScript()
@@ -239,8 +239,8 @@ def serve_info():
 @app.route("/replace", methods=['GET'])
 def replace():
     collection = g.db['post']
-    lang = request.args['lang']
     url = request.args['url']
+    lang = request.args['lang']
     if request.args['type'] == 'renarration':
         query = collection.group(
             key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),

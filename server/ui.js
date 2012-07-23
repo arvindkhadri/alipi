@@ -52,7 +52,7 @@ var a11ypi = {
 		if(type == 'renarration')
 		    $(newel).attr("href",config.deploy+"/?foruri="+a['foruri']+"&lang="+a11ypi.showbox[i]['lang']+"&interactive=1"+"&type="+type);
 		else
-		    $(newel).attr("href",config.deploy+"/?foruri="+a['foruri']+"&lang="+a11ypi.showbox[i]['lang']+"&interactive=0"+"&type="+type);
+		    $(newel).attr("href",config.deploy+"/?foruri="+a['foruri']+"&tags="+a11ypi.showbox[i]['lang']+"&interactive=0"+"&type="+type);
 		para.appendChild(newel);
 		xyz.appendChild(para);
 	    }
@@ -114,8 +114,13 @@ var a11ypi = {
     {
 	a = a11ypi.getParams();
 	var url = decodeURIComponent(a['foruri']);
-	var lang = a['lang'];
 	var type = a['type'];
+	var lang = '';
+	if( type != 'renarration')
+	    lang = a['tags'];
+	else
+	    lang = a['lang'];
+
 	$.getJSON(config.deploy+"/replace?",{"url":url,"lang":lang,"type":type},function(data)
 		  {
 		      for(var i=0;i<data['r'].length;i++)
