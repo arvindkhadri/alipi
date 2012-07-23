@@ -49,7 +49,10 @@ var a11ypi = {
 		var para  = document.createElement("p");
 		var newel = document.createElement("a");
 		newel.textContent = a11ypi.showbox[i]['lang'];
-		$(newel).attr("href",config.deploy+"/?foruri="+a['foruri']+"&lang="+a11ypi.showbox[i]['lang']+"&interactive=1"+"&type="+type);
+		if(type == 'renarration')
+		    $(newel).attr("href",config.deploy+"/?foruri="+a['foruri']+"&lang="+a11ypi.showbox[i]['lang']+"&interactive=1"+"&type="+type);
+		else
+		    $(newel).attr("href",config.deploy+"/?foruri="+a['foruri']+"&lang="+a11ypi.showbox[i]['lang']+"&interactive=0"+"&type="+type);
 		para.appendChild(newel);
 		xyz.appendChild(para);
 	    }
@@ -176,14 +179,15 @@ var a11ypi = {
 	    //            dump( 'error: Document tree modified during iteration ' + e );
         }
 	}
-	else if(a['type']=='comment') 
+	else if(a['type']=='5el') 
 	{
 	     
 	    try{
 		var result = nodes.iterateNext();
 		while (result)
 		{
-		    result.innerHTML = a['data'];
+		    $(result).html($(result).html()+a['data']);
+		    $(result).get(0).scrollIntoView();
 		    result=nodes.iterateNext();
 		}
 	    }
@@ -299,8 +303,8 @@ var a11ypi = {
 	    '<button id="edit-current" class="alipi" onclick="a11ypi.editPage();" title="Allow to edit this page">Re-narrate</button> '+
 	    '<button id="see-narration" class="alipi" onclick="a11ypi.showBox();" title="See other renarrations, which are in same or other languages"> '+
 	    'Re-narrations</button>'+
-	    '<button id="see-comment" class="alipi" onclick="a11ypi.showComment();" title="Comments"> '+
-	    'Comments</button>'+
+	    '<button id="see-comment" class="alipi" onclick="a11ypi.showComment();" title="5el"> '+
+	    '5el</button>'+
             '<button id="see-links" class="alipi" onclick="a11ypi.showBox1();" title="See other re-narrated pages of this domain">Re-narrated Pages '+
 	    '</button>'+
             '<select id="blog-filter" class="alipi" onChange="a11ypi.checkSelect();" title="Select one of the blog name"></select>'+
@@ -617,7 +621,7 @@ var a11ypi = {
 		modal: true
 	    });
 	});
-	a11ypi.createMenu('comment');
+	a11ypi.createMenu('5el');
     },
 
     ajaxLinks1: function() {
@@ -994,7 +998,7 @@ var a11ypi = {
 	{
 	    d = window.location.search.split('?')[1];
 	    for (var i = 0;i<d.split('&').length;i++){ 
-		a[d.split('&')[i].split('=')[0]] = d.split('&')[i].split('=')[1];
+		a[d.split('&')[i].split('=')[0]] = decodeURIComponent(d.split('&')[i].split('=')[1]);
 	    }
 	    return a;
 	}

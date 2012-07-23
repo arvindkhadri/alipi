@@ -273,11 +273,11 @@ def replace():
         except IndexError:
             pass
 
-    elif request.args['type'] == 'comment':
+    elif request.args['type'] == '5el':
         query = []
         query = collection.group(
             key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
-            condition={"about" : url, "lang" : lang,"type":"comment"},
+            condition={"about" : url, "lang" : lang,"type":"5el"},
             initial={'narration': []},
             reduce=Code('function(doc,out){out.narration.push(doc);}') 
             )
@@ -321,7 +321,7 @@ def save_feed():
     d['lang']  = request.form['lang']
     d['location'] = request.form['location']
     coll.insert(d)
-    if d['type'] == 'comment':
+    if d['type'] == '5el':
         collection = g.db['post']
         root = html5parser.parse(d['blog']).getroot()
         tree = root.getroottree()
