@@ -367,7 +367,16 @@ def menuForDialog():
             connection.disconnect()
             return "empty"
 
-
+@app.route("/demo",methods=['GET'])
+def doDemo():
+    root = lxml.html.parse(request.args['foruri']).getroot()
+    root2 = html5parser.parse(request.args['blog']).getroot()
+    tree2 = root2.getroottree()
+    if tree2.docinfo.doctype == '':
+        lxml.html.xhtml_to_html(root2)
+    root.make_links_absolute(request.args['foruri'], resolve_base_href = True)
+    root.xpath(request.args['xpath'])[0].addnext(root2.xpath(request.args['bxpath'])[0])
+    return lxml.html.tostring(root)
 import logging,os
 from logging import FileHandler
 

@@ -1,8 +1,9 @@
 <!doctype html>
 <head>
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="http://localhost/server/config.js"></script>
   <script type="text/javascript">
-    $.getJSON("http://127.0.0.1:5000/feed", function(data)
+    $.getJSON(config.deploy+"/feed", function(data)
     {
     d = $.makeArray(data);
     d.reverse();
@@ -25,7 +26,7 @@
   </script>
 </head>
 <body style="text-wrap:normal">
-    @<input type="text" id="t1" name="author" value="author" /> says <input type="text" id="t2" name="about" value="about" />  <input type="text" id="t3" name="xpath" value="xpath" /> has <select id="selected" onchange="checkVal();"><option>re-narrations</option><option>5el</option></select> at <input type="text" id="t4" name="blog" value="blog" /> <input type="text" id="t5" name="bxpath" value="bxpath" /> in <input type="text" name="lang" value="language" id="t6" /> <span id="remove">targetting</span> <input type="text" name="loc" value="location" id="t7"/>  <input type="submit" id="post" name="alipi" value="Feed" onclick="postForm();" />
+    @<input type="text" id="t1" name="author" value="author" /> says <input type="text" id="t2" name="about" value="about" />  <input type="text" id="t3" name="xpath" value="xpath" /> has <select id="selected" onchange="checkVal();"><option>re-narrations</option><option>5el</option></select> at <input type="text" id="t4" name="blog" value="blog" /> <input type="text" id="t5" name="bxpath" value="bxpath" /> in <input type="text" name="lang" value="language" id="t6" /> <span id="remove">targetting</span> <input type="text" name="loc" value="location" id="t7"/>  <input type="submit" id="post" name="alipi" value="Feed" onclick="postForm();" /> <input type="submit" name="alipi" value="Test the feed" onclick="doDemo();" />
 <div id="feeds">
 </div>
 <script type="text/javascript">
@@ -57,7 +58,10 @@ function checkVal(){
    $("#t6").val("language");
    }
    }
-
+function doDemo()
+{
+   window.open(config.deploy+"/demo?foruri="+encodeURIComponent($('#t2').val())+"&xpath="+encodeURIComponent($('#t3').val())+"&blog="+encodeURIComponent($('#t4').val())+"&bxpath="+encodeURIComponent($('#t5').val()));
+}
 </script>
 </body>
 </html>
