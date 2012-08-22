@@ -1,0 +1,5 @@
+Flask    
+GData
+lxml
+oursql
+pymongo
