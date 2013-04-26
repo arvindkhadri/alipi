@@ -1,9 +1,21 @@
-#-*-coding: utf-8 -*-
-from flask import Flask, request, render_template, g, redirect, jsonify, make_response
+from flask import Flask
+from flask import request
+from flask import render_template
+from flask import make_response
+import lxml.html
+import pymongo
 from bson import Code
-from urllib import quote_plus, unquote_plus
-from lxml.html import html5parser
-import urllib2, StringIO, lxml.html, pymongo, conf, oursql
+import urllib2
+import StringIO
+from flask import g
+from flask import redirect
+from urllib import quote_plus
+from urllib import unquote_plus
+import conf
+import oursql
+import requests
+
+from flask import jsonify
 app = Flask(__name__)
 @app.before_request
 def first():
@@ -20,12 +32,12 @@ def start_page() :
     try:
         a = urllib2.urlopen(myhandler1)
         if a.geturl() != d['foruri']:
-            return "There was a server redirect, please click on the <a href='http://dev.a11y.in/web?foruri={0}'>link</a> to continue.".format(quote_plus(a.geturl()))
+            return "There was a server redirect, please click on the <a href='http://y.a11y.in/web?foruri={0}'>link</a> to continue.".format(quote_plus(a.geturl()))
         else:
             page = a.read()
             a.close()
     except ValueError:
-        return "The link is malformed, click <a href='http://dev.a11y.in/web?foruri={0}&lang={1}&interactive=1'>here</a> to be redirected.".format(quote_plus(unquote_plus(d['foruri'].encode('utf-8'))),request.args['lang'])
+        return "The link is malformed, click <a href='http://y.a11y.in/web?foruri={0}&lang={1}&interactive=1'>here</a> to be redirected.".format(quote_plus(unquote_plus(d['foruri'].encode('utf-8'))),request.args['lang'])
     except urllib2.URLError:
         return render_template('error.html')
     try:
@@ -36,7 +48,7 @@ def start_page() :
         g.root = lxml.html.parse(StringIO.StringIO(page)).getroot()
     except ValueError:
         g.root = lxml.html.parse(d['foruri']).getroot() #Sometimes creators of the page lie about the encoding, thus leading to this execption. http://lxml.de/parsing.html#python-unicode-strings
-    if request.args.has_key('lang') == False and request.args.has_key('blog') == False and request.args.has_key('tags') == False:
+    if request.args.has_key('lang') == False and request.args.has_key('blog') == False:
         g.root.make_links_absolute(d['foruri'], resolve_base_href = True)
         for i in g.root.iterlinks():
             if i[1] == 'href' and i[0].tag != 'link':
@@ -44,24 +56,21 @@ def start_page() :
                     i[0].attrib['href'] = 'http://{0}?foruri={1}'.format(conf.DEPLOYURL[0],quote_plus(i[0].attrib['href']))
                 except KeyError:
                     i[0].attrib['href'] = '{0}?foruri={1}'.format(conf.DEPLOYURL[0],quote_plus(i[0].attrib['href'].encode('utf-8')))
-        setScripts() 
+        setScripts()
         g.root.body.set("onload","a11ypi.loadOverlay();")
         return lxml.html.tostring(g.root)
 
-    elif (request.args.has_key('lang') == True or request.args.has_key('tags') == True) and request.args.has_key('interactive') == True and request.args.has_key('blog') == False:
+    elif request.args.has_key('lang') == True and request.args.has_key('interactive') == True and request.args.has_key('blog') == False:
         setScripts()
-        if request.args['interactive'] == '1':
-            setSocialScript()
-            g.root.body.set("onload","a11ypi.ren();a11ypi.tweet(); a11ypi.facebook(); a11ypi.loadOverlay();")
-        else:
-            g.root.body.set("onload","a11ypi.ren();")
+        setSocialScript()
+        g.root.body.set("onload","a11ypi.ren();a11ypi.tweet(); a11ypi.facebook(); a11ypi.loadOverlay();")
         g.root.make_links_absolute(d['foruri'], resolve_base_href = True)
         return lxml.html.tostring(g.root)
-        
+
     elif request.args.has_key('lang') == True and request.args.has_key('blog') == False:
         script_jq_mini = g.root.makeelement('script')
         g.root.body.append(script_jq_mini)
-        script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery-1.7.min.js")
+        script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery.min.js")
         script_jq_mini.set("type", "text/javascript")
         d['lang'] = request.args['lang']
         script_test = g.root.makeelement('script')
@@ -78,7 +87,7 @@ def start_page() :
         g.root.make_links_absolute(d['foruri'], resolve_base_href = True)
         return lxml.html.tostring(g.root)
 
-    elif request.args.has_key('interactive') == False and request.args.has_key('blog') == True:    
+    elif request.args.has_key('interactive') == False and request.args.has_key('blog') == True:
         setScripts()
         g.root.make_links_absolute(d['foruri'], resolve_base_href = True)
         g.root.body.set('onload', 'a11ypi.loadOverlay();')
@@ -98,12 +107,12 @@ def setScripts():
     script_config.set("src", conf.APPURL[0] + "/server/config.js")
     script_config.set("type", "text/javascript")
 
-    
+
     script_jq_mini = g.root.makeelement('script')
     g.root.body.append(script_jq_mini)
-    script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery-1.7.min.js")
+    script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery.min.js")
     script_jq_mini.set("type", "text/javascript")
-    
+
     style = g.root.makeelement('link')
     g.root.body.append(style)
     style.set("rel","stylesheet")
@@ -120,7 +129,7 @@ def setScripts():
     style_cust.set("type", "text/css")
     style_cust.set("href", conf.JQUERYCSS[0] + "/jquery-ui.css")
     g.root.body.append(style_cust)
-    
+
 def setSocialScript():
     info_button = g.root.makeelement('button')
     g.root.body.append(info_button)
@@ -129,7 +138,7 @@ def setSocialScript():
     info_button.set("onClick", "a11ypi.showInfo(a11ypi.responseJSON);")
     info_button.text =  "Info"
     info_button.set("title", "Have a look at the information of each renarrated element")
-    
+
     share_button = g.root.makeelement('button')
     g.root.body.append(share_button)
     share_button.set("id", "share")
@@ -137,7 +146,7 @@ def setSocialScript():
     share_button.set("onClick", "a11ypi.share();")
     share_button.text =  "Share"
     share_button.set("title", "Share your contribution in your social network")
-    
+
     see_orig = g.root.makeelement('button')
     g.root.body.append(see_orig)
     see_orig.set("id", "orig-button")
@@ -145,7 +154,7 @@ def setSocialScript():
     see_orig.set("onClick", "a11ypi.showOriginal();")
     see_orig.text = "Original Page"
     see_orig.set("title", "Go to Original link, the original page of this renarrated")
-    
+
     tweetroot = g.root.makeelement("div")
     tweetroot.set("id", "tweet-root")
     tweetroot.set("class", "alipi")
@@ -158,7 +167,7 @@ def setSocialScript():
     tweet.set("class", "alipi twitter-share-button")
     tweet.set("data-via", "a11ypi")
     tweet.set("data-lang", "en")
-    tweet.set("data-url", "http://dev.a11y.in/web?foruri={0}&lang={1}&interactive=1".format(quote_plus(request.args['foruri']),request.args['lang']))
+    tweet.set("data-url", "http://y.a11y.in/web?foruri={0}&lang={1}&interactive=1".format(quote_plus(request.args['foruri']),(request.args['lang']).encode('unicode-escape')))
     tweet.textContent = "Tweet"
     tweetroot.append(tweet)
 
@@ -166,21 +175,21 @@ def setSocialScript():
     fblike.set("id", "fb-like")
     fblike.set("class", "alipi fb-like")
     fblike.set("style", "display:none;padding:10px;")
-    fblike.set("data-href", "http://dev.a11y.in/web?foruri={0}&lang={1}&interactive=1".format(quote_plus(request.args['foruri']),request.args['lang']))
+    fblike.set("data-href", "http://y.a11y.in/web?foruri={0}&lang={1}&interactive=1".format(quote_plus(request.args['foruri']),(request.args['lang']).encode('unicode-escape')))
     fblike.set("data-send", "true")
     fblike.set("data-layout", "button_count")
     fblike.set("data-width", "50")
     fblike.set("data-show-faces", "true")
     fblike.set("data-font", "arial")
     g.root.body.append(fblike)
-    
+
     style = g.root.makeelement('link')
     g.root.body.append(style)
     style.set("rel","stylesheet")
     style.set("type", "text/css")
-    style.set("href", "http://dev.a11y.in/server/stylesheet.css")
+    style.set("href", "http://y.a11y.in/alipi/stylesheet.css")
 
-    
+
 @app.route('/directory')
 def show_directory():
     collection = g.db['post']
@@ -236,51 +245,46 @@ def serve_info():
     response = jsonify(d)
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
+
+
 @app.route("/replace", methods=['GET'])
 def replace():
     collection = g.db['post']
-    url = request.args['url']
     lang = request.args['lang']
-    if request.args['type'] == 'renarration':
-        query = collection.group(
-            key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
-            condition={"about" : url, "lang" : lang,"elementtype":"text","type":"renarration"},
-            initial={'narration': []},
-            reduce=Code('function(doc,out){out.narration.push(doc);}') 
-            )
-    
-        audio_query =collection.group(
-            key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
-            condition={"about" : url, "lang" : lang, 'elementtype':"audio/ogg","type":"renarration"},
-            initial={'narration': []},
-            reduce=Code('function(doc,out){out.narration.push(doc);}') 
-            )
+    url = request.args['url']
+    query = collection.group(
+        key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
+        condition={"about" : url, "lang" : lang,"elementtype":"text"},
+        initial={'narration': []},
+        reduce=Code('function(doc,out){out.narration.push(doc);}')
+        )
 
-        image_query =collection.group(
-            key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
-            condition={"about" : url, "lang" : lang, 'elementtype':"image", "type":"renarration"},
-            initial={'narration': []},
-            reduce=Code('function(doc,out){out.narration.push(doc);}') 
-            )
-        try:
-            for i in audio_query:
-                query.append(i)
-        except IndexError:
-            pass
-        try:
-            for i in image_query:
-                query.append(i)
-        except IndexError:
-            pass
+    print query
 
-    elif request.args['type'] == '5el':
-        query = []
-        query = collection.group(
-            key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
-            condition={"about" : url, "lang" : lang,"type":"5el"},
-            initial={'narration': []},
-            reduce=Code('function(doc,out){out.narration.push(doc);}') 
-            )
+    audio_query =collection.group(
+        key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
+        condition={"about" : url, "lang" : lang, 'elementtype':"audio/ogg"},
+        initial={'narration': []},
+        reduce=Code('function(doc,out){out.narration.push(doc);}')
+        )
+
+    image_query =collection.group(
+        key = Code('function(doc){return {"xpath" : doc.xpath, "about": doc.url}}'),
+        condition={"about" : url, "lang" : lang, 'elementtype':"image"},
+        initial={'narration': []},
+        reduce=Code('function(doc,out){out.narration.push(doc);}')
+        )
+    try:
+        for i in audio_query:
+            query.append(i)
+    except IndexError:
+        pass
+    try:
+        for i in image_query:
+            query.append(i)
+    except IndexError:
+        pass
+
     for i in query:
         for y in i['narration']:
             del(y['_id'])
@@ -308,31 +312,56 @@ def serve_feed():
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
 
-@app.route('/feeds/write', methods=['POST'])
-def save_feed():
-    coll = g.db['feed']
+@app.route('/about', methods=['GET'])
+def serve_authors():
+    coll = g.db['post']
     d = {}
-    d['about'] = request.form['about']
-    d['blog'] = request.form['blog']
-    d['bxpath'] = request.form['bxpath']
-    d['xpath'] = request.form['xpath']
-    d['author'] = request.form['author']
-    d['type'] = request.form['type']
-    d['lang']  = request.form['lang']
-    d['location'] = request.form['location']
-    coll.insert(d)
-    if d['type'] == '5el':
-        collection = g.db['post']
-        root = html5parser.parse(d['blog']).getroot()
-        tree = root.getroottree()
-        if tree.docinfo.doctype == '':
-            lxml.html.xhtml_to_html(root)
-        d['data'] = lxml.html.tostring(root.xpath(d['bxpath'])[0]) #TODO implement a function like lxml.html.make_links_absolute
-        collection.insert(d)
-    response = make_response()
-    response.data = repr(request.form['blog'])
+    cntr = 0
+    for i in coll.find({"about":unquote_plus(request.args['about'])}):
+        i['_id'] = str(i['_id'])
+        d[cntr] = i
+        cntr+=1
+    response = jsonify(d)
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
+#Retrieve all information about a specific $about and a given $author.
+@app.route('/author', methods=['GET'])
+def serve_author():
+    coll = g.db['post']
+    d = {}
+    cntr = 0
+    for i in coll.find({"about":unquote_plus(request.args['about']),"author":unquote_plus(request.args['author'])}):
+        i['_id'] = str(i['_id'])
+        d[cntr] = i
+        cntr += 1
+    response = jsonify(d)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
+@app.route('/getAllLang', methods=['GET'])
+def get_lang():
+    term = request.args['term']
+    connection = oursql.Connection(conf.DBHOST[0],conf.DBUSRNAME[0],conf.DBPASSWD[0],db=conf.DBNAME[0])
+    cursor = connection.cursor(oursql.DictCursor)
+    cursor.execute('select * from `languages` as l  where l.name like ?', (term+'%',))
+    r = cursor.fetchall()
+    connection.close()
+    d = {}
+    d['return'] = r
+    response = jsonify(d)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
+
+@app.route("/askSWeeT",methods=['POST'])
+def askSweet():
+    id = request.form['id']
+    response = requests.api.get(conf.SWEETURL[0]"/query/"+id)
+    collection = g.db['post']
+    if response.status_code == 200:
+        collection.insert(response.json)
+        reply = make_response()
+        return reply
 
 @app.route("/menu",methods=['GET'])
 def menuForDialog():
@@ -357,26 +386,30 @@ def menuForDialog():
             initial={'lang': []},
             reduce=Code('function(doc, out){if (out.lang.indexOf(doc.lang) == -1) out.lang.push(doc.lang)}') #here xpath for test
             )
-        
+
         #send the response
         if (langForUrl):
             connection.disconnect()
             return json.dumps(langForUrl[0]['lang'])
-        
         else:
             connection.disconnect()
             return "empty"
 
-@app.route("/demo",methods=['GET'])
-def doDemo():
-    root = lxml.html.parse(request.args['foruri']).getroot()
-    root2 = html5parser.parse(request.args['blog']).getroot()
-    tree2 = root2.getroottree()
-    if tree2.docinfo.doctype == '':
-        lxml.html.xhtml_to_html(root2)
-    root.make_links_absolute(request.args['foruri'], resolve_base_href = True)
-    root.xpath(request.args['xpath'])[0].addnext(root2.xpath(request.args['bxpath'])[0])
-    return lxml.html.tostring(root)
+
+@app.route('/info', methods=['GET'])
+def serve_info():
+    coll = g.db['post']
+    d = {}
+    cntr = 0
+    for i in coll.find({"about":unquote_plus(request.args['about']),"lang":request.args['lang']}):
+        i['_id'] = str(i['_id'])
+        d[cntr] = i
+        cntr+=1
+    response = jsonify(d)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
+
 import logging,os
 from logging import FileHandler
 
