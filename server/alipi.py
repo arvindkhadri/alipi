@@ -14,8 +14,10 @@ from urllib import unquote_plus
 import conf
 import oursql
 import requests
-
 from flask import jsonify
+import json
+
+
 app = Flask(__name__)
 @app.before_request
 def first():
@@ -355,13 +357,16 @@ def get_lang():
 
 @app.route("/askSWeeT",methods=['POST'])
 def askSweet():
-    id = request.form['id']
-    response = requests.api.get(conf.SWEETURL[0]"/query/"+id)
-    collection = g.db['post']
-    if response.status_code == 200:
-        collection.insert(response.json)
-        reply = make_response()
-        return reply
+    data = json.loads(request.form['data'])
+    for i in data:
+        response = requests.api.get(conf.SWEETURL[0]+"/query/"+i['id'])
+        collection = g.db['post']
+        rep = response.json()
+        rep['bxpath'] = ''
+        if response.status_code == 200:
+            collection.insert(rep)
+    reply = make_response()
+    return reply
 
 @app.route("/menu",methods=['GET'])
 def menuForDialog():

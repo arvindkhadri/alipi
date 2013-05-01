@@ -401,11 +401,10 @@ var util = {
 			});
 				$.post(config.sweet+'/add',	{data : JSON.stringify(util.buildDataString())},
 							 function(data){
-								 data = JSON.parse(data);
-								 for(var i in data){
-								 	 $.post(config.deploy+'/askSWeeT',{'id':data[i]['id']},function(){
-								 	 console.log("success!!");});
-								 }
+//								 data = JSON.parse(data);
+								 $.post(config.deploy+'/askSWeeT',{'data':data},function(){
+								 		 console.log("success!!");});
+
 							 }); //+'&title='+encodeURIComponent(document.title)
 //				}).done(function(){
 				//	console.log("test");
