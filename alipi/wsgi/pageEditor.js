@@ -403,7 +403,9 @@ var util = {
 							 function(data){
 //								 data = JSON.parse(data);
 								 $.post(config.deploy+'/askSWeeT',{'data':data},function(){
-								 		 console.log("success!!");});
+									 window.location.reload();
+									 //		 console.log("success!!");
+								 });
 
 							 }); //+'&title='+encodeURIComponent(document.title)
 //				}).done(function(){
