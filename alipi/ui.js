@@ -64,7 +64,7 @@ var a11ypi = {
 		{
 	    a11ypi.flag = 1;
 	    a = a11ypi.getParams();
-	    $.getJSON(config.deploy+'/menu?', {"url":decodeURIComponent(a['foruri'])}, function(data)
+	    $.getJSON(config.deploy+'/menu?', {"url":a['foruri']}, function(data)
 	    					{
 	    						a11ypi.showbox = data;
 									$('#see-narration').show();

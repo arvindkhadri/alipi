@@ -446,7 +446,7 @@ var util = {
 		util.forEach(util.history, function(index, command) {
 			var dict = {};
 			dict['type'] = 1; //TYPE refers to the sweet type. The application says the type, 1 is re-narration.
-			dict['about'] = window.location.search.split('=')[1];
+			dict['about'] = decodeURIComponent(window.location.search.split('=')[1]);
 			dict['lang'] = $('#lang-select').val();
 			dict["location"] = $('#loc-select').val();
 			dict["style"] = $('#style-select').val();

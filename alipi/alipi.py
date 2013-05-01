@@ -21,7 +21,7 @@ import json
 app = Flask(__name__)
 @app.before_request
 def first():
-    g.connection = pymongo.Connection('localhost',27017) #Create the object once and use it.
+    g.connection = pymongo.MongoClient('localhost',27017) #Create the object once and use it.
     g.db = g.connection[conf.MONGODB[0]]
 @app.teardown_request
 def close(exception):
@@ -77,7 +77,7 @@ def start_page() :
         d['lang'] = request.args['lang']
         script_test = g.root.makeelement('script')
         g.root.body.append(script_test)
-        script_test.set("src", conf.APPURL[0] + "/server/ui.js")
+        script_test.set("src", conf.APPURL[0] + "/alipi/ui.js")
         script_test.set("type", "text/javascript")
         g.root.body.set("onload","a11ypi.ren()");
         return lxml.html.tostring(g.root)
@@ -100,13 +100,13 @@ def setScripts():
     script_edit = g.root.makeelement('script')
     g.root.body.append(script_test)
     g.root.body.append(script_edit)
-    script_test.set("src", conf.APPURL[0] + "/server/ui.js")
+    script_test.set("src", conf.APPURL[0] + "/alipi/ui.js")
     script_test.set("type", "text/javascript")
-    script_edit.set("src", conf.APPURL[0] + "/server/wsgi/pageEditor.js")
+    script_edit.set("src", conf.APPURL[0] + "/alipi/wsgi/pageEditor.js")
     script_edit.set("type","text/javascript")
     script_config = g.root.makeelement('script')
     g.root.body.append(script_config)
-    script_config.set("src", conf.APPURL[0] + "/server/config.js")
+    script_config.set("src", conf.APPURL[0] + "/alipi/config.js")
     script_config.set("type", "text/javascript")
 
 
@@ -119,7 +119,7 @@ def setScripts():
     g.root.body.append(style)
     style.set("rel","stylesheet")
     style.set("type", "text/css")
-    style.set("href", conf.APPURL[0] + "/server/stylesheet.css")
+    style.set("href", conf.APPURL[0] + "/alipi/stylesheet.css")
 
     script_jq_cust = g.root.makeelement('script')
     g.root.body.append(script_jq_cust)
@@ -374,6 +374,7 @@ def menuForDialog():
         collection = g.db['post']
         c = {}
         cntr = 0
+        print request.args['url']
         for i in collection.find({"about":request.args['url']}).distinct('lang'):
             for j in collection.find({"about":request.args['url'],'lang':i}).distinct('type'):
                 d = {}
@@ -381,6 +382,7 @@ def menuForDialog():
                 d['type'] = j
                 c[cntr] = d
                 cntr += 1
+        print c
         return jsonify(c)
     else:
         collection = g.db['post']
