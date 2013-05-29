@@ -12,6 +12,7 @@ from flask import redirect
 from urllib import quote_plus
 from urllib import unquote_plus
 import conf
+import sweetmaker
 import oursql
 import requests
 from flask import jsonify
@@ -231,6 +232,7 @@ def get_lang():
     response = jsonify(d)
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
+
 @app.route('/blank', methods=['GET'])
 def serve_blank():
     return render_template('blank.html')
@@ -355,7 +357,34 @@ def get_lang():
     return response
 
 
-@app.route("/askSWeeT",methods=['POST'])
+@app.route('/publish', methods=['POST'])
+def publish():
+    print "entered"
+    data = json.loads(request.form['data'])
+    collection = g.db['post']
+    for i in data:
+        i['bxpath'] = ''
+        collection.insert(i)
+    sweet(data)
+    reply = make_response()
+    return reply
+
+
+def sweet(data):
+    """ A function to sweet the data that is inserted.  Accepts a <list of dicts>. """
+    for i in data:
+        del(i['_id'])
+        sweet = sweetmaker.make(i['type'], i['author'], i['about'], i['data'])
+        sweetmaker.send(sweet)
+    return True
+        # data = json.dumps(data)
+    # req = requests.api.post(conf.SWEETURL[0]+"/add",{'data':data})
+    # if req.status_code == 200:
+    #     reply = make_response()
+    #     return reply
+
+
+@app.route("/askSWeeT", methods=['POST'])
 def askSweet():
     data = json.loads(request.form['data'])
     for i in data:

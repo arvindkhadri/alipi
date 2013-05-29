@@ -399,15 +399,12 @@ var util = {
 						});
 				});
 			});
-				$.post(config.sweet+'/add',	{data : JSON.stringify(util.buildDataString())},
-							 function(data){
-//								 data = JSON.parse(data);
-								 $.post(config.deploy+'/askSWeeT',{'data':data},function(){
-									 window.location.reload();
-									 //		 console.log("success!!");
-								 });
+			$.post(config.deploy+'/publish',	{data : JSON.stringify(util.buildDataString())},
+						function(data){
+								window.location.reload();
+								});
 
-							 }); //+'&title='+encodeURIComponent(document.title)
+						 //+'&title='+encodeURIComponent(document.title)
 //				}).done(function(){
 				//	console.log("test");
 				//window.location.reload();
@@ -447,7 +444,7 @@ var util = {
 		var buff = [];
 		util.forEach(util.history, function(index, command) {
 			var dict = {};
-			dict['type'] = 1; //TYPE refers to the sweet type. The application says the type, 1 is re-narration.
+			dict['type'] = "re-narration"; //TYPE
 			dict['about'] = decodeURIComponent(window.location.search.split('=')[1]);
 			dict['lang'] = $('#lang-select').val();
 			dict["location"] = $('#loc-select').val();

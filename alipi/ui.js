@@ -36,7 +36,7 @@ var a11ypi = {
 
   createMenu: function(type) {
 		var xyz = '';
-		if(type === '1.0')
+		if(type === 're-narration')
 	    xyz = document.getElementById("show-box");
 		else
 	    xyz = document.getElementById("show-comment");
@@ -49,7 +49,7 @@ var a11ypi = {
 				var para  = document.createElement("p");
 				var newel = document.createElement("a");
 				newel.textContent = a11ypi.showbox[i]['lang'];
-				if(type === '1.0')
+				if(type === 're-narration')
 					$(newel).attr("href",config.deploy+"/?foruri="+a['foruri']+"&lang="+a11ypi.showbox[i]['lang']+"&interactive=1"+"&type="+type);
 				else
 					$(newel).attr("href",config.deploy+"/?foruri="+a['foruri']+"&tags="+a11ypi.showbox[i]['lang']+"&interactive=0"+"&type="+type);
@@ -119,10 +119,10 @@ var a11ypi = {
 		if(a['type'])
 			type = a['type'];
 		else
-			type = '1.0'
+			type = 're-narration'
 		var lang = '';
 
-		if( type != '1.0')
+		if( type != 're-narration')
 	    lang = a['tags'];
 		else
 	    lang = a['lang'];
@@ -152,7 +152,7 @@ var a11ypi = {
 		{
 	    console.log(e);
 		}
-    if(a['type'] == '1.0')
+    if(a['type'] == 're-narration')
 		{
 	    try{
 				var result = nodes.iterateNext();
@@ -612,7 +612,7 @@ var a11ypi = {
 		d = window.location.search.split('?')[1];
 		var a = a11ypi.getParams();
 		if (a['blog'] === undefined ) {
-	    a11ypi.createMenu('1.0');
+	    a11ypi.createMenu('re-narration');
 		}
 		else {
 	    $('#show-box').attr('title', 'Choose a re-narration from the blog you specified.');
