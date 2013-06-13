@@ -374,7 +374,7 @@ def sweet(data):
     """ A function to sweet the data that is inserted.  Accepts a <list of dicts>. """
     for i in data:
         del(i['_id'])
-        sweet = sweetmaker.make(i['type'], i['author'], i['about'], i['data'])
+        sweet = sweetmaker.make(i['type'], i['author'], i['about']+i['xpath'], i['data'])
         sweetmaker.send(sweet)
     return True
         # data = json.dumps(data)
