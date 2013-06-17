@@ -343,7 +343,7 @@ def serve_author():
     return response
 
 @app.route('/getAllLang', methods=['GET'])
-def get_lang():
+def get_all_lang():
     term = request.args['term']
     connection = oursql.Connection(conf.DBHOST[0],conf.DBUSRNAME[0],conf.DBPASSWD[0],db=conf.DBNAME[0])
     cursor = connection.cursor(oursql.DictCursor)
