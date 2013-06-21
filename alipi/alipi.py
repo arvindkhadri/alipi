@@ -432,19 +432,6 @@ def menuForDialog():
             return "empty"
 
 
-@app.route('/info', methods=['GET'])
-def serve_info():
-    coll = g.db['post']
-    d = {}
-    cntr = 0
-    for i in coll.find({"about":unquote_plus(request.args['about']),"lang":request.args['lang']}):
-        i['_id'] = str(i['_id'])
-        d[cntr] = i
-        cntr+=1
-    response = jsonify(d)
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    return response
-
 
 import logging,os
 from logging import FileHandler
