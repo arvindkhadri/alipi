@@ -17,16 +17,24 @@ import oursql
 import requests
 from flask import jsonify
 import json
-
+from flask import url_for
 
 app = Flask(__name__)
 @app.before_request
 def first():
     g.connection = pymongo.MongoClient('localhost',27017) #Create the object once and use it.
     g.db = g.connection[conf.MONGODB[0]]
+
+# @app.after_request
+# def set_secret(response):
+#     response.set_cookie("key", conf.SWEET_SECRET_KEY[0])
+
+
 @app.teardown_request
 def close(exception):
     g.connection.disconnect()
+
+
 @app.route('/')
 def start_page() :
     d = {}
@@ -61,14 +69,21 @@ def start_page() :
                     i[0].attrib['href'] = '{0}?foruri={1}'.format(conf.DEPLOYURL[0],quote_plus(i[0].attrib['href'].encode('utf-8')))
         setScripts()
         g.root.body.set("onload","a11ypi.loadOverlay();")
-        return lxml.html.tostring(g.root)
+        response = make_response()
+        response.set_cookie("key", conf.SWEET_SECRET_KEY[0])
+        response.data = lxml.html.tostring(g.root)
+        return response
 
     elif request.args.has_key('lang') == True and request.args.has_key('interactive') == True and request.args.has_key('blog') == False:
         setScripts()
         setSocialScript()
         g.root.body.set("onload","a11ypi.ren();a11ypi.tweet(); a11ypi.facebook(); a11ypi.loadOverlay();")
         g.root.make_links_absolute(d['foruri'], resolve_base_href = True)
-        return lxml.html.tostring(g.root)
+        response = make_response()
+        response.set_cookie("key", conf.SWEET_SECRET_KEY[0])
+        response.data = lxml.html.tostring(g.root)
+        return response
+
 
     elif request.args.has_key('lang') == True and request.args.has_key('blog') == False:
         script_jq_mini = g.root.makeelement('script')
@@ -81,26 +96,41 @@ def start_page() :
         script_test.set("src", conf.APPURL[0] + "/alipi/ui.js")
         script_test.set("type", "text/javascript")
         g.root.body.set("onload","a11ypi.ren()");
-        return lxml.html.tostring(g.root)
+        response = make_response()
+        response.set_cookie("key", conf.SWEET_SECRET_KEY[0])
+        response.data = lxml.html.tostring(g.root)
+        return response
+
 
     elif request.args.has_key('interactive') == True and request.args.has_key('blog') == True and request.args.has_key('lang') == True:
         setScripts()
         setSocialScript()
         g.root.body.set("onload","a11ypi.filter(); a11ypi.tweet(); a11ypi.facebook(); a11ypi.loadOverlay();");
         g.root.make_links_absolute(d['foruri'], resolve_base_href = True)
-        return lxml.html.tostring(g.root)
+        response = make_response()
+        response.set_cookie("key", conf.SWEET_SECRET_KEY[0])
+        response.data = lxml.html.tostring(g.root)
+        return response
 
     elif request.args.has_key('interactive') == False and request.args.has_key('blog') == True:
         setScripts()
         g.root.make_links_absolute(d['foruri'], resolve_base_href = True)
         g.root.body.set('onload', 'a11ypi.loadOverlay();')
-        return lxml.html.tostring(g.root)
+        response = make_response()
+        response.set_cookie("key", conf.SWEET_SECRET_KEY[0])
+        response.data = lxml.html.tostring(g.root)
+        return response
+
 
 def setScripts():
     script_test = g.root.makeelement('script')
     script_edit = g.root.makeelement('script')
+    script_auth = g.root.makeelement('script')
+    script_cookie_reader = g.root.makeelement('script')
     g.root.body.append(script_test)
     g.root.body.append(script_edit)
+    g.root.body.append(script_auth)
+    g.root.body.append(script_cookie_reader)
     script_test.set("src", conf.APPURL[0] + "/alipi/ui.js")
     script_test.set("type", "text/javascript")
     script_edit.set("src", conf.APPURL[0] + "/alipi/wsgi/pageEditor.js")
@@ -109,7 +139,10 @@ def setScripts():
     g.root.body.append(script_config)
     script_config.set("src", conf.APPURL[0] + "/alipi/config.js")
     script_config.set("type", "text/javascript")
-
+    script_auth.set("src", conf.SWEETURL[0] + "/authenticate")
+    script_auth.set("type","text/javascript")
+    script_cookie_reader.set("src", url_for("static", filename="cookieReader.js"))
+    script_cookie_reader.set("type","text/javascript")
 
     script_jq_mini = g.root.makeelement('script')
     g.root.body.append(script_jq_mini)
@@ -374,8 +407,7 @@ def sweet(data):
     """ A function to sweet the data that is inserted.  Accepts a <list of dicts>. """
     for i in data:
         del(i['_id'])
-        sweet = sweetmaker.make(i['type'], i['author'], i['about']+i['xpath'], i['data'])
-        sweetmaker.send(sweet)
+        sweetmaker.sweet(conf.SWEET_STORE_ADD[0], i['type'], i['author'], i['about']+i['xpath'], i['data'])
     return True
         # data = json.dumps(data)
     # req = requests.api.post(conf.SWEETURL[0]+"/add",{'data':data})
@@ -444,6 +476,10 @@ def serve_info():
     response = jsonify(d)
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
+
+@app.route('/secret')
+def serve_secret():
+    return jsonify({"key":conf.SWEET_SECRET_KEY[0]})
 
 
 import logging,os

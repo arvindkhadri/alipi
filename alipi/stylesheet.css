@@ -5,15 +5,15 @@
 #edit-current  { font-size:17px; font-weight:400; font-style:italic; text-align:justify; display:none; }
 #see-narration { font-size:17px; font-weight:400; font-style:italic; text-align:justify; display:none; }
 #see-links     { font-size:17px; font-weight:400; font-style:italic; text-align:justify; display:none; }
-#blog-filter   { right:-3px; min-width:225px; max-width:225px; font-size:17px; font-weight:400; font-style:italic; 
-	       -moz-border-radius-bottomright:0px; -webkit-border-bottom-right-radius:0px; border-bottom-right-radius:0px; 
-	       -moz-border-radius-topright:0px; -webkit-border-top-right-radius:0px; border-top-right-radius:0px; -moz-margin-start:7px; 
+#blog-filter   { right:-3px; min-width:225px; max-width:225px; font-size:17px; font-weight:400; font-style:italic;
+	       -moz-border-radius-bottomright:0px; -webkit-border-bottom-right-radius:0px; border-bottom-right-radius:0px;
+	       -moz-border-radius-topright:0px; -webkit-border-top-right-radius:0px; border-top-right-radius:0px; -moz-margin-start:7px;
 	       text-align:center; display:none; }
 @-moz-document domain(127.0.0.1), domain(dev.a11y.in), domain(y.a11y.in) {
     #go  { top:11px !important; }
 }
 #go            { top:6px; height:25px; text-align:justify; display:none;
-		 -moz-border-radius-bottomleft:0px; -webkit-border-bottom-left-radius:0px; border-bottom-left-radius:0px; 
+		 -moz-border-radius-bottomleft:0px; -webkit-border-bottom-left-radius:0px; border-bottom-left-radius:0px;
 		 -moz-border-radius-topleft:0px; -webkit-border-top-left-radius:0px; -khtml-border-top-left-radius:0px; border-top-left-radius:0px; }
 
 #share         { font-size:17px; font-weight:400; font-style:italic; text-align:justify; display:none; }
@@ -31,9 +31,9 @@
 #exit-mode  { font-size:17px; font-weight:400; font-style:italic; text-align:justify; }
 #help-window  { font-size:17px; font-weight:400; font-style:italic; text-align:justify; }
 #undo-button  { font-size:17px; font-weight:400; font-style:italic; text-align:justify; }
-#publish-button  { font-size:17px; font-weight:400; font-style:italic; text-align:justify; } 
+#publish-button  { font-size:17px; font-weight:400; font-style:italic; text-align:justify; }
 
-#element_edit_overlay { position:fixed; text-align:center; z-index:2147483645; display:none; } 
+#element_edit_overlay { position:fixed; text-align:center; z-index:2147483645; display:none; }
 
 #edit-text     { font-size:17px; font-weight:400; font-style:italic; text-align:justify; display:none; }
 #add-audio     { font-size:17px; font-weight:400; font-style:italic; text-align:justify; display:none; }
@@ -45,10 +45,10 @@
 #editoroverlay   { min-width:90%; text-align:justify; display: none; }
 #editoroverlay a { color:#1C94C4; }
 
-#adv-reference { position: absolute; top:15%; left:2%; min-width:48%; max-width:48%; border:solid 3px; padding:10px; font-size:16px; 
+#adv-reference { position: absolute; top:15%; left:2%; min-width:48%; max-width:48%; border:solid 3px; padding:10px; font-size:16px;
 		 font-weight:400; font-style:normal; color:#aaa; overflow:show; background:none; text-align:justify; display:none; }
 
-#reference { position: absolute; top: 15%; left:2%; min-width:46%; max-width:46%; min-height:10%; border:solid 3px; padding:10px; font-size:17px; 
+#reference { position: absolute; top: 15%; left:2%; min-width:46%; max-width:46%; min-height:10%; border:solid 3px; padding:10px; font-size:17px;
 	     font-weight:400; font-style:normal; text-align:justify; color:#aaa; overflow:show; background:none; text-align:justify; }
 
 #editor { position:absolute; top:15%; left:52%; min-width:45%; max-width:45%; min-height:10%; border:3px solid #aaa; padding:10px; font-size:17px;
@@ -79,16 +79,17 @@
 #tar-lab4 { position:absolute; top:50%; left:125px; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
 #tar-lab5 { position:absolute; top:65%; left:125px; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
 #tar-lab6 { position:relative; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
+#tar-pass { position:absolute; top:77%; left:210px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }
 #tar-lab7 { position:relative; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
-#tar-p    { position:absolute; top:90%; left:210px; font-size:17px; font-weight:400; font-style:italic; text-align:justify; }
-#blogset  { position:absolute; top:80%; right:100px; left:125px; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
+#tar-p    { position:absolute; top:95%; left:210px; font-size:17px; font-weight:400; font-style:italic; text-align:justify; }
+#blogset  { position:absolute; top:85%; right:100px; left:125px; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
 
 
 #loc-select   { position:absolute; top:25%; left:210px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }
-#loc-img      { position:absolute; top:25.5%; left:440px; height:20px; width:25px; font-size:17px; font-weight:400; font-style:italic; 
+#loc-img      { position:absolute; top:25.5%; left:440px; height:20px; width:25px; font-size:17px; font-weight:400; font-style:italic;
 		color:#000; text-align:justify; display:none; }
 #lang-select  { position:absolute; top:40%; left:210px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }
-#lang-img     { position:absolute; top:41%; left:440px; height:18px; width:25px; font-size:17px; font-weight:400; font-style:italic; 
+#lang-img     { position:absolute; top:41%; left:440px; height:18px; width:25px; font-size:17px; font-weight:400; font-style:italic;
 		color:#000; text-align:justify; display:none; }
 #style-select { position:absolute; top:55%; left:210px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }
 #auth-select  { position:absolute; top:70%; left:210px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }
@@ -108,10 +109,10 @@
 #see-narration { font-size:14px; font-weight:200; font-style:italic; text-align:justify; display:none; }
 #see-links     { font-size:14px; font-weight:200; font-style:italic; text-align:justify; display:none; }
 #blog-filter   { right:-3px; min-width:150px; max-width:150px; font-weight:200; font-style:italic; text-align:justify; display:none;
-		 -moz-border-radius-bottomright:0px; -webkit-border-bottom-right-radius:0px; border-bottom-right-radius:0px; 
+		 -moz-border-radius-bottomright:0px; -webkit-border-bottom-right-radius:0px; border-bottom-right-radius:0px;
 		 -moz-border-radius-topright:0px; -webkit-border-top-right-radius:0px; border-top-right-radius:0px; }
-#go            { top:5px; height:18px; -moz-border-radius-bottomleft:0px; -webkit-border-bottom-left-radius:0px; -khtml-border-bottom-left-radius:0px; 
-		 border-bottom-left-radius:0px; -moz-border-radius-topleft:0px; -webkit-border-top-left-radius:0px; -khtml-border-top-left-radius:0px; 
+#go            { top:5px; height:18px; -moz-border-radius-bottomleft:0px; -webkit-border-bottom-left-radius:0px; -khtml-border-bottom-left-radius:0px;
+		 border-bottom-left-radius:0px; -moz-border-radius-topleft:0px; -webkit-border-top-left-radius:0px; -khtml-border-top-left-radius:0px;
 		 border-top-left-radius:0px; font-size:14px; font-weight:200; font-style:italic; text-align:justify; display:none; }
 @-moz-document domain(127.0.0.1), domain(dev.a11y.in), domain(y.a11y.in) {
     #go  { height:23px !important; top:4px !important; }
@@ -124,7 +125,7 @@
 #outter-up-button   { font-size:14px; font-weight:200; font-style:italic; text-align:justify; display:none; }
 
 
-#pub_overlay            { position:fixed; left:3%; width:96%; text-align:center; z-index:2147483645; font-size:14px; font-weight:200; font-style:italic; 
+#pub_overlay            { position:fixed; left:3%; width:96%; text-align:center; z-index:2147483645; font-size:14px; font-weight:200; font-style:italic;
 			   display:none; }
 #pub_overlay .ui-button { margin-left:10px; }
 #icon-down { font-size:14px; font-weight:200; font-style:italic; text-align:justify; display:none; }
@@ -132,9 +133,9 @@
 #exit-mode  { font-size:14px; font-weight:200; font-style:italic; text-align:justify; }
 #help-window  { font-size:14px; font-weight:200; font-style:italic; text-align:justify; }
 #undo-button  { font-size:14px; font-weight:200; font-style:italic; text-align:justify; }
-#publish-button  { font-size:14px; font-weight:200; font-style:italic; text-align:justify; } 
+#publish-button  { font-size:14px; font-weight:200; font-style:italic; text-align:justify; }
 
-#element_edit_overlay            { position:fixed; text-align:center; z-index:2147483645; font-size:14px; font-weight:200; font-style:italic; 
+#element_edit_overlay            { position:fixed; text-align:center; z-index:2147483645; font-size:14px; font-weight:200; font-style:italic;
 				   text-align:justify; display:none; }
 #element_edit_overlay .ui-button { text-align:justify; font-size:14px; font-weight:200; font-style:italic; }
 
@@ -153,7 +154,7 @@
 #reference     { position: absolute; top: 24%; left:2%; min-width:46%; max-width:46%; min-height:10%; border:solid 2px; padding:10px; font-size:14px;
 		 text-align:justify; color:#aaa; font-weight:normal; overflow:show; background:none; }
 
-#editor { position:absolute; top:15%; left:52%; min-width:45%; max-width:45%; min-height:10%; border:2px solid; padding:10px; color:#000; 
+#editor { position:absolute; top:15%; left:52%; min-width:45%; max-width:45%; min-height:10%; border:2px solid; padding:10px; color:#000;
 	  background-color:#ffe; font-size:14px; font-weight:200; font-style:normal; text-align:justify; }
 
 #ref-lab  { position:absolute; top:5%; font-size:14px; font-weight:200; font-style:italic; text-align:justify; color:#aaa; }
@@ -186,10 +187,10 @@
 #blogset  { position:absolute; top:80%; left:125px; right:80px; color:#aaa; font-size:14px; font-weight:200; font-style:italic; text-align:justify; }
 
 #loc-select   { position:absolute; top:25%; left:210px; width:256px; color:#000; font-size:14px; font-weight:200; font-style:italic; text-align:justify; }
-#loc-img      { position:absolute; top:25.5%; left:440px; height:20px; width:25px; color:#000; font-size:14px; font-weight:200; font-style:italic; 
+#loc-img      { position:absolute; top:25.5%; left:440px; height:20px; width:25px; color:#000; font-size:14px; font-weight:200; font-style:italic;
 		text-align:justify; display:none; }
 #lang-select  { position:absolute; top:40%; left:210px; width:256px; color:#000; font-size:14px; font-weight:200; font-style:italic; text-align:justify; }
-#lang-img     { position:absolute; top:41%; left:440px; height:18px; width:25px; color:#000; font-size:14px; font-weight:200; font-style:italic; 
+#lang-img     { position:absolute; top:41%; left:440px; height:18px; width:25px; color:#000; font-size:14px; font-weight:200; font-style:italic;
 		text-align:justify; display:none; }
 #style-select { position:absolute; top:55%; left:210px; width:256px; color:#000; font-size:14px; font-weight:200; font-style:italic; text-align:justify; }
 #auth-select  { position:absolute; top:70%; left:210px; width:256px; color:#000; font-size:14px; font-weight:200; font-style:italic; text-align:justify; }
@@ -209,6 +210,6 @@
 #narrations-div { position:fixed; top:5%; bottom:2%; right:0.1%; width:30%; height:93%; overflow:show; background-color: rgba(0,0,0,0.5);
 		  z-index:999999999; }
 /*TOOLTIPS*/
-.tip { color: #fff; width: 140px; background-color: rgba(0,0,0,1); border:1px solid #ccc; -moz-box-shadow:#555 2px 2px 8px; 
+.tip { color: #fff; width: 140px; background-color: rgba(0,0,0,1); border:1px solid #ccc; -moz-box-shadow:#555 2px 2px 8px;
        -webkit-box-shadow:#555 2px 2px 8px; -o-box-shadow:#555 2px 2px 8px; box-shadow:#555 2px 2px 8px; opacity:1; font-size:12px;
        font-family:Verdana, Geneva, Arial, Helvetica, sans-serif; padding:7px; }

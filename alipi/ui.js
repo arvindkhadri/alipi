@@ -72,11 +72,13 @@ var a11ypi = {
 									$("#go").show();
 	    					});
 
-	    req = {"about":decodeURIComponent(a['foruri']), "lang":a['lang']};
+	    if(a['lang'])
+			{req = {"about":decodeURIComponent(a['foruri']), "lang":a['lang']};
 	    $.getJSON(config.deploy+'/info?', req, function(data)
 	    					{
 	    						a11ypi.responseJSON = data;
 	    					});
+			}
 		}
   },
   ajax1: function() {
@@ -114,7 +116,8 @@ var a11ypi = {
   ren: function()
   {
 		a = a11ypi.getParams();
-		var url = decodeURIComponent(a['foruri']);
+		var url = a['foruri'];
+		// var url = decodeURIComponent(a['foruri']);
 		var type;
 		if(a['type'])
 			type = a['type'];
@@ -551,9 +554,10 @@ var a11ypi = {
 					'<option>Correction</option><option>Evolution</option><option>Other</option></select>'+
 					'<label id="tar-lab5" class="alipi" >Enter an author name for your contribution: </label> '+
 					'<input id="auth-select" class="alipi" type="text" placeholder="John" /> '+
-					'<div id="blogset" > You can choose to post this in your own blog or in the default Alipi blog</div> '+
+					'<input id="tar-pass" class="alipi" type="password" placeholder="password"/>'+
+					'<div id="blogset" > We are having issues with posting to a personal Google blog.  Please use demo.swtr.us to publish.</div> '+
 					'<p id="tar-p" ><input id="our-check" class="alipi" type="radio"name="blog" /> '+
-					'<label id="tar-lab6" class="alipi" > Alipi Blog</label><input id="your-check" class="alipi" type="radio" name="blog" /> '+
+					'<label id="tar-lab6" class="alipi" > demo.swtr.us </label><input id="your-check" class="alipi" type="radio" name="blog" /> '+
 					'<label id="tar-lab7" class="alipi">Personal Blog</label></p></div>';
 
 				$('body').append(publish_template);
@@ -577,6 +581,11 @@ var a11ypi = {
 					buttons: {
 						Publish: function() {
 							util.publish();
+						},
+						Authenticate: function() {
+						var reply = sweet.authenticate($("#auth-select").val(), $("#tar-pass").val());
+							if(reply === true)
+								alert("authenticated");
 						}
 					},
 					close: function() {
@@ -1006,7 +1015,7 @@ var a11ypi = {
   getParams: function()
   {
 		var a = [];
-		if(window.location.hostname ==  config.hostname)
+		if(window.location.hostname ==  config.hostname || "localhost" )
 		{
 	    d = window.location.search.split('?')[1];
 	    for (var i = 0;i<d.split('&').length;i++){
