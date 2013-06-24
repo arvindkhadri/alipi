@@ -463,25 +463,6 @@ def menuForDialog():
             connection.disconnect()
             return "empty"
 
-
-@app.route('/info', methods=['GET'])
-def serve_info():
-    coll = g.db['post']
-    d = {}
-    cntr = 0
-    for i in coll.find({"about":unquote_plus(request.args['about']),"lang":request.args['lang']}):
-        i['_id'] = str(i['_id'])
-        d[cntr] = i
-        cntr+=1
-    response = jsonify(d)
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    return response
-
-@app.route('/secret')
-def serve_secret():
-    return jsonify({"key":conf.SWEET_SECRET_KEY[0]})
-
-
 import logging,os
 from logging import FileHandler
 
