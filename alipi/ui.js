@@ -50,7 +50,7 @@ var a11ypi = {
 				var newel = document.createElement("a");
 				newel.textContent = a11ypi.showbox[i]['lang'];
 				if(type === 're-narration')
-					$(newel).attr("href",config.deploy+"/?foruri="+a['foruri']+"&lang="+a11ypi.showbox[i]['lang']+"&interactive=1"+"&type="+type);
+					$(newel).attr("href",config.deploy+"/?foruri="+encodeURIComponent(a['foruri'])+"&lang="+a11ypi.showbox[i]['lang']+"&interactive=1"+"&type="+type);
 				else
 					$(newel).attr("href",config.deploy+"/?foruri="+a['foruri']+"&tags="+a11ypi.showbox[i]['lang']+"&interactive=0"+"&type="+type);
 				para.appendChild(newel);

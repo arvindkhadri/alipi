@@ -70,7 +70,6 @@ def start_page() :
         setScripts()
         g.root.body.set("onload","a11ypi.loadOverlay();")
         response = make_response()
-        response.set_cookie("key", conf.SWEET_SECRET_KEY[0])
         response.data = lxml.html.tostring(g.root)
         return response
 
@@ -80,7 +79,6 @@ def start_page() :
         g.root.body.set("onload","a11ypi.ren();a11ypi.tweet(); a11ypi.facebook(); a11ypi.loadOverlay();")
         g.root.make_links_absolute(d['foruri'], resolve_base_href = True)
         response = make_response()
-        response.set_cookie("key", conf.SWEET_SECRET_KEY[0])
         response.data = lxml.html.tostring(g.root)
         return response
 
@@ -97,7 +95,6 @@ def start_page() :
         script_test.set("type", "text/javascript")
         g.root.body.set("onload","a11ypi.ren()");
         response = make_response()
-        response.set_cookie("key", conf.SWEET_SECRET_KEY[0])
         response.data = lxml.html.tostring(g.root)
         return response
 
@@ -108,7 +105,6 @@ def start_page() :
         g.root.body.set("onload","a11ypi.filter(); a11ypi.tweet(); a11ypi.facebook(); a11ypi.loadOverlay();");
         g.root.make_links_absolute(d['foruri'], resolve_base_href = True)
         response = make_response()
-        response.set_cookie("key", conf.SWEET_SECRET_KEY[0])
         response.data = lxml.html.tostring(g.root)
         return response
 
@@ -117,7 +113,6 @@ def start_page() :
         g.root.make_links_absolute(d['foruri'], resolve_base_href = True)
         g.root.body.set('onload', 'a11ypi.loadOverlay();')
         response = make_response()
-        response.set_cookie("key", conf.SWEET_SECRET_KEY[0])
         response.data = lxml.html.tostring(g.root)
         return response
 
@@ -126,11 +121,9 @@ def setScripts():
     script_test = g.root.makeelement('script')
     script_edit = g.root.makeelement('script')
     script_auth = g.root.makeelement('script')
-    script_cookie_reader = g.root.makeelement('script')
     g.root.body.append(script_test)
     g.root.body.append(script_edit)
     g.root.body.append(script_auth)
-    g.root.body.append(script_cookie_reader)
     script_test.set("src", conf.APPURL[0] + "/alipi/ui.js")
     script_test.set("type", "text/javascript")
     script_edit.set("src", conf.APPURL[0] + "/alipi/wsgi/pageEditor.js")
@@ -141,8 +134,6 @@ def setScripts():
     script_config.set("type", "text/javascript")
     script_auth.set("src", conf.SWEETURL[0] + "/authenticate")
     script_auth.set("type","text/javascript")
-    script_cookie_reader.set("src", url_for("static", filename="cookieReader.js"))
-    script_cookie_reader.set("type","text/javascript")
 
     script_jq_mini = g.root.makeelement('script')
     g.root.body.append(script_jq_mini)
@@ -392,9 +383,10 @@ def get_all_lang():
 
 @app.route('/publish', methods=['POST'])
 def publish():
-    print "entered"
     data = json.loads(request.form['data'])
     collection = g.db['post']
+    if type(data) is unicode: #A hack to fix malformed data. FIXME.
+        data = json.loads(data)
     for i in data:
         i['bxpath'] = ''
         collection.insert(i)

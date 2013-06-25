@@ -399,7 +399,7 @@ var util = {
 						});
 				});
 			});
-			$.post(config.deploy+'/publish',	{data : JSON.stringify(util.buildDataString())},
+				$.post(config.deploy+'/publish',	{"data" : JSON.stringify(util.buildDataString())},
 						function(data){
 								window.location.reload();
 								});
