@@ -590,7 +590,7 @@ var a11ypi = {
 							util.publish();
 						},
 						Authenticate: function() {
-						var reply = sweet.authenticate($("#auth-select").val(), $("#tar-pass").val());
+							var reply = sweet.authenticate(config.sweet+"/authenticate", $("#auth-select").val(), $("#tar-pass").val());
 							if(reply === true)
 								alert("authenticated");
 						}
