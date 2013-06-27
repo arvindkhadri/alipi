@@ -69,7 +69,7 @@ var a11ypi = {
 	    						a11ypi.showbox = data;
 									$('#see-narration').show();
 									// $("#blog-filter").show(); a11ypi.blogFilter();
-									$("#go").show();
+									//$("#go").show();
 	    					});
 
 	    if(a['lang'])
@@ -330,7 +330,7 @@ var a11ypi = {
       '<button id="see-links" class="alipi" onclick="a11ypi.showBox1();" title="See other re-narrated pages of this domain">Re-narrated Pages '+
 	    '</button>'+
       // '<select id="blog-filter" class="alipi" onChange="a11ypi.checkSelect();" title="Select one of the blog name"></select>'+
-      // '<button id="go" class="alipi ui-icon-circle-arrow-e" onclick="a11ypi.go();" title="Filter by blog" >|Y|</button>'+
+      '<button id="go" class="alipi ui-icon-circle-arrow-e" onclick="a11ypi.go();" title="Filter by blog" >|Y|</button>'+
       '<div id="show-box" title="Choose a narration"></div> '+
 	    '<div id="show-comment" title="Comments for"></div> '+
 	    '<div id="show-links" title="List of pages narrated in this domain" class="alipi"></div> '+
