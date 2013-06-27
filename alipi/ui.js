@@ -68,7 +68,7 @@ var a11ypi = {
 	    					{
 	    						a11ypi.showbox = data;
 									$('#see-narration').show();
-									$("#blog-filter").show(); a11ypi.blogFilter();
+									// $("#blog-filter").show(); a11ypi.blogFilter();
 									$("#go").show();
 	    					});
 
@@ -85,28 +85,35 @@ var a11ypi = {
 		if(a11ypi.fflag == '0')
 		{
 	    a11ypi.fflag = 1;
-			 var xhr = new XMLHttpRequest();
-				    xhr.onreadystatechange = function()
-				    {
-					if(xhr.readyState == 4)
-					{
-					    if(xhr.responseText == "empty")
-					    {
-			//			a11ypi.clearMenu();
-					    }
-					    else
-					    {
-						a11ypi.createMenuFilter(JSON.parse(xhr.responseText));
-					    }
-					}
-				    }
-				    xhr.open("POST",config.root+"/menu",true);
-				    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-				    a = a11ypi.getParams();
-				    data = 'url='+a['foruri']+'&option='+a['blog'];
-				    xhr.send(data) ;
-		}
+			 // var xhr = new XMLHttpRequest();
+		// 		    xhr.onreadystatechange = function()
+		// 		    {
+		// 			if(xhr.readyState == 4)
+		// 			{
+		// 			    if(xhr.responseText == "empty")
+		// 			    {
+		// 	//			a11ypi.clearMenu();
+		// 			    }
+		// 			    else
+		// 			    {
+		// 				a11ypi.createMenuFilter(JSON.parse(xhr.responseText));
+		// 			    }
+		// 			}
+		// 		    }
+		// 		    xhr.open("POST",config.deploy+"/menu",true);
+		// 		    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		// 		    a = a11ypi.getParams();
+		// 		    data = 'url='+a['foruri']+'&option='+a['blog'];
+		// 		    xhr.send(data) ;
+		// }
+			var request = {};
+			request['url'] = a['foruri'];
+			request['option'] = a['blog'];
+			$.get(config.deploy+"/menu", {"url":a["foruri"], "option":a['blog']}, function(data){
+ 				a11ypi.createMenuFilter(JSON.parse(data));
 
+			});
+		}
   },
 
   getURL: function(e) {
@@ -322,8 +329,8 @@ var a11ypi = {
 	    // '5el</button>'+
       '<button id="see-links" class="alipi" onclick="a11ypi.showBox1();" title="See other re-narrated pages of this domain">Re-narrated Pages '+
 	    '</button>'+
-      '<select id="blog-filter" class="alipi" onChange="a11ypi.checkSelect();" title="Select one of the blog name"></select>'+
-      '<button id="go" class="alipi ui-icon-circle-arrow-e" onclick="a11ypi.go();" title="Filter by blog" >|Y|</button>'+
+      // '<select id="blog-filter" class="alipi" onChange="a11ypi.checkSelect();" title="Select one of the blog name"></select>'+
+      // '<button id="go" class="alipi ui-icon-circle-arrow-e" onclick="a11ypi.go();" title="Filter by blog" >|Y|</button>'+
       '<div id="show-box" title="Choose a narration"></div> '+
 	    '<div id="show-comment" title="Comments for"></div> '+
 	    '<div id="show-links" title="List of pages narrated in this domain" class="alipi"></div> '+
@@ -727,38 +734,51 @@ var a11ypi = {
 	    function () {$('#show-links').title= '';}
 		);
   },
-  blogFilter: function() {
-		if (a11ypi.blog_flag == false) {
-		    a11ypi.blog_flag = true;
-		    var xhr = new XMLHttpRequest();
-		    xhr.onreadystatechange = function()
-		    {
-			if(xhr.readyState == 4)
-			{
-			    if(xhr.responseText == "empty")
-			    { }
-			    else
-			    {
-				var sel = $("#blog-filter");
-				var menu_list = JSON.parse(xhr.responseText);
-				opt = document.createElement("option");
-				opt.textContent = "Choose a blog";
-				sel.append(opt);
-				for (var i=0; i < menu_list.length; i++)
-				{
-				    opt = document.createElement("option");
-				    opt.textContent = menu_list[i];
-				    sel.append(opt);
-				}
-			    }
-			}
-		    }
-		    xhr.open("POST",config.root+"/blog",true);
-		    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-		    a = a11ypi.getParams();
-		    xhr.send('url='+a['foruri']);
-		}
-  },
+  // blogFilter: function() {
+	// 	if (a11ypi.blog_flag == false) {
+	// 	    a11ypi.blog_flag = true;
+	// 	    // var xhr = new XMLHttpRequest();
+	// 	  //   xhr.onreadystatechange = function()
+	// 	  //   {
+	// 		// if(xhr.readyState == 4)
+	// 		// {
+	// 		//     if(xhr.responseText == "empty")
+	// 		//     { }
+	// 		//     else
+	// 		//     {
+	// 		// 	var sel = $("#blog-filter");
+	// 		// 	var menu_list = JSON.parse(xhr.responseText);
+	// 		// 	opt = document.createElement("option");
+	// 		// 	opt.textContent = "Choose a blog";
+	// 		// 	sel.append(opt);
+	// 		// 	for (var i=0; i < menu_list.length; i++)
+	// 		// 	{
+	// 		// 	    opt = document.createElement("option");
+	// 		// 	    opt.textContent = menu_list[i];
+	// 		// 	    sel.append(opt);
+	// 		// 	}
+	// 		//     }
+	// 		// }
+	// 	  //   }
+	// 	  //   xhr.open("POST",config.deploy+"/blog",true);
+	// 	  //   xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	// 	  //   a = a11ypi.getParams();
+	// 	  //   xhr.send('url='+a['foruri']);
+	// 		$.get(config.deploy+"/blog", {"url":a['foruri']}, function(data){
+	// 			var sel = $("#blog-filter");
+	// 			var menu_list = JSON.parse(data);
+	// 			opt = document.createElement("option");
+	// 			opt.textContent = "Choose a blog";
+	// 			sel.append(opt);
+	// 			for (var i=0; i < menu_list.length; i++)
+	// 			{
+	// 			    opt = document.createElement("option");
+	// 			    opt.textContent = menu_list[i];
+	// 			    sel.append(opt);
+	// 			}
+	// 		});
+	// 	}
+  // },
   go: function() {
 		var a =[];
 		for (var i = 0;i<d.split('&').length;i++){
