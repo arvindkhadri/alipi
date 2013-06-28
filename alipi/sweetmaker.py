@@ -30,7 +30,7 @@ def makeSweet(sweet_list):
     for sweet in sweet_list:
         if len(sweet['who']) and len(sweet['what']) and len(sweet['where'])\
            and len(sweet['how']):
-            sweet['created'] = datetime.now().strftime(TIMESTAMP_FORMAT)
+            sweet['created'] = datetime.utcnow().strftime(TIMESTAMP_FORMAT)
         else:
             return False
     return sweet_list
