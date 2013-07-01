@@ -653,25 +653,29 @@ var a11ypi = {
   },
 
   ajaxLinks1: function() {
-		var xhr = new XMLHttpRequest();
-		xhr.onreadystatechange = function()
-		{
-	    if(xhr.readyState == 4)
-	    {
-				if(xhr.responseText == "empty")
-				{ }
-				else
-				{
-					$('#see-links').show();
-					a11ypi.showlinks = JSON.parse(xhr.responseText);
-				}
-	    }
-		}
-		xhr.open("POST",config.root+"/domain",true);
-		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-		d = window.location.search.split('?')[1];
-		a = a11ypi.getParams();
-		xhr.send('url='+a['foruri'])
+		// var xhr = new XMLHttpRequest();
+		// xhr.onreadystatechange = function()
+		// {
+	  //   if(xhr.readyState == 4)
+	  //   {
+		// 		if(xhr.responseText == "empty")
+		// 		{ }
+		// 		else
+		// 		{
+		// 			$('#see-links').show();
+		// 			a11ypi.showlinks = JSON.parse(xhr.responseText);
+		// 		}
+	  //   }
+		// }
+		// xhr.open("POST",config.deploy+"/domain",true);
+		// xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		// d = window.location.search.split('?')[1];
+		// a = a11ypi.getParams();
+		// xhr.send('url='+a['foruri'])
+
+		$.get(config.deploy+"/domain", {"url":a['foruri']}, function(data){
+			a11ypi.showlinks = JSON.parse(data);
+		});
   },
   showBox1: function() {
 		this.hideAll();

@@ -455,6 +455,33 @@ def menuForDialog():
             connection.disconnect()
             return "empty"
 
+
+@app.route("/domain")
+def serve_domain_info():
+    collection = g.db['post']
+    url = request.args['url']
+    #all re-narrations of the same xpath are grouped
+    query = collection.group(
+        key = None,
+        condition={"about" :{'$regex':url+'*'}},
+        initial={'narration': []},
+        reduce=Code('function(doc,out){out.narration.push(doc["about"]);}')
+    )
+
+    string=''
+    if len(query)==0:
+        return 'empty'
+    else:
+        otherlist = []
+        mylist = query[0]['narration']
+        for i in mylist:
+            if i in otherlist:
+                pass
+            else:
+                otherlist.append(str(i))
+                return json.dumps(otherlist)
+
+
 import logging,os
 from logging import FileHandler
 
