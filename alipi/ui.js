@@ -544,11 +544,11 @@ var a11ypi = {
       '<div>' +
       '<h3> Registered Users:</h3>' +
       '<div style="text-align: left;">Please enter your username and password </div>' +
-			'<input id="tar-uname" type="text" placeholder="john">'+
-			'<input id="tar-pass" class="" type="password" placeholder="password">'+
+			'<input id="tar-uname" type="text" placeholder=" username" size="30">'+
+			'<input id="tar-pass" class="" type="password" placeholder=" password" size="30">'+
       '<h3 class="">Guest Users:</h3>' +
       '<div>Please enter your name </div>' +
-			'<input id="tar-name" class="" type="text" placeholder="John" /> '+
+			'<input id="tar-name" class="" type="text" placeholder=" Your name" /> '+
       '</div>' +
       '</div>';
 
