@@ -453,11 +453,12 @@ var util = {
 			dict["elementtype"] = command.elementType;
 			dict["xpath"] = command.xpath;
 			dict["data"] = command.data;
-			if ($('#auth-select').val() == '' || $('#auth-select').val() == /\S/) {
+			/*if ($('#auth-select').val() == '' || $('#auth-select').val() == /\S/) {
 				dict["author"] = "Anonymous";
 			} else {
 				dict["author"] = $('#auth-select').val();
-			}
+			}*/
+      dict['author'] = $('#tar-uname').val() || $('#tar-name').val() || 'Anonymous';
 			buff.push(dict);
 
 			// buffer.append('###'); //separates the commands

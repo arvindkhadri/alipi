@@ -343,7 +343,7 @@ var a11ypi = {
 	    'Exit</button>'+
       '<button id="help-window" class="alipi" onclick="a11ypi.help_window();" title="How may I help you in editing this page?">Help</button>'+
       '<button id="undo-button" class="alipi" onclick="util.undoChanges();"title="Undo previous change, one by one">Undo changes</button>'+
-      '<button id="publish-button" class="alipi" onclick="a11ypi.publish();"title="Publish your changes to blog">Publish</button></div>';
+      '<button id="publish-button" class="alipi" onclick="a11ypi.loginToSwtStore();"title="Publish your changes to blog">Publish</button></div>';
 
     var element_edit_overlay_template = '<div id="element_edit_overlay" class="alipi ui-widget-header ui-corner-all" >'+
 					'<button id="edit-text" class="alipi" onclick="a11ypi.displayEditor();" title="Help you to edit this element by providing an editor on right'+
@@ -539,7 +539,77 @@ var a11ypi = {
 
   },
 
+  loginToSwtStore: function() {
+    var login_template = '<div id="login-template" style="display: none;" title="Please login" class="alipi ui-widget-header ui-corner-all">' +
+      '<div>' +
+      '<h3> Registered Users:</h3>' +
+      '<div style="text-align: left;">Please enter your username and password </div>' +
+			'<input id="tar-uname" type="text" placeholder="john">'+
+			'<input id="tar-pass" class="" type="password" placeholder="password">'+
+      '<h3 class="">Guest Users:</h3>' +
+      '<div>Please enter your name </div>' +
+			'<input id="tar-name" class="" type="text" placeholder="John" /> '+
+      '</div>' +
+      '</div>';
+
+    if($('#login-template').length == 0) {
+      $('body').append(login_template);
+    }
+	  $(document).unbind('mouseover'); // Unbind the css on mouseover
+	  $(document).unbind('mouseout'); // Unbind the css on mouseout
+
+    $('#login-template').dialog({
+      height: 400,
+      width: 400,
+      position: 'center',
+      modal: true,
+      buttons: [
+        {
+          text: 'Login',
+          click: function() {
+            console.log('login');
+            var uname = $('#tar-uname').val();
+            var pass = $('#tar-pass').val();
+            if(uname && pass) {
+              $('.login-button > .ui-button-text').text('Please wait..');
+              sweet.authenticate(config.sweet + '/authenticate', uname, pass, a11ypi.publish, function() {
+                $('.login-button > .ui-button-text').text('Login');
+              });
+            }
+            else {
+              //console.log('no username and password');
+              //$('#login-error').show();
+              //TODO: have a proper UI
+              alert('No username or password provided! Please enter both and then click Login');
+            }
+          },
+          'class': 'login-button'
+        },
+        {
+          text: 'Guest Login',
+          click: function() {
+            console.log('guest login');
+            var name = $('#tar-name').val();
+            if(name) {
+              $(this).dialog('close');
+              a11ypi.publish();
+            }
+            else {
+              //console.log('no guest name');
+              //$('#guest-error').show();
+              alert('Please provide a name for Guest Login');
+            }
+          }
+        }
+      ],
+      close: function() {
+        console.log('close');
+      }
+    });
+  },
+
   publish: function() {
+    $('#login-template').dialog('close');
 		if(util.hasChangesPending())
 		{
 	    $('#pub_overlay').slideUp();
@@ -559,9 +629,6 @@ var a11ypi = {
 					'<select id="style-select" class="alipi" > '+
 					'<option>Translation</option><option>Technical</option><option>Fun</option><option>Simplification</option> '+
 					'<option>Correction</option><option>Evolution</option><option>Other</option></select>'+
-					'<label id="tar-lab5" class="alipi" >Enter an author name for your contribution: </label> '+
-					'<input id="auth-select" class="alipi" type="text" placeholder="John" /> '+
-					'<input id="tar-pass" class="alipi" type="password" placeholder="password"/>'+
 					'<div id="blogset" > We are having issues with posting to a personal Google blog.  Please use demo.swtr.us to publish.</div> '+
 					'<p id="tar-p" ><input id="our-check" class="alipi" type="radio"name="blog" /> '+
 					'<label id="tar-lab6" class="alipi" > demo.swtr.us </label><input id="your-check" class="alipi" type="radio" name="blog" /> '+
@@ -589,11 +656,7 @@ var a11ypi = {
 						Publish: function() {
 							util.publish();
 						},
-						Authenticate: function() {
-							var reply = sweet.authenticate(config.sweet+"/authenticate", $("#auth-select").val(), $("#tar-pass").val());
-							if(reply === true)
-								alert("authenticated");
-						}
+						
 					},
 					close: function() {
 						$('#pub_overlay').slideDown();

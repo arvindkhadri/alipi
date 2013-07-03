@@ -79,10 +79,10 @@
 #tar-lab4 { position:absolute; top:50%; left:125px; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
 #tar-lab5 { position:absolute; top:65%; left:125px; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
 #tar-lab6 { position:relative; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
-#tar-pass { position:absolute; top:77%; left:210px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }
+/*#tar-pass { position:absolute; top:77%; left:210px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }*/
 #tar-lab7 { position:relative; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
-#tar-p    { position:absolute; top:95%; left:210px; font-size:17px; font-weight:400; font-style:italic; text-align:justify; }
-#blogset  { position:absolute; top:85%; right:100px; left:125px; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
+#tar-p    { position:absolute; top:83%; left:210px; font-size:17px; font-weight:400; font-style:italic; text-align:justify; }
+#blogset  { position:absolute; top: 68%; right:100px; left:125px; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
 
 
 #loc-select   { position:absolute; top:25%; left:210px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }
