@@ -737,7 +737,11 @@ var a11ypi = {
 		// xhr.send('url='+a['foruri'])
 
 		$.get(config.deploy+"/domain", {"url":a['foruri']}, function(data){
-			a11ypi.showlinks = JSON.parse(data);
+			if(data[0] != 'empty')
+			{
+			a11ypi.showlinks = data;
+			$('#see-links').show();
+			}
 		});
   },
   showBox1: function() {
@@ -759,13 +763,12 @@ var a11ypi = {
   createDomainMenu: function() {
 		var xyz = $("#show-links");
 		xyz.html('');
-		menu_list = a11ypi.showlinks;
-		for(var i=0; i<menu_list.length;i++)
+		for(var i in a11ypi.showlinks)
 		{
 	    var para = document.createElement("p");
 	    var newel = document.createElement("a");
-	    newel.textContent = menu_list[i];
-	    newel.setAttribute("href", config.deploy+"/?foruri="+encodeURIComponent(menu_list[i]));
+	    newel.textContent = a11ypi.showlinks[i];
+	    newel.setAttribute("href", config.deploy+"/?foruri="+encodeURIComponent(a11ypi.showlinks[i]));
 	    newel.setAttribute("class","alipiShowLink");
 	    para.appendChild(newel);
 	    xyz.append(para);

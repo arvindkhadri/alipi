@@ -470,16 +470,18 @@ def serve_domain_info():
 
     string=''
     if len(query)==0:
-        return 'empty'
+        return jsonify({'0':'empty'})
     else:
-        otherlist = []
+        otherlist = {}
+        cntr = -1
         mylist = query[0]['narration']
         for i in mylist:
             if i in otherlist:
                 pass
             else:
-                otherlist.append(str(i))
-                return json.dumps(otherlist)
+                cntr += 1
+                otherlist[cntr] = str(i)
+                return jsonify(otherlist)
 
 
 import logging,os
