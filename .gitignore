@@ -11,3 +11,7 @@ Sanchaya/
 .#*
 logme
 config.js
+bin/
+local/
+lib/
+include/
