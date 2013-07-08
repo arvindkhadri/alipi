@@ -1,5 +1,5 @@
-Flask    
-GData
+Flask
 lxml
 oursql
 pymongo
+requests

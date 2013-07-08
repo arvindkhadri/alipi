@@ -1,0 +1,29 @@
+==REQUIREMENTS==
+--python packages--
+Flask
+pymongo
+oursql
+requests
+lxml
+sweetmaker
+
+--applications--
+mySQL
+MongoDB
+libxml
+libxslt
+
+
+==CONFIGURATION==
+Copy the sampleConf.py and sampleConfig.js file to conf.py and config.js, respectively,  and modify the files.
+
+
+==INSTALL==
+To install the required dependencies, use the following command when inside the top level directory of the project.
+$python setup.py develop
+
+After the packages and dependencies have been satisfied, the application can be started by,
+$python alipi.py
+
+==DEPLOYMENT==
+Alipi is a flask application. To deploy flask applications, please see http://flask.pocoo.org/docs/deploying/#deployment
