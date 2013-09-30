@@ -1,21 +1,33 @@
 <!doctype html>
 <html>
+<head>
 <title>Directory of Alipi</title>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+<style>
+.renarration-item-wrapper{
+border: 2px solid #DDDDDD;
+height: auto;
+width: auto;
+}
+</style>
+</head>
 <body>
-<div>
+<div class="container">
 <p>List of links narrated</p>
 {% if name %}
 {% for i in name %}
 {% if i['about'] != 'undefined' %}
+<div class="renarration-item-wrapper">
 <p><a href="{{i['about']}}">{{ i['about'] }}</a> in <a href="http://y.a11y.in/web?foruri={{ mymodule(i['about']) }}&lang={{i['lang']}}&interactive=1">{{i['lang']}}</a></p>
 <p style="padding:5px">Narrations contributed at:</p>
 {% for x in mylist(myset(i['na'])) %}
 <p><a href="{{x}}" style="padding:5px">{{x}}</a></p>
 {% endfor %}
 {% endif %}
+</div>
 {% endfor %}
 {% else %}
-<p>Hello world</p>
+<p>The directory listing is empty. </p>
 {% endif %}
 </div>
 </body>
