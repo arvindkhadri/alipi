@@ -486,7 +486,8 @@ var util = {
 	    // }
 		});
 		// return buffer.toString().substring(3);
-
+    buff.push({'comments': $("#tar-comment").val()});
+    console.log(buff);
 		return buff;
   },
 };

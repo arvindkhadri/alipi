@@ -17,15 +17,13 @@ var a11ypi = {
   {
 		if(document.getElementById('social_overlay') != null)
 	    document.body.removeChild(document.getElementById('social_overlay'));
- 		$(document).ready(function(){$('body *').contents().filter(function()
-																															 {
-																																 try{
-																																	 if(this.nodeType == 3 && !($(this).hasClass('alipi')))
-																																	 {
-																																		 return (this.nodeType == 3) && this.nodeValue.match(/\S/);}}
-																																 catch(err)
-																																 {
-																																 }}).parent().attr('m4pageedittype','text')});
+ 		$(document).ready(function(){$('body *').contents().filter(function(){
+		    try{
+			    if(this.nodeType === 3 && !($(this).hasClass('alipi'))){
+				    return (this.nodeType === 3) && this.nodeValue.match(/\S/);}}
+        catch(err){
+		      }
+    }).parent().attr('m4pageedittype','text')});
 
 		vimg = document.getElementsByTagName('img');
 		for(i=0; i<vimg.length; i++)
@@ -629,6 +627,7 @@ var a11ypi = {
 					'<select id="style-select" class="alipi" > '+
 					'<option>Translation</option><option>Technical</option><option>Fun</option><option>Simplification</option> '+
 					'<option>Correction</option><option>Evolution</option><option>Other</option></select>'+
+          '<div id="free-form"><label id="tar-lab8" class="alipi">Comments:</label><textarea id="tar-comment"></textarea></div>'+
 					'<div id="blogset" > We are having issues with posting to a personal Google blog.  Please use demo.swtr.us to publish.</div> '+
 					'<p id="tar-p" ><input id="our-check" class="alipi" type="radio"name="blog" /> '+
 					'<label id="tar-lab6" class="alipi" > demo.swtr.us </label><input id="your-check" class="alipi" type="radio" name="blog" /> '+
@@ -650,13 +649,13 @@ var a11ypi = {
 	    $(function() {
 				$( "#targetoverlay" ).dialog({
 					height:550,
-					width:600,
+					width:700,
 					modal: true,
 					buttons: {
 						Publish: function() {
 							util.publish();
 						},
-						
+
 					},
 					close: function() {
 						$('#pub_overlay').slideDown();

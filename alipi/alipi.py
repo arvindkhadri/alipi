@@ -385,11 +385,29 @@ def get_all_lang():
 def publish():
     data = json.loads(request.form['data'])
     collection = g.db['post']
+    page = {}
     if type(data) is unicode: #A hack to fix malformed data. FIXME.
         data = json.loads(data)
-    for i in data:
-        i['bxpath'] = ''
-        collection.insert(i)
+    content = []
+    for i in data: #Create content objects here for posting to blog.  DELETEME.
+        if 'comments' in i:
+            page['comments'] = i['comments']
+        else:
+            contentobj = {}
+            contentobj['type'] = i['elementtype']
+            contentobj['attr'] = {"language":i['lang'], "location":i['location'], "about":i['about'], "xpath":i['xpath']}
+            contentobj['data'] = i['data']
+            content.append(contentobj)
+            i['bxpath'] = ''
+            collection.insert(i)
+
+    print data
+
+    page['title'] = "Re-narration of " + content[0]['about']
+    page['name'] = "About " + content[0]['about']
+    page['content'] = content
+
+    requests.api.post(conf.CUSTOM_BLOG_POST_URL[0], json.dumps(page), headers={"content-type":"application/json"})
     sweet(data)
     reply = make_response()
     return reply
@@ -398,8 +416,10 @@ def publish():
 def sweet(data):
     """ A function to sweet the data that is inserted.  Accepts a <list of dicts>. """
     for i in data:
-        del(i['_id'])
-        sweetmaker.sweet(conf.SWEET_STORE_ADD[0], [{"what":i['type'], "who":i['author'], "where":i['about']+i['xpath'], "how":i['data']+' {lang: '+i["lang"]+',loc: '+i["location"]+'}'}])
+        if 'type' in i:
+            print i
+            del(i['_id'])
+            sweetmaker.sweet(conf.SWEET_STORE_ADD[0], [{"what":i['type'], "who":i['author'], "where":i['about']+i['xpath'], "how":i['data']+' {lang: '+i["lang"]+',loc: '+i["location"]+'}'}])
     return True
         # data = json.dumps(data)
     # req = requests.api.post(conf.SWEETURL[0]+"/add",{'data':data})

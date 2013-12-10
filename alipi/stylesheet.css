@@ -78,25 +78,27 @@
 #tar-lab3 { position:absolute; top:35%; left:125px; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
 #tar-lab4 { position:absolute; top:50%; left:125px; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
 #tar-lab5 { position:absolute; top:65%; left:125px; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
-#tar-lab6 { position:relative; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
-/*#tar-pass { position:absolute; top:77%; left:210px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }*/
-#tar-lab7 { position:relative; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
-#tar-p    { position:absolute; top:83%; left:210px; font-size:17px; font-weight:400; font-style:italic; text-align:justify; }
-#blogset  { position:absolute; top: 68%; right:100px; left:125px; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
+#tar-lab6 { position:relative; top:120%; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify;margin:-20px 0px 0px 25px; }
+#tar-pass { position:absolute; top:77%; left:210px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }
+#tar-lab7 { position:relative; top:-41px;left:215px;font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
+#tar-p    { position:absolute; top:105%; left:150px; font-size:17px; font-weight:400; font-style:italic; text-align:justify; }
+#blogset  { position:absolute; top: 90%; right:100px; left:125px; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
 
 
-#loc-select   { position:absolute; top:25%; left:210px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }
+#loc-select   { position:absolute; top:27%; left:215px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }
 #loc-img      { position:absolute; top:25.5%; left:440px; height:20px; width:25px; font-size:17px; font-weight:400; font-style:italic;
 		color:#000; text-align:justify; display:none; }
-#lang-select  { position:absolute; top:40%; left:210px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }
+#lang-select  { position:absolute; top:42%; left:215px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }
 #lang-img     { position:absolute; top:41%; left:440px; height:18px; width:25px; font-size:17px; font-weight:400; font-style:italic;
 		color:#000; text-align:justify; display:none; }
-#style-select { position:absolute; top:55%; left:210px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }
+#style-select { position:absolute; top:57%; left:215px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }
 #auth-select  { position:absolute; top:70%; left:210px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }
 
-#our-check  { position:relative; }
-#your-check { position:relative; margin-left:25px; }
-
+#our-check  { position:relative top:120%; }
+#your-check { position:relative; left:155%; top:-20px; }
+#free-form {margin:240px 0px 0px 150px;}
+#tar-lab8 {position:absolute; left:125px; color:#aaa; font-size:17px; font-weight:200; font-style:italic; text-align:justify;}
+#tar-comment{margin:20px 0 0 45px;width:53%;height:80px;}
 }
 /****************************************************************************************************************************/
 
@@ -184,7 +186,7 @@
 #tar-lab6 { position:relative; color:#aaa; font-size:14px; font-weight:200; font-style:italic; text-align:justify; }
 #tar-lab7 { position:relative; color:#aaa; font-size:14px; font-weight:200; font-style:italic; text-align:justify; }
 #tar-p    { position:absolute; top:90%; left:210px; font-size:14px; font-weight:200; font-style:italic; text-align:justify; }
-#blogset  { position:absolute; top:80%; left:125px; right:80px; color:#aaa; font-size:14px; font-weight:200; font-style:italic; text-align:justify; }
+#blogset  { position:absolute; top:100%; left:125px; right:80px; color:#aaa; font-size:14px; font-weight:200; font-style:italic; text-align:justify; }
 
 #loc-select   { position:absolute; top:25%; left:210px; width:256px; color:#000; font-size:14px; font-weight:200; font-style:italic; text-align:justify; }
 #loc-img      { position:absolute; top:25.5%; left:440px; height:20px; width:25px; color:#000; font-size:14px; font-weight:200; font-style:italic;
@@ -213,3 +215,7 @@
 .tip { color: #fff; width: 140px; background-color: rgba(0,0,0,1); border:1px solid #ccc; -moz-box-shadow:#555 2px 2px 8px;
        -webkit-box-shadow:#555 2px 2px 8px; -o-box-shadow:#555 2px 2px 8px; box-shadow:#555 2px 2px 8px; opacity:1; font-size:12px;
        font-family:Verdana, Geneva, Arial, Helvetica, sans-serif; padding:7px; }
+/* #free-form { */
+/* margin: 220px 0px 0px 150px; */
+
+/* } */
