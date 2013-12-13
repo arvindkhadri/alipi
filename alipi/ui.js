@@ -17,13 +17,22 @@ var a11ypi = {
   {
 		if(document.getElementById('social_overlay') != null)
 	    document.body.removeChild(document.getElementById('social_overlay'));
- 		$(document).ready(function(){$('body *').contents().filter(function(){
+ 		$(document).ready(function(){
+      try{
+        $('body *').not('iframe').contents().filter(function(){
 		    try{
-			    if(this.nodeType === 3 && !($(this).hasClass('alipi'))){
-				    return (this.nodeType === 3) && this.nodeValue.match(/\S/);}}
-        catch(err){
+
+          if(this.nodeType == 3 && !($(this).hasClass('alipi'))){
+				    return (this.nodeType == 3) && this.nodeValue.match(/\S/);}}
+          catch(err){
+            console.log(err);
 		      }
-    }).parent().attr('m4pageedittype','text')});
+      }).parent().attr('m4pageedittype','text');
+      }
+      catch(e){
+        console.log(this);
+      }
+    });
 
 		vimg = document.getElementsByTagName('img');
 		for(i=0; i<vimg.length; i++)
@@ -317,10 +326,15 @@ var a11ypi = {
   },
   loadOverlay: function()
   {
-		var overlay_template = '<div id="renarrated_overlay" class="alipi ui-widget-header ui-corner-all">'+
+    yepnope([{
+      test: window.jQuery,
+      nope:['//code.jquery.com/jquery-1.10.2.min.js'],
+      load:['//code.jquery.com/ui/1.10.3/jquery-ui.js'],
+      complete:function(){
+		  var overlay_template = '<div id="renarrated_overlay" class="alipi ui-widget-header ui-corner-all">'+
       '<button id="outter-down-button" class="alipi" onclick="a11ypi.outterToggle();" up="true" title="Move this bar to top">Move</button> '+
 	    '<button id="outter-up-button" class="alipi" onclick="a11ypi.outterToggle();" title="Move this bar to bottom">Move</button> '+
-	    '<button id="edit-current" class="alipi" onclick="a11ypi.editPage();" title="Allow to edit this page">Re-narrate</button> '+
+	    '<button id="edit-current" class="alipi" title="Allow to edit this page">Re-narrate</button> '+
 	    '<button id="see-narration" class="alipi" onclick="a11ypi.showBox();" title="See other renarrations, which are in same or other languages"> '+
 	    'Re-narrations</button>'+
 	    // '<button id="see-comment" class="alipi" onclick="a11ypi.showComment();" title="5el"> '+
@@ -363,7 +377,7 @@ var a11ypi = {
 		$('#go').button({disabled : true});
 		$('#undo-button').button({ disabled: true});
 		$('#publish-button').button({ disabled: true});
-		$('input:.alipi, select:.alipi').button();
+		$('input[class="alipi"], select[class="alipi"]').button();
 
 		$("#outter-down-button").button({icons:{primary:"ui-icon-circle-arrow-n"},text:false});  $('#outter-down-button').children().addClass('alipi');
 		$("#outter-up-button").button({icons:{primary:"ui-icon-circle-arrow-s"},text:false});  $('#outter-up-button').children().addClass('alipi');
@@ -390,6 +404,9 @@ var a11ypi = {
 		$("#delete-image").button({icons:{primary:"ui-icon-trash"}}); $('#delete-image').children().addClass('alipi');
 		$("#close-element").button({icons:{primary:"ui-icon-circle-close"},text:false}); $("#close-element").children().addClass('alipi');
 
+    $("#edit-current").button();
+    $("#edit-current").on("click", a11ypi.editPage);
+
 		$('#renarrated_overlay').addClass('barOnTop');
 		a11ypi.ajax();
 		a11ypi.ajaxLinks1();
@@ -412,6 +429,7 @@ var a11ypi = {
 	    $('#orig-button').insertAfter($('#go'));  $('#orig-button').show();
 	    $('#share-box').append($('#fb-like')); $('#share-box').append($('#tweet-root'));
 		}
+      }}]);
   },
   checkSelect: function()
   {
@@ -870,12 +888,12 @@ var a11ypi = {
 		});
   },
   editPage: function() {
-		this.hideAll();
+		//this.hideAll();
 		a11ypi.testContext();
 		$('#pub_overlay').show(); $('#pub_overlay').addClass('barOnTop');
 		$('#icon-down').show();
 		$('#renarrated_overlay').hide();
-		$('body *').contents().filter(function(){
+		$('body *').not('iframe').contents().filter(function(){
 	    {
 				try{
 					if(!($(this).hasClass('alipi')) && $(this).attr('m4pageedittype') )
@@ -888,7 +906,7 @@ var a11ypi = {
 	    }
 		}).click(pageEditor.startEdit);
 
-		$('body *').contents().filter(function(){
+		$('body *').not('iframe').contents().filter(function(){
 	    {
 				try{
 					if(!($(this).hasClass('alipi')) || $(this).attr('m4pageedittype'))

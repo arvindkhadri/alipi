@@ -39,7 +39,7 @@ def close(exception):
 def start_page() :
     d = {}
     d['foruri'] = request.args['foruri']
-    myhandler1 = urllib2.Request(d['foruri'],headers={'User-Agent':"Mozilla/5.0 (X11; U; Linux i686) Gecko/20071127 Firefox/2.0.0.11"}) #A fix to send user-agents, so that sites render properly.
+    myhandler1 = urllib2.Request(d['foruri'],headers={'User-Agent':"Mozilla/5.0 (X11; Linux x86_64; rv:25.0) Gecko/20100101 Firefox/25.0)"}) #A fix to send user-agents, so that sites render properly.
     try:
         a = urllib2.urlopen(myhandler1)
         if a.geturl() != d['foruri']:
@@ -119,43 +119,43 @@ def start_page() :
 
 def setScripts():
     script_test = g.root.makeelement('script')
-    script_edit = g.root.makeelement('script')
+    # script_edit = g.root.makeelement('script')
     script_auth = g.root.makeelement('script')
     g.root.body.append(script_test)
-    g.root.body.append(script_edit)
+    # g.root.body.append(script_edit)
     g.root.body.append(script_auth)
-    script_test.set("src", conf.APPURL[0] + "/alipi/ui.js")
+    script_test.set("src", conf.APPURL[0] + "/alipi/pack.min.js")
     script_test.set("type", "text/javascript")
-    script_edit.set("src", conf.APPURL[0] + "/alipi/wsgi/pageEditor.js")
-    script_edit.set("type","text/javascript")
-    script_config = g.root.makeelement('script')
-    g.root.body.append(script_config)
-    script_config.set("src", conf.APPURL[0] + "/alipi/config.js")
-    script_config.set("type", "text/javascript")
+    # script_edit.set("src", conf.APPURL[0] + "/alipi/wsgi/pageEditor.js")
+    # script_edit.set("type","text/javascript")
+    # script_config = g.root.makeelement('script')
+    # g.root.body.append(script_config)
+    # script_config.set("src", conf.APPURL[0] + "/alipi/config.js")
+    # script_config.set("type", "text/javascript")
     script_auth.set("src", conf.SWEETURL[0] + "/authenticate")
     script_auth.set("type","text/javascript")
 
-    script_jq_mini = g.root.makeelement('script')
-    g.root.body.append(script_jq_mini)
-    script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery.min.js")
-    script_jq_mini.set("type", "text/javascript")
+    # script_jq_mini = g.root.makeelement('script')
+    # g.root.body.append(script_jq_mini)
+    # script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery.min.js")
+    # script_jq_mini.set("type", "text/javascript")
 
     style = g.root.makeelement('link')
     g.root.body.append(style)
     style.set("rel","stylesheet")
     style.set("type", "text/css")
-    style.set("href", conf.APPURL[0] + "/alipi/stylesheet.css")
+    style.set("href", conf.APPURL[0] + "/alipi/pack.min.css")
 
-    script_jq_cust = g.root.makeelement('script')
-    g.root.body.append(script_jq_cust)
-    script_jq_cust.set("src", conf.JQUERYUI[0] + "/jquery-ui.min.js")
-    script_jq_cust.set("type", "text/javascript")
+    # script_jq_cust = g.root.makeelement('script')
+    # g.root.body.append(script_jq_cust)
+    # script_jq_cust.set("src", conf.JQUERYUI[0] + "/jquery-ui.min.js")
+    # script_jq_cust.set("type", "text/javascript")
 
-    style_cust = g.root.makeelement('link')
-    style_cust.set("rel","stylesheet")
-    style_cust.set("type", "text/css")
-    style_cust.set("href", conf.JQUERYCSS[0] + "/jquery-ui.css")
-    g.root.body.append(style_cust)
+    # style_cust = g.root.makeelement('link')
+    # style_cust.set("rel","stylesheet")
+    # style_cust.set("type", "text/css")
+    # style_cust.set("href", conf.JQUERYCSS[0] + "/jquery-ui.css")
+    # g.root.body.append(style_cust)
 
 def setSocialScript():
     info_button = g.root.makeelement('button')
@@ -401,13 +401,12 @@ def publish():
             i['bxpath'] = ''
             collection.insert(i)
 
-    print data
-
-    page['title'] = "Re-narration of " + content[0]['about']
-    page['name'] = "About " + content[0]['about']
+    page['title'] = "Re-narration of " + content[0]['attr']['about']
+    page['name'] = "About " + content[0]['attr']['about']
     page['content'] = content
 
-    requests.api.post(conf.CUSTOM_BLOG_POST_URL[0], json.dumps(page), headers={"content-type":"application/json"})
+    g.response_from_blogger = requests.api.post(conf.CUSTOM_BLOG_POST_URL[0], json.dumps(page), headers={"content-type":"application/json"})
+    print "response from blogger " + repr(g.response_from_blogger)
     sweet(data)
     reply = make_response()
     return reply
@@ -417,9 +416,8 @@ def sweet(data):
     """ A function to sweet the data that is inserted.  Accepts a <list of dicts>. """
     for i in data:
         if 'type' in i:
-            print i
             del(i['_id'])
-            sweetmaker.sweet(conf.SWEET_STORE_ADD[0], [{"what":i['type'], "who":i['author'], "where":i['about']+i['xpath'], "how":i['data']+' {lang: '+i["lang"]+',loc: '+i["location"]+'}'}])
+            sweetmaker.sweet(conf.SWEET_STORE_ADD[0], [{"what":i['type'], "who":i['author'], "where":i['about']+i['xpath'], "how":conf.CUSTOM_BLOG_URL[0]+"/#"+g.response_from_blogger.json()['name']+' {lang: '+i["lang"]+',loc: '+i["location"]+'}'}])
     return True
         # data = json.dumps(data)
     # req = requests.api.post(conf.SWEETURL[0]+"/add",{'data':data})
