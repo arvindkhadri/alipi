@@ -1,0 +1,25 @@
+output: assets       # directory path relative to the current directory
+fingerprint: true    # add sha1 hash to the output file name
+
+js_minifier: slimit     # optionally use a minifier other than slimit.
+                     # expects a shell command that uses stdin/stdout.
+js_minifier_options: # options dictionary to configure JS minifier
+  mangle: True
+  mangle_toplevel: True
+
+javascript:
+  # 'common' is a bundle name, output file will have prefix 'common'
+  common:
+    - yepnope.js
+    - alipi/ui.js
+    - alipi/wsgi/pageEditor.js
+    - alipi/config.js
+  # utils:
+  #   # paths are relative to the current directory
+  #   - static/js/utils.js
+
+css:
+  base:
+    # you can use Unix shell-style wildcards in file names
+    - alipi/stylesheet.css
+    - alipi/apis/jquery-ui.css
