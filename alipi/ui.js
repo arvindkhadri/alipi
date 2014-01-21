@@ -1155,6 +1155,7 @@ window.onload = function() {
 
         });
         window.a11ypi.loadOverlay();
+        window.a11ypi.ren();
         var pageEditor = {
           event: 0 , //Use this var to store the event object, which will be passed for editor.
           m4pageedittype: '',
