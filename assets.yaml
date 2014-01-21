@@ -12,7 +12,6 @@ javascript:
   common:
     - yepnope.js
     - alipi/ui.js
-    - alipi/wsgi/pageEditor.js
     - alipi/config.js
   # utils:
   #   # paths are relative to the current directory
