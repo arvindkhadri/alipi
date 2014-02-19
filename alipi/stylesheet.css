@@ -52,13 +52,13 @@
 	     font-weight:400; font-style:normal; text-align:justify; color:#aaa; overflow:show; background:none; text-align:justify; }
 
 #editor { position:absolute; top:15%; left:52%; min-width:45%; max-width:45%; min-height:10%; border:3px solid #aaa; padding:10px; font-size:17px;
-	  font-weight:400; font-style:normal; text-align:justify; color:#000; background-color:#ffe; text-align:justify; }
+	  font-weight:400; font-style:normal; text-align:justify; color:#000; background-color:#ffe; text-align:justify; height:17em; overflow:scroll; }
 
 #ref-lab  { position:absolute; top:5%; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
 #edit-lab { position:absolute; top:5%; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
 
 #close-adv { position:absolute; top:7%; right:51%; font-size:17px; font-weight:400; font-style:italic; text-align:justify; }
-#adv-ref   { position:absolute; top:7%; right:51%; font-size:17px; font-weight:400; font-style:italic; text-align:justify; }
+#adv-ref   { position:absolute; top:3%; right:51%; font-size:17px; font-weight:400; font-style:italic; text-align:justify; }
 
 #mag-demag { position:absolute; bottom:5%; left:10%; font-size:17px; font-weight:400; font-style:italic; text-align:justify; }
 #mag       { position:absolute; left:3%; font-size:17px; font-weight:400; font-style:italic; text-align:justify; }
@@ -79,8 +79,8 @@
 #tar-lab4 { position:absolute; top:50%; left:125px; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
 #tar-lab5 { position:absolute; top:65%; left:125px; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
 #tar-lab6 { position:relative; top:120%; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify;margin:-20px 0px 0px 25px; }
-#tar-pass { position:absolute; top:77%; left:210px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }
-#tar-lab7 { position:relative; top:-41px;left:215px;font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
+#tar-pass { left:20px; width:22.7em; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }
+#tar-lab7 { position:relative; left:215px;font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
 #tar-p    { position:absolute; top:105%; left:150px; font-size:17px; font-weight:400; font-style:italic; text-align:justify; }
 #blogset  { position:absolute; top: 90%; right:100px; left:125px; font-size:17px; font-weight:400; font-style:italic; color:#aaa; text-align:justify; }
 
@@ -95,7 +95,7 @@
 #auth-select  { position:absolute; top:70%; left:210px; width:256px; font-size:17px; font-weight:400; font-style:italic; color:#000; text-align:justify; }
 
 #our-check  { position:relative top:120%; }
-#your-check { position:relative; left:155%; top:-20px; }
+#your-check { position:relative; left:76%;  }
 #free-form {margin:240px 0px 0px 150px;}
 #tar-lab8 {position:absolute; left:125px; color:#aaa; font-size:17px; font-weight:200; font-style:italic; text-align:justify;}
 #tar-comment{margin:20px 0 0 45px;width:53%;height:80px;}
@@ -157,7 +157,7 @@
 		 text-align:justify; color:#aaa; font-weight:normal; overflow:show; background:none; }
 
 #editor { position:absolute; top:15%; left:52%; min-width:45%; max-width:45%; min-height:10%; border:2px solid; padding:10px; color:#000;
-	  background-color:#ffe; font-size:14px; font-weight:200; font-style:normal; text-align:justify; }
+	  background-color:#ffe; font-size:14px; font-weight:200; font-style:normal; text-align:justify; height:17em; overflow:scroll; }
 
 #ref-lab  { position:absolute; top:5%; font-size:14px; font-weight:200; font-style:italic; text-align:justify; color:#aaa; }
 #edit-lab { position:absolute; top:5%; font-size:14px; font-weight:200; font-style:italic; text-align:justify; color:#aaa; }

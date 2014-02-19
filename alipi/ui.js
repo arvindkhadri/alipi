@@ -568,7 +568,7 @@ window.onload = function() {
             },
 
             loginToSwtStore: function() {
-              var login_template = '<div id="login-template" style="display: none;" title="Please login" class="alipi ui-widget-header ui-corner-all">' +
+              var login_template = '<div id="login-template" style="display: none; height:15em;" title="Please login" class="alipi ui-widget-header ui-corner-all">' +
                     '<div>' +
                     '<h3> Registered Users:</h3>' +
                     '<div style="text-align: left;">Please enter your username and password </div>' +
@@ -587,8 +587,10 @@ window.onload = function() {
 	            $(document).unbind('mouseout'); // Unbind the css on mouseout
 
               $('#login-template').dialog({
-                height: 400,
-                width: 400,
+                height: "23em",
+                left: "20.2em",
+                top: "3em",
+                width: "30em",
                 position: 'center',
                 modal: true,
                 buttons: [
@@ -937,7 +939,7 @@ window.onload = function() {
             },
 
             displayEditor: function() {
-		          var template = '<div id="editoroverlay" title="Editor" class="alipi ui-widget-header ui-corner-all">'+
+		          var template = '<div id="editoroverlay" title="Editor" class="alipi ui-widget-header ui-corner-all" style="height:20em; width:auto;">'+
 	              '<button id="close-adv" class="alipi" onclick="a11ypi.closeAdv();" title="Want to close View Source & display without HTML code?"> '+
 	              'Render source</button> '+
 	              '<button id="adv-ref" class="alipi" onclick="a11ypi.showAdv();" title="Want to see HTML code? Then click me !!">View Source</button> '+
@@ -968,8 +970,9 @@ window.onload = function() {
 
 		          $( "#editoroverlay" ).dialog({
 	              position: 'center',
-	              width:$(window).width()-10,
-	              height:$(window).height()-50,
+	              width:'70em',
+	              height:'30em',
+                top: '33em',
 	              modal: true,
 	              buttons: {
 				          "+": function() {
@@ -1024,7 +1027,8 @@ window.onload = function() {
 		          $($('.ui-dialog-buttonset').children()[4]).attr('id','save-changes'); // 'Save Changes'
 
 		          $('#adv-reference').height($('#editor').height() + 40);
-		          $('#reference').height($('#editor').height());
+		          $('#reference').height('17em');
+              $('#reference').css({"overflow":"scroll"});
 		          $('#mag').attr('title', 'To magnify letters/Increase font size');
 		          $('#demag').attr('title', 'To demagnify letters/Decrease font size');
 		          $('#add-link').attr('title', 'Add link(href) to the selected text portion (Before clicking this button, select some portion of text in "Editor")');
