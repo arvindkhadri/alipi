@@ -119,26 +119,13 @@ def start_page() :
 
 def setScripts():
     script_test = g.root.makeelement('script')
-    # script_edit = g.root.makeelement('script')
     script_auth = g.root.makeelement('script')
-    g.root.body.append(script_test)
-    # g.root.body.append(script_edit)
+
     g.root.body.append(script_auth)
+    g.root.body.append(script_test)
+
     script_test.set("src", conf.APPURL[0] + "/alipi/pack.min.js")
     script_test.set("type", "text/javascript")
-    # script_edit.set("src", conf.APPURL[0] + "/alipi/wsgi/pageEditor.js")
-    # script_edit.set("type","text/javascript")
-    # script_config = g.root.makeelement('script')
-    # g.root.body.append(script_config)
-    # script_config.set("src", conf.APPURL[0] + "/alipi/config.js")
-    # script_config.set("type", "text/javascript")
-    script_auth.set("src", conf.SWEETURL[0] + "/authenticate")
-    script_auth.set("type","text/javascript")
-
-    # script_jq_mini = g.root.makeelement('script')
-    # g.root.body.append(script_jq_mini)
-    # script_jq_mini.set("src", conf.JQUERYURL[0] + "/jquery.min.js")
-    # script_jq_mini.set("type", "text/javascript")
 
     style = g.root.makeelement('link')
     g.root.body.append(style)
@@ -146,16 +133,6 @@ def setScripts():
     style.set("type", "text/css")
     style.set("href", conf.APPURL[0] + "/alipi/pack.min.css")
 
-    # script_jq_cust = g.root.makeelement('script')
-    # g.root.body.append(script_jq_cust)
-    # script_jq_cust.set("src", conf.JQUERYUI[0] + "/jquery-ui.min.js")
-    # script_jq_cust.set("type", "text/javascript")
-
-    # style_cust = g.root.makeelement('link')
-    # style_cust.set("rel","stylesheet")
-    # style_cust.set("type", "text/css")
-    # style_cust.set("href", conf.JQUERYCSS[0] + "/jquery-ui.css")
-    # g.root.body.append(style_cust)
 
 def setSocialScript():
     info_button = g.root.makeelement('button')
@@ -510,4 +487,4 @@ fil.setLevel(logging.ERROR)
 app.logger.addHandler(fil)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='127.0.0.1')
