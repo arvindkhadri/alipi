@@ -597,14 +597,26 @@ window.onload = function() {
                   {
                     text: 'Login',
                     click: function() {
+
                       console.log('login');
                       var uname = $('#tar-uname').val();
                       var pass = $('#tar-pass').val();
                       if(uname && pass) {
                         $('.login-button > .ui-button-text').text('Please wait..');
-                        sweet.authenticate(config.sweet + '/authenticate', uname, pass, a11ypi.publish, function() {
+                        $.ajax({
+                          crossDomain: true,
+                          type: "POST",
+                          url: config.sweet+"/authenticate",
+                          data: {"user":uname, "hash":pass},
+                          error: function(e, a, b){
+                            console.log(e,a,b);
+
+                          }
+                        }).done(function(data){
                           $('.login-button > .ui-button-text').text('Login');
-                        });
+                          a11ypi.publish();
+                          });
+
                       }
                       else {
                         //console.log('no username and password');
